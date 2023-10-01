@@ -29,10 +29,10 @@ class _firstScreenState extends State<firstScreen> with TickerProviderStateMixin
    return Scaffold( 
     body: Column(
       children: [
-        Lottie.network("https://lottie.host/883bd426-3e55-44d0-9044-edeec0f1953a/6LksSehmSk.json",
+        Lottie.network("https://lottie.host/fc377deb-4e52-4012-8f4a-29932e0e7135/UbKVjLY022.json",
         controller:_controller ),
         Center(
-          child: Text("TECH")),
+          child: Text("TECHقصـ")),
       ],
     ),);
   }
