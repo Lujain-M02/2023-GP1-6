@@ -12,7 +12,7 @@ class MyHomePage extends StatelessWidget {final introKey = GlobalKey<Introductio
 
   @override
   Widget build(BuildContext context) {
-    const pageDecoration = const PageDecoration(
+    const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: TextStyle(fontSize: 19.0),
     );
