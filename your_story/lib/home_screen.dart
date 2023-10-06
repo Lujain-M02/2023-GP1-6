@@ -22,8 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
  void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), (){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const MyHomePage(title: 'home',)));
-    }
+Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MyHomePage()));    }
     );
  }
   @override

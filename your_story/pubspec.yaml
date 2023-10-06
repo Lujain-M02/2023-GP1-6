@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   lottie: ^2.6.0
   animated_text_kit: ^4.2.2
+  introduction_screen: ^3.1.12
   
     
 
