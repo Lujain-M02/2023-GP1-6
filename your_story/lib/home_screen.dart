@@ -31,29 +31,31 @@ class _HomeScreenState extends State<HomeScreen> {
    return Scaffold(
     backgroundColor: Color.fromARGB(255, 216, 230, 243),
       body: Center(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Lottie.asset(
-              'assets/112.json', 
-              width: 200,
-              height: 200,
-            ),
-            SizedBox(height: 20),
-            // ignore: deprecated_member_use
-            TypewriterAnimatedTextKit(
-              speed: Duration(milliseconds: 180),
-              totalRepeatCount: 0,
-              text: ['TECHقصـ'],
-              textStyle: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 22, 62, 95)
+      child: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Lottie.asset(
+                'assets/112.json', 
+                width: 200,
+                height: 200,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+              SizedBox(height: 20),
+              // ignore: deprecated_member_use
+              TypewriterAnimatedTextKit(
+                speed: Duration(milliseconds: 180),
+                totalRepeatCount: 0,
+                text: ['TECHقصـ'],
+                textStyle: TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 22, 62, 95)
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+      ),
       ),
     );
   }
