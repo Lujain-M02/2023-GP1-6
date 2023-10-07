@@ -34,7 +34,7 @@ class _welcomePageState extends State<welcomePage> {
                   left: 50,
                   top: 30,
                   right: 20,
-                  bottom: 50,
+                  bottom: 40,
                 ),
                 width: double.infinity,
                 decoration: const BoxDecoration(
