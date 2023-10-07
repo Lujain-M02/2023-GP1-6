@@ -5,7 +5,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:your_story/homepage.dart';
+import 'package:your_story/pages/intro_pages.dart';
 
 
 
@@ -28,14 +28,14 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MyHome
   @override
   Widget build(BuildContext context) {
    return Scaffold(
-    backgroundColor: Color.fromARGB(255, 216, 230, 243),
+    backgroundColor: Color.fromARGB(255, 237, 245, 255),
       body: Center(
       child: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Lottie.asset(
-                'assets/112.json', 
+                'assets/startimg.json', 
                 width: 200,
                 height: 200,
               ),
