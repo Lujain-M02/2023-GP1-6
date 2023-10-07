@@ -32,7 +32,7 @@ class _welcomePageState extends State<welcomePage> {
               child: Container(
                 padding: const EdgeInsets.only(
                   left: 50,
-                  top: 40,
+                  top: 30,
                   right: 20,
                   bottom: 50,
                 ),
@@ -72,10 +72,10 @@ class _welcomePageState extends State<welcomePage> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
-                      from: 60,
+                      from: 50,
                       child: Image.asset(
                         'assets/white.png',
-                        height: 150,
+                        height: 120,
                       ),
                     ),
                     const SizedBox(height: 20),
