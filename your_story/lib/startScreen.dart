@@ -25,36 +25,48 @@ class _HomeScreenState extends State<HomeScreen> {
 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MyHomePage()));    }
     );
  }
-  @override
+   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-    backgroundColor: Color.fromARGB(255, 237, 245, 255),
-      body: Center(
-      child: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Lottie.asset(
-                'assets/startimg.json', 
-                width: 200,
-                height: 200,
+    return Scaffold(
+      backgroundColor: Colors.transparent, 
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background1.png'), 
+                fit: BoxFit.cover, 
               ),
-              SizedBox(height: 20),
-              // ignore: deprecated_member_use
-              TypewriterAnimatedTextKit(
-                speed: Duration(milliseconds: 180),
-                totalRepeatCount: 0,
-                text: ['TECHقصـ'],
-                textStyle: TextStyle(
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 22, 62, 95)
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+            ),
           ),
-      ),
+          Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Lottie.asset(
+                    'assets/startimg.json',
+                    width: 200,
+                    height: 200,
+                  ),
+                  const SizedBox(height: 20),
+                  // ignore: deprecated_member_use
+                  TypewriterAnimatedTextKit(
+                    speed: const Duration(milliseconds: 180),
+                    totalRepeatCount: 0,
+                    text: ['TECHقصـ'],
+                    textStyle: const TextStyle(
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 22, 62, 95)),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

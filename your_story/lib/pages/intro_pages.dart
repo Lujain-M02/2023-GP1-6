@@ -9,12 +9,13 @@ import 'package:your_story/pages/welcome_page.dart';
 class MyHomePage extends StatelessWidget { 
   
   final List<PageViewModel> pages = [
+    
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
       body: "أصنع قصتك بكل سهولة، تطبيقنا يوصلك لنقطة البداية لرحلة صناعة القصص",
       image: Lottie.asset('assets/page1img.json'),
       decoration: PageDecoration(
-        pageColor: const Color.fromARGB(255, 237, 245, 255),
+        //pageColor: const Color.fromARGB(255, 237, 245, 255),
         imageFlex: 3,
         titleTextStyle: TextStyle(
           fontSize: 24.0,
@@ -32,7 +33,8 @@ class MyHomePage extends StatelessWidget {
       body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزه لها",
       image: Lottie.asset('assets/page2img.json'),
       decoration: PageDecoration(
-        pageColor: const Color.fromARGB(255, 237, 245, 255),
+       // pageColor: const Color.fromARGB(255, 237, 245, 255),
+        
         imageFlex: 3,
         titleTextStyle: TextStyle(
           fontSize: 24.0,
@@ -49,6 +51,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
     return IntroductionScreen(
       globalBackgroundColor: Color.fromARGB(255, 237, 245, 255),
       pages: pages,

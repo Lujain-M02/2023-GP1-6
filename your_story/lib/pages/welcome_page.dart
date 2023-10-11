@@ -118,11 +118,11 @@ class WhitePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('White Page'),
+        title: const Text('White Page'),
       ),
       body: Container(
         color: const Color.fromARGB(255, 237, 245, 255),
-        child: Center(
+        child: const Center(
           child: Text(
             'This is the white page after welcome page',
             style: TextStyle(fontSize: 20),
