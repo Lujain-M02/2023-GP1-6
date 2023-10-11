@@ -13,17 +13,17 @@ class MyHomePage extends StatelessWidget {
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
       body: "أصنع قصتك بكل سهولة، تطبيقنا يوصلك لنقطة البداية لرحلة صناعة القصص",
-      image: Lottie.asset('assets/page1img.json'),
+      image: Image.asset('assets/onboarding1.png'),
       decoration: PageDecoration(
-        //pageColor: const Color.fromARGB(255, 237, 245, 255),
-        imageFlex: 3,
+        pageColor: const Color.fromARGB(255, 238, 245, 255),
+        imageFlex: -3,
         titleTextStyle: TextStyle(
-          fontSize: 24.0,
+          fontSize: 33.0,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Color.fromARGB(255, 17, 11, 79),
         ),
         bodyTextStyle: TextStyle(
-          fontSize: 16.0,
+          fontSize: 24.0,
           color: Colors.black,
         ),
       ),
@@ -31,18 +31,17 @@ class MyHomePage extends StatelessWidget {
     PageViewModel(
       title: "مصوره عن طريق الذكاء الإصطناعي",
       body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزه لها",
-      image: Lottie.asset('assets/page2img.json'),
+      image: Image.asset('assets/onboarding2.png'),
       decoration: PageDecoration(
-       // pageColor: const Color.fromARGB(255, 237, 245, 255),
-        
-        imageFlex: 3,
-        titleTextStyle: TextStyle(
-          fontSize: 24.0,
+        pageColor: const Color.fromARGB(255, 238, 245, 255),
+        imageFlex: -3,
+         titleTextStyle: TextStyle(
+          fontSize: 33.0,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Color.fromARGB(255, 17, 11, 79),
         ),
         bodyTextStyle: TextStyle(
-          fontSize: 16.0,
+          fontSize: 24.0,
           color: Colors.black,
         ),
       ),
@@ -53,7 +52,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
   
     return IntroductionScreen(
-      globalBackgroundColor: Color.fromARGB(255, 237, 245, 255),
+      globalBackgroundColor: Color.fromARGB(255, 238, 245, 255),
       pages: pages,
       onDone: () {
         // Navigate to the next page when "تم" is clicked
