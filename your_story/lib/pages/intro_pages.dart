@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/welcome_page.dart';
 
 class MyHomePage extends StatelessWidget { 
