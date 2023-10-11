@@ -1,6 +1,7 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+
+import 'create_story_pages/create_story.dart';
 
 class welcomePage extends StatefulWidget {
   const welcomePage({Key? key}) : super(key: key);
@@ -45,28 +46,29 @@ class _welcomePageState extends State<welcomePage> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center, // Center-align the text
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Center-align the text
                   children: [
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
                       from: 50,
-                        child: const Center( // Wrap the Text with Center
+                      child: const Center(
+                        // Wrap the Text with Center
                         child: Align(
-                        alignment: Alignment.centerRight, // Align to the left
-                        child: Text(
-                          ' أهلا بك يا صانع القصص      '  ,
-                          textAlign: TextAlign.center,
-
-                          style: TextStyle(
-                            decorationThickness: BorderSide.strokeAlignCenter,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            
-                            color: Colors.white,
+                          alignment: Alignment.centerRight, // Align to the left
+                          child: Text(
+                            ' أهلا بك يا صانع القصص      ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              decorationThickness: BorderSide.strokeAlignCenter,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),),
+                      ),
                     ),
                     const SizedBox(height: 15),
                     FadeInUp(
@@ -87,10 +89,10 @@ class _welcomePageState extends State<welcomePage> {
                         alignment: Alignment.bottomLeft,
                         child: TextButton(
                           onPressed: () {
-                            
-                          Navigator.of(context).pushReplacement(
+                            Navigator.of(context).pushReplacement(
                               MaterialPageRoute(builder: (_) => WhitePage()),
-                                      );                          },
+                            );
+                          },
                           child: const Text(
                             '!اضغط لبدأ بصنع قصتك الآن',
                             style: TextStyle(
@@ -112,7 +114,6 @@ class _welcomePageState extends State<welcomePage> {
   }
 }
 
-
 class WhitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -126,6 +127,20 @@ class WhitePage extends StatelessWidget {
           child: Text(
             'This is the white page after welcome page',
             style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => CreateStory()),
+          );
+        },
+        child: const Text(
+          'move',
+          style: TextStyle(
+            fontSize: 19, // Adjust the font size here
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
       ),
