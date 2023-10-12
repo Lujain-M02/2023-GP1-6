@@ -49,25 +49,33 @@ class _CreateStory extends State<CreateStory> {
   Widget build(BuildContext context) {
     return Directionality(textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              const Center(child: Text("اصنع قصتك", style: TextStyle(fontSize: 30),)),
-              Flexible(
-                child: Stepper(
-                  type: StepperType.horizontal,
-                  elevation: 0,
-                  // This control builder is for the buttons it return empty size box because we used other buttons
-                  controlsBuilder: (context, controls) {
-                    return const SizedBox(height: 0,width: 0,);
-                  },
-                  // this 3 properties is for stepper widget  
-                  onStepTapped: (step) => setState(() => _activeStepIndex = step),
-                  currentStep: _activeStepIndex,
-                  steps: stepList(),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/background3.png'),
+              fit: BoxFit.cover
+            )
+          ),
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                const Center(child: Text("اصنع قصتك", style: TextStyle(fontSize: 30),)),
+                Flexible(
+                  child: Stepper(
+                    type: StepperType.horizontal,
+                    elevation: 0,
+                    // This control builder is for the buttons it return empty size box because we used other buttons
+                    controlsBuilder: (context, controls) {
+                      return const SizedBox(height: 0,width: 0,);
+                    },
+                    // this 3 properties is for stepper widget  
+                    onStepTapped: (step) => setState(() => _activeStepIndex = step),
+                    currentStep: _activeStepIndex,
+                    steps: stepList(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         //this bar is for the buttons to move between steps on press() is the action 
