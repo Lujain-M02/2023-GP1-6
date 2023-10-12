@@ -68,7 +68,7 @@ class _CreateStory extends State<CreateStory> {
                       if (states.contains(MaterialState.selected)) {
                         return const Color.fromARGB(255, 5, 34, 57);
                       } else if (states.contains(MaterialState.disabled)) {
-                        return const Color.fromARGB(255, 187, 222, 251);;
+                        return const Color.fromARGB(255, 187, 222, 251);
                       } else {
                         return Colors.grey; // Use the default color.
                       }
