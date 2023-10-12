@@ -50,7 +50,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   
-    return IntroductionScreen(
+    return Directionality(textDirection: TextDirection.rtl, child: IntroductionScreen(
       globalBackgroundColor: Color.fromARGB(255, 238, 245, 255),
       pages: pages,
       onDone: () {
@@ -96,6 +96,6 @@ class MyHomePage extends StatelessWidget {
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
-    ));
+    )));
   }
 }
