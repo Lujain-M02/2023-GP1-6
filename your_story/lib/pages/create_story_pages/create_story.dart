@@ -47,8 +47,12 @@ class _CreateStory extends State<CreateStory> {
 
   @override
   Widget build(BuildContext context) {
+             
+
     return Directionality(textDirection: TextDirection.rtl,
-      child: Scaffold(
+      child: Scaffold( backgroundColor:const Color.fromARGB(255, 238, 245, 255),
+
+
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
