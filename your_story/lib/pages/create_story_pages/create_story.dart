@@ -64,6 +64,15 @@ class _CreateStory extends State<CreateStory> {
                   child: Stepper(
                     type: StepperType.horizontal,
                     elevation: 0,
+                    connectorColor: MaterialStateProperty.resolveWith((states) {
+                      if (states.contains(MaterialState.selected)) {
+                        return const Color.fromARGB(255, 5, 34, 57);
+                      } else if (states.contains(MaterialState.disabled)) {
+                        return const Color.fromARGB(255, 187, 222, 251);;
+                      } else {
+                        return Colors.grey; // Use the default color.
+                      }
+                    }),
                     // This control builder is for the buttons it return empty size box because we used other buttons
                     controlsBuilder: (context, controls) {
                       return const SizedBox(height: 0,width: 0,);
