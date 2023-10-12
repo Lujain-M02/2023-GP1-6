@@ -11,7 +11,7 @@ class _CreateStoryFinal extends State<CreateStoryFinal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-         height: 550,
+         height: 50,
          width: MediaQuery.of(context).size.width,
          color: Colors.amber,
     //     child: Center(
