@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-
+import 'package:your_story/pages/style.dart';
 import 'create_story_pages/create_story.dart';
 
 class welcomePage extends StatefulWidget {
@@ -14,8 +14,8 @@ class _welcomePageState extends State<welcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 231, 239, 248),
-      body: Container(
+      backgroundColor:  your_story_Style.backgroundColor,
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,16 +47,16 @@ class _welcomePageState extends State<welcomePage> {
                 ),
                 child: Column(
                   crossAxisAlignment:
-                      CrossAxisAlignment.center, // Center-align the text
+                      CrossAxisAlignment.center, 
                   children: [
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
                       from: 50,
                       child: const Center(
-                        // Wrap the Text with Center
+                        
                         child: Align(
-                          alignment: Alignment.centerRight, // Align to the left
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             ' أهلا بك يا صانع القصص      ',
                             textAlign: TextAlign.center,
@@ -74,10 +74,12 @@ class _welcomePageState extends State<welcomePage> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
-                      from: 50,
+                      from:50,
                       child: Image.asset(
+          //Padding:EdgeInsets,
                         'assets/white.png',
                         height: 120,
+                       
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -86,21 +88,29 @@ class _welcomePageState extends State<welcomePage> {
                       delay: const Duration(milliseconds: 1000),
                       from: 70,
                       child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (_) => WhitePage()),
-                            );
-                          },
-                          child: const Text(
-                            '!اضغط لبدأ بصنع قصتك الآن',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 249, 158, 102),
-                            ),
-                          ),
-                        ),
+                      alignment: Alignment.bottomLeft,
+                      child: ElevatedButton(
+  onPressed: () {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => WhitePage()),
+    );
+  },
+  
+  style: ElevatedButton.styleFrom(
+    
+    backgroundColor: your_story_Style.buttonColor, 
+    textStyle: const TextStyle(fontSize: 20),
+    elevation: 10, 
+    shadowColor: your_story_Style.buttonShadowColor,
+    
+  ),
+  child: const Text(
+    '!اضغط للبدأ بصنع قصتك الآن',
+    style: TextStyle(
+      color: Color.fromARGB(255, 1, 16, 87), // Text color
+    ),
+  ),
+),
                       ),
                     )
                   ],
@@ -133,7 +143,7 @@ class WhitePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => CreateStory()),
+            MaterialPageRoute(builder: (_) => const CreateStory()),
           );
         },
         child: const Text(

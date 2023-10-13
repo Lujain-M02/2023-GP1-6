@@ -31,7 +31,7 @@ Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> MyHome
       backgroundColor: Colors.transparent, 
       body: Stack(
         children: [
-          // Background Image
+         
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(

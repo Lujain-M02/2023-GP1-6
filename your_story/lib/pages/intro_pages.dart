@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:your_story/pages/style.dart';
 import 'package:your_story/pages/welcome_page.dart';
 
 class MyHomePage extends StatelessWidget { 
@@ -18,9 +19,9 @@ class MyHomePage extends StatelessWidget {
         pageColor: const Color.fromARGB(255, 238, 245, 255),
         imageFlex: -3,
         titleTextStyle: TextStyle(
-          fontSize: 33.0,
+          fontSize: 27.0,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 17, 11, 79),
+          color: your_story_Style.titleColor,
         ),
         bodyTextStyle: TextStyle(
           fontSize: 24.0,
@@ -36,9 +37,9 @@ class MyHomePage extends StatelessWidget {
         pageColor: const Color.fromARGB(255, 238, 245, 255),
         imageFlex: -3,
          titleTextStyle: TextStyle(
-          fontSize: 33.0,
+          fontSize: 27.0,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 17, 11, 79),
+          color: your_story_Style.titleColor,
         ),
         bodyTextStyle: TextStyle(
           fontSize: 24.0,
@@ -76,19 +77,19 @@ class MyHomePage extends StatelessWidget {
       skip: Text(
         "تخطي",
         style: TextStyle(
-          color: Colors.blue,
+          color: your_story_Style.titleColor,
           fontSize: 25.0,
         ),
       ),
       next: Icon(
         Icons.arrow_forward,
-        color: Colors.blue,
+        color: your_story_Style.titleColor,
       ),
       done: Text(
         "تم",
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.blue,
+          color: your_story_Style.titleColor,
           fontSize: 25.0,
         ),
       ),
@@ -96,7 +97,7 @@ class MyHomePage extends StatelessWidget {
        size: Size(10.0, 10.0),
         color: Colors.grey,
         activeSize: Size(22.0, 10.0),
-        activeColor: Colors.blue,
+        activeColor: your_story_Style.titleColor,
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0)),
       ),
