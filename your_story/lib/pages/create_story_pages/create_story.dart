@@ -12,7 +12,8 @@ class CreateStory extends StatefulWidget {
 
 class _CreateStory extends State<CreateStory> {
   int _activeStepIndex = 0;
-
+  TextEditingController storyTitel = TextEditingController();
+  TextEditingController storyContent = TextEditingController();
 //this method to keep track the user steps
   stepState(int step) {
     if (_activeStepIndex > step) {
@@ -26,20 +27,22 @@ class _CreateStory extends State<CreateStory> {
   stepList() => [
         Step(
           title: const Text('اضف عنوانًا'),
-          content:
-              const CreateStoryTitle(), //this is a method from another file
+          content: CreateStoryTitle(
+              titleController: storyTitel), //this is a method from another file
           state: stepState(0),
           isActive: _activeStepIndex >= 0,
         ),
         Step(
           title: const Text('اكتب قصتك'),
-          content: const CreateStoryContent(),
+          content: CreateStoryContent(
+              contentController: storyContent, title: storyTitel.text),
           state: stepState(1),
           isActive: _activeStepIndex >= 1,
         ),
         Step(
           title: const Text('تم صناعة قصتك'),
-          content: const CreateStoryFinal(),
+          content: CreateStoryFinal(
+              title: storyTitel.text, content: storyContent.text),
           state: stepState(2),
           isActive: _activeStepIndex >= 2,
         )

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CreateStoryTitle extends StatefulWidget {
-  const CreateStoryTitle({Key? key}) : super(key: key);
+class CreateStoryTitle extends StatelessWidget {
+  const CreateStoryTitle({super.key, required this.titleController});
 
-  @override
-  State<CreateStoryTitle> createState() => _CreateStoryTitle();
-}
-
-class _CreateStoryTitle extends State<CreateStoryTitle> {
+  final TextEditingController titleController;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,6 +37,7 @@ class _CreateStoryTitle extends State<CreateStoryTitle> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
+            controller: titleController,
             maxLines: null,
             decoration: const InputDecoration(
               labelText: "أدخل العنوان هنا",
@@ -53,7 +50,7 @@ class _CreateStoryTitle extends State<CreateStoryTitle> {
               contentPadding: EdgeInsets.all(10), // Add content padding
             ),
             validator: (value) {
-              if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+              if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
                 return "enter correct name";
               } else {
                 return null;
