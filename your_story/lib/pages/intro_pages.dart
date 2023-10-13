@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:your_story/pages/welcome_page.dart';
@@ -50,6 +51,9 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   
+      SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Directionality(textDirection: TextDirection.rtl, child: IntroductionScreen(
       globalBackgroundColor: Color.fromARGB(255, 238, 245, 255),
       pages: pages,
