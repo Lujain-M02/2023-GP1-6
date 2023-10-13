@@ -117,7 +117,7 @@ class _CreateStory extends State<CreateStory> {
           icon: const Icon(Icons.arrow_forward),
           onPressed: () {
             setState(() {
-              if (_activeStepIndex < stepList().length - 1) { // Check if it's the last step
+              if (_activeStepIndex < stepList().length - 1) { // Check if it isn't the last step
                 setState(() {
                   _activeStepIndex =_activeStepIndex += 1;
                 },
