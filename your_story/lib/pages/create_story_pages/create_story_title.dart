@@ -49,7 +49,7 @@ class CreateStoryTitle extends StatelessWidget {
             child: TextFormField(
               autovalidateMode: AutovalidateMode.always,
               controller: titleController,
-              maxLines: null,
+              //maxLines: null, // This allows multiple lines for long text
               decoration: const InputDecoration(
                 labelText: "أدخل العنوان هنا",
                 contentPadding: EdgeInsets.all(10),
