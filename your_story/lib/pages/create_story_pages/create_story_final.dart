@@ -61,7 +61,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
                 processArabicText();
               }
             },
-            child: Text("النصوص"),
+            child: const Text("النصوص"),
           ),
           Text(
             " $highestScoringSentences",
