@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';
 import 'package:your_story/pages/create_story_pages/create_story_final.dart';
+import 'package:your_story/pages/welcome_page.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -62,11 +63,33 @@ class _CreateStory extends State<CreateStory> {
             child: SafeArea(
               child: Column(
                 children: <Widget>[
-                  const Center(
-                      child: Text(
-                    "اصنع قصتك",
-                    style: TextStyle(fontSize: 30),
-                  )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WhitePage()),
+                          );
+                        },
+                      ),
+                      const Text(
+                        "اصنع قصتك",
+                        style: TextStyle(fontSize: 30),
+                      ),
+                      const SizedBox(
+                        height: 1,
+                        width: 40,
+                      )
+                    ],
+                  ),
+                  const Divider(
+                    thickness: 0.5,
+                    color: Color.fromARGB(255, 5, 34, 57),
+                  ),
                   Flexible(
                     child: Theme(
                       //this theme make the stepper background transparent
@@ -128,17 +151,18 @@ class _CreateStory extends State<CreateStory> {
                 onPressed: () {
                   setState(
                     () {
-                      if(_activeStepIndex == 0 && storyTitel.text==""){
-                        //nothing happen 
-                      }else if (_activeStepIndex == 1 && storyContent.text==""){
+                      if (_activeStepIndex == 0 && storyTitel.text == "") {
                         //nothing happen
-                      }
-                      else {
+                      } else if (_activeStepIndex == 1 &&
+                          storyContent.text == "") {
+                        //nothing happen
+                      } else {
                         // Check if it isn't the last step
                         setState(
                           () {
-                            if (_activeStepIndex < stepList().length - 1){
-                            _activeStepIndex = _activeStepIndex += 1;}
+                            if (_activeStepIndex < stepList().length - 1) {
+                              _activeStepIndex = _activeStepIndex += 1;
+                            }
                           },
                         );
                       }
