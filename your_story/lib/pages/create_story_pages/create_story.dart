@@ -128,11 +128,19 @@ class _CreateStory extends State<CreateStory> {
                 onPressed: () {
                   setState(
                     () {
-                      if (_activeStepIndex < stepList().length - 1) {
+                      if(_activeStepIndex == 0 && storyTitel.text==""){
+                        //nothing happen 
+                      }else if (_activeStepIndex == 1 && storyContent.text==""){
+                        //nothing happen
+                      }
+                      else {
                         // Check if it isn't the last step
                         setState(
                           () {
-                            _activeStepIndex = _activeStepIndex += 1;
+                            if (_activeStepIndex < stepList().length - 1){
+                            // print(storyTitel.text=="");
+                            // print(storyContent.text=="");
+                            _activeStepIndex = _activeStepIndex += 1;}
                           },
                         );
                       }
