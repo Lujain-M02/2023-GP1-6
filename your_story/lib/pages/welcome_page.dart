@@ -99,7 +99,7 @@ class _welcomePageState extends State<welcomePage> {
                             shadowColor: your_story_Style.buttonShadowColor,
                           ),
                           child: const Text(
-                            '!!اضغط للبدأ بصنع قصتك الآن',
+                            '!اضغط للبدأ بصنع قصتك الآن',
                             style: TextStyle(
                               color:
                                   Color.fromARGB(255, 1, 16, 87), // Text color
@@ -123,18 +123,38 @@ class WhitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //
+
       appBar: AppBar(
-        title: const Text('White Page'),
+        title: const Text(''),
       ),
-      body: Container(
-        color: const Color.fromARGB(255, 237, 245, 255),
-        child: const Center(
-          child: Text(
-            'This is the white page after welcome page',
-            style: TextStyle(fontSize: 20),
+      //
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const CreateStory()),
+              );
+            },
+            child: const Text(' كتابة قصة'),
           ),
-        ),
-      ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Button 2'),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Button 3'),
+          ),
+        ],
+      )),
+      //
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushReplacement(
