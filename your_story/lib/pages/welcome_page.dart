@@ -99,7 +99,7 @@ class _welcomePageState extends State<welcomePage> {
                             shadowColor: your_story_Style.buttonShadowColor,
                           ),
                           child: const Text(
-                            '!اضغط للبدأ بصنع قصتك الآن',
+                            '!!اضغط للبدأ بصنع قصتك الآن',
                             style: TextStyle(
                               color:
                                   Color.fromARGB(255, 1, 16, 87), // Text color
