@@ -1,13 +1,73 @@
 import 'package:flutter/material.dart';
 
-class CreateStoryTitle extends StatefulWidget {
-  const CreateStoryTitle({Key? key}) : super(key: key);
+class CreateStoryTitle extends StatelessWidget {
+  const CreateStoryTitle({Key? key, required this.titleController})
+      : super(key: key);
+
+  final TextEditingController titleController;
+
+  String? validateTitle(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "الرجاء إدخال العنوان";
+    } else if (!RegExp(r'^[ء-ي\s]+$').hasMatch(value)) {
+      return "العنوان يجب أن يكون عنوان قصتك باللغة العربية فقط";
+    }
+    return null;
+  }
 
   @override
-  State<CreateStoryTitle> createState() => _CreateStoryTitle();
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Hint Card
+        const Card(
+          color: Colors.transparent,
+          elevation: 0,
+          child: ListTile(
+            horizontalTitleGap: -15,
+            contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
+            leading: Icon(
+              Icons.lightbulb,
+              color: Colors.amber,
+              size: 20,
+            ),
+            title: Text(
+              "أبق عنوانك قصيرًا، معبرًا وواضحًا!",
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+        ),
+
+        // Text Form Field
+        Form(
+          autovalidateMode: AutovalidateMode.always,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.always,
+              controller: titleController,
+              //maxLines: null, // This allows multiple lines for long text
+              decoration: const InputDecoration(
+                labelText: "أدخل العنوان هنا",
+                contentPadding: EdgeInsets.all(10),
+              ),
+              validator: validateTitle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _CreateStoryTitle extends State<CreateStoryTitle> {
+
+/*class CreateStoryTitle extends StatelessWidget {
+  const CreateStoryTitle({super.key, required this.titleController});
+
+  final TextEditingController titleController;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,6 +101,7 @@ class _CreateStoryTitle extends State<CreateStoryTitle> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
+            controller: titleController,
             maxLines: null,
             decoration: const InputDecoration(
               labelText: "أدخل العنوان هنا",
@@ -53,7 +114,7 @@ class _CreateStoryTitle extends State<CreateStoryTitle> {
               contentPadding: EdgeInsets.all(10), // Add content padding
             ),
             validator: (value) {
-              if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
+              if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
                 return "enter correct name";
               } else {
                 return null;
@@ -64,7 +125,7 @@ class _CreateStoryTitle extends State<CreateStoryTitle> {
       ],
     );
   }
-}
+}*/
 
 /*class _CreateStoryTitle extends State<CreateStoryTitle> {
   final formKey = GlobalKey<FormState>();
