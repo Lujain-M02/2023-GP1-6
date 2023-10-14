@@ -138,8 +138,6 @@ class _CreateStory extends State<CreateStory> {
                         setState(
                           () {
                             if (_activeStepIndex < stepList().length - 1){
-                            // print(storyTitel.text=="");
-                            // print(storyContent.text=="");
                             _activeStepIndex = _activeStepIndex += 1;}
                           },
                         );
