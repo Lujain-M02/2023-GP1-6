@@ -14,7 +14,7 @@ class _welcomePageState extends State<welcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  your_story_Style.backgroundColor,
+      backgroundColor: your_story_Style.backgroundColor,
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -46,15 +46,13 @@ class _welcomePageState extends State<welcomePage> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.center, 
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
                       from: 50,
                       child: const Center(
-                        
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -74,12 +72,11 @@ class _welcomePageState extends State<welcomePage> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
-                      from:50,
+                      from: 50,
                       child: Image.asset(
-          //Padding:EdgeInsets,
+                        //Padding:EdgeInsets,
                         'assets/white.png',
                         height: 120,
-                       
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -88,29 +85,27 @@ class _welcomePageState extends State<welcomePage> {
                       delay: const Duration(milliseconds: 1000),
                       from: 70,
                       child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: ElevatedButton(
-  onPressed: () {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => WhitePage()),
-    );
-  },
-  
-  style: ElevatedButton.styleFrom(
-    
-    backgroundColor: your_story_Style.buttonColor, 
-    textStyle: const TextStyle(fontSize: 20),
-    elevation: 10, 
-    shadowColor: your_story_Style.buttonShadowColor,
-    
-  ),
-  child: const Text(
-    '!اضغط للبدأ بصنع قصتك الآن',
-    style: TextStyle(
-      color: Color.fromARGB(255, 1, 16, 87), // Text color
-    ),
-  ),
-),
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => WhitePage()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: your_story_Style.buttonColor,
+                            textStyle: const TextStyle(fontSize: 20),
+                            elevation: 10,
+                            shadowColor: your_story_Style.buttonShadowColor,
+                          ),
+                          child: const Text(
+                            '!اضغط للبدأ بصنع قصتك الآن',
+                            style: TextStyle(
+                              color:
+                                  Color.fromARGB(255, 1, 16, 87), // Text color
+                            ),
+                          ),
+                        ),
                       ),
                     )
                   ],
