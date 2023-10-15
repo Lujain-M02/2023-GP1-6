@@ -41,7 +41,7 @@ class _CreateStory extends State<CreateStory> {
           isActive: _activeStepIndex >= 1,
         ),
         Step(
-          title: const Text('تم صناعة قصتك'),
+          title: const Text('معالجة قصتك'),
           content: CreateStoryFinal(
               title: storyTitel.text, content: storyContent.text),
           state: stepState(2),
