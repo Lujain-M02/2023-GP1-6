@@ -139,17 +139,37 @@ class WhitePage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const CreateStory()),
               );
             },
-            child: const Text(' كتابة قصة'),
+            child: const Text(
+              ' ابدأ بكتابة قصتك ',
+              style: TextStyle(
+                fontSize: 30, // Adjust the font size here
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(
+            height: 60,
+          ),
           ElevatedButton(
             onPressed: () {},
-            child: const Text('Button 2'),
+            child: const Text(
+              'القصص المنشورة',
+              style: TextStyle(
+                fontSize: 27, // Adjust the font size here
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {},
-            child: const Text('Button 3'),
+            child: const Text(
+              'مسّودة',
+              style: TextStyle(
+                fontSize: 30, // Adjust the font size here
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
           ),
         ],
       )),
