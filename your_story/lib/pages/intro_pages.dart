@@ -13,7 +13,7 @@ class MyHomePage extends StatelessWidget {
     
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
-      body: "أصنع قصتك بكل سهولة، تطبيقنا يوصلك لنقطة البداية لرحلة صناعة القصص",
+      body: "أصنع قصتك بكل سهولة، تطبيقنا يسهل رحلة صناعة القصص",
       image: Image.asset('assets/onboarding1.png'),
       decoration: PageDecoration(
         pageColor: const Color.fromARGB(255, 238, 245, 255),
@@ -30,7 +30,7 @@ class MyHomePage extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: "مصوره عن طريق الذكاء الإصطناعي",
+      title: "قصص مصوره عن طريق الذكاء الإصطناعي",
       body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزه لها",
       image: Image.asset('assets/onboarding2.png'),
       decoration: PageDecoration(

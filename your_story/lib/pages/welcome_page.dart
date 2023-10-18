@@ -54,7 +54,7 @@ class _welcomePageState extends State<welcomePage> {
                       from: 50,
                       child: const Center(
                         child: Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.center,
                           child: Text(
                             ' أهلا بك يا صانع القصص      ',
                             textAlign: TextAlign.center,
