@@ -93,4 +93,4 @@ def process():
     return jsonify({'highest_scoring_sentences': highest_scoring_sentences})
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.219', debug=True)
+    app.run(host='192.168.100.161', debug=True)
