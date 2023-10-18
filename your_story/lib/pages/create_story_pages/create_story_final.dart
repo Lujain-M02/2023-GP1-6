@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:your_story/pages/style.dart';
 
 class CreateStoryFinal extends StatefulWidget {
   const CreateStoryFinal({Key? key, required this.title, required this.content})
@@ -53,7 +54,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
         children: [
           Text(
             "العنوان : ${widget.title}",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
           ),
           ElevatedButton( // Change to RaisedButton or any button widget you prefer
             onPressed: () {
