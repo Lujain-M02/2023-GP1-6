@@ -48,8 +48,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
+    return  Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
@@ -69,7 +68,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
             style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 12, 12)),
           ),
         ],
-      ),
-    );
+      );
+    
   }
 }
