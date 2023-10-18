@@ -48,7 +48,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
