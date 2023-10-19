@@ -39,24 +39,59 @@ class CreateStoryContent extends StatelessWidget {
           ),
         ),
 
-        // Text Form Field
-        Form(
+        /*Form(
           autovalidateMode: AutovalidateMode.always,
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(255, 17, 53, 70)
+                      .withOpacity(0.5), // Shadow color
+                  spreadRadius: 2, // Spread radius
+                  blurRadius: 5, // Blur radius
+                  offset: Offset(0, 2), // Offset of the shadow
+                ),
+              ],
             ),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.always,
               controller: contentController,
               maxLines: null, // This allows multiple lines for long text
               decoration: const InputDecoration(
-                labelText: "أطلق العنان لإبداعات!",
+                labelText: "أطلق العنان لإبداعاتك!",
                 contentPadding: EdgeInsets.all(10),
               ),
               validator: validateTitle,
             ),
+          ),
+        ),*/
+
+        // Text Form Field
+        Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Container(
+            //child: Container(
+            /*decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),*/
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: contentController,
+              maxLines: null, // This allows multiple lines for long text
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Color.fromARGB(132, 187, 222, 251),
+                hintText: "أطلق العنان لإبداعاتك!",
+                //labelText: "أطلق العنان لإبداعاتك!",
+                //labelStyle: TextStyle(color: Color.fromARGB(255, 108, 26, 17)),
+                contentPadding: EdgeInsets.all(10),
+              ),
+              validator: validateTitle,
+            ),
+            //),
           ),
         ),
       ],
