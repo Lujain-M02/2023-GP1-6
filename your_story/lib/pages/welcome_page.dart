@@ -171,7 +171,7 @@ class WhitePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               child: const Text(
-                'مسّودة',
+                'مسودّة',
                 style: TextStyle(
                   fontSize: 30, // Adjust the font size here
                   color: Color.fromARGB(255, 0, 0, 0),
