@@ -29,7 +29,7 @@ class MyHomePage extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: "مصوره عن طريق الذكاء الإصطناعي",
+      title: "قصص مصوره عن طريق الذكاء الإصطناعي",
       body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزه لها",
       image: Image.asset('assets/onboarding2.png'),
       decoration: PageDecoration(

@@ -39,91 +39,62 @@ class CreateStoryContent extends StatelessWidget {
           ),
         ),
 
-        // Text Form Field
-        Form(
+        /*Form(
           autovalidateMode: AutovalidateMode.always,
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(255, 17, 53, 70)
+                      .withOpacity(0.5), // Shadow color
+                  spreadRadius: 2, // Spread radius
+                  blurRadius: 5, // Blur radius
+                  offset: Offset(0, 2), // Offset of the shadow
+                ),
+              ],
             ),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.always,
               controller: contentController,
               maxLines: null, // This allows multiple lines for long text
               decoration: const InputDecoration(
-                labelText: "أطلق العنان لإبداعات!",
+                labelText: "أطلق العنان لإبداعاتك!",
                 contentPadding: EdgeInsets.all(10),
               ),
               validator: validateTitle,
             ),
+          ),
+        ),*/
+
+        // Text Form Field
+        Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Container(
+            //child: Container(
+            /*decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),*/
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: contentController,
+              maxLines: null, // This allows multiple lines for long text
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Color.fromARGB(132, 187, 222, 251),
+                hintText: "أطلق العنان لإبداعاتك!",
+                //labelText: "أطلق العنان لإبداعاتك!",
+                //labelStyle: TextStyle(color: Color.fromARGB(255, 108, 26, 17)),
+                contentPadding: EdgeInsets.all(10),
+              ),
+              validator: validateTitle,
+            ),
+            //),
           ),
         ),
       ],
     );
   }
 }
-
-/*class CreateStoryContent extends StatelessWidget {
-  const CreateStoryContent(
-      {Key? key, required this.contentController, required this.title})
-      : super(key: key);
-  final TextEditingController contentController;
-  final String title;
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // this widget for the hint above the container
-        Card(
-          color: Colors.transparent,
-          elevation: 0,
-          child: ListTile(
-            horizontalTitleGap: -15,
-            contentPadding: const EdgeInsets.symmetric(
-                horizontal: 0.0), // Adjust the padding here
-            leading: const Icon(
-              Icons.lightbulb,
-              color: Colors.amber,
-              size: 20,
-            ),
-            title: Text(
-              "حاول أن تكون كتابتك واضحة وصحيحة!\n    ${title}",
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
-        ),
-
-        Container(
-          // height: 50,
-          //width: MediaQuery.of(context).size.width,
-          //color: Colors.blueGrey,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: TextFormField(
-            controller: contentController,
-            maxLines: null,
-            decoration: const InputDecoration(
-              labelText: "أطلق العنان لإبداعاتك!",
-              //hintText: "أبق عنوانك قصيرًا، معبرًا وواضحًا!",
-              /*prefixIcon: Icon(
-                Icons.lightbulb,
-                color: Colors.amber,
-                size: 20,
-              ),*/
-              contentPadding: EdgeInsets.all(10), // Add content padding
-            ),
-            validator: (value) {
-              if (value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                return "enter correct name";
-              } else {
-                return null;
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}*/
