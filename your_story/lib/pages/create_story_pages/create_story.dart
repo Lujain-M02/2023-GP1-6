@@ -27,7 +27,7 @@ class _CreateStory extends State<CreateStory> {
 //array of steps to use it in the widget
   stepList() => [
         Step(
-          title: const Text('اضف عنوانًا'),
+          title: const Text('أضف عنوانًا'),
           content: CreateStoryTitle(
               titleController: storyTitel), //this is a method from another file
           state: stepState(0),
