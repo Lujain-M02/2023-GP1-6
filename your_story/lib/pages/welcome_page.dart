@@ -123,58 +123,65 @@ class WhitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //
-
+/*
       appBar: AppBar(
         title: const Text(''),
-      ),
-      //
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const CreateStory()),
-              );
-            },
-            child: const Text(
-              ' ابدأ بكتابة قصتك ',
-              style: TextStyle(
-                fontSize: 30, // Adjust the font size here
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 60,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              'القصص المنشورة',
-              style: TextStyle(
-                fontSize: 27, // Adjust the font size here
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-          ),
-          const SizedBox(height: 60),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text(
-              'مسّودة',
-              style: TextStyle(
-                fontSize: 30, // Adjust the font size here
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-          ),
-        ],
-      )),
-      //
+      ),*/
 
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background1.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const CreateStory()),
+                );
+              },
+              child: const Text(
+                ' ابدأ بكتابة قصتك ',
+                style: TextStyle(
+                  fontSize: 30, // Adjust the font size here
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 60,
+            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text(
+                'القصص المنشورة',
+                style: TextStyle(
+                  fontSize: 30, // Adjust the font size here
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ),
+            const SizedBox(height: 60),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text(
+                'مسّودة',
+                style: TextStyle(
+                  fontSize: 30, // Adjust the font size here
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ),
+          ],
+        )),
+        //
+/*
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushReplacement(
@@ -188,6 +195,7 @@ class WhitePage extends StatelessWidget {
             color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
+      ),*/
       ),
     );
   }
