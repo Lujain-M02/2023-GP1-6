@@ -40,20 +40,25 @@ class CreateStoryTitle extends StatelessWidget {
 
         // Text Form Field
         Form(
-          autovalidateMode: AutovalidateMode.always,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-              autovalidateMode: AutovalidateMode.always,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: titleController,
+
               //maxLines: null, // This allows multiple lines for long text
               decoration: const InputDecoration(
-                labelText: "أدخل العنوان هنا",
+                filled: true,
+                fillColor: Color.fromARGB(132, 102, 112, 120),
+                //labelText: "أدخل العنوان هنا",
+                hintText: "أدخل العنوان هنا",
                 contentPadding: EdgeInsets.all(10),
               ),
+              style: const TextStyle(color: Colors.white),
               validator: validateTitle,
             ),
           ),
@@ -62,4 +67,3 @@ class CreateStoryTitle extends StatelessWidget {
     );
   }
 }
-
