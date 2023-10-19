@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -16,16 +15,20 @@ class CreateStoryFinal extends StatefulWidget {
 
 class _CreateStoryFinalState extends State<CreateStoryFinal> {
   String highestScoringSentences = "";
+  bool isLoading = false;
 
   Future<void> processArabicText() async {
     // Create a JSON request payload
+    setState(() {
+      isLoading = true; // Set loading to true when the request starts
+    });
     final Map<String, String> data = {
       'arabic_text': widget.content,
     };
 
     final response = await http.post(
       Uri.parse(
-          "http://192.168.100.244:5000/process"), // Update with your Flask server URL
+          "http://192.168.100.161:5000/process"), // Update with your Flask server URL
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -75,8 +78,12 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
         highestScoringSentences = "Error: ${response.statusCode}";
       });
     }
+     setState(() {
+      isLoading = false; // Set loading to false when the request completes
+    });
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -87,7 +94,6 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
           style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
         ),
         ElevatedButton(
-          // Change to RaisedButton or any button widget you prefer
           onPressed: () {
             if (!widget.content.isEmpty) {
               processArabicText();
@@ -95,11 +101,16 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
           },
           child: const Text("النصوص"),
         ),
-        Text(
-          " $highestScoringSentences",
-          style:
-              TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 12, 12)),
-        ),
+        SizedBox(height: 20,),
+        if (isLoading) // Display the custom progress bar when loading is true
+           const CircularProgressIndicator(
+            color: Colors.grey,
+           ),
+        if (!isLoading) // Display the Text when loading is false
+          Text(
+            " $highestScoringSentences",
+            style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 12, 12)),
+          ),
       ],
     );
   }
