@@ -71,8 +71,7 @@ class _CreateStory extends State<CreateStory> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()),
+                            MaterialPageRoute(builder: (context) => MainPage()),
                           );
                         },
                       ),
@@ -151,10 +150,17 @@ class _CreateStory extends State<CreateStory> {
                 onPressed: () {
                   setState(
                     () {
-                      if (_activeStepIndex == 0 && storyTitel.text == "") {
+                      if (_activeStepIndex == 0 &&
+                          (storyTitel.text == "" ||
+                              (!RegExp(
+                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                                  .hasMatch(storyContent.text)))) {
                         //nothing happen
                       } else if (_activeStepIndex == 1 &&
-                          storyContent.text == "") {
+                          (storyContent.text == "" ||
+                              (!RegExp(
+                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                                  .hasMatch(storyContent.text)))) {
                         //nothing happen
                       } else {
                         // Check if it isn't the last step
