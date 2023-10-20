@@ -135,103 +135,79 @@ class WhitePage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-
         child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const CreateStory()),
-                );
-              },
-              //
-              style: ElevatedButton.styleFrom(
-                primary: Colors.lightBlue, // Background color
-                onPrimary: Colors.white, // Text color
-                shadowColor: Colors.grey, // Shadow color
-                elevation: 15, // Shadow elevation
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(30), // Button border radius
-                ),
-                padding: const EdgeInsets.all(15), // Button padding
-              ), //
-              child: const Text(
-                ' ابدأ بكتابة قصتك ',
-                style: TextStyle(
-                  fontSize: 30, // Adjust the font size here
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GradientButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const CreateStory()),
+                  );
+                },
+                text: 'ابدأ بكتابة قصتك',
               ),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              //
-              style: ElevatedButton.styleFrom(
-                primary: Colors.lightBlue, // Background color
-                onPrimary: Colors.white, // Text color
-                shadowColor: Colors.grey, // Shadow color
-                elevation: 15, // Shadow elevation
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(30), // Button border radius
-                ),
-                padding: const EdgeInsets.all(15), // Button padding
-              ), //
-              child: const Text(
-                ' القصص المنشورة',
-                style: TextStyle(
-                  fontSize: 30, // Adjust the font size here
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
+              const SizedBox(height: 60),
+              GradientButton(
+                onPressed: () {},
+                text: 'القصص المنشورة',
               ),
-            ),
-            const SizedBox(height: 60),
-            ElevatedButton(
-              onPressed: () {},
-              //
-              style: ElevatedButton.styleFrom(
-                primary: Colors.lightBlue, // Background color
-                onPrimary: Colors.white, // Text color
-                shadowColor: Colors.grey, // Shadow color
-                elevation: 15, // Shadow elevation
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(30), // Button border radius
-                ),
-                padding: const EdgeInsets.all(15), // Button padding
-              ), //
-              child: const Text(
-                '      مسودّة      ',
-                style: TextStyle(
-                  fontSize: 30, // Adjust the font size here
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
+              const SizedBox(height: 60),
+              GradientButton(
+                onPressed: () {},
+                text: 'مسودّة',
               ),
-            ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GradientButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+
+  GradientButton({
+    required this.onPressed,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 224, 224, 243),
+            Color.fromARGB(184, 4, 63, 190),
           ],
-        )),
-        //
-/*
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const CreateStory()),
-          );
-        },
-        child: const Text(
-          'move',
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          primary: Colors
+              .transparent, // Set the button background color to transparent
+          onPrimary: Colors.white, // Text color
+          shadowColor: Colors.lightBlueAccent, // Shadow color
+          elevation: 15, // Shadow elevation
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.all(18),
+        ),
+        child: Text(
+          text,
           style: TextStyle(
-            fontSize: 19, // Adjust the font size here
+            fontSize: 30,
             color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
-      ),*/
       ),
     );
   }
