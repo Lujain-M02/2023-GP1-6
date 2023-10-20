@@ -69,7 +69,7 @@ class _CreateStory extends State<CreateStory> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                        RoundedAlertDialog.show(context);
+                          RoundedAlertDialog.show(context);
                         },
                       ),
                       const Text(
@@ -147,28 +147,59 @@ class _CreateStory extends State<CreateStory> {
                 onPressed: () {
                   setState(
                     () {
-                      if (_activeStepIndex == 0 &&
-                          (storyTitel.text == "" ||
-                              (!RegExp(
-                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
-                                  .hasMatch(storyTitel.text)))) {
-                        //nothing happen
-                      } else if (_activeStepIndex == 1 &&
-                          (storyContent.text == "" ||
-                              (!RegExp(
-                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
-                                  .hasMatch(storyContent.text)))) {
-                        //nothing happen
-                      } else {
+                      if (_activeStepIndex == 0) {
+                        if (storyTitel.text == "") {
+                          WarningDialog.show(context,
+                              "الرجاء إدخال العنوان" // Customize the button text color
+                              );
+                        } else if (!RegExp(
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                            .hasMatch(storyTitel.text)) {
+                          WarningDialog.show(context,
+                              "يجب أن يكون العنوان بالعربية" // Customize the button text color
+                              );
+                        }else {
                         // Check if it isn't the last step
                         setState(
                           () {
                             if (_activeStepIndex < stepList().length - 1) {
-                              _activeStepIndex = _activeStepIndex += 1;
+                              _activeStepIndex += 1;
                             }
                           },
                         );
                       }
+                      } else if (_activeStepIndex == 1) {
+                        if (storyContent.text == "") {
+                          WarningDialog.show(context,
+                              "الرجاء إدخال القصة" // Customize the button text color
+                              );
+                        } else if (!RegExp(
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                            .hasMatch(storyContent.text)) {
+                          WarningDialog.show(context,
+                              "يجب أن تكون القصة بالعربية" // Customize the button text color
+                              );
+                        }else {
+                        // Check if it isn't the last step
+                        setState(
+                          () {
+                            if (_activeStepIndex < stepList().length - 1) {
+                              _activeStepIndex += 1;
+                            }
+                          },
+                        );
+                      }
+                        }
+                      //  else {
+                      //   // Check if it isn't the last step
+                      //   setState(
+                      //     () {
+                      //       if (_activeStepIndex < stepList().length - 1) {
+                      //         _activeStepIndex += 1;
+                      //       }
+                      //     },
+                      //   );
+                      // }
                     },
                   );
                 },
@@ -179,8 +210,6 @@ class _CreateStory extends State<CreateStory> {
   }
 }
 
-
-
 class RoundedAlertDialog {
   static void show(BuildContext context) {
     showDialog(
@@ -190,7 +219,9 @@ class RoundedAlertDialog {
           title: const Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
           backgroundColor: const Color.fromARGB(255, 232, 242, 255),
           actions: [
-            _roundedButton("متأكد", Colors.white, const Color.fromARGB(255, 5, 34, 57), () {
+            _roundedButton(
+                "متأكد", Colors.white, const Color.fromARGB(255, 5, 34, 57),
+                () {
               // Close the dialog and navigate to MainPage
               Navigator.push(
                 context,
@@ -199,7 +230,8 @@ class RoundedAlertDialog {
                 ),
               );
             }),
-            _roundedButton("الغاء", const Color.fromARGB(255, 5, 34, 57), const Color.fromARGB(255, 232, 242, 255), () {
+            _roundedButton("الغاء", const Color.fromARGB(255, 5, 34, 57),
+                const Color.fromARGB(255, 232, 242, 255), () {
               // Close the dialog
               Navigator.of(context).pop();
             }),
@@ -217,7 +249,8 @@ class RoundedAlertDialog {
   ) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0), // Adjust the value to control the roundness
+        borderRadius: BorderRadius.circular(
+            15.0), // Adjust the value to control the roundness
         color: backgroundColor,
         border: Border.all(
           color: const Color.fromARGB(255, 5, 34, 57),
@@ -235,3 +268,39 @@ class RoundedAlertDialog {
   }
 }
 
+class WarningDialog {
+  static void show(BuildContext context, String content) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: AlertDialog(
+            backgroundColor: const Color.fromARGB(255, 232, 242, 255),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(content),
+                const SizedBox(height: 20), // Adjust as needed for spacing
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(
+                        255, 5, 34, 57), // Button background color
+                  ),
+                  child: const Text(
+                    "حسنا",
+                    style: TextStyle(
+                      color: Colors.white, // Button text color
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
