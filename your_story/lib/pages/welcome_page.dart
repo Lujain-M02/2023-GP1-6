@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:your_story/pages/style.dart';
 import 'create_story_pages/create_story.dart';
 
-class welcomePage extends StatefulWidget {
-  const welcomePage({Key? key}) : super(key: key);
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({Key? key}) : super(key: key);
 
   @override
-  _welcomePageState createState() => _welcomePageState();
+  _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _welcomePageState extends State<welcomePage> {
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +89,7 @@ class _welcomePageState extends State<welcomePage> {
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => WhitePage()),
+                              MaterialPageRoute(builder: (_) => MainPage()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -119,7 +119,7 @@ class _welcomePageState extends State<welcomePage> {
   }
 }
 
-class WhitePage extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
