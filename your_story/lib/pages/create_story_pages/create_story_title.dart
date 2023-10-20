@@ -9,7 +9,9 @@ class CreateStoryTitle extends StatelessWidget {
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "الرجاء إدخال العنوان";
-    } else if (!RegExp(r'^[ء-ي\s]+$').hasMatch(value)) {
+    } else if (!RegExp(
+            r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>?@[\]^_`{|}~]+$')
+        .hasMatch(value)) {
       return "العنوان يجب أن يكون عنوان قصتك باللغة العربية فقط";
     }
     return null;
