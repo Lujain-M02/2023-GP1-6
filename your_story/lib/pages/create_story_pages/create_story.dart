@@ -69,9 +69,34 @@ class _CreateStory extends State<CreateStory> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MainPage()),
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      // Close the dialog
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MainPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text("متأكد"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Close the dialog
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("الغاء"),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
                       ),
@@ -154,7 +179,7 @@ class _CreateStory extends State<CreateStory> {
                           (storyTitel.text == "" ||
                               (!RegExp(
                                       r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
-                                  .hasMatch(storyContent.text)))) {
+                                  .hasMatch(storyTitel.text)))) {
                         //nothing happen
                       } else if (_activeStepIndex == 1 &&
                           (storyContent.text == "" ||
