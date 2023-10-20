@@ -146,6 +146,18 @@ class WhitePage extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const CreateStory()),
                 );
               },
+              //
+              style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlue, // Background color
+                onPrimary: Colors.white, // Text color
+                shadowColor: Colors.grey, // Shadow color
+                elevation: 15, // Shadow elevation
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(30), // Button border radius
+                ),
+                padding: const EdgeInsets.all(15), // Button padding
+              ), //
               child: const Text(
                 ' ابدأ بكتابة قصتك ',
                 style: TextStyle(
@@ -159,8 +171,20 @@ class WhitePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {},
+              //
+              style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlue, // Background color
+                onPrimary: Colors.white, // Text color
+                shadowColor: Colors.grey, // Shadow color
+                elevation: 15, // Shadow elevation
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(30), // Button border radius
+                ),
+                padding: const EdgeInsets.all(15), // Button padding
+              ), //
               child: const Text(
-                'القصص المنشورة',
+                ' القصص المنشورة',
                 style: TextStyle(
                   fontSize: 30, // Adjust the font size here
                   color: Color.fromARGB(255, 0, 0, 0),
@@ -170,8 +194,20 @@ class WhitePage extends StatelessWidget {
             const SizedBox(height: 60),
             ElevatedButton(
               onPressed: () {},
+              //
+              style: ElevatedButton.styleFrom(
+                primary: Colors.lightBlue, // Background color
+                onPrimary: Colors.white, // Text color
+                shadowColor: Colors.grey, // Shadow color
+                elevation: 15, // Shadow elevation
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(30), // Button border radius
+                ),
+                padding: const EdgeInsets.all(15), // Button padding
+              ), //
               child: const Text(
-                'مسودّة',
+                '      مسودّة      ',
                 style: TextStyle(
                   fontSize: 30, // Adjust the font size here
                   color: Color.fromARGB(255, 0, 0, 0),
