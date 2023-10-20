@@ -62,7 +62,7 @@ class MyHomePage extends StatelessWidget {
               // Navigate to the next page when "تم" is clicked
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => welcomePage(),
+                  builder: (context) => WelcomePage(),
                 ),
               );
             },
@@ -70,7 +70,7 @@ class MyHomePage extends StatelessWidget {
               // Navigate to the next page when "تخطي" is clicked
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => welcomePage(),
+                  builder: (context) => WelcomePage(),
                 ),
               );
             },
