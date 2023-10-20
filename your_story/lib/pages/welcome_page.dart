@@ -199,7 +199,7 @@ class GradientButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(12),
         ),
         child: Text(
           text,
