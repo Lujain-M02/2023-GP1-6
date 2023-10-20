@@ -69,35 +69,7 @@ class _CreateStory extends State<CreateStory> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      // Close the dialog
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MainPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text("متأكد"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      // Close the dialog
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("الغاء"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                        RoundedAlertDialog.show(context);
                         },
                       ),
                       const Text(
@@ -206,3 +178,60 @@ class _CreateStory extends State<CreateStory> {
     );
   }
 }
+
+
+
+class RoundedAlertDialog {
+  static void show(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
+          backgroundColor: const Color.fromARGB(255, 232, 242, 255),
+          actions: [
+            _roundedButton("متأكد", Colors.white, const Color.fromARGB(255, 5, 34, 57), () {
+              // Close the dialog and navigate to MainPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainPage(),
+                ),
+              );
+            }),
+            _roundedButton("الغاء", const Color.fromARGB(255, 5, 34, 57), const Color.fromARGB(255, 232, 242, 255), () {
+              // Close the dialog
+              Navigator.of(context).pop();
+            }),
+          ],
+        );
+      },
+    );
+  }
+
+  static Widget _roundedButton(
+    String text,
+    Color textColor,
+    Color backgroundColor,
+    void Function() onPressed,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0), // Adjust the value to control the roundness
+        color: backgroundColor,
+        border: Border.all(
+          color: const Color.fromARGB(255, 5, 34, 57),
+          width: 2,
+        ),
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: TextStyle(color: textColor, fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
+
