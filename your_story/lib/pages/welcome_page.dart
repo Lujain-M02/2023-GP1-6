@@ -183,7 +183,7 @@ class GradientButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient:const LinearGradient(
           colors: [
             Color.fromARGB(255, 224, 224, 243),
             Color.fromARGB(184, 4, 63, 190),
@@ -205,16 +205,16 @@ class GradientButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             //padding: const EdgeInsets.all(5),
-            padding: EdgeInsets.all(15.0)),
+            padding: const EdgeInsets.all(15.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(iconData, color: Colors.white), // Display the icon
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
 
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 30,
                 color: Color.fromARGB(255, 247, 246, 246),
               ),
