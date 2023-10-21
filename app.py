@@ -89,8 +89,16 @@ def process():
         print(f"Section {i}:")
         print(sentence)
 
-    # Return the highest-scoring sentences
-    return jsonify({'highest_scoring_sentences': highest_scoring_sentences})
+    # Modify the list to add - before each sentence
+    new_highest_scoring_sentences = ["- " + sentence for sentence in highest_scoring_sentences]
+
+    # Print the modified highest-scoring sentences from all sections
+    for sentence_with_hyphen in new_highest_scoring_sentences:
+     print(sentence_with_hyphen)
+
+    # Return the modified highest-scoring sentences
+    return jsonify({'highest_scoring_sentences': new_highest_scoring_sentences})
+
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.161', debug=True)
+    app.run(host='172.20.10.4', debug=True)
