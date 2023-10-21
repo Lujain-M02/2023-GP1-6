@@ -11,7 +11,7 @@ class CreateStoryContent extends StatelessWidget {
     if (value == null || value.trim().isEmpty) {
       return "الرجاء إدخال نص القصة";
     } else if (!RegExp(
-            r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+            r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\.-…/؛<=>:?@[\]^_`{|}~]+$')
         .hasMatch(value)) {
       return "القصة يجب أن تكون باللغة العربية فقط";
     }
