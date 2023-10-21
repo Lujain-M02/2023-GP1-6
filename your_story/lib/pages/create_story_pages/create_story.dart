@@ -144,65 +144,69 @@ class _CreateStory extends State<CreateStory> {
                 iconSize: 40,
                 color: const Color.fromARGB(255, 9, 37, 59),
                 icon: const Icon(Icons.arrow_forward),
-                onPressed: _activeStepIndex != 2 ?() {
-                  setState(
-                    () {
-                      if (_activeStepIndex == 0) {
-                        if (storyTitel.text == "") {
-                          WarningDialog.show(context,
-                              "الرجاء إدخال العنوان" // Customize the button text color
-                              );
-                        } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
-                            .hasMatch(storyTitel.text)) {
-                          WarningDialog.show(context,
-                              "يجب أن يكون العنوان بالعربية" // Customize the button text color
-                              );
-                        } else {
-                          // Check if it isn't the last step
-                          setState(
-                            () {
-                              if (_activeStepIndex < stepList().length - 1) {
-                                _activeStepIndex += 1;
+                onPressed: _activeStepIndex != 2
+                    ? () {
+                        setState(
+                          () {
+                            if (_activeStepIndex == 0) {
+                              if (storyTitel.text == "") {
+                                WarningDialog.show(context,
+                                    "الرجاء إدخال العنوان" // Customize the button text color
+                                    );
+                              } else if (!RegExp(
+                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                  .hasMatch(storyTitel.text)) {
+                                WarningDialog.show(context,
+                                    "يجب أن يكون العنوان بالعربية" // Customize the button text color
+                                    );
+                              } else {
+                                // Check if it isn't the last step
+                                setState(
+                                  () {
+                                    if (_activeStepIndex <
+                                        stepList().length - 1) {
+                                      _activeStepIndex += 1;
+                                    }
+                                  },
+                                );
                               }
-                            },
-                          );
-                        }
-                      } else if (_activeStepIndex == 1) {
-                        if (storyContent.text == "") {
-                          WarningDialog.show(context,
-                              "الرجاء إدخال القصة" // Customize the button text color
-                              );
-                        } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
-                            .hasMatch(storyContent.text)) {
-                          WarningDialog.show(context,
-                              "يجب أن تكون القصة بالعربية" // Customize the button text color
-                              );
-                        } else {
-                          // Check if it isn't the last step
-                          setState(
-                            () {
-                              if (_activeStepIndex < stepList().length - 1) {
-                                _activeStepIndex += 1;
+                            } else if (_activeStepIndex == 1) {
+                              if (storyContent.text == "") {
+                                WarningDialog.show(context,
+                                    "الرجاء إدخال القصة" // Customize the button text color
+                                    );
+                              } else if (!RegExp(
+                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                  .hasMatch(storyContent.text)) {
+                                WarningDialog.show(context,
+                                    "يجب أن تكون القصة بالعربية" // Customize the button text color
+                                    );
+                              } else {
+                                // Check if it isn't the last step
+                                setState(
+                                  () {
+                                    if (_activeStepIndex <
+                                        stepList().length - 1) {
+                                      _activeStepIndex += 1;
+                                    }
+                                  },
+                                );
                               }
-                            },
-                          );
-                        }
+                            }
+                            //  else {
+                            //   // Check if it isn't the last step
+                            //   setState(
+                            //     () {
+                            //       if (_activeStepIndex < stepList().length - 1) {
+                            //         _activeStepIndex += 1;
+                            //       }
+                            //     },
+                            //   );
+                            // }
+                          },
+                        );
                       }
-                      //  else {
-                      //   // Check if it isn't the last step
-                      //   setState(
-                      //     () {
-                      //       if (_activeStepIndex < stepList().length - 1) {
-                      //         _activeStepIndex += 1;
-                      //       }
-                      //     },
-                      //   );
-                      // }
-                    },
-                  );
-                } :null ,
+                    : null,
               ),
             ],
           )),
