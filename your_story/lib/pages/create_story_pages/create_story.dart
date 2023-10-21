@@ -153,43 +153,43 @@ class _CreateStory extends State<CreateStory> {
                               "الرجاء إدخال العنوان" // Customize the button text color
                               );
                         } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\.-…/؛<=>:?@[\]^_`{|}~]+$')
                             .hasMatch(storyTitel.text)) {
                           WarningDialog.show(context,
                               "يجب أن يكون العنوان بالعربية" // Customize the button text color
                               );
-                        }else {
-                        // Check if it isn't the last step
-                        setState(
-                          () {
-                            if (_activeStepIndex < stepList().length - 1) {
-                              _activeStepIndex += 1;
-                            }
-                          },
-                        );
-                      }
+                        } else {
+                          // Check if it isn't the last step
+                          setState(
+                            () {
+                              if (_activeStepIndex < stepList().length - 1) {
+                                _activeStepIndex += 1;
+                              }
+                            },
+                          );
+                        }
                       } else if (_activeStepIndex == 1) {
                         if (storyContent.text == "") {
                           WarningDialog.show(context,
                               "الرجاء إدخال القصة" // Customize the button text color
                               );
                         } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\.-…/؛<=>:?@[\]^_`{|}~]+$')
                             .hasMatch(storyContent.text)) {
                           WarningDialog.show(context,
                               "يجب أن تكون القصة بالعربية" // Customize the button text color
                               );
-                        }else {
-                        // Check if it isn't the last step
-                        setState(
-                          () {
-                            if (_activeStepIndex < stepList().length - 1) {
-                              _activeStepIndex += 1;
-                            }
-                          },
-                        );
-                      }
+                        } else {
+                          // Check if it isn't the last step
+                          setState(
+                            () {
+                              if (_activeStepIndex < stepList().length - 1) {
+                                _activeStepIndex += 1;
+                              }
+                            },
+                          );
                         }
+                      }
                       //  else {
                       //   // Check if it isn't the last step
                       //   setState(
