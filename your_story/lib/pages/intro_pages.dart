@@ -12,7 +12,7 @@ class MyHomePage extends StatelessWidget {
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
       body:
-          "أصنع قصتك بكل سهولة، تطبيقنا يوصلك لنقطة البداية لرحلة صناعة القصص",
+          "أصنع قصتك بكل سهولة، تطبيقنا يسهل رحلة صناعة القصص",
       image: Image.asset('assets/onboarding1.png'),
       decoration: PageDecoration(
         pageColor: const Color.fromARGB(255, 238, 245, 255),
@@ -79,7 +79,7 @@ class MyHomePage extends StatelessWidget {
               "تخطي",
               style: TextStyle(
                 color: your_story_Style.titleColor,
-                fontSize: 25.0,
+                fontSize: 23.0,
               ),
             ),
             next: Icon(
@@ -91,7 +91,7 @@ class MyHomePage extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: your_story_Style.titleColor,
-                fontSize: 25.0,
+                fontSize: 23.0,
               ),
             ),
             dotsDecorator: DotsDecorator(
