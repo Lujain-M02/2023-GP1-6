@@ -113,7 +113,7 @@ class _CreateStory extends State<CreateStory> {
                         },
                         // this 3 properties is for stepper widget
                         //onStepTapped: (step) =>
-                            //setState(() => _activeStepIndex = step),
+                        //setState(() => _activeStepIndex = step),
                         currentStep: _activeStepIndex,
                         steps: stepList(),
                       ),
@@ -153,7 +153,7 @@ class _CreateStory extends State<CreateStory> {
                               "الرجاء إدخال العنوان" // Customize the button text color
                               );
                         } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\.-…/؛<=>:?@[\]^_`{|}~]+$')
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
                             .hasMatch(storyTitel.text)) {
                           WarningDialog.show(context,
                               "يجب أن يكون العنوان بالعربية" // Customize the button text color
@@ -174,7 +174,7 @@ class _CreateStory extends State<CreateStory> {
                               "الرجاء إدخال القصة" // Customize the button text color
                               );
                         } else if (!RegExp(
-                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،>ًٌٍَُِّْ«»ـ&()*+,\\\.-…/؛<=>:?@[\]^_`{|}~]+$')
+                                r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./؛<=>:?@[\]^_`{|}~]+$')
                             .hasMatch(storyContent.text)) {
                           WarningDialog.show(context,
                               "يجب أن تكون القصة بالعربية" // Customize the button text color
