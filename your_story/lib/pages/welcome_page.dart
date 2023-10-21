@@ -129,7 +129,7 @@ class MainPage extends StatelessWidget {
       ),*/
 
       body: Container(
-        decoration:const BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/background1.png"),
             fit: BoxFit.cover,
@@ -140,6 +140,7 @@ class MainPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GradientButton(
+                iconData: Icons.add,
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => const CreateStory()),
@@ -149,13 +150,15 @@ class MainPage extends StatelessWidget {
               ),
               const SizedBox(height: 60),
               GradientButton(
+                iconData: Icons.share, //
                 onPressed: () {},
                 text: 'القصص المنشورة',
               ),
               const SizedBox(height: 60),
               GradientButton(
+                iconData: Icons.edit, //
                 onPressed: () {},
-                text: 'مسودّة',
+                text: '       مسودّة       ',
               ),
             ],
           ),
@@ -168,10 +171,12 @@ class MainPage extends StatelessWidget {
 class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
+  final IconData iconData; //
 
   GradientButton({
     required this.onPressed,
     required this.text,
+    required this.iconData, //
   });
 
   @override
@@ -183,7 +188,7 @@ class GradientButton extends StatelessWidget {
             Color.fromARGB(255, 224, 224, 243),
             Color.fromARGB(184, 4, 63, 190),
           ],
-          begin: Alignment.centerLeft,
+          begin: Alignment.center,
           end: Alignment.centerRight,
         ),
         borderRadius: BorderRadius.circular(20),
@@ -191,22 +196,30 @@ class GradientButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          primary: Colors
-              .transparent, // Set the button background color to transparent
-          onPrimary: Colors.white, // Text color
-          shadowColor: Colors.lightBlueAccent, // Shadow color
-          elevation: 15, // Shadow elevation
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.all(12),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 30,
-            color: Color.fromARGB(255, 0, 0, 0),
-          ),
+            primary: Colors
+                .transparent, // Set the button background color to transparent
+            onPrimary: Colors.white, // Text color
+            shadowColor: Colors.lightBlueAccent, // Shadow color
+            elevation: 10, // Shadow elevation
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            //padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(15.0)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(iconData, color: Colors.white), // Display the icon
+            SizedBox(width: 15),
+
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 30,
+                color: Color.fromARGB(255, 247, 246, 246),
+              ),
+            ),
+          ],
         ),
       ),
     );
