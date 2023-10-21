@@ -28,7 +28,7 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
 
     final response = await http.post(
       Uri.parse(
-          "http://192.168.100.161:5000/process"), // Update with your Flask server URL
+          "http://172.20.10.7:5000/process"), // Update with your Flask server URL
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
