@@ -101,4 +101,4 @@ def process():
 
 
 if __name__ == '__main__':
-    app.run(host='172.20.10.4', debug=True)
+    app.run(host='192.168.100.4', debug=True)
