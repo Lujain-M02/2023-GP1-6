@@ -144,7 +144,7 @@ class _CreateStory extends State<CreateStory> {
                 iconSize: 40,
                 color: const Color.fromARGB(255, 9, 37, 59),
                 icon: const Icon(Icons.arrow_forward),
-                onPressed: () {
+                onPressed: _activeStepIndex != 2 ?() {
                   setState(
                     () {
                       if (_activeStepIndex == 0) {
@@ -202,7 +202,7 @@ class _CreateStory extends State<CreateStory> {
                       // }
                     },
                   );
-                },
+                } :null ,
               ),
             ],
           )),
