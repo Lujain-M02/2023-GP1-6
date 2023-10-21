@@ -129,7 +129,7 @@ class MainPage extends StatelessWidget {
       ),*/
 
       body: Container(
-        decoration: BoxDecoration(
+        decoration:const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/background1.png"),
             fit: BoxFit.cover,

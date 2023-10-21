@@ -93,25 +93,74 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
           "العنوان : ${widget.title}",
           style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
         ),
-        ElevatedButton(
+        const SizedBox(height: 20,),
+    Container(
+        width: 200, 
+        child: ElevatedButton(
           onPressed: () {
-            if (!widget.content.isEmpty) {
+            if (widget.content.isNotEmpty) {
               processArabicText();
             }
           },
-          child: const Text("النصوص"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent, // Set the button's background color to transparent
+            disabledBackgroundColor: Colors.transparent, // Set the button's text color to transparent
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+            elevation: 0,
+          ),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 189, 189, 220),
+                  Color.fromARGB(255, 243, 114, 157),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Container(
+              alignment: Alignment.center,
+              child: const Text(
+                "معالجة القصة",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // Set the text color to white
+                ),
+              ),
+            ),
+          ),
         ),
-        SizedBox(height: 20,),
+      ),
+        const SizedBox(height: 20,),
         if (isLoading) // Display the custom progress bar when loading is true
            const CircularProgressIndicator(
             color: Colors.grey,
            ),
         if (!isLoading) // Display the Text when loading is false
-          Text(
-            " $highestScoringSentences",
-            style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 12, 12)),
-          ),
-      ],
-    );
+         Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color:const Color.fromARGB( 255, 238, 245, 255,)),
+           child: Text(
+            highestScoringSentences,
+            style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
+                 ),
+         ),
+      ]);
+      
   }
 }
