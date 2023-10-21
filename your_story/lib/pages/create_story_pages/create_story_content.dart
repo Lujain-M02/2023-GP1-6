@@ -86,7 +86,7 @@ class CreateStoryContent extends StatelessWidget {
               decoration: const InputDecoration(
                 filled: true,
                 fillColor: Color.fromARGB(132, 187, 222, 251),
-                hintText: "أطلق العنان لإبداعاتك!",
+                hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
                 //labelText: "أطلق العنان لإبداعاتك!",
                 //labelStyle: TextStyle(color: Color.fromARGB(255, 108, 26, 17)),
                 contentPadding: EdgeInsets.all(10),
