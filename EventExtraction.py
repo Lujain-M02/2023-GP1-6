@@ -90,7 +90,8 @@ def process():
         print(sentence)
 
     # Modify the list to add - before each sentence
-    new_highest_scoring_sentences = ["- " + sentence for sentence in highest_scoring_sentences]
+    new_highest_scoring_sentences = ["- " + sentence[:sentence.rfind(',')] + '.' for sentence in highest_scoring_sentences]
+    
 
     # Print the modified highest-scoring sentences from all sections
     for sentence_with_hyphen in new_highest_scoring_sentences:
@@ -101,4 +102,4 @@ def process():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.161', debug=True)
+    app.run(host='172.20.10.8', debug=True)
