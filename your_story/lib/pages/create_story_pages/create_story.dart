@@ -3,6 +3,7 @@ import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';
 import 'package:your_story/pages/create_story_pages/create_story_final.dart';
+import 'package:your_story/pages/alerts.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -69,7 +70,16 @@ class _CreateStory extends State<CreateStory> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                          ConfirmationDialog.show(context);
+                          ConfirmationDialog.show(
+                              context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
+                            // Perform your action on confirmation (e.g., navigate to MainPage)
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MainPage(),
+                              ),
+                            );
+                          });
                         },
                       ),
                       const Text(
@@ -200,65 +210,6 @@ class _CreateStory extends State<CreateStory> {
               ),
             ],
           )),
-    );
-  }
-}
-
-class ConfirmationDialog {
-  static void show(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: const Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
-          backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                // Close the dialog and navigate to MainPage
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainPage(),
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 5, 34, 57),
-                foregroundColor: Colors.white,
-                side: const BorderSide(
-                  color: Color.fromARGB(255, 5, 34, 57),
-                  width: 2,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              child: const Text("متأكد", style: TextStyle(fontSize: 20)),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                // Close the dialog
-                Navigator.of(context).pop();
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 5, 34, 57),
-                side: const BorderSide(
-                  color: Color.fromARGB(255, 5, 34, 57),
-                  width: 2,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              child: const Text("الغاء", style: TextStyle(fontSize: 20)),
-            ),
-          ],
-        );
-      },
     );
   }
 }
