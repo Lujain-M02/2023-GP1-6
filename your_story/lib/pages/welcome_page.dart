@@ -33,7 +33,7 @@ class _WelcomePageState extends State<WelcomePage> {
               delay: const Duration(milliseconds: 500),
               child: Container(
                 padding: const EdgeInsets.only(
-                  left: 50,
+                  left: 20,
                   top: 30,
                   right: 20,
                   bottom: 40,
@@ -84,7 +84,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 1000),
                       delay: const Duration(milliseconds: 1000),
-                      from: 70,
+                      from: 50,
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(

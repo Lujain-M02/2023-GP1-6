@@ -40,12 +40,12 @@ class _MainPage extends State<MainPage> {
           SalomonBottomBarItem(
             icon: const Icon(Icons.library_books),
             title: const Text("القصص المنشرة"),
-            selectedColor: const Color.fromARGB(255, 27, 6, 160),
+            selectedColor: const Color.fromARGB(255, 1, 16, 87),
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.more_vert_sharp),
             title: const Text("المزيد"),
-            selectedColor: const Color.fromARGB(255, 37, 54, 138),
+            selectedColor: const Color.fromARGB(255, 1, 16, 87),
           ),
         ],
       ),
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/background1.png"),
+          image: AssetImage("assets/back1.png"),
           fit: BoxFit.cover,
         ),
       ),
