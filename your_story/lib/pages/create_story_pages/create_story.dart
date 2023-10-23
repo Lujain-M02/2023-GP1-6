@@ -150,64 +150,94 @@ class _CreateStory extends State<CreateStory> {
                       }
                     : null,
               ),
-              IconButton(
-                iconSize: 40,
-                color: const Color.fromARGB(255, 9, 37, 59),
-                icon: const Icon(Icons.arrow_forward),
-                onPressed: _activeStepIndex != 2
-                    ? () {
-                        setState(
-                          () {
-                            if (_activeStepIndex == 0) {
-                              if (storyTitel.text == "") {
-                                Alert.show(context,
-                                    "الرجاء إدخال العنوان" // Customize the button text color
-                                    );
-                              } else if (!RegExp(
-                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                  .hasMatch(storyTitel.text)) {
-                                Alert.show(context,
-                                    "يجب أن يكون العنوان بالعربية" // Customize the button text color
-                                    );
-                              } else {
-                                // Check if it isn't the last step
-                                setState(
-                                  () {
-                                    if (_activeStepIndex <
-                                        stepList().length - 1) {
-                                      _activeStepIndex += 1;
-                                    }
-                                  },
-                                );
+              if (_activeStepIndex == stepList().length - 1)
+                Container(
+                  margin: const EdgeInsets.all(3),
+                  child: OutlinedButton(
+                    onPressed: () {
+//                       Navigator.push(
+//   context,
+//   MaterialPageRoute(
+//     builder: (context) => page_name(
+//       storyTitle: storyTitel.text,
+//       storyContent: storyContent.text,
+//     ),
+//   ),
+// );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 5, 34, 57),
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(
+                        color: Color.fromARGB(255, 5, 34, 57),
+                        width: 2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: const Text("الاستمرار لمعالجة القصة"),
+                  ),
+                )
+              else
+                IconButton(
+                  iconSize: 40,
+                  color: const Color.fromARGB(255, 9, 37, 59),
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: _activeStepIndex != 2
+                      ? () {
+                          setState(
+                            () {
+                              if (_activeStepIndex == 0) {
+                                if (storyTitel.text == "") {
+                                  Alert.show(context,
+                                      "الرجاء إدخال العنوان" // Customize the button text color
+                                      );
+                                } else if (!RegExp(
+                                        r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                    .hasMatch(storyTitel.text)) {
+                                  Alert.show(context,
+                                      "يجب أن يكون العنوان بالعربية" // Customize the button text color
+                                      );
+                                } else {
+                                  // Check if it isn't the last step
+                                  setState(
+                                    () {
+                                      if (_activeStepIndex <
+                                          stepList().length - 1) {
+                                        _activeStepIndex += 1;
+                                      }
+                                    },
+                                  );
+                                }
+                              } else if (_activeStepIndex == 1) {
+                                if (storyContent.text == "") {
+                                  Alert.show(context,
+                                      "الرجاء إدخال القصة" // Customize the button text color
+                                      );
+                                } else if (!RegExp(
+                                        r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                    .hasMatch(storyContent.text)) {
+                                  Alert.show(context,
+                                      "يجب أن تكون القصة بالعربية" // Customize the button text color
+                                      );
+                                } else {
+                                  // Check if it isn't the last step
+                                  setState(
+                                    () {
+                                      if (_activeStepIndex <
+                                          stepList().length - 1) {
+                                        _activeStepIndex += 1;
+                                      }
+                                    },
+                                  );
+                                }
                               }
-                            } else if (_activeStepIndex == 1) {
-                              if (storyContent.text == "") {
-                                Alert.show(context,
-                                    "الرجاء إدخال القصة" // Customize the button text color
-                                    );
-                              } else if (!RegExp(
-                                      r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                  .hasMatch(storyContent.text)) {
-                                Alert.show(context,
-                                    "يجب أن تكون القصة بالعربية" // Customize the button text color
-                                    );
-                              } else {
-                                // Check if it isn't the last step
-                                setState(
-                                  () {
-                                    if (_activeStepIndex <
-                                        stepList().length - 1) {
-                                      _activeStepIndex += 1;
-                                    }
-                                  },
-                                );
-                              }
-                            }
-                          },
-                        );
-                      }
-                    : null,
-              ),
+                            },
+                          );
+                        }
+                      : null,
+                ),
             ],
           )),
     );
