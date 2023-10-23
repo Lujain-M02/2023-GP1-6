@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 
-
+//this class shows a message with two buttons متأكد و الغاء
 class ConfirmationDialog {
-  static void show(BuildContext context, String alertMessage,  Function onConfirm) {
+  static void show(
+      BuildContext context, String alertMessage, Function onConfirm) {
     showDialog(
       context: context,
       builder: (context) {
@@ -16,7 +16,7 @@ class ConfirmationDialog {
           actions: [
             OutlinedButton(
               onPressed: () {
-                onConfirm();//this function received as class parameter
+                onConfirm(); //this function received as class parameter
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 5, 34, 57),
@@ -49,6 +49,47 @@ class ConfirmationDialog {
               child: const Text("الغاء", style: TextStyle(fontSize: 20)),
             ),
           ],
+        );
+      },
+    );
+  }
+}
+
+//this class shows a message with only one button "حسنا"
+class Alert {
+  static void show(BuildContext context, String content) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(content),
+                const SizedBox(height: 20), // Adjust as needed for spacing
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(
+                        255, 5, 34, 57), // Button background color
+                  ),
+                  child: const Text(
+                    "حسنا",
+                    style: TextStyle(
+                      color: Colors.white, // Button text color
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
