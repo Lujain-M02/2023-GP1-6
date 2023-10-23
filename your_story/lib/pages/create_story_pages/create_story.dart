@@ -193,16 +193,6 @@ class _CreateStory extends State<CreateStory> {
                                 );
                               }
                             }
-                            //  else {
-                            //   // Check if it isn't the last step
-                            //   setState(
-                            //     () {
-                            //       if (_activeStepIndex < stepList().length - 1) {
-                            //         _activeStepIndex += 1;
-                            //       }
-                            //     },
-                            //   );
-                            // }
                           },
                         );
                       }
@@ -214,63 +204,66 @@ class _CreateStory extends State<CreateStory> {
   }
 }
 
+
 class RoundedAlertDialog {
   static void show(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
           title: const Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
-          backgroundColor: const Color.fromARGB(255, 232, 242, 255),
+          backgroundColor: const Color.fromARGB(201, 232, 242, 255),
           actions: [
-            _roundedButton(
-                "متأكد", Colors.white, const Color.fromARGB(255, 5, 34, 57),
-                () {
-              // Close the dialog and navigate to MainPage
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainPage(),
+            OutlinedButton(
+              onPressed: () {
+                // Close the dialog and navigate to MainPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 5, 34, 57),
+                foregroundColor: Colors.white, 
+                side: 
+                const BorderSide(
+                  color: Color.fromARGB(255, 5, 34, 57),
+                  width: 2,
                 ),
-              );
-            }),
-            _roundedButton("الغاء", const Color.fromARGB(255, 5, 34, 57),
-                const Color.fromARGB(255, 232, 242, 255), () {
-              // Close the dialog
-              Navigator.of(context).pop();
-            }),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+              child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color.fromARGB(255, 5, 34, 57), side: const BorderSide(
+                  color: Color.fromARGB(255, 5, 34, 57),
+                  width: 2,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+              child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+            ),
           ],
         );
       },
     );
   }
-
-  static Widget _roundedButton(
-    String text,
-    Color textColor,
-    Color backgroundColor,
-    void Function() onPressed,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-            15.0), // Adjust the value to control the roundness
-        color: backgroundColor,
-        border: Border.all(
-          color: const Color.fromARGB(255, 5, 34, 57),
-          width: 2,
-        ),
-      ),
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(color: textColor, fontSize: 20),
-        ),
-      ),
-    );
-  }
 }
+
 
 class WarningDialog {
   static void show(BuildContext context, String content) {
@@ -279,7 +272,10 @@ class WarningDialog {
       builder: (context) {
         return Center(
           child: AlertDialog(
-            backgroundColor: const Color.fromARGB(255, 232, 242, 255),
+            shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+            backgroundColor: const Color.fromARGB(201, 232, 242, 255),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
