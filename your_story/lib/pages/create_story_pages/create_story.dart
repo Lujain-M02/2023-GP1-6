@@ -204,7 +204,6 @@ class _CreateStory extends State<CreateStory> {
   }
 }
 
-
 class RoundedAlertDialog {
   static void show(BuildContext context) {
     showDialog(
@@ -212,8 +211,8 @@ class RoundedAlertDialog {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
           title: const Text("هل أنت متأكد؟ لن يتم حفظ انجازك"),
           backgroundColor: const Color.fromARGB(201, 232, 242, 255),
           actions: [
@@ -229,9 +228,8 @@ class RoundedAlertDialog {
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 5, 34, 57),
-                foregroundColor: Colors.white, 
-                side: 
-                const BorderSide(
+                foregroundColor: Colors.white,
+                side: const BorderSide(
                   color: Color.fromARGB(255, 5, 34, 57),
                   width: 2,
                 ),
@@ -247,7 +245,8 @@ class RoundedAlertDialog {
                 Navigator.of(context).pop();
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 5, 34, 57), side: const BorderSide(
+                foregroundColor: const Color.fromARGB(255, 5, 34, 57),
+                side: const BorderSide(
                   color: Color.fromARGB(255, 5, 34, 57),
                   width: 2,
                 ),
@@ -264,7 +263,6 @@ class RoundedAlertDialog {
   }
 }
 
-
 class WarningDialog {
   static void show(BuildContext context, String content) {
     showDialog(
@@ -273,8 +271,8 @@ class WarningDialog {
         return Center(
           child: AlertDialog(
             shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             backgroundColor: const Color.fromARGB(201, 232, 242, 255),
             content: Column(
               mainAxisSize: MainAxisSize.min,
