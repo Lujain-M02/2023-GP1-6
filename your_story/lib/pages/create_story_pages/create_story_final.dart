@@ -93,7 +93,8 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
         height: 20,
       ),
       Text(
-        "القصة : ${widget.content}"
+        "القصة : ${widget.content}",
+        style: TextStyle(fontSize: 20, color: your_story_Style.titleColor)
       )]);
    }
   }

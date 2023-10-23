@@ -88,31 +88,53 @@ class _StoryClausesState extends State<StoryClauses> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(),
-    body: Center(
-      child: Container(
-        child: isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.grey,
-              )
-            : Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: const Color.fromARGB(255, 238, 245, 255),
-                ),
-                child: Text(
-                  highestScoringSentences,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: your_story_Style.titleColor,
-                  ),
-                ),
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text(
+              "معالجة القصة",
+              style: TextStyle(
+                color: your_story_Style.titleColor,
               ),
+            ),
+          ),
+          backgroundColor: your_story_Style.backgroundColor,
+          automaticallyImplyLeading: isLoading ? false : true,
+          iconTheme: IconThemeData(color: your_story_Style.titleColor),
+        ),
+        body: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              image: const DecorationImage(
+                image: AssetImage('assets/background3.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    ),
+                  )
+                : Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        highestScoringSentences,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: your_story_Style.titleColor,
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ),
       ),
-    ),
-  );
-}
-    
+    );
   }
+}
