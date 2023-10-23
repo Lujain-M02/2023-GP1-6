@@ -69,7 +69,7 @@ class _CreateStory extends State<CreateStory> {
                       IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {
-                          RoundedAlertDialog.show(context);
+                          ConfirmationDialog.show(context);
                         },
                       ),
                       const Text(
@@ -150,13 +150,13 @@ class _CreateStory extends State<CreateStory> {
                           () {
                             if (_activeStepIndex == 0) {
                               if (storyTitel.text == "") {
-                                WarningDialog.show(context,
+                                Alert.show(context,
                                     "الرجاء إدخال العنوان" // Customize the button text color
                                     );
                               } else if (!RegExp(
                                       r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
                                   .hasMatch(storyTitel.text)) {
-                                WarningDialog.show(context,
+                                Alert.show(context,
                                     "يجب أن يكون العنوان بالعربية" // Customize the button text color
                                     );
                               } else {
@@ -172,13 +172,13 @@ class _CreateStory extends State<CreateStory> {
                               }
                             } else if (_activeStepIndex == 1) {
                               if (storyContent.text == "") {
-                                WarningDialog.show(context,
+                                Alert.show(context,
                                     "الرجاء إدخال القصة" // Customize the button text color
                                     );
                               } else if (!RegExp(
                                       r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
                                   .hasMatch(storyContent.text)) {
-                                WarningDialog.show(context,
+                                Alert.show(context,
                                     "يجب أن تكون القصة بالعربية" // Customize the button text color
                                     );
                               } else {
@@ -204,7 +204,7 @@ class _CreateStory extends State<CreateStory> {
   }
 }
 
-class RoundedAlertDialog {
+class ConfirmationDialog {
   static void show(BuildContext context) {
     showDialog(
       context: context,
@@ -263,7 +263,7 @@ class RoundedAlertDialog {
   }
 }
 
-class WarningDialog {
+class Alert {
   static void show(BuildContext context, String content) {
     showDialog(
       context: context,
