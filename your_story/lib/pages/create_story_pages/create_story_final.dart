@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -78,24 +77,23 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
         highestScoringSentences = "Error: ${response.statusCode}";
       });
     }
-     setState(() {
+    setState(() {
       isLoading = false; // Set loading to false when the request completes
     });
   }
 
-  
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          "العنوان : ${widget.title}",
-          style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
-        ),
-        const SizedBox(height: 20,),
-    Container(
-        width: 200, 
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      Text(
+        "العنوان : ${widget.title}",
+        style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      Container(
+        width: 200,
         child: ElevatedButton(
           onPressed: () {
             if (widget.content.isNotEmpty) {
@@ -103,8 +101,10 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent, // Set the button's background color to transparent
-            disabledBackgroundColor: Colors.transparent, // Set the button's text color to transparent
+            backgroundColor: Colors
+                .transparent, // Set the button's background color to transparent
+            disabledBackgroundColor: Colors
+                .transparent, // Set the button's text color to transparent
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -145,22 +145,28 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
           ),
         ),
       ),
-        const SizedBox(height: 20,),
-        if (isLoading) // Display the custom progress bar when loading is true
-           const CircularProgressIndicator(
-            color: Colors.grey,
-           ),
-        if (!isLoading) // Display the Text when loading is false
-         Container(
+      const SizedBox(
+        height: 20,
+      ),
+      if (isLoading) // Display the custom progress bar when loading is true
+        const CircularProgressIndicator(
+          color: Colors.grey,
+        ),
+      if (!isLoading) // Display the Text when loading is false
+        Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color:const Color.fromARGB( 255, 238, 245, 255,)),
-           child: Text(
+              borderRadius: BorderRadius.circular(12),
+              color: const Color.fromARGB(
+                255,
+                238,
+                245,
+                255,
+              )),
+          child: Text(
             highestScoringSentences,
             style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
-                 ),
-         ),
-      ]);
-      
+          ),
+        ),
+    ]);
   }
 }
