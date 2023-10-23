@@ -4,6 +4,7 @@ import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';
 import 'package:your_story/pages/create_story_pages/create_story_final.dart';
 import 'package:your_story/pages/alerts.dart';
+import 'story_clauses.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -155,15 +156,15 @@ class _CreateStory extends State<CreateStory> {
                   margin: const EdgeInsets.all(3),
                   child: OutlinedButton(
                     onPressed: () {
-//                       Navigator.push(
-//   context,
-//   MaterialPageRoute(
-//     builder: (context) => page_name(
-//       storyTitle: storyTitel.text,
-//       storyContent: storyContent.text,
-//     ),
-//   ),
-// );
+                      Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StoryClauses(
+                                storyTitle: storyTitel.text,
+                                storyContent: storyContent.text,
+                              ),
+                            ),
+                          );
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 5, 34, 57),

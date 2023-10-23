@@ -3,31 +3,36 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/style.dart';
 
-class CreateStoryFinal extends StatefulWidget {
-  const CreateStoryFinal({Key? key, required this.title, required this.content})
+class StoryClauses extends StatefulWidget {
+const StoryClauses({Key? key, required this.storyTitle, required this.storyContent})
       : super(key: key);
-  final String title, content;
-
+  final String storyTitle, storyContent;
   @override
-  _CreateStoryFinalState createState() => _CreateStoryFinalState();
+  _StoryClausesState createState() => _StoryClausesState();
 }
 
-class _CreateStoryFinalState extends State<CreateStoryFinal> {
+class _StoryClausesState extends State<StoryClauses> {
   String highestScoringSentences = "";
   bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    // Initiate your request here
+    processArabicText();
+  }
 
-  Future<void> processArabicText() async {
+   Future<void> processArabicText() async {
     // Create a JSON request payload
     setState(() {
       isLoading = true; // Set loading to true when the request starts
     });
     final Map<String, String> data = {
-      'arabic_text': widget.content,
+      'arabic_text': widget.storyContent,
     };
 
     final response = await http.post(
       Uri.parse(
-          "http://192.168.100.4:5000/process"), // Update with your Flask server URL
+          "http://192.168.100.161:5000/process"), // Update with your Flask server URL
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -83,17 +88,31 @@ class _CreateStoryFinalState extends State<CreateStoryFinal> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-      Text(
-        "العنوان : ${widget.title}",
-        style: TextStyle(fontSize: 20, color: your_story_Style.titleColor),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(),
+    body: Center(
+      child: Container(
+        child: isLoading
+            ? const CircularProgressIndicator(
+                color: Colors.grey,
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color.fromARGB(255, 238, 245, 255),
+                ),
+                child: Text(
+                  highestScoringSentences,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: your_story_Style.titleColor,
+                  ),
+                ),
+              ),
       ),
-      const SizedBox(
-        height: 20,
-      ),
-      Text(
-        "القصة : ${widget.content}"
-      )]);
-   }
+    ),
+  );
+}
+    
   }
