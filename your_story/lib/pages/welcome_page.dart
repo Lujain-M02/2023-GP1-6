@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/style.dart';
-import 'create_story_pages/create_story.dart';
+//import 'create_story_pages/create_story.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -89,7 +90,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => MainPage()),
+                              MaterialPageRoute(builder: (_) => const MainPage()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -119,109 +120,109 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 }
 
-class MainPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-/*
-      appBar: AppBar(
-        title: const Text(''),
-      ),*/
+// class MainPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+// /*
+//       appBar: AppBar(
+//         title: const Text(''),
+//       ),*/
 
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/background1.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              GradientButton(
-                iconData: Icons.add,
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => const CreateStory()),
-                  );
-                },
-                text: 'ابدأ بكتابة قصتك',
-              ),
-              const SizedBox(height: 60),
-              GradientButton(
-                iconData: Icons.share, //
-                onPressed: () {},
-                text: 'القصص المنشورة',
-              ),
-              const SizedBox(height: 60),
-              GradientButton(
-                iconData: Icons.edit, //
-                onPressed: () {},
-                text: '       مسودّة       ',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//       body: Container(
+//         decoration: const BoxDecoration(
+//           image: DecorationImage(
+//             image: AssetImage("assets/background1.png"),
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         child: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               GradientButton(
+//                 iconData: Icons.add,
+//                 onPressed: () {
+//                   Navigator.of(context).pushReplacement(
+//                     MaterialPageRoute(builder: (_) => const CreateStory()),
+//                   );
+//                 },
+//                 text: 'ابدأ بكتابة قصتك',
+//               ),
+//               const SizedBox(height: 60),
+//               GradientButton(
+//                 iconData: Icons.share, //
+//                 onPressed: () {},
+//                 text: 'القصص المنشورة',
+//               ),
+//               const SizedBox(height: 60),
+//               GradientButton(
+//                 iconData: Icons.edit, //
+//                 onPressed: () {},
+//                 text: '       مسودّة       ',
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class GradientButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String text;
-  final IconData iconData; //
+// class GradientButton extends StatelessWidget {
+//   final VoidCallback onPressed;
+//   final String text;
+//   final IconData iconData; //
 
-  GradientButton({
-    required this.onPressed,
-    required this.text,
-    required this.iconData, //
-  });
+//   GradientButton({
+//     required this.onPressed,
+//     required this.text,
+//     required this.iconData, //
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient:const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 224, 224, 243),
-            Color.fromARGB(184, 4, 63, 190),
-          ],
-          begin: Alignment.center,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-            primary: Colors
-                .transparent, // Set the button background color to transparent
-            onPrimary: Colors.white, // Text color
-            shadowColor: Colors.lightBlueAccent, // Shadow color
-            elevation: 10, // Shadow elevation
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            //padding: const EdgeInsets.all(5),
-            padding: const EdgeInsets.all(15.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(iconData, color: Colors.white), // Display the icon
-            const SizedBox(width: 15),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         gradient:const LinearGradient(
+//           colors: [
+//             Color.fromARGB(255, 224, 224, 243),
+//             Color.fromARGB(184, 4, 63, 190),
+//           ],
+//           begin: Alignment.center,
+//           end: Alignment.centerRight,
+//         ),
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//       child: ElevatedButton(
+//         onPressed: onPressed,
+//         style: ElevatedButton.styleFrom(
+//             primary: Colors
+//                 .transparent, // Set the button background color to transparent
+//             onPrimary: Colors.white, // Text color
+//             shadowColor: Colors.lightBlueAccent, // Shadow color
+//             elevation: 10, // Shadow elevation
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(30),
+//             ),
+//             //padding: const EdgeInsets.all(5),
+//             padding: const EdgeInsets.all(15.0)),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(iconData, color: Colors.white), // Display the icon
+//             const SizedBox(width: 15),
 
-            Text(
-              text,
-              style: const TextStyle(
-                fontSize: 30,
-                color: Color.fromARGB(255, 247, 246, 246),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//             Text(
+//               text,
+//               style: const TextStyle(
+//                 fontSize: 30,
+//                 color: Color.fromARGB(255, 247, 246, 246),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
