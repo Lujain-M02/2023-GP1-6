@@ -61,7 +61,88 @@ class _MainPage extends State<MainPage> {
       return Container(color: Colors.white);
     } else if (currentIndex == 2) {
       // more Page 
-      return Container(color: Colors.white);
+     // return Container(color: Colors.white);
+     return Container(
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('المزيد'),
+              leading: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => {},
+              ),
+            ),
+            body: ListView(
+              children: <Widget>[
+                ListTile(
+                  leading:const Icon(Icons.account_box),
+                  title: const Text('معلومات الحساب'),
+                  onTap: () {
+                  //  Handle settings navigation
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('عن تطبيق قصـTech'),
+                  onTap: () {
+                    // Handle about us navigation
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AboutUsScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.mail),
+                  title: const Text('تواصل معنا'),
+                  onTap: () {
+                    // Handle contact us navigation
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ContactUsScreen()),
+                    );
+                  },
+                ),
+                  ListTile(
+                    leading: const Icon(Icons.insert_drive_file),
+                    title: const Text('الشروط والأحكام'),
+                    onTap: () {
+                       Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TermsScreen()),
+                    );
+                    },
+                ),
+                 ListTile(
+                  leading: const Icon(Icons.lock_open),
+                  title: const Text("سياية الخصوصية"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PolicyScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('تسجيل خروج'),
+                  onTap: () {
+                    // Handle sign out
+                    // Perform sign out logic here
+                    // For example, clear user session, show login screen, etc.
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
     }
     return Container();
   }
@@ -161,6 +242,91 @@ class GradientButton extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('معلومات الحساب'),
+        ),
+        body: const Center(
+          child: Text('معلومات الحساب'),
+        ),
+      ),
+    );
+  }
+}
+
+class AboutUsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title:const  Text('عن قصـTech'),
+        ),
+        body: const Center(
+          child: Text('عن تطبيق قصـTech'),
+        ),
+      ),
+    );
+  }
+}
+
+class ContactUsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('تواصل معنا'),
+        ),
+        body: const Center(
+          child: Text('تواصل معنا'),
+        ),
+      ),
+    );
+  }
+}
+
+class TermsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('الشروط والأحكام'),
+        ),
+        body: const Center(
+          child: Text('الشروط والأحكام'),
+        ),
+      ),
+    );
+  }
+}
+
+class PolicyScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("سياية الخصوصية"),
+        ),
+        body: const Center(
+          child: Text("سياية الخصوصية"),
         ),
       ),
     );
