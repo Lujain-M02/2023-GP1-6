@@ -57,10 +57,10 @@ class _MainPage extends State<MainPage> {
       // Home Page
       return const HomePage();
     } else if (currentIndex == 1) {
-      // Search Page (White Page)
+      // stories Page 
       return Container(color: Colors.white);
     } else if (currentIndex == 2) {
-      // Profile Page (White Page)
+      // more Page 
       return Container(color: Colors.white);
     }
     return Container();
@@ -111,14 +111,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-// class CreateStory extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     // Replace with the content of your CreateStory page
-//     return Container(color: Colors.white);
-//   }
-// }
 
 class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
