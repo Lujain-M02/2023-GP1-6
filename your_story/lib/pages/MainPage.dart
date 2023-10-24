@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
+import 'package:your_story/pages/style.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -49,7 +50,8 @@ class _MainPage extends State<MainPage> {
           ),
         ],
       ),
-    ));
+    )
+  );
   }
 
   Widget _buildBody(int currentIndex) {
@@ -63,78 +65,112 @@ class _MainPage extends State<MainPage> {
       // more Page 
      // return Container(color: Colors.white);
      return Container(
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('المزيد'),
-              leading: IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => {},
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Color.fromARGB(255, 238, 245, 255),
+                title: const Text('المزيد'),
+                titleTextStyle: TextStyle(
+                  color: your_story_Style.titleColor,
+                  fontSize : 24,
+                ),
+                leading: IconButton(
+                  icon: Icon(Icons.menu,
+                  color: your_story_Style.titleColor,
+                  ),
+                  onPressed: () => {},
+                ),
               ),
-            ),
-            body: ListView(
+              body:  ListView(
               children: <Widget>[
-                ListTile(
-                  leading:const Icon(Icons.account_box),
-                  title: const Text('معلومات الحساب'),
-                  onTap: () {
-                  //  Handle settings navigation
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.info),
-                  title: const Text('عن تطبيق قصـTech'),
-                  onTap: () {
-                    // Handle about us navigation
-                   _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.mail),
-                  title: const Text('تواصل معنا'),
-                  onTap: () {
-                    // Handle contact us navigation
-                   _showCustomModalBottomSheet(context, "تواصل معنا");
-                  },
-                ),
-                  ListTile(
-                    leading: const Icon(Icons.insert_drive_file),
-                    title: const Text('الشروط والأحكام'),
-                    onTap: () {
-                      _showCustomModalBottomSheet(context, "الشروط والأحكام");
-                    },
-                ),
-                 ListTile(
-                  leading: const Icon(Icons.lock_open),
-                  title: const Text("سياية الخصوصية"),
-                  onTap: () {
-                    _showCustomModalBottomSheet(context, "سياسة الخصوصية");
-                  },
-                ),
-                 ListTile(
-                   leading: const Icon(Icons.logout),
-                   title: const Text('تسجيل خروج'),
-                  onTap: () {
-                    // Handle sign out
-                    // Perform sign out logic here
-                    // For example, clear user session, show login screen, etc.
-                  },
-                ),
+              customListTile(
+                Icons.account_box,
+                'معلومات الحساب',
+                () {
+                  // Handle the tap
+                  // For example, navigate to the settings screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
+              ),
+              customListTile(
+                Icons.info,
+                'عن تطبيق قصتك',
+                () {
+                  // Handle the tap
+                  // For example, show a custom modal bottom sheet
+                  _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
+                },
+              ),
+              customListTile(
+                Icons.mail,
+                'تواصل معنا',
+                () {
+                  // Handle the tap
+                  // For example, show a custom modal bottom sheet
+                  _showCustomModalBottomSheet(context, 'تواصل معنا');
+                },
+              ),
+              customListTile(
+                Icons.insert_drive_file,
+                'الشروط والأحكام',
+                () {
+                  // Handle the tap
+                  // For example, show a custom modal bottom sheet
+                  _showCustomModalBottomSheet(context, 'الشروط والأحكام');
+                },
+              ),
+              customListTile(
+                Icons.lock_open,
+                'سياية الخصوصية',
+                () {
+                  // Handle the tap
+                  // For example, show a custom modal bottom sheet
+                  _showCustomModalBottomSheet(context, 'سياسة الخصوصية');
+                },
+              ),
+              customListTile(
+                Icons.logout,
+                'تسجيل خروج',
+                () {
+                  // Handle the sign-out logic
+                },
+              ),
             ],
-            ),
           ),
         ),
-      );
-
-    }
+      ),
+    );
+  }
     return Container();
   }
 }
+
+  Widget customListTile(
+    IconData icon,
+    String title,
+    VoidCallback onTap,
+  ) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          leading: Icon(icon, color: your_story_Style.titleColor), // Customize the icon color
+          title: Text(
+            title,
+            style: TextStyle(
+              color: your_story_Style.titleColor, // Customize the title color
+              fontSize: 20,
+            ),
+          ),
+          onTap: onTap,
+        ),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -254,20 +290,26 @@ class SettingsScreen extends StatelessWidget {
 }
 
 
-void _showCustomModalBottomSheet(BuildContext context, String text) {
+ void _showCustomModalBottomSheet(BuildContext context, String text) {
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true, // Set to true to allow full-screen height
-
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)), // Adjust the radius as needed
+    ),
     builder: (BuildContext context) {
       return FractionallySizedBox(
-        heightFactor: 0.8, // Set the height as a fraction of the screen's height (0.6 = 60%)
+        heightFactor: 0.8,
         child: Container(
-          // Your content for the custom modal bottom sheet goes here
           padding: const EdgeInsets.all(16),
-          child:  Column(
+          child: Column(
             children: <Widget>[
-              Text(text),
+              Text(
+              text, 
+              style:TextStyle(
+                color: your_story_Style.textColor,
+                fontSize: 20
+              ) ,),
               // Add more widgets as needed
             ],
           ),
@@ -276,4 +318,6 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
     },
   );
 }
+
+
 
