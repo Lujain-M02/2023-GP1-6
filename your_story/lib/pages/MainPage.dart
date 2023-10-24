@@ -91,10 +91,7 @@ class _MainPage extends State<MainPage> {
                   title: const Text('عن تطبيق قصـTech'),
                   onTap: () {
                     // Handle about us navigation
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AboutUsScreen()),
-                    );
+                   _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
                   },
                 ),
                 ListTile(
@@ -102,42 +99,33 @@ class _MainPage extends State<MainPage> {
                   title: const Text('تواصل معنا'),
                   onTap: () {
                     // Handle contact us navigation
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ContactUsScreen()),
-                    );
+                   _showCustomModalBottomSheet(context, "تواصل معنا");
                   },
                 ),
                   ListTile(
                     leading: const Icon(Icons.insert_drive_file),
                     title: const Text('الشروط والأحكام'),
                     onTap: () {
-                       Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TermsScreen()),
-                    );
+                      _showCustomModalBottomSheet(context, "الشروط والأحكام");
                     },
                 ),
                  ListTile(
                   leading: const Icon(Icons.lock_open),
                   title: const Text("سياية الخصوصية"),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PolicyScreen()),
-                    );
+                    _showCustomModalBottomSheet(context, "سياسة الخصوصية");
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
-                  title: const Text('تسجيل خروج'),
+                 ListTile(
+                   leading: const Icon(Icons.logout),
+                   title: const Text('تسجيل خروج'),
                   onTap: () {
                     // Handle sign out
                     // Perform sign out logic here
                     // For example, clear user session, show login screen, etc.
                   },
                 ),
-              ],
+            ],
             ),
           ),
         ),
@@ -265,70 +253,27 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class AboutUsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title:const  Text('عن قصـTech'),
+
+void _showCustomModalBottomSheet(BuildContext context, String text) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true, // Set to true to allow full-screen height
+
+    builder: (BuildContext context) {
+      return FractionallySizedBox(
+        heightFactor: 0.8, // Set the height as a fraction of the screen's height (0.6 = 60%)
+        child: Container(
+          // Your content for the custom modal bottom sheet goes here
+          padding: const EdgeInsets.all(16),
+          child:  Column(
+            children: <Widget>[
+              Text(text),
+              // Add more widgets as needed
+            ],
+          ),
         ),
-        body: const Center(
-          child: Text('عن تطبيق قصـTech'),
-        ),
-      ),
-    );
-  }
+      );
+    },
+  );
 }
 
-class ContactUsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('تواصل معنا'),
-        ),
-        body: const Center(
-          child: Text('تواصل معنا'),
-        ),
-      ),
-    );
-  }
-}
-
-class TermsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('الشروط والأحكام'),
-        ),
-        body: const Center(
-          child: Text('الشروط والأحكام'),
-        ),
-      ),
-    );
-  }
-}
-
-class PolicyScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("سياية الخصوصية"),
-        ),
-        body: const Center(
-          child: Text("سياية الخصوصية"),
-        ),
-      ),
-    );
-  }
-}
