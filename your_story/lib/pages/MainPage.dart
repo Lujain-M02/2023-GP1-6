@@ -62,89 +62,85 @@ class _MainPage extends State<MainPage> {
       // stories Page 
       return Container(color: Colors.white);
     } else if (currentIndex == 2) {
-      // more Page 
-     // return Container(color: Colors.white);
-     return Container(
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Scaffold(
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Color.fromARGB(255, 238, 245, 255),
+                backgroundColor: const Color.fromARGB(255, 238, 245, 255),
                 title: const Text('المزيد'),
                 titleTextStyle: TextStyle(
                   color: your_story_Style.titleColor,
-                  fontSize : 24,
+                  fontSize: 24,
                 ),
                 leading: IconButton(
-                  icon: Icon(Icons.menu,
-                  color: your_story_Style.titleColor,
-                  ),
+                  icon: Icon(Icons.menu, color: your_story_Style.titleColor),
                   onPressed: () => {},
                 ),
               ),
-              body:  ListView(
-              children: <Widget>[
-              customListTile(
-                Icons.account_box,
-                'معلومات الحساب',
-                () {
-                  // Handle the tap
-                  // For example, navigate to the settings screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()),
-                  );
-                },
+              body: Stack(
+                children:[
+                    Positioned.fill(
+                      child: Image.asset('assets/background3.png',
+                      fit: BoxFit.cover,),
+                    ),
+                  Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        customListTile(
+                          Icons.account_box,
+                          'معلومات الحساب',
+                          () {
+                            // Handle the tap
+                            // For example, navigate to the settings screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SettingsScreen()),
+                            );
+                          },
+                        ),
+                            customListTile(
+                              Icons.info,
+                              'عن تطبيق قصتك',
+                              () {
+                                _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
+                              },
+                            ),
+                            customListTile(
+                              Icons.mail,
+                              'تواصل معنا',
+                              () {
+                                _showCustomModalBottomSheet(context, 'تواصل معنا');
+                              },
+                            ),
+                            customListTile(
+                              Icons.insert_drive_file,
+                              'الشروط والأحكام',
+                              () {
+                                _showCustomModalBottomSheet(context, 'الشروط والأحكام');
+                              },
+                            ),
+                            customListTile(
+                              Icons.lock_open,
+                              'سياية الخصوصية',
+                              () {
+                                _showCustomModalBottomSheet(context, 'سياسة الخصوصية');
+                              },
+                            ),
+                            customListTile(
+                              Icons.logout,
+                              'تسجيل خروج',
+                              () {
+                                // Handle the sign-out logic
+                              },
+                            ),
+                          ],
+                        ),
+                    ],
+                ),
               ),
-              customListTile(
-                Icons.info,
-                'عن تطبيق قصتك',
-                () {
-                  // Handle the tap
-                  // For example, show a custom modal bottom sheet
-                  _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
-                },
-              ),
-              customListTile(
-                Icons.mail,
-                'تواصل معنا',
-                () {
-                  // Handle the tap
-                  // For example, show a custom modal bottom sheet
-                  _showCustomModalBottomSheet(context, 'تواصل معنا');
-                },
-              ),
-              customListTile(
-                Icons.insert_drive_file,
-                'الشروط والأحكام',
-                () {
-                  // Handle the tap
-                  // For example, show a custom modal bottom sheet
-                  _showCustomModalBottomSheet(context, 'الشروط والأحكام');
-                },
-              ),
-              customListTile(
-                Icons.lock_open,
-                'سياية الخصوصية',
-                () {
-                  // Handle the tap
-                  // For example, show a custom modal bottom sheet
-                  _showCustomModalBottomSheet(context, 'سياسة الخصوصية');
-                },
-              ),
-              customListTile(
-                Icons.logout,
-                'تسجيل خروج',
-                () {
-                  // Handle the sign-out logic
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+            );
+          
+        }
     return Container();
   }
 }
