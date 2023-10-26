@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/style.dart';
+import 'package:your_story/pages/create_account.dart';
 //import 'create_story_pages/create_story.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -57,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            ' أهلا بك يا صانع القصص      ',
+                            'أهلا بك يا صانع القصص',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               decorationThickness: BorderSide.strokeAlignCenter,
@@ -87,25 +88,50 @@ class _WelcomePageState extends State<WelcomePage> {
                       from: 50,
                       child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const MainPage()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: your_story_Style.buttonColor,
-                            textStyle: const TextStyle(fontSize: 20),
-                            elevation: 10,
-                            shadowColor: your_story_Style.buttonShadowColor,
-                          ),
-                          child: const Text(
-                            '!اضغط للبدأ بصنع قصتك الآن',
-                            style: TextStyle(
-                              color:
-                                  Color.fromARGB(255, 1, 16, 87), // Text color
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => const MainPage()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: your_story_Style.buttonColor,
+                                textStyle: const TextStyle(fontSize: 20),
+                                elevation: 10,
+                                shadowColor: your_story_Style.buttonShadowColor,
+                              ),
+                              child: const Text(
+                                'سجل دخولك',
+                                style: TextStyle(
+                                  color:
+                                      Color.fromARGB(255, 1, 16, 87), // Text color
+                                ),
+                              ),
                             ),
-                          ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => create_account()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: your_story_Style.buttonColor,
+                                textStyle: const TextStyle(fontSize: 20),
+                                elevation: 10,
+                                shadowColor: your_story_Style.buttonShadowColor,
+                              ),
+                              child: const Text(
+                                'اصنع حسابك',
+                                style: TextStyle(
+                                  color:
+                                      Color.fromARGB(255, 1, 16, 87), // Text color
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     )
