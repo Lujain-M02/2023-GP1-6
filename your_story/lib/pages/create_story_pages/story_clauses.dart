@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/style.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoryClauses extends StatefulWidget {
-const StoryClauses({Key? key, required this.storyTitle, required this.storyContent})
+  const StoryClauses(
+      {Key? key, required this.storyTitle, required this.storyContent})
       : super(key: key);
   final String storyTitle, storyContent;
   @override
@@ -21,7 +24,7 @@ class _StoryClausesState extends State<StoryClauses> {
     processArabicText();
   }
 
-   Future<void> processArabicText() async {
+  Future<void> processArabicText() async {
     // Create a JSON request payload
     setState(() {
       isLoading = true; // Set loading to true when the request starts
@@ -32,7 +35,7 @@ class _StoryClausesState extends State<StoryClauses> {
 
     final response = await http.post(
       Uri.parse(
-          "http://192.168.100.161:5000/process"), // Update with your Flask server URL
+          "http://192.168.100.244:5000/process"), // Update with your Flask server URL
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -49,6 +52,9 @@ class _StoryClausesState extends State<StoryClauses> {
       setState(() {
         highestScoringSentences = highestScoringSentencesList.join('\n');
       });
+
+      // add Story to Firebase Firestore
+      addStory(widget.storyTitle, widget.storyContent);
 
       //Translate the highestScoringSentences
       //check that highestScoringSentences is Not Empty
@@ -85,6 +91,18 @@ class _StoryClausesState extends State<StoryClauses> {
     setState(() {
       isLoading = false; // Set loading to false when the request completes
     });
+  }
+
+  // Firebase Firestore service to add Story
+  Future<void> addStory(String title, String content) async {
+    try {
+      await FirebaseFirestore.instance.collection('Story').add({
+        'title': title,
+        'content': content,
+      });
+    } catch (e) {
+      print('Error adding a Story to Firestore: $e');
+    }
   }
 
   @override
