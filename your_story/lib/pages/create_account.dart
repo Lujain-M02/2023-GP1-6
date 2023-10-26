@@ -20,7 +20,7 @@ class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  State<CreateAccount> createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<CreateAccount> {
