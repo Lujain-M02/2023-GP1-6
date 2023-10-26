@@ -114,7 +114,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => create_account()),
+                                  MaterialPageRoute(builder: (_) => const CreateAccount()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(

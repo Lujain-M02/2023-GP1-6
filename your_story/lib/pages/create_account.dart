@@ -16,12 +16,14 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
-class create_account extends StatefulWidget {
+class CreateAccount extends StatefulWidget {
+  const CreateAccount({Key? key}) : super(key: key);
+
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
-class _AccountPageState extends State<create_account> {
+class _AccountPageState extends State<CreateAccount> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();

@@ -11,15 +11,15 @@ class CreateStoryFinal extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "العنوان : ${title}",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            "العنوان : $title",
+            style: const TextStyle(fontSize: 20, color: Colors.black),
           ),
           const SizedBox(
             height: 7,
           ),
           Text(
-            "${content}",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            content,
+            style: const TextStyle(fontSize: 20, color: Colors.black),
           ),
         ],
       ),

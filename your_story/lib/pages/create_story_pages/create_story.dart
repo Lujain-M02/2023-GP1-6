@@ -77,7 +77,7 @@ class _CreateStory extends State<CreateStory> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MainPage(),
+                                builder: (context) => const MainPage(),
                               ),
                             );
                           });
