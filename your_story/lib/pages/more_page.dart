@@ -11,11 +11,11 @@ class MorePage extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 238, 245, 255),
           title: const Text('المزيد'),
           titleTextStyle: TextStyle(
-            color: your_story_Style.titleColor,
+            color: YourStoryStyle.titleColor,
             fontSize: 24,
           ),
           leading: IconButton(
-            icon: Icon(Icons.menu, color: your_story_Style.titleColor),
+            icon: Icon(Icons.menu, color: YourStoryStyle.titleColor),
             onPressed: () => {},
           ),
         ),
@@ -91,7 +91,7 @@ class MorePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(icon, color: your_story_Style.titleColor), // Customize the icon color
+          leading: Icon(icon, color: YourStoryStyle.titleColor), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(
@@ -141,7 +141,7 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
               Text(
                 text,
                 style: TextStyle(
-                  color: your_story_Style.textColor,
+                  color: YourStoryStyle.textColor,
                   fontSize: 20,
                 ),
               ),

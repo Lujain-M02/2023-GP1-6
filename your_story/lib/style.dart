@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class your_story_Style {
+class YourStoryStyle {
   static Color backgroundColor = const Color.fromARGB(
       255, 238, 245, 255); // Replace with your desired background color
   static Color buttonColor = const Color.fromARGB(

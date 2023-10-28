@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/signup/signup.dart';
@@ -17,7 +17,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: your_story_Style.backgroundColor,
+      backgroundColor: YourStoryStyle.backgroundColor,
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -99,10 +99,10 @@ class _WelcomePageState extends State<WelcomePage> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: your_story_Style.buttonColor,
+                                backgroundColor: YourStoryStyle.buttonColor,
                                 textStyle: const TextStyle(fontSize: 20),
                                 elevation: 10,
-                                shadowColor: your_story_Style.buttonShadowColor,
+                                shadowColor: YourStoryStyle.buttonShadowColor,
                               ),
                               child: const Text(
                                 'سجل دخولك',
@@ -119,10 +119,10 @@ class _WelcomePageState extends State<WelcomePage> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: your_story_Style.buttonColor,
+                                backgroundColor: YourStoryStyle.buttonColor,
                                 textStyle: const TextStyle(fontSize: 20),
                                 elevation: 10,
-                                shadowColor: your_story_Style.buttonShadowColor,
+                                shadowColor: YourStoryStyle.buttonShadowColor,
                               ),
                               child: const Text(
                                 'تسجيل حساب',

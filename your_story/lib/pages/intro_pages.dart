@@ -20,7 +20,7 @@ class MyHomePage extends StatelessWidget {
         titleTextStyle: TextStyle(
           fontSize: 27.0,
           fontWeight: FontWeight.bold,
-          color: your_story_Style.titleColor,
+          color: YourStoryStyle.titleColor,
         ),
         bodyTextStyle: TextStyle(
           fontSize: 24.0,
@@ -38,7 +38,7 @@ class MyHomePage extends StatelessWidget {
         titleTextStyle: TextStyle(
           fontSize: 27.0,
           fontWeight: FontWeight.bold,
-          color: your_story_Style.titleColor,
+          color: YourStoryStyle.titleColor,
         ),
         bodyTextStyle: TextStyle(
           fontSize: 24.0,
@@ -78,19 +78,19 @@ class MyHomePage extends StatelessWidget {
             skip: Text(
               "تخطي",
               style: TextStyle(
-                color: your_story_Style.titleColor,
+                color: YourStoryStyle.titleColor,
                 fontSize: 23.0,
               ),
             ),
             next: Icon(
               Icons.arrow_forward,
-              color: your_story_Style.titleColor,
+              color: YourStoryStyle.titleColor,
             ),
             done: Text(
               "تم",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: your_story_Style.titleColor,
+                color: YourStoryStyle.titleColor,
                 fontSize: 23.0,
               ),
             ),
@@ -98,7 +98,7 @@ class MyHomePage extends StatelessWidget {
               size: Size(10.0, 10.0),
               color: Colors.grey,
               activeSize: Size(22.0, 10.0),
-              activeColor: your_story_Style.titleColor,
+              activeColor: YourStoryStyle.titleColor,
               activeShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),

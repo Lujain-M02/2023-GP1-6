@@ -115,11 +115,11 @@ class _StoryClausesState extends State<StoryClauses> {
             child: Text(
               "معالجة القصة",
               style: TextStyle(
-                color: your_story_Style.titleColor,
+                color: YourStoryStyle.titleColor,
               ),
             ),
           ),
-          backgroundColor: your_story_Style.backgroundColor,
+          backgroundColor: YourStoryStyle.backgroundColor,
         ),
         body: Center(
           child: Container(
@@ -143,7 +143,7 @@ class _StoryClausesState extends State<StoryClauses> {
                         highestScoringSentences,
                         style: TextStyle(
                           fontSize: 20,
-                          color: your_story_Style.titleColor,
+                          color: YourStoryStyle.titleColor,
                         ),
                       ),
                     ),

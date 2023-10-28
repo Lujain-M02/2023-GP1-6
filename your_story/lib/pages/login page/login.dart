@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/signup/signup.dart';
 
 class LoginPage extends StatefulWidget {
