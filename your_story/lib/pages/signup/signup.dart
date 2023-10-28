@@ -44,7 +44,7 @@ class _SignUpState extends State<SignUp> {
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
             key: _formKey,
             child: ListView(
               children: <Widget>[
@@ -61,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                 //   // },
                 // ),
                 TextFormField(
-                    //autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _fullNameController,
                     decoration: InputDecoration(
                       labelText: 'الاسم',
@@ -81,6 +81,7 @@ class _SignUpState extends State<SignUp> {
                       return null;
                     }),
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _emailController,
                   decoration: InputDecoration(
                       labelText: 'الايميل',
@@ -97,6 +98,7 @@ class _SignUpState extends State<SignUp> {
                   },
                 ),
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _passwordController1,
                   decoration: InputDecoration(
                     labelText: 'كلمة المرور',
@@ -116,14 +118,21 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   obscureText: isPasswordObscured1,
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter a password';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                          RegExp regex = RegExp(
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])'); //Min 1 uppercase, 1 lowercase and 1 numeric number
+                          if (value!.isEmpty || _passwordController1.text.trim() == "") {
+                            return "الحقل مطلوب";
+                          } else if (!regex.hasMatch(value)) {
+                            return"كلمة المرور يجب ان تحتوي على حرف كبير وصغير باللغة الانجليزية ورقم";
+                          } else if (value.length < 8) {
+                            return "كلمة المرور يجب أن تكون ثمانية خانات على الأقل";
+                          }
+                          return null;
+                        },
                 ),
                 TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _passwordController2,
                   decoration: InputDecoration(
                       labelText: 'ادخل كلمة المرور مرة اخرى',
@@ -143,12 +152,14 @@ class _SignUpState extends State<SignUp> {
                     ),
                       ),
                   obscureText: isPasswordObscured2,
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter a password';
-                  //   }
-                  //   return null;
-                  // },
+                  validator: (value) {
+                          if (value!.isEmpty || _passwordController2.text.trim() == "") {
+                            return "الحقل مطلوب";
+                          } else if (_passwordController2.text.trim() != _passwordController1.text.trim()) {
+                            return"يجب أن تكون كلمة المرور مطابقة";
+                          }
+                          return null;
+                        },
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
