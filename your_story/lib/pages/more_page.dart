@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/style.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MorePage extends StatelessWidget {
   @override
@@ -8,30 +9,31 @@ class MorePage extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 238, 245, 255),
+          backgroundColor: Colors.white,
+          // const Color.fromARGB(255, 238, 245, 255),
           title: const Text('المزيد'),
-          titleTextStyle: TextStyle(
-            color: YourStoryStyle.titleColor,
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
             fontSize: 24,
           ),
           leading: IconButton(
-            icon: Icon(Icons.menu, color: YourStoryStyle.titleColor),
+            icon: FaIcon(FontAwesomeIcons.bars , color: YourStoryStyle.titleColor),
             onPressed: () => {},
           ),
         ),
         body: Stack(
           children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/background3.png',
-                fit: BoxFit.cover,
-              ),
-            ),
+            // Positioned.fill(
+            //   child: Image.asset(
+            //     'assets/background3.png',
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
             Column(
               children: [
                 const SizedBox(height: 16),
                 customListTile(
-                  Icons.account_box,
+                  FontAwesomeIcons.user ,
                   'معلومات الحساب',
                   () {
                     Navigator.push(
@@ -41,35 +43,35 @@ class MorePage extends StatelessWidget {
                   },
                 ),
                 customListTile(
-                  Icons.info,
+                  FontAwesomeIcons.circleQuestion,
                   'عن تطبيق قصتك',
                   () {
                     _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
                   },
                 ),
                 customListTile(
-                  Icons.mail,
+                  FontAwesomeIcons.envelope,
                   'تواصل معنا',
                   () {
                     _showCustomModalBottomSheet(context, 'تواصل معنا');
                   },
                 ),
                 customListTile(
-                  Icons.insert_drive_file,
+                  FontAwesomeIcons.file,
                   'الشروط والأحكام',
                   () {
                     _showCustomModalBottomSheet(context, 'الشروط والأحكام');
                   },
                 ),
                 customListTile(
-                  Icons.lock_open,
+                  FontAwesomeIcons.penToSquare,
                   'سياية الخصوصية',
                   () {
                     _showCustomModalBottomSheet(context, 'سياسة الخصوصية');
                   },
                 ),
                 customListTile(
-                  Icons.logout,
+                  FontAwesomeIcons.arrowRightFromBracket,
                   'تسجيل خروج',
                   () {
                     // Handle the sign-out logic
@@ -91,7 +93,7 @@ class MorePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(icon, color: YourStoryStyle.titleColor), // Customize the icon color
+          leading: Icon(icon, color: Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(
@@ -140,8 +142,8 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
             children: <Widget>[
               Text(
                 text,
-                style: TextStyle(
-                  color: YourStoryStyle.textColor,
+                style: const TextStyle(
+                  color: Colors.black,
                   fontSize: 20,
                 ),
               ),

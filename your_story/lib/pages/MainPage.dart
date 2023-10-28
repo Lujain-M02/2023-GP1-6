@@ -25,7 +25,8 @@ class _MainPage extends State<MainPage> {
     
       body: _buildBody(_currentIndex),
       bottomNavigationBar: SalomonBottomBar(
-        backgroundColor: const Color.fromARGB(255, 238, 245, 255),
+        backgroundColor: Colors.white,
+        // const Color.fromARGB(255, 238, 245, 255),
         currentIndex: _currentIndex,
         margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         onTap: (index) {
