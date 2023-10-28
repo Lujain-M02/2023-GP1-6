@@ -2,8 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
-import 'package:your_story/pages/style.dart';
-import 'package:your_story/pages/create_account.dart';
+import 'package:your_story/style.dart';
+import 'package:your_story/pages/signup/signup.dart';
 //import 'create_story_pages/create_story.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -115,7 +115,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const CreateAccount()),
+                                  MaterialPageRoute(builder: (_) => const SignUp()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -125,7 +125,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                 shadowColor: your_story_Style.buttonShadowColor,
                               ),
                               child: const Text(
-                                'اصنع حسابك',
+                                'تسجيل حساب',
                                 style: TextStyle(
                                   color:
                                       Color.fromARGB(255, 1, 16, 87), // Text color

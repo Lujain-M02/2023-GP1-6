@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/pages/create_account.dart';
+import 'package:your_story/pages/signup/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextButton(
                       onPressed: (){
  Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) =>  CreateAccount()),
+                                  MaterialPageRoute(builder: (_) =>  SignUp()),
                                 );
                     }, child: Text("تسجيل "))
                   ],

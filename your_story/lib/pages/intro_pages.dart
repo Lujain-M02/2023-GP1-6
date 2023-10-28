@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:your_story/pages/style.dart';
+import 'package:your_story/style.dart';
 import 'package:your_story/pages/welcome_page.dart';
 
 class MyHomePage extends StatelessWidget {

@@ -17,14 +17,14 @@ import 'package:your_story/pages/login%20page/login.dart';
 //   }
 // }
 
-class CreateAccount extends StatefulWidget {
-  const CreateAccount({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  State<CreateAccount> createState() => _AccountPageState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _AccountPageState extends State<CreateAccount> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
