@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'error_message_holder.dart';
+
 
 class CreateStoryTitle extends StatelessWidget {
-  const CreateStoryTitle({Key? key, required this.titleController})
+  const CreateStoryTitle({Key? key, required this.titleController, required this.errorMessageHolder})
       : super(key: key);
 
   final TextEditingController titleController;
+  final ErrorMessageHolder errorMessageHolder;
 
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "الرجاء إدخال العنوان";
+      errorMessageHolder.errorMessage= "الرجاء إدخال العنوان";
     } else if (!RegExp(
             r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
         .hasMatch(value)) {
-      return "العنوان يجب أن يكون عنوان قصتك باللغة العربية فقط";
+      errorMessageHolder.errorMessage= "يجب أن يكون عنوان قصتك باللغة العربية فقط";
+    }else{
+      errorMessageHolder.errorMessage=null;
     }
-    return null;
+    return errorMessageHolder.errorMessage;
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:your_story/pages/create_story_pages/create_story_content.dart';
 import 'package:your_story/pages/create_story_pages/create_story_final.dart';
 import 'package:your_story/alerts.dart';
 import 'story_clauses.dart';
+import 'error_message_holder.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class CreateStory extends StatefulWidget {
 
 class _CreateStory extends State<CreateStory> {
   int _activeStepIndex = 0;
+  final ErrorMessageHolder errorMessageHolder = ErrorMessageHolder();
   TextEditingController storyTitel = TextEditingController();
   TextEditingController storyContent = TextEditingController();
 //this method to keep track the user steps
@@ -31,7 +33,8 @@ class _CreateStory extends State<CreateStory> {
         Step(
           title: const Text('أضف عنوانًا'),
           content: CreateStoryTitle(
-              titleController: storyTitel), //this is a method from another file
+              titleController: storyTitel,
+              errorMessageHolder: errorMessageHolder,), //this is a method from another file
           state: stepState(0),
           isActive: _activeStepIndex >= 0,
         ),
@@ -190,16 +193,25 @@ class _CreateStory extends State<CreateStory> {
                           setState(
                             () {
                               if (_activeStepIndex == 0) {
-                                if (storyTitel.text == "") {
-                                  Alert.show(context,
+                                if (storyTitel.text == ""){
+                                   Alert.show(context,
                                       "الرجاء إدخال العنوان" // Customize the button text color
                                       );
-                                } else if (!RegExp(
-                                        r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                    .hasMatch(storyTitel.text)) {
-                                  Alert.show(context,
-                                      "يجب أن يكون العنوان بالعربية" // Customize the button text color
-                                      );
+                                }else if(errorMessageHolder.errorMessage!=null){       
+                                Alert.show(context,
+                                      errorMessageHolder.errorMessage! // Customize the button text color
+                                       );
+                                // if (storyTitel.text == "") {
+                                //   print(errorMessageHolder.errorMessage);
+                                //   Alert.show(context,
+                                //       "الرجاء إدخال العنوان" // Customize the button text color
+                                //       );
+                                // } else if (!RegExp(
+                                //         r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                //     .hasMatch(storyTitel.text)) {
+                                //   Alert.show(context,
+                                //       "يجب أن يكون العنوان بالعربية" // Customize the button text color
+                                //       );
                                 } else {
                                   // Check if it isn't the last step
                                   setState(
