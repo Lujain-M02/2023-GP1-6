@@ -5,13 +5,12 @@ import 'package:your_story/pages/login%20page/login.dart';
 //   const create_account({Key? key})
 //       : super(key: key);
 
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Directionality(
 //       textDirection: TextDirection.rtl,
 //       child: Scaffold(
-    
+
 //       ),
 //     );
 //   }
@@ -26,10 +25,13 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  //final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController1 = TextEditingController();
+  final TextEditingController _passwordController2 = TextEditingController();
+  bool isPasswordObscured1 = true;
+  bool isPasswordObscured2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -42,45 +44,105 @@ class _SignUpState extends State<SignUp> {
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: _formKey,
             child: ListView(
               children: <Widget>[
+                // TextFormField(
+                //   controller: _usernameController,
+                //   decoration: InputDecoration(labelText: 'اسم المستخدم',
+                //   prefixIcon: Icon(Icons.person_outlined),
+                //   ),
+                //   // validator: (value) {
+                //   //   if (value.isEmpty) {
+                //   //     return 'Please enter a username';
+                //   //   }
+                //   //   return null;
+                //   // },
+                // ),
                 TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'اسم المستخدم'),
-                  // validator: (value) {
-                  //   if (value.isEmpty) {
-                  //     return 'Please enter a username';
-                  //   }
-                  //   return null;
-                  // },
-                ),
-                TextFormField(
-                  controller: _fullNameController,
-                  decoration: InputDecoration(labelText: 'الاسم الكامل'),
-                  // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return 'Please enter your full name';
-                  //   }
-                  //   return null;
-                  // },
-                ),
+                    //autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: _fullNameController,
+                    decoration: InputDecoration(
+                      labelText: 'الاسم',
+                      prefixIcon: Icon(Icons.person_outlined),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty ||
+                          _fullNameController.text.trim() == "") {
+                        return "الحقل مطلوب";
+                      } else if (value.length == 1) {
+                        return " يجب أن يحتوي الاسم أكثر من حرف على الأقل";
+                      } else if (!RegExp(
+                              r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$")
+                          .hasMatch(value)) {
+                        return 'أدخل اسم يحتوي على أحرف فقط';
+                      }
+                      return null;
+                    }),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: 'الايميل'),
+                  decoration: InputDecoration(
+                      labelText: 'الايميل',
+                      prefixIcon: Icon(Icons.email_outlined)),
+                  validator: (value) {
+                    if (value!.isEmpty || _emailController.text.trim() == "") {
+                      return "الحقل مطلوب";
+                    } else if (!RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value)) {
+                      return 'أدخل بريد إلكتروني صالح';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _passwordController1,
+                  decoration: InputDecoration(
+                    labelText: 'كلمة المرور',
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordObscured1
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordObscured1 = !isPasswordObscured1;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: isPasswordObscured1,
                   // validator: (value) {
-                  //   if (value!.isEmpty) {
-                  //     return 'Please enter an email';
-                  //   } else if (!value.contains('@')) {
-                  //     return 'Please enter a valid email address';
+                  //   if (value.isEmpty) {
+                  //     return 'Please enter a password';
                   //   }
                   //   return null;
                   // },
                 ),
                 TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'كلمة المرور'),
-                  obscureText: true,
+                  controller: _passwordController2,
+                  decoration: InputDecoration(
+                      labelText: 'ادخل كلمة المرور مرة اخرى',
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordObscured2
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordObscured2 = !isPasswordObscured2;
+                        });
+                      },
+                    ),
+                      ),
+                  obscureText: isPasswordObscured2,
                   // validator: (value) {
                   //   if (value.isEmpty) {
                   //     return 'Please enter a password';
@@ -97,7 +159,7 @@ class _SignUpState extends State<SignUp> {
                     //   String fullName = _fullNameController.text;
                     //   String email = _emailController.text;
                     //   String password = _passwordController.text;
-    
+
                     //   // You can save or process the data as needed
                     //   // For now, just print it
                     //   print('Username: $username');
@@ -113,12 +175,12 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     Text("تملك حساب بالفعل؟"),
                     TextButton(
-                      onPressed: (){
-                         Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) =>  LoginPage()),
-                                );
-
-                    }, child: Text("تسجيل الدخول"))
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => LoginPage()),
+                          );
+                        },
+                        child: Text("تسجيل الدخول"))
                   ],
                 )
               ],
