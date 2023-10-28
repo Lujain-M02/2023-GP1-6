@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_story/pages/login%20page/login.dart';
 
 // class create_account extends StatelessWidget {
 //   const create_account({Key? key})
@@ -113,6 +114,9 @@ class _AccountPageState extends State<CreateAccount> {
                     Text("تملك حساب بالفعل؟"),
                     TextButton(
                       onPressed: (){
+                         Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) =>  LoginPage()),
+                                );
 
                     }, child: Text("تسجيل الدخول"))
                   ],

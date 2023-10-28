@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/login%20page/login.dart';
 import 'package:your_story/pages/style.dart';
 import 'package:your_story/pages/create_account.dart';
 //import 'create_story_pages/create_story.dart';
@@ -94,7 +95,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const MainPage()),
+                                  MaterialPageRoute(builder: (_) =>  LoginPage()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
