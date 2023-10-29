@@ -33,15 +33,19 @@ class _CreateStory extends State<CreateStory> {
         Step(
           title: const Text('أضف عنوانًا'),
           content: CreateStoryTitle(
-              titleController: storyTitel,
-              errorMessageHolder: errorMessageHolder,), //this is a method from another file
+            titleController: storyTitel,
+            errorMessageHolder: errorMessageHolder,
+          ), //this is a method from another file
           state: stepState(0),
           isActive: _activeStepIndex >= 0,
         ),
         Step(
           title: const Text('اكتب قصتك'),
           content: CreateStoryContent(
-              contentController: storyContent, title: storyTitel.text),
+            contentController: storyContent,
+            title: storyTitel.text,
+            errorMessageHolder: errorMessageHolder,
+          ),
           state: stepState(1),
           isActive: _activeStepIndex >= 1,
         ),
@@ -160,14 +164,14 @@ class _CreateStory extends State<CreateStory> {
                   child: OutlinedButton(
                     onPressed: () {
                       Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StoryClauses(
-                                storyTitle: storyTitel.text,
-                                storyContent: storyContent.text,
-                              ),
-                            ),
-                          );
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoryClauses(
+                            storyTitle: storyTitel.text,
+                            storyContent: storyContent.text,
+                          ),
+                        ),
+                      );
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 5, 34, 57),
@@ -193,25 +197,28 @@ class _CreateStory extends State<CreateStory> {
                           setState(
                             () {
                               if (_activeStepIndex == 0) {
-                                if (storyTitel.text == ""){
-                                   Alert.show(context,
+                                if (storyTitel.text == "") {
+                                  Alert.show(context,
                                       "الرجاء إدخال العنوان" // Customize the button text color
                                       );
-                                }else if(errorMessageHolder.errorMessage!=null){       
-                                Alert.show(context,
-                                      errorMessageHolder.errorMessage! // Customize the button text color
-                                       );
-                                // if (storyTitel.text == "") {
-                                //   print(errorMessageHolder.errorMessage);
-                                //   Alert.show(context,
-                                //       "الرجاء إدخال العنوان" // Customize the button text color
-                                //       );
-                                // } else if (!RegExp(
-                                //         r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                //     .hasMatch(storyTitel.text)) {
-                                //   Alert.show(context,
-                                //       "يجب أن يكون العنوان بالعربية" // Customize the button text color
-                                //       );
+                                } else if (errorMessageHolder.errorMessage !=
+                                    null) {
+                                  Alert.show(
+                                      context,
+                                      errorMessageHolder
+                                          .errorMessage! // Customize the button text color
+                                      );
+                                  // if (storyTitel.text == "") {
+                                  //   print(errorMessageHolder.errorMessage);
+                                  //   Alert.show(context,
+                                  //       "الرجاء إدخال العنوان" // Customize the button text color
+                                  //       );
+                                  // } else if (!RegExp(
+                                  //         r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+                                  //     .hasMatch(storyTitel.text)) {
+                                  //   Alert.show(context,
+                                  //       "يجب أن يكون العنوان بالعربية" // Customize the button text color
+                                  //       );
                                 } else {
                                   // Check if it isn't the last step
                                   setState(
@@ -228,11 +235,12 @@ class _CreateStory extends State<CreateStory> {
                                   Alert.show(context,
                                       "الرجاء إدخال القصة" // Customize the button text color
                                       );
-                                } else if (!RegExp(
-                                        r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                    .hasMatch(storyContent.text)) {
-                                  Alert.show(context,
-                                      "يجب أن تكون القصة بالعربية" // Customize the button text color
+                                } else if (errorMessageHolder.errorMessage !=
+                                    null) {
+                                  Alert.show(
+                                      context,
+                                      errorMessageHolder
+                                          .errorMessage! // Customize the button text color
                                       );
                                 } else {
                                   // Check if it isn't the last step
