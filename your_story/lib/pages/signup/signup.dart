@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 
@@ -163,21 +164,36 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    // if (_formKey.currentState.validate()) {
-                    //   // Form is valid, you can process the data here
-                    //   String username = _usernameController.text;
-                    //   String fullName = _fullNameController.text;
-                    //   String email = _emailController.text;
-                    //   String password = _passwordController.text;
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                    //   Form is valid, you can process the data here
+                       //String username = _usernameController.text;
+                       String fullName = _fullNameController.text.trim();
+                       String email = _emailController.text.trim();
+                       String password = _passwordController1.text.trim();
 
-                    //   // You can save or process the data as needed
-                    //   // For now, just print it
-                    //   print('Username: $username');
-                    //   print('Full Name: $fullName');
-                    //   print('Email: $email');
-                    //   print('Password: $password');
-                    // }
+                      // You can save or process the data as needed
+                      // For now, just print it
+                      //print('Username: $username');
+                      print('Full Name: $fullName');
+                      print('Email: $email');
+                      print('Password: $password');
+
+                      try {
+                        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                          email: email,
+                          password: password,
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          print('The password provided is too weak.');
+                        } else if (e.code == 'email-already-in-use') {
+                          print('The account already exists for that email.');
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                    }
                   },
                   child: Text('اصنع الحساب'),
                 ),
