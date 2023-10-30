@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/mainpage.dart';
+import 'package:your_story/pages/reset_password.dart';
 import 'package:your_story/pages/signup/signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,7 +59,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                // repassword page
+                 Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) =>  ResetPasswordPage()),
+                                );
               },
               child: Text('نسيت كلمة المرور'),
             ),
