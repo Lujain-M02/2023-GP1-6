@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/intro_pages.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,12 +15,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final currentUser = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
+      if (currentUser==null){
+        Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      }else{
+        Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
+      }
     });
   }
 
