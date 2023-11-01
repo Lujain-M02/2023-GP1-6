@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 
 // class create_account extends StatelessWidget {
@@ -175,15 +177,27 @@ class _SignUpState extends State<SignUp> {
                       // You can save or process the data as needed
                       // For now, just print it
                       //print('Username: $username');
-                      print('Full Name: $fullName');
-                      print('Email: $email');
-                      print('Password: $password');
+                      // print('Full Name: $fullName');
+                      // print('Email: $email');
+                      // print('Password: $password');
 
                       try {
-                        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        await FirebaseAuth.instance.createUserWithEmailAndPassword(
                           email: email,
                           password: password,
                         );
+                          final user = FirebaseAuth.instance.currentUser!.uid;
+                          final userRef = FirebaseFirestore.instance
+                              .collection("User")
+                              .doc(user);
+
+                              await FirebaseFirestore.instance.collection('User').doc(user).set(({
+                                'userID': user,
+                                'name': fullName,
+                                'email': email,
+                              }));
+                        Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MainPage()));      
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           print('The password provided is too weak.');
