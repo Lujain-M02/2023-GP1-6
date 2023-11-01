@@ -20,7 +20,8 @@ class MorePage extends StatelessWidget {
             fontSize: 24,
           ),
           leading: IconButton(
-            icon: FaIcon(FontAwesomeIcons.bars , color: YourStoryStyle.titleColor),
+            icon:
+                FaIcon(FontAwesomeIcons.bars, color: YourStoryStyle.titleColor),
             onPressed: () => {},
           ),
         ),
@@ -36,7 +37,7 @@ class MorePage extends StatelessWidget {
               children: [
                 const SizedBox(height: 16),
                 customListTile(
-                  FontAwesomeIcons.user ,
+                  FontAwesomeIcons.user,
                   'معلومات الحساب',
                   () {
                     Navigator.push(
@@ -78,20 +79,20 @@ class MorePage extends StatelessWidget {
                   'تسجيل خروج',
                   () {
                     // Handle the sign-out logic
-                    ConfirmationDialog.show(
-                              context, "هل أنت متأكد؟", () async {
-                                try {
-  await FirebaseAuth.instance.signOut();
-  Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => WelcomePage()));
-  // The user has been successfully signed out
-} catch (e) {
-  // Handle sign-out errors, if any
-  print("Error signing out: $e");
-}
-                                                   
-
-                          });
+                    ConfirmationDialog.show(context, "هل أنت متأكد؟", () async {
+                      try {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WelcomePage()));
+                        // The user has been successfully signed out
+                      } catch (e) {
+                        // Handle sign-out errors, if any
+                        Alert.show(
+                            context, "لا يمكنك تسجيل الخروج الآن حاول لاحقا");
+                      }
+                    });
                   },
                 ),
               ],
@@ -110,7 +111,9 @@ class MorePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(icon, color: Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
+          leading: Icon(icon,
+              color:
+                  Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(
@@ -148,7 +151,8 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)), // Adjust the radius as needed
+      borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0)), // Adjust the radius as needed
     ),
     builder: (BuildContext context) {
       return FractionallySizedBox(
