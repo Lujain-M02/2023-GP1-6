@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/mainpage.dart';
-import 'package:your_story/pages/reset_password.dart';
+import 'package:your_story/pages/login%20page/reset_password.dart';
 import 'package:your_story/pages/signup/signup.dart';
 
 class LoginPage extends StatefulWidget {

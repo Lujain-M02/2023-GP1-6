@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TECHقصـ',
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: StartScreen(),
     );
   }
 }

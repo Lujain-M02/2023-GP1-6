@@ -5,16 +5,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/pages/intro_pages.dart';
+import 'package:your_story/pages/on_boarding.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class StartScreen extends StatefulWidget {
+  const StartScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<StartScreen> createState() => _StartScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _StartScreenState extends State<StartScreen> {
   final currentUser = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       if (currentUser==null){
         Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          context, MaterialPageRoute(builder: (context) => OnBoarding()));
       }else{
         Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MainPage()));

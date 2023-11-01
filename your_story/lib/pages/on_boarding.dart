@@ -7,7 +7,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/welcome_page.dart';
 
-class MyHomePage extends StatelessWidget {
+class OnBoarding extends StatelessWidget {
   final List<PageViewModel> pages = [
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
