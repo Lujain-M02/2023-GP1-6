@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:your_story/alerts.dart';
+import 'package:your_story/pages/welcome_page.dart';
 import 'package:your_story/style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -75,6 +78,20 @@ class MorePage extends StatelessWidget {
                   'تسجيل خروج',
                   () {
                     // Handle the sign-out logic
+                    ConfirmationDialog.show(
+                              context, "هل أنت متأكد؟", () async {
+                                try {
+  await FirebaseAuth.instance.signOut();
+  Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => WelcomePage()));
+  // The user has been successfully signed out
+} catch (e) {
+  // Handle sign-out errors, if any
+  print("Error signing out: $e");
+}
+                                                   
+
+                          });
                   },
                 ),
               ],
