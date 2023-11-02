@@ -41,7 +41,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
      final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Directionality(
+    return SafeArea(child:  Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
        backgroundColor: Colors.white, 
@@ -298,7 +298,7 @@ class _SignUpState extends State<SignUp> {
     ),),
                   child: Text('اصنع الحساب'),
                 ),)),
-                 const SizedBox(height: 30,),
+                  SizedBox(height: height*0.03,),
                   FadeInUp(duration: const Duration(milliseconds: 2000), child: Center(child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -320,7 +320,7 @@ class _SignUpState extends State<SignUp> {
         )
         )
         ),
-        );
+        ));
          
     
   }
