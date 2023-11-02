@@ -50,11 +50,11 @@ class _SignUpState extends State<SignUp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: height*0.4,
+              height: height*0.33,
               child: Stack(
                 children: <Widget>[
                   Positioned(
-                    top:-10,
+                    top:-40,
                     height: height,
                     width: width,
                     child: FadeInUp(duration: const Duration(seconds: 1), child: Container(
@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
                     )),
                   ),
                   Positioned(
-                    top: -10,
+                    top: -40,
                     height: height,
                     width: width,
                     child: FadeInUp(duration: const Duration(milliseconds: 1000), child: Container(
@@ -244,7 +244,7 @@ class _SignUpState extends State<SignUp> {
                 
                 
                 
-                SizedBox(height: height*0.02,),
+                SizedBox(height: height*0.01,),
                   FadeInUp(duration: const Duration(milliseconds: 1700), 
                   child:Center(child:Container( decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50), // Adjust the border radius as needed
