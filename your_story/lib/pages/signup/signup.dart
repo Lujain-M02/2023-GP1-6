@@ -54,7 +54,7 @@ class _SignUpState extends State<SignUp> {
               child: Stack(
                 children: <Widget>[
                   Positioned(
-                    
+                    top:-10,
                     height: height,
                     width: width,
                     child: FadeInUp(duration: const Duration(seconds: 1), child: Container(
@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
                     )),
                   ),
                   Positioned(
-                    //top: 12,
+                    top: -10,
                     height: height,
                     width: width,
                     child: FadeInUp(duration: const Duration(milliseconds: 1000), child: Container(
@@ -298,7 +298,7 @@ class _SignUpState extends State<SignUp> {
     ),),
                   child: Text('اصنع الحساب'),
                 ),)),
-                  SizedBox(height: height*0.03,),
+                  SizedBox(height: height*0.003,),
                   FadeInUp(duration: const Duration(milliseconds: 2000), child: Center(child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
