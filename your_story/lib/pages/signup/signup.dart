@@ -246,8 +246,20 @@ class _SignUpState extends State<SignUp> {
                 
                 SizedBox(height: height*0.02,),
                   FadeInUp(duration: const Duration(milliseconds: 1700), 
-                  child:Center(child:
-                ElevatedButton(
+                  child:Center(child:Container( decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50), // Adjust the border radius as needed
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(255, 27, 29, 117).withOpacity(0.2), // Shadow color
+            spreadRadius: 3, 
+            blurRadius: 5, 
+            offset: Offset(0, 3), 
+          ),
+        ],
+      ),
+
+                  
+               child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                     //   Form is valid, you can process the data here
@@ -292,12 +304,12 @@ class _SignUpState extends State<SignUp> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-    primary: const Color.fromARGB(255, 15, 26, 107), // Background color
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50), // Border radius
-    ),),
+                  primary: const Color.fromARGB(255, 15, 26, 107), // Background color
+                   shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(50), // Border radius
+                        ),),
                   child: Text('اصنع الحساب'),
-                ),)),
+                ),)),),
                   SizedBox(height: height*0.003,),
                   FadeInUp(duration: const Duration(milliseconds: 2000), child: Center(child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
