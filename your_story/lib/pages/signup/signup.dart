@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,35 +39,84 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Create Account'),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
-            key: _formKey,
-            child: ListView(
-              children: <Widget>[
-                // TextFormField(
-                //   controller: _usernameController,
-                //   decoration: InputDecoration(labelText: 'اسم المستخدم',
-                //   prefixIcon: Icon(Icons.person_outlined),
-                //   ),
-                //   // validator: (value) {
-                //   //   if (value.isEmpty) {
-                //   //     return 'Please enter a username';
-                //   //   }
-                //   //   return null;
-                //   // },
-                // ),
-                TextFormField(
+       backgroundColor: Colors.white, 
+        body: SingleChildScrollView(
+         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: height*0.4,
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    
+                    height: height,
+                    width: width,
+                    child: FadeInUp(duration: const Duration(seconds: 1), child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/bg19.png'),//ما تطلع لان مب شفافه
+                          fit: BoxFit.fill
+                        )
+                      ),
+                    )),
+                  ),
+                  Positioned(
+                    //top: 12,
+                    height: height,
+                    width: width,
+                    child: FadeInUp(duration: const Duration(milliseconds: 1000), child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/bg18.png'),
+                          fit: BoxFit.fill
+                        )
+                      ),
+                    )),
+                  )
+                ],
+              ),
+            ),Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child:Form(
+                     key: _formKey,
+                       child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                         
+                         // child:ListView(
+                children: <Widget>[
+                  FadeInUp(duration: const Duration(milliseconds: 1500), 
+                  child:Center(child:  Text("تسجيل حساب جديد", style: TextStyle( color: Color.fromRGBO(49, 39, 79, 1), fontWeight: FontWeight.bold, fontSize: 30),))),
+                   SizedBox(height: height*0.003,),
+                  
+                  FadeInUp(duration: const Duration(milliseconds: 1700), child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Color.fromARGB(75, 135, 145, 198)),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(122, 121, 194, 0.298),
+                          blurRadius: 20,
+                          offset: Offset(0, 10),
+                        )
+                      ]
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                                                
+                   child: TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _fullNameController,
                     decoration: InputDecoration(
+                      
                       labelText: 'الاسم',
                       prefixIcon: Icon(Icons.person_outlined),
                     ),
@@ -82,8 +132,10 @@ class _SignUpState extends State<SignUp> {
                         return 'أدخل اسم يحتوي على أحرف فقط';
                       }
                       return null;
-                    }),
-                TextFormField(
+                    }),),
+                    Container(
+                       padding: const EdgeInsets.all(10),
+                          child:TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -99,8 +151,11 @@ class _SignUpState extends State<SignUp> {
                     }
                     return null;
                   },
-                ),
-                TextFormField(
+                ), ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                          child:
+                  TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _passwordController1,
                   decoration: InputDecoration(
@@ -134,7 +189,10 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         },
                 ),
-                TextFormField(
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                          child:TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _passwordController2,
                   decoration: InputDecoration(
@@ -164,7 +222,31 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         },
                 ),
-                SizedBox(height: 20),
+                )]))),
+
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            //
+            // child: ListView(
+              // children: <Widget>[
+                // TextFormField(
+                //   controller: _usernameController,
+                //   decoration: InputDecoration(labelText: 'اسم المستخدم',
+                //   prefixIcon: Icon(Icons.person_outlined),
+                //   ),
+                //   // validator: (value) {
+                //   //   if (value.isEmpty) {
+                //   //     return 'Please enter a username';
+                //   //   }
+                //   //   return null;
+                //   // },
+                // ),
+                
+                
+                
+                
+                SizedBox(height: height*0.02,),
+                  FadeInUp(duration: const Duration(milliseconds: 1700), 
+                  child:Center(child:
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -209,9 +291,15 @@ class _SignUpState extends State<SignUp> {
                       }
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+    primary: const Color.fromARGB(255, 15, 26, 107), // Background color
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50), // Border radius
+    ),),
                   child: Text('اصنع الحساب'),
-                ),
-                Row(
+                ),)),
+                 const SizedBox(height: 30,),
+                  FadeInUp(duration: const Duration(milliseconds: 2000), child: Center(child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("تملك حساب بالفعل؟"),
@@ -220,15 +308,20 @@ class _SignUpState extends State<SignUp> {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => LoginPage()),
                           );
-                        },
+                        },style: TextButton.styleFrom(
+                          primary: const Color.fromARGB(255, 15, 26, 107),                         ),
                         child: Text("تسجيل الدخول"))
                   ],
-                )
+                )))
               ],
             ),
           ),
+         )]
+        )
+        )
         ),
-      ),
-    );
+        );
+         
+    
   }
 }
