@@ -145,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                     if (value!.isEmpty || _emailController.text.trim() == "") {
                       return "الحقل مطلوب";
                     } else if (!RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z]+\.[a-zA-Z]+")
                         .hasMatch(value)) {
                       return 'أدخل بريد إلكتروني صالح';
                     }
