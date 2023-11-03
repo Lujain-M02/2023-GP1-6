@@ -182,7 +182,7 @@ class _SignUpState extends State<SignUp> {
                           if (value!.isEmpty || _passwordController1.text.trim() == "") {
                             return "الحقل مطلوب";
                           } else if (!regex.hasMatch(value)) {
-                            return"كلمة المرور يجب ان تحتوي على حرف كبير وصغير باللغة الانجليزية ورقم";
+                            return"كلمة المرور يجب ان تحتوي على حرف كبير وصغير باللغة \n الانجليزية ورقم";
                           } else if (value.length < 8) {
                             return "كلمة المرور يجب أن تكون ثمانية خانات على الأقل";
                           }
