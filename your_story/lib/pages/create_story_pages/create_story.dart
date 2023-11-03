@@ -166,15 +166,15 @@ class _CreateStory extends State<CreateStory> {
                   child: OutlinedButton(
                     onPressed: () {
                       addStoryToCurrentUser(storyTitel.text, storyContent.text);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => StoryClauses(
-                      //       storyTitle: storyTitel.text,
-                      //       storyContent: storyContent.text,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoryClauses(
+                            storyTitle: storyTitel.text,
+                            storyContent: storyContent.text,
+                          ),
+                        ),
+                      );
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 5, 34, 57),
