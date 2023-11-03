@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
@@ -163,15 +165,16 @@ class _CreateStory extends State<CreateStory> {
                   margin: const EdgeInsets.all(3),
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StoryClauses(
-                            storyTitle: storyTitel.text,
-                            storyContent: storyContent.text,
-                          ),
-                        ),
-                      );
+                      addStoryToCurrentUser(storyTitel.text, storyContent.text);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => StoryClauses(
+                      //       storyTitle: storyTitel.text,
+                      //       storyContent: storyContent.text,
+                      //     ),
+                      //   ),
+                      // );
                     },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 5, 34, 57),
@@ -184,7 +187,7 @@ class _CreateStory extends State<CreateStory> {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    child: const Text("الاستمرار لمعالجة القصة"),
+                    child: const Text("الحفظ و الاستمرار لمعالجة القصة"),
                   ),
                 )
               else
@@ -208,17 +211,6 @@ class _CreateStory extends State<CreateStory> {
                                       errorMessageHolder
                                           .errorMessage! // Customize the button text color
                                       );
-                                  // if (storyTitel.text == "") {
-                                  //   print(errorMessageHolder.errorMessage);
-                                  //   Alert.show(context,
-                                  //       "الرجاء إدخال العنوان" // Customize the button text color
-                                  //       );
-                                  // } else if (!RegExp(
-                                  //         r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
-                                  //     .hasMatch(storyTitel.text)) {
-                                  //   Alert.show(context,
-                                  //       "يجب أن يكون العنوان بالعربية" // Customize the button text color
-                                  //       );
                                 } else {
                                   // Check if it isn't the last step
                                   setState(
@@ -262,5 +254,34 @@ class _CreateStory extends State<CreateStory> {
             ],
           )),
     );
+  }
+}
+
+// Function to add a story to the current user's "Stories" subcollection
+Future<void> addStoryToCurrentUser(String title, String content) async {
+  try {
+    // Get the current user
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Reference to the current user's document
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection("User").doc(user.uid);
+
+      // Create the "Stories" subcollection reference
+      CollectionReference storiesCollection = userRef.collection("Stories");
+
+      // Add a new story document to the subcollection
+      await storiesCollection.add({
+        'title': title,
+        'content': content,
+      });
+
+      print("Story added successfully!");
+    } else {
+      print("No user is currently signed in.");
+    }
+  } catch (e) {
+    print("Error adding story: $e");
   }
 }

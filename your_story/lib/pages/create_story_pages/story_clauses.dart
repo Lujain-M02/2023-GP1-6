@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/style.dart';
 //import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoryClauses extends StatefulWidget {
   const StoryClauses(
@@ -54,7 +54,7 @@ class _StoryClausesState extends State<StoryClauses> {
       });
 
       // add Story to Firebase Firestore
-      addStory(widget.storyTitle, widget.storyContent);
+      //addStory(widget.storyTitle, widget.storyContent);
 
       //Translate the highestScoringSentences
       //check that highestScoringSentences is Not Empty
@@ -94,16 +94,16 @@ class _StoryClausesState extends State<StoryClauses> {
   }
 
   // Firebase Firestore service to add Story
-  Future<void> addStory(String title, String content) async {
-    try {
-      await FirebaseFirestore.instance.collection('Story').add({
-        'title': title,
-        'content': content,
-      });
-    } catch (e) {
-      print('Error adding a Story to Firestore: $e');
-    }
-  }
+  // Future<void> addStory(String title, String content) async {
+  //   try {
+  //     await FirebaseFirestore.instance.collection('Story').add({
+  //       'title': title,
+  //       'content': content,
+  //     });
+  //   } catch (e) {
+  //     print('Error adding a Story to Firestore: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
