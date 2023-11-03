@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                       children: <Widget>[
                         FadeInUp(
                             duration: const Duration(milliseconds: 1500),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               "تسجيل حساب جديد",
                               style: TextStyle(
@@ -115,7 +115,7 @@ class _SignUpState extends State<SignUp> {
                                     color: Colors.white,
                                     border: Border.all(
                                         color:
-                                            Color.fromARGB(75, 135, 145, 198)),
+                                            const Color.fromARGB(75, 135, 145, 198)),
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Color.fromRGBO(
@@ -131,7 +131,7 @@ class _SignUpState extends State<SignUp> {
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         controller: _fullNameController,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           labelText: 'الاسم',
                                           prefixIcon:
                                               Icon(Icons.person_outlined),
@@ -157,7 +157,7 @@ class _SignUpState extends State<SignUp> {
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       controller: _emailController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           labelText: 'الايميل',
                                           prefixIcon:
                                               Icon(Icons.email_outlined)),
@@ -183,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController1,
                                       decoration: InputDecoration(
                                         labelText: 'كلمة المرور',
-                                        prefixIcon: Icon(Icons.lock),
+                                        prefixIcon: const Icon(Icons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured1
@@ -224,7 +224,7 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController2,
                                       decoration: InputDecoration(
                                         labelText: 'ادخل كلمة المرور مرة اخرى',
-                                        prefixIcon: Icon(Icons.lock),
+                                        prefixIcon: const Icon(Icons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured2
@@ -286,11 +286,11 @@ class _SignUpState extends State<SignUp> {
                                   50), // Adjust the border radius as needed
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color.fromARGB(255, 27, 29, 117)
+                                  color: const Color.fromARGB(255, 27, 29, 117)
                                       .withOpacity(0.2), // Shadow color
                                   spreadRadius: 3,
                                   blurRadius: 5,
-                                  offset: Offset(0, 3),
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
@@ -371,14 +371,14 @@ class _SignUpState extends State<SignUp> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: const Color.fromARGB(
+                                backgroundColor: const Color.fromARGB(
                                     255, 15, 26, 107), // Background color
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       50), // Border radius
                                 ),
                               ),
-                              child: Text('اصنع الحساب'),
+                              child: const Text('اصنع الحساب'),
                             ),
                           )),
                         ),
@@ -391,7 +391,7 @@ class _SignUpState extends State<SignUp> {
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("تملك حساب بالفعل؟"),
+                                const Text("تملك حساب بالفعل؟"),
                                 TextButton(
                                     onPressed: () {
                                       Navigator.of(context).push(
@@ -400,10 +400,10 @@ class _SignUpState extends State<SignUp> {
                                       );
                                     },
                                     style: TextButton.styleFrom(
-                                      primary: const Color.fromARGB(
+                                      foregroundColor: const Color.fromARGB(
                                           255, 15, 26, 107),
                                     ),
-                                    child: Text("تسجيل الدخول"))
+                                    child: const Text("تسجيل الدخول"))
                               ],
                             )))
                       ],
