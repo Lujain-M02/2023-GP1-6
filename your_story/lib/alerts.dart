@@ -95,3 +95,30 @@ class Alert {
     );
   }
 }
+//class for styling snackBar
+class CustomSnackBar extends SnackBar {
+  CustomSnackBar({
+    Key? key,
+    required String content,
+  }) : super(
+          key: key,
+          content: Row(
+            children: <Widget>[
+              Icon(
+                Icons.warning,
+                color: Color.fromARGB(255, 248, 212, 212),
+              ),
+              SizedBox(width: 8), 
+              Text(
+                content,
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          backgroundColor: const Color.fromARGB( 255, 15, 26, 107),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        );
+}
