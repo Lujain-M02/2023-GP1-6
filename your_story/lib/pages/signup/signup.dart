@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 
@@ -60,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                     child: FadeInUp(duration: const Duration(seconds: 1), child: Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/bg19.png'),//ما تطلع لان مب شفافه
+                          image: AssetImage('assets/bg19.png'),
                           fit: BoxFit.fill
                         )
                       ),
@@ -295,11 +296,26 @@ class _SignUpState extends State<SignUp> {
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           print('The password provided is too weak.');
+                           ScaffoldMessenger.of(context).showSnackBar(
+                                        CustomSnackBar(
+                               content: "كلمة المرور ضعيفة",
+                               ),
+                              ); 
                         } else if (e.code == 'email-already-in-use') {
                           print('The account already exists for that email.');
+                           ScaffoldMessenger.of(context).showSnackBar(
+                                        CustomSnackBar(
+                               content: "البريد الالكتروني موجود مسبقًا",
+                               ),
+                              ); 
                         }
                       } catch (e) {
                         print(e);
+                         ScaffoldMessenger.of(context).showSnackBar(
+                                        CustomSnackBar(
+                               content: "يوجد خطأ",
+                               ),
+                              ); 
                       }
                     }
                   },
