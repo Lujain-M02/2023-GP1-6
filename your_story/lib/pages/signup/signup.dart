@@ -37,6 +37,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController2 = TextEditingController();
   bool isPasswordObscured1 = true;
   bool isPasswordObscured2 = true;
+  bool _isAgreedToTerms = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                Container(
+                SizedBox(
                   height: height * 0.33,
                   child: Stack(
                     children: <Widget>[
@@ -254,7 +256,28 @@ class _SignUpState extends State<SignUp> {
                                         return null;
                                       },
                                     ),
-                                  )
+                                  ),
+                                  Container(
+                                   padding: const EdgeInsets.all(10),
+                                   child: Row(
+                                    children: <Widget>[
+                                      Checkbox(
+                                       value: _isAgreedToTerms,
+                                       onChanged: (newValue) {
+                                         setState(() {
+                                         _isAgreedToTerms = newValue!;
+                                         });
+                                        },activeColor: const Color.fromARGB(255, 15, 26, 107)
+                                      ),
+                                      const Text(   'أوافق على الشروط وسياسة الخصوصية',
+                                      style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                      ),
+                                    ),
+                                   ],
+                                  ),
+                                ),
                                 ]))),
 
                         //autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -296,6 +319,14 @@ class _SignUpState extends State<SignUp> {
                             ),
                             child: ElevatedButton(
                               onPressed: () async {
+                                if (!_isAgreedToTerms) {    
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                       CustomSnackBar(
+                                         content: 'يجب أن توافق على الشروط وسياسة الخصوصية أولاً.',
+                                          ),
+                                        );
+                                       return;
+                                    }
                                 if (_formKey.currentState!.validate()) {
                                   //   Form is valid, you can process the data here
                                   //String username = _usernameController.text;
