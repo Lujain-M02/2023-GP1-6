@@ -138,9 +138,8 @@ class SettingsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('معلومات الحساب'),
         ),
-        body: const Center(
-          child: Text('معلومات الحساب'),
-        ),
+        body:
+            ProfileUpdateForm(), // Directly embedding the ProfileUpdateForm here
       ),
     );
   }
@@ -164,7 +163,7 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
               Text(
                 text,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.blue,
                   fontSize: 20,
                 ),
               ),
@@ -176,3 +175,73 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
     },
   );
 }
+
+class ProfileUpdateForm extends StatefulWidget {
+  @override
+  _ProfileUpdateFormState createState() => _ProfileUpdateFormState();
+}
+
+class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _email = '';
+  String _phone = '';
+  String _password = '';
+
+  void _saveProfile() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState?.save();
+      // Add your logic to save profile information here
+      // For example, sending data to a server
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'الاسم'),
+                onSaved: (value) => _name = value!,
+                validator: (value) =>
+                    value!.isEmpty ? 'الرجاء إدخال الاسم' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'الايميل'),
+                onSaved: (value) => _email = value!,
+                validator: (value) =>
+                    !value!.contains('@') ? 'الرجاء إدخال ايميل صحيح' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'رقم الهاتف'),
+                onSaved: (value) => _phone = value!,
+                validator: (value) =>
+                    value!.isEmpty ? 'الرجاء إدخال رقم الهاتف' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'الرقم السري'),
+                obscureText: true,
+                onSaved: (value) => _password = value!,
+                validator: (value) => value!.length < 6
+                    ? 'الرقم السري يجب ان يحتوي على 6 احرف على الاقل'
+                    : null,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveProfile,
+                child: Text('حفظ'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void main() => runApp(MaterialApp(home: ProfileUpdateForm()));
