@@ -3,6 +3,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/more_page.dart';
 import 'package:your_story/style.dart';
+import 'package:your_story/pages/my_stories_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _MainPage extends State<MainPage> {
       return const HomePage();
     } else if (currentIndex == 1) {
       // stories Page 
-      return Container(color: Colors.white);
+      return MyStories();
     } else if (currentIndex == 2) {
         return MorePage();       
         }
