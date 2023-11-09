@@ -244,4 +244,4 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
   }
 }
 
-void main() => runApp(MaterialApp(home: ProfileUpdateForm()));
+
