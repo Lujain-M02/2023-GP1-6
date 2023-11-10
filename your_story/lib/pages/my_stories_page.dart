@@ -55,11 +55,11 @@ class _MyStories extends State<MyStories> {
       child: Directionality(
           textDirection: TextDirection.rtl,
           child: !isLoaded
-          ? Center(
+          ? const Center(
                 child: CircularProgressIndicator(), // or any loading widget
           )
           : stories.isEmpty
-          ? Center(
+          ? const Center(
             child: Text(
                   "يبدو أنه لا يوجد لديك قصص\nانتقل للصفحة الرئيسية وأبدأ صناعة قصتك الآن",
                   textAlign: TextAlign.center,
@@ -69,8 +69,8 @@ class _MyStories extends State<MyStories> {
               itemCount: stories.length,
               itemBuilder: (context, i) {
                 return Container(
-                  color: Color.fromARGB(255, 187, 208, 238),
-                  margin: EdgeInsets.all(10),
+                  color: const Color.fromARGB(255, 187, 208, 238),
+                  margin: const EdgeInsets.all(10),
                   child: ListTile(
                         leading: Image.asset("assets/white.png") ,
                         title: Text("${stories[i]['title']}") ,
