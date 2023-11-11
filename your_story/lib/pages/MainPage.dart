@@ -60,7 +60,7 @@ class _MainPage extends State<MainPage> {
   Widget _buildBody(int currentIndex) {
     if (currentIndex == 0) {
       // Home Page
-      return  StoriesPage();
+      return  const StoriesPage();
     } else if (currentIndex == 1) {
       // stories Page 
       return const MyStories();
@@ -74,11 +74,13 @@ class _MainPage extends State<MainPage> {
 
 
 class StoriesPage extends StatelessWidget {
+  const StoriesPage({super.key});
+
   @override
  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -103,11 +105,11 @@ class StoriesPage extends StatelessWidget {
           // Navigate to the CreateStoryPage when the button is pressed
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateStory()),
+            MaterialPageRoute(builder: (context) => const CreateStory()),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 15, 26, 107),
+        backgroundColor: const Color.fromARGB(255, 15, 26, 107),
+        child: const Icon(Icons.add),
       ),
     );
   }

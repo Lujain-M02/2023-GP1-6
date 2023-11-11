@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
+import 'package:your_story/pages/create_story_pages/create_story.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -54,7 +55,19 @@ class _MyStories extends State<MyStories> {
     return SafeArea(
       child: Directionality(
           textDirection: TextDirection.rtl,
-          child: !isLoaded
+          child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              // Navigate to the CreateStory page when the FAB is pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateStory()),
+              );
+            },
+            backgroundColor: Color.fromARGB(255, 15, 26, 107),
+            child: Icon(Icons.add),
+          ),
+            body:!isLoaded
           ? const Center(
                 child: CircularProgressIndicator(), // or any loading widget
           )
@@ -89,6 +102,6 @@ class _MyStories extends State<MyStories> {
                 );
               })
           ),
-    );
+    ));
   }
 }
