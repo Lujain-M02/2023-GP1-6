@@ -60,10 +60,10 @@ class _MainPage extends State<MainPage> {
   Widget _buildBody(int currentIndex) {
     if (currentIndex == 0) {
       // Home Page
-      return const HomePage();
+      return  StoriesPage();
     } else if (currentIndex == 1) {
       // stories Page 
-      return MyStories();
+      return const MyStories();
     } else if (currentIndex == 2) {
         return MorePage();       
         }
@@ -71,102 +71,144 @@ class _MainPage extends State<MainPage> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
 
+
+class StoriesPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/back1.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Center(
+ Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            GradientButton(
-              iconData: Icons.add,
-              onPressed: () {
-                // Navigate to CreateStory page
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) =>  const CreateStory()),
-                );
-              },
-              text: 'ابدأ بكتابة قصتك',
-            ),
-            const SizedBox(height: 60),
-            GradientButton(
-              iconData: Icons.share,
-              onPressed: () {},
-              text: 'القصص المنشورة',
-            ),
-            const SizedBox(height: 60),
-            GradientButton(
-              iconData: Icons.edit,
-              onPressed: () {},
-              text: 'مسودّة',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class GradientButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String text;
-  final IconData iconData;
-
-  const GradientButton({super.key, 
-    required this.onPressed,
-    required this.text,
-    required this.iconData,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 224, 224, 243),
-            Color.fromARGB(184, 4, 63, 190),
-          ],
-          begin: Alignment.center,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white, backgroundColor: Colors.transparent,
-          shadowColor: Colors.lightBlueAccent,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.all(15.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(iconData, color: Colors.white),
-            const SizedBox(width: 15),
+            Icon(
+              Icons.sentiment_dissatisfied,
+              size: 80,
+              color: Color.fromARGB(255, 15, 26, 107),
+            ),
+            SizedBox(height: 16),
             Text(
-              text,
-              style: const TextStyle(
-                fontSize: 30,
-                color: Color.fromARGB(255, 247, 246, 246),
+              "المعذرة، لم يتم نشر أي قصة حتى الآن",
+              style: TextStyle(
+                color: Color.fromARGB(255, 15, 26, 107),
+                fontSize: 16,
               ),
             ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the CreateStoryPage when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateStory()),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Color.fromARGB(255, 15, 26, 107),
+      ),
     );
   }
 }
+
+// class HomePage extends StatelessWidget {
+//   const HomePage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: const BoxDecoration(
+//         image: DecorationImage(
+//           image: AssetImage("assets/back1.png"),
+//           fit: BoxFit.cover,
+//         ),
+//       ),
+//       child: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             GradientButton(
+//               iconData: Icons.add,
+//               onPressed: () {
+//                 // Navigate to CreateStory page
+//                 Navigator.of(context).pushReplacement(
+//                   MaterialPageRoute(builder: (_) =>  const CreateStory()),
+//                 );
+//               },
+//               text: 'ابدأ بكتابة قصتك',
+//             ),
+//             const SizedBox(height: 60),
+//             GradientButton(
+//               iconData: Icons.share,
+//               onPressed: () {},
+//               text: 'القصص المنشورة',
+//             ),
+//             const SizedBox(height: 60),
+//             GradientButton(
+//               iconData: Icons.edit,
+//               onPressed: () {},
+//               text: 'مسودّة',
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class GradientButton extends StatelessWidget {
+//   final VoidCallback onPressed;
+//   final String text;
+//   final IconData iconData;
+
+//   const GradientButton({super.key, 
+//     required this.onPressed,
+//     required this.text,
+//     required this.iconData,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         gradient: const LinearGradient(
+//           colors: [
+//             Color.fromARGB(255, 224, 224, 243),
+//             Color.fromARGB(184, 4, 63, 190),
+//           ],
+//           begin: Alignment.center,
+//           end: Alignment.centerRight,
+//         ),
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//       child: ElevatedButton(
+//         onPressed: onPressed,
+//         style: ElevatedButton.styleFrom(
+//           foregroundColor: Colors.white, backgroundColor: Colors.transparent,
+//           shadowColor: Colors.lightBlueAccent,
+//           elevation: 10,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(30),
+//           ),
+//           padding: const EdgeInsets.all(15.0),
+//         ),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(iconData, color: Colors.white),
+//             const SizedBox(width: 15),
+//             Text(
+//               text,
+//               style: const TextStyle(
+//                 fontSize: 30,
+//                 color: Color.fromARGB(255, 247, 246, 246),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
