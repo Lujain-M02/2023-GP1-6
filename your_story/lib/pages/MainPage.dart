@@ -38,12 +38,12 @@ class _MainPage extends State<MainPage> {
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home),
-            title: const Text("قصصي"),
+            title: const Text("القصص المنشورة"),
             selectedColor: const Color.fromARGB(255, 1, 16, 87),
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.library_books),
-            title: const Text("القصص المنشورة"),
+            title: const Text("قصصي"),
             selectedColor: const Color.fromARGB(255, 1, 16, 87),
           ),
           SalomonBottomBarItem(
