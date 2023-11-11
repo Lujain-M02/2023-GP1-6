@@ -69,17 +69,23 @@ class _MyStories extends State<MyStories> {
               itemCount: stories.length,
               itemBuilder: (context, i) {
                 return Container(
-                  color: const Color.fromARGB(255, 187, 208, 238),
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                        leading: Image.asset("assets/white.png") ,
-                        title: Text("${stories[i]['title']}") ,
-                        subtitle: Text("${stories[i]['content']}",maxLines: 1,),
-                        trailing: IconButton(onPressed: (){
-                          deleteStory(i);
-                        }
-                        , icon: const Icon(Icons.delete)),
-                      ),
+                  height: 120,
+                  margin: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 187, 208, 238) ,
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                  ),
+                  child: Center(
+                    child: ListTile(
+                          leading: Image.asset("assets/white.png") ,
+                          title: Text("${stories[i]['title']}",style: TextStyle(fontSize: 25),) ,
+                          subtitle: Text("${stories[i]['content']}" ,style: TextStyle(fontSize: 20),maxLines: 1,),
+                          trailing: IconButton(onPressed: (){
+                            deleteStory(i);
+                          }
+                          , icon: const Icon(Icons.delete)),
+                        ),
+                  ),
                 );
               })
           ),
