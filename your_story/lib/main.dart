@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TECHقصـ',
-      //ppp
       debugShowCheckedModeBanner: false,
       home: StartScreen(),
     );
