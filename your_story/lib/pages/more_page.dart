@@ -185,63 +185,62 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _email = '';
-  String _phone = '';
-  String _password = '';
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      // Add your logic to save profile information here
-      // For example, sending data to a server
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'الاسم'),
-                onSaved: (value) => _name = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال الاسم' : null,
+      body: Stack(
+        children: <Widget>[
+          // Background for the entire screen
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background3.png'),
+                fit: BoxFit.cover,
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'الايميل'),
-                onSaved: (value) => _email = value!,
-                validator: (value) =>
-                    !value!.contains('@') ? 'الرجاء إدخال ايميل صحيح' : null,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'رقم الهاتف'),
-                onSaved: (value) => _phone = value!,
-                validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال رقم الهاتف' : null,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'الرقم السري'),
-                obscureText: true,
-                onSaved: (value) => _password = value!,
-                validator: (value) => value!.length < 6
-                    ? 'الرقم السري يجب ان يحتوي على 6 احرف على الاقل'
-                    : null,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveProfile,
-                child: Text('حفظ'),
-              ),
-            ],
+            ),
           ),
-        ),
+          SingleChildScrollView(
+            padding: EdgeInsets.only(top: 30),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage('assets/your_form_background_image.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(labelText: 'الاسم'),
+                          enabled: false,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(labelText: 'الايميل'),
+                          enabled: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-
