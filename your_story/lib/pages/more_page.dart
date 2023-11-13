@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/welcome_page.dart';
@@ -189,29 +188,6 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
   String _phone = '';
   String _password = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _loadProfileData();
-  }
-
-  void _loadProfileData() async {
-    // Assume the path to the user's data in Firebase is 'users/user_id'
-    DatabaseReference ref = FirebaseDatabase.instance
-        .ref("u/1/project/gp-db-2023-b1591/authentication/users");
-    DataSnapshot snapshot = await ref.get();
-
-    if (snapshot.exists) {
-      Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
-      setState(() {
-        _name = userData['name'] ?? '';
-        _email = userData['email'] ?? '';
-        //   _phone = userData['phone'] ?? '';
-        // Do not load the password for security reasons
-      });
-    }
-  }
-
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
@@ -232,20 +208,29 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
               TextFormField(
                 decoration: InputDecoration(labelText: 'الاسم'),
                 onSaved: (value) => _name = value!,
+                validator: (value) =>
+                    value!.isEmpty ? 'الرجاء إدخال الاسم' : null,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'الايميل'),
                 onSaved: (value) => _email = value!,
+                validator: (value) =>
+                    !value!.contains('@') ? 'الرجاء إدخال ايميل صحيح' : null,
               ),
-              /* TextFormField(
+              TextFormField(
                 decoration: InputDecoration(labelText: 'رقم الهاتف'),
                 onSaved: (value) => _phone = value!,
-              ),*/
-              // TextFormField(
-              //   decoration: InputDecoration(labelText: 'الرقم السري'),
-              //  obscureText: true,
-              //  onSaved: (value) => _password = value!,
-              // ),
+                validator: (value) =>
+                    value!.isEmpty ? 'الرجاء إدخال رقم الهاتف' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'الرقم السري'),
+                obscureText: true,
+                onSaved: (value) => _password = value!,
+                validator: (value) => value!.length < 6
+                    ? 'الرقم السري يجب ان يحتوي على 6 احرف على الاقل'
+                    : null,
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _saveProfile,
@@ -258,3 +243,5 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
     );
   }
 }
+
+
