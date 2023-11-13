@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
-import 'package:your_story/pages/create_story_pages/create_story.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -55,19 +54,7 @@ class _MyStories extends State<MyStories> {
     return SafeArea(
       child: Directionality(
           textDirection: TextDirection.rtl,
-          child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // Navigate to the CreateStory page when the FAB is pressed
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateStory()),
-              );
-            },
-            backgroundColor: Color.fromARGB(255, 15, 26, 107),
-            child: Icon(Icons.add),
-          ),
-            body:!isLoaded
+          child: !isLoaded
           ? const Center(
                 child: CircularProgressIndicator(), // or any loading widget
           )
@@ -82,26 +69,20 @@ class _MyStories extends State<MyStories> {
               itemCount: stories.length,
               itemBuilder: (context, i) {
                 return Container(
-                  height: 120,
-                  margin: const EdgeInsets.all(12),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 187, 208, 238) ,
-                    borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: Center(
-                    child: ListTile(
-                          leading: Image.asset("assets/white.png") ,
-                          title: Text("${stories[i]['title']}",style: TextStyle(fontSize: 25),) ,
-                          subtitle: Text("${stories[i]['content']}" ,style: TextStyle(fontSize: 20),maxLines: 1,),
-                          trailing: IconButton(onPressed: (){
-                            deleteStory(i);
-                          }
-                          , icon: const Icon(Icons.delete)),
-                        ),
-                  ),
+                  color: const Color.fromARGB(255, 187, 208, 238),
+                  margin: const EdgeInsets.all(10),
+                  child: ListTile(
+                        leading: Image.asset("assets/white.png") ,
+                        title: Text("${stories[i]['title']}") ,
+                        subtitle: Text("${stories[i]['content']}",maxLines: 1,),
+                        trailing: IconButton(onPressed: (){
+                          deleteStory(i);
+                        }
+                        , icon: const Icon(Icons.delete)),
+                      ),
                 );
               })
           ),
-    ));
+    );
   }
 }

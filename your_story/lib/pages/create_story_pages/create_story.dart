@@ -65,12 +65,12 @@ class _CreateStory extends State<CreateStory> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-          //backgroundColor: const Color.fromARGB(255, 238, 245, 255),
+          backgroundColor: const Color.fromARGB(255, 238, 245, 255),
           body: Container(
-            // decoration: const BoxDecoration(
-            //     image: DecorationImage(
-            //         image: AssetImage('assets/background3.png'),
-            //         fit: BoxFit.cover)),
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/background3.png'),
+                    fit: BoxFit.cover)),
             child: SafeArea(
               child: Column(
                 children: <Widget>[
