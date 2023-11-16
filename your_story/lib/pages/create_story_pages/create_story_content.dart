@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'error_message_holder.dart';
 
 class CreateStoryContent extends StatelessWidget {
@@ -91,7 +92,7 @@ class CreateStoryContent extends StatelessWidget {
         top: 0,
         left: 0,
         child: IconButton(
-          icon: Icon(Icons.paste),
+          icon: Icon(FontAwesomeIcons.paste),
           onPressed: () async {
             ClipboardData? data = await Clipboard.getData('text/plain');
             if (data != null && data.text != null) {

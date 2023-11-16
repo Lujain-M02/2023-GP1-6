@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
@@ -136,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                                         decoration: const InputDecoration(
                                           labelText: 'الاسم',
                                           prefixIcon:
-                                              Icon(Icons.person_outlined),
+                                              Icon(FontAwesomeIcons.user),
                                         ),
                                         validator: (value) {
                                           if (value!.isEmpty ||
@@ -162,7 +163,7 @@ class _SignUpState extends State<SignUp> {
                                       decoration: const InputDecoration(
                                           labelText: 'الايميل',
                                           prefixIcon:
-                                              Icon(Icons.email_outlined)),
+                                              Icon(FontAwesomeIcons.envelope)),
                                       validator: (value) {
                                         if (value!.isEmpty ||
                                             _emailController.text.trim() ==
@@ -185,7 +186,7 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController1,
                                       decoration: InputDecoration(
                                         labelText: 'كلمة المرور',
-                                        prefixIcon: const Icon(Icons.lock),
+                                        prefixIcon: const Icon(FontAwesomeIcons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured1
@@ -226,7 +227,7 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController2,
                                       decoration: InputDecoration(
                                         labelText: 'ادخل كلمة المرور مرة اخرى',
-                                        prefixIcon: const Icon(Icons.lock),
+                                        prefixIcon: const Icon(FontAwesomeIcons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured2

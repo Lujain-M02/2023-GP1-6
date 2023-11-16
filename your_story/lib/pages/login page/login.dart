@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/login%20page/reset_password.dart';
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               controller: EmailController ,
                               decoration: InputDecoration(
-                                prefixIcon:  const Icon(Icons.email_outlined),
+                                prefixIcon:  const Icon( FontAwesomeIcons.envelope,),
                                 border: InputBorder.none,
                                 hintText: "الحساب الالكتروني",
                                 hintStyle: TextStyle(color: Colors.grey.shade700)
@@ -137,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                 border: InputBorder.none,
                                 hintText: "كلمة المرور",
                                 hintStyle: TextStyle(color: Colors.grey.shade700),
-                                prefixIcon: const Icon(Icons.lock),
+                                prefixIcon: const Icon(FontAwesomeIcons.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                    isPasswordObscured1
