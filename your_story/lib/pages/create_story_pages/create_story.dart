@@ -8,6 +8,7 @@ import 'package:your_story/pages/create_story_pages/create_story_final.dart';
 import 'package:your_story/alerts.dart';
 import 'story_clauses.dart';
 import 'error_message_holder.dart';
+import 'package:your_story/style.dart';
 
 class CreateStory extends StatefulWidget {
   const CreateStory({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _CreateStory extends State<CreateStory> {
           isActive: _activeStepIndex >= 1,
         ),
         Step(
-          title: const Text('معالجة قصتك'),
+          title: const Text('اقرا قصتك'),
           content: CreateStoryFinal(
               title: storyTitel.text, content: storyContent.text),
           state: stepState(2),
@@ -117,7 +118,7 @@ class _CreateStory extends State<CreateStory> {
                         connectorColor:
                             MaterialStateProperty.resolveWith((states) {
                           if (states.contains(MaterialState.selected)) {
-                            return const Color.fromARGB(255, 5, 34, 57);
+                            return YourStoryStyle.titleColor;
                           } else if (states.contains(MaterialState.disabled)) {
                             return const Color.fromARGB(255, 187, 222, 251);
                           } else {
@@ -149,7 +150,7 @@ class _CreateStory extends State<CreateStory> {
             children: [
               IconButton(
                 iconSize: 40,
-                color: const Color.fromARGB(255, 9, 37, 59),
+                color: YourStoryStyle.titleColor,
                 icon: const Icon(Icons.arrow_back),
                 onPressed: _activeStepIndex > 0
                     ? () {
@@ -177,10 +178,10 @@ class _CreateStory extends State<CreateStory> {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 5, 34, 57),
+                      backgroundColor: YourStoryStyle.titleColor,
                       foregroundColor: Colors.white,
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 5, 34, 57),
+                      side: BorderSide(
+                        color: YourStoryStyle.titleColor,
                         width: 2,
                       ),
                       shape: RoundedRectangleBorder(
@@ -193,7 +194,7 @@ class _CreateStory extends State<CreateStory> {
               else
                 IconButton(
                   iconSize: 40,
-                  color: const Color.fromARGB(255, 9, 37, 59),
+                  color: YourStoryStyle.titleColor,
                   icon: const Icon(Icons.arrow_forward),
                   onPressed: _activeStepIndex != 2
                       ? () {
