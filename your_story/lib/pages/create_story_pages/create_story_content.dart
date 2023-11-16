@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'error_message_holder.dart';
 
 class CreateStoryContent extends StatelessWidget {
@@ -72,27 +73,37 @@ class CreateStoryContent extends StatelessWidget {
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Container(
-            //child: Container(
-            /*decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10),
-            ),*/
-            child: TextFormField(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              controller: contentController,
-              maxLines: null, // This allows multiple lines for long text
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color.fromARGB(132, 187, 222, 251),
-                hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
-                //labelText: "أطلق العنان لإبداعاتك!",
-                //labelStyle: TextStyle(color: Color.fromARGB(255, 108, 26, 17)),
-                contentPadding: EdgeInsets.all(10),
-              ),
-              validator: validateTitle,
-            ),
-            //),
-          ),
+  child: Stack(
+    children: [
+      TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        controller: contentController,
+        maxLines: null,
+        decoration: const InputDecoration(
+          filled: true,
+          fillColor: Color.fromARGB(132, 187, 222, 251),
+          hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
+          contentPadding: EdgeInsets.all(10),
+        ),
+        validator: validateTitle,
+      ),
+      Positioned(
+        top: 0,
+        left: 0,
+        child: IconButton(
+          icon: Icon(Icons.paste),
+          onPressed: () async {
+            ClipboardData? data = await Clipboard.getData('text/plain');
+            if (data != null && data.text != null) {
+              contentController.text = data.text!;
+            }
+          },
+        ),
+      ),
+    ],
+  ),
+),
+
         ),
       ],
     );

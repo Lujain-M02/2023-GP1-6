@@ -449,8 +449,8 @@ class _SignUpState extends State<SignUp> {
   }
 }
 void _showCustomModalBottomSheet(BuildContext context, String text) {
-  final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+  // final width = MediaQuery.of(context).size.width;
+  //   final height = MediaQuery.of(context).size.height;
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,

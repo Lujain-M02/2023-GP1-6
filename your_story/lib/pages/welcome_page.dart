@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/signup/signup.dart';

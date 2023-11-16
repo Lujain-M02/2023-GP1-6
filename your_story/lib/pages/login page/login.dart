@@ -185,8 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             try {
-                              UserCredential userCredential = await FirebaseAuth
-                                  .instance
+                              await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                       email: EmailController.text, password: passwordController.text);
                               Navigator.push( context,MaterialPageRoute(
@@ -218,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
                    ),
                     const SizedBox(height: 30,),
                     FadeInUp(duration: const Duration(milliseconds: 2000), child: Center(child: TextButton(onPressed: () {Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const SignUp()),);}, child: const Text("تسجيل حساب", style: TextStyle(color: Color.fromRGBO(49, 39, 79, .6)),)))),
+                              MaterialPageRoute(builder: (_) => const SignUp()),);}, child: const Text("مستخدم جديد؟ تسجيل حساب", style: TextStyle(color: Color.fromRGBO(49, 39, 79, .6)),)))),
                   ],
                 ),
               )
