@@ -269,12 +269,26 @@ class _SignUpState extends State<SignUp> {
                                          });
                                         },activeColor: const Color.fromARGB(255, 15, 26, 107)
                                       ),
-                                      const Text(   'أوافق على الشروط وسياسة الخصوصية',
-                                      style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                      ),
-                                    ),
+                                    //   const Text(   'أوافق على الشروط وسياسة الخصوصية',
+                                    //   style: TextStyle(
+                                    //   color: Colors.grey,
+                                    //   fontSize: 14,
+                                    //   ),
+                                    // ),
+                                    TextButton(
+        onPressed: () {
+          // Handle the terms and privacy policy action here
+          _showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
+        },
+        child: const Text(
+          'أوافق على الشروط وسياسة الخصوصية',
+          style: TextStyle(
+            color: Color.fromARGB(255, 36, 51, 109),
+            // color: _isAgreedToTerms
+            //     ? const Color.fromARGB(255, 15, 26, 107) // Green when agreed
+            //     : Colors.grey, // Gray when not agreed
+            fontSize: 14,
+                                     ) ), )
                                    ],
                                   ),
                                 ),
@@ -444,4 +458,36 @@ class _SignUpState extends State<SignUp> {
               ]))),
     ));
   }
+}
+void _showCustomModalBottomSheet(BuildContext context, String text) {
+  final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20.0)), // Adjust the radius as needed
+    ),
+    builder: (BuildContext context) {
+      return FractionallySizedBox(
+        heightFactor: 0.8,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+              // Add more widgets as needed
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
