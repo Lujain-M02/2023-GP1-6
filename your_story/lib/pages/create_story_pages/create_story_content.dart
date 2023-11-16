@@ -3,7 +3,10 @@ import 'error_message_holder.dart';
 
 class CreateStoryContent extends StatelessWidget {
   const CreateStoryContent(
-      {Key? key, required this.contentController, required this.title,required this.errorMessageHolder})
+      {Key? key,
+      required this.contentController,
+      required this.title,
+      required this.errorMessageHolder})
       : super(key: key);
   final TextEditingController contentController;
   final String title;
@@ -11,13 +14,13 @@ class CreateStoryContent extends StatelessWidget {
 
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
-      errorMessageHolder.errorMessage= "الرجاء إدخال نص القصة";
+      errorMessageHolder.errorMessage = "الرجاء إدخال نص القصة";
     } else if (!RegExp(
             r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
         .hasMatch(value)) {
-      errorMessageHolder.errorMessage= "القصة يجب أن تكون باللغة العربية فقط";
-    }else{
-      errorMessageHolder.errorMessage=null;
+      errorMessageHolder.errorMessage = "القصة يجب أن تكون باللغة العربية فقط";
+    } else {
+      errorMessageHolder.errorMessage = null;
     }
     return errorMessageHolder.errorMessage;
   }
@@ -45,52 +48,25 @@ class CreateStoryContent extends StatelessWidget {
           ),
         ),
         Container(
-            height: 50,
-            width: 350,
-            decoration: const BoxDecoration(
+          // height: 50,
+          // width: 350,
+          width: MediaQuery.of(context).size.width * 0.9,
+          height:
+              MediaQuery.of(context).size.height * 0.05,
+          decoration: const BoxDecoration(
               color: Color.fromARGB(123, 187, 222, 251),
-              borderRadius: BorderRadius.all(Radius.circular(10))
-            ),
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                title,
-                style: const TextStyle(fontSize: 18, color: Colors.black ),
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 18, color: Colors.black),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-
-        /*Form(
-          autovalidateMode: AutovalidateMode.always,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromARGB(255, 17, 53, 70)
-                      .withOpacity(0.5), // Shadow color
-                  spreadRadius: 2, // Spread radius
-                  blurRadius: 5, // Blur radius
-                  offset: Offset(0, 2), // Offset of the shadow
-                ),
-              ],
-            ),
-            child: TextFormField(
-              autovalidateMode: AutovalidateMode.always,
-              controller: contentController,
-              maxLines: null, // This allows multiple lines for long text
-              decoration: const InputDecoration(
-                labelText: "أطلق العنان لإبداعاتك!",
-                contentPadding: EdgeInsets.all(10),
-              ),
-              validator: validateTitle,
-            ),
-          ),
-        ),*/
+        ),
+        const SizedBox(
+          height: 20,
+        ),
 
         // Text Form Field
         Form(

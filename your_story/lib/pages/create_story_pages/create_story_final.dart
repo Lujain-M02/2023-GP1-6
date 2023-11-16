@@ -11,8 +11,9 @@ class CreateStoryFinal extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 50,
-            width: 350,
+          width: MediaQuery.of(context).size.width * 0.9,
+          height:
+              MediaQuery.of(context).size.height * 0.05,
             decoration: const BoxDecoration(
               color: Color.fromARGB(123, 187, 222, 251),
               borderRadius: BorderRadius.all(Radius.circular(10))
@@ -30,7 +31,7 @@ class CreateStoryFinal extends StatelessWidget {
           ),
           Container(
             //height: 50,
-            width: 350,
+          width: MediaQuery.of(context).size.width * 0.9,
             decoration: const BoxDecoration(
               color: Color.fromARGB(123, 187, 222, 251),
               borderRadius: BorderRadius.all(Radius.circular(10))
