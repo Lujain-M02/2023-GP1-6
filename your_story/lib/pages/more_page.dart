@@ -79,7 +79,7 @@ class MorePage extends StatelessWidget {
                   'تسجيل خروج',
                   () {
                     // Handle the sign-out logic
-                    ConfirmationDialog.show(context, "هل أنت متأكد؟", () async {
+                    ConfirmationDialog.show(context, "هل أنت متأكد من تسجيل الخروج؟", () async {
                       try {
                         await FirebaseAuth.instance.signOut();
                         Navigator.pushReplacement(
