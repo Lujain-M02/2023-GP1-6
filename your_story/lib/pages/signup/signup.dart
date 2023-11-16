@@ -258,9 +258,9 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                   ),
                                   Container(
-                                   padding: const EdgeInsets.all(10),
+                                   padding:  EdgeInsets.all(width*0.0234),
                                    child: Row(
-                                    children: <Widget>[
+                                    children: <Widget>[ 
                                       Checkbox(
                                        value: _isAgreedToTerms,
                                        onChanged: (newValue) {
@@ -269,27 +269,18 @@ class _SignUpState extends State<SignUp> {
                                          });
                                         },activeColor: const Color.fromARGB(255, 15, 26, 107)
                                       ),
-                                    //   const Text(   'أوافق على الشروط وسياسة الخصوصية',
-                                    //   style: TextStyle(
-                                    //   color: Colors.grey,
-                                    //   fontSize: 14,
-                                    //   ),
-                                    // ),
-                                    TextButton(
-        onPressed: () {
-          // Handle the terms and privacy policy action here
-          _showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
-        },
-        child: const Text(
-          'أوافق على الشروط وسياسة الخصوصية',
-          style: TextStyle(
-            color: Color.fromARGB(255, 36, 51, 109),
-            // color: _isAgreedToTerms
-            //     ? const Color.fromARGB(255, 15, 26, 107) // Green when agreed
-            //     : Colors.grey, // Gray when not agreed
-            fontSize: 14,
-                                     ) ), )
-                                   ],
+                                      TextButton(
+                                       onPressed: () {
+                                          // Handle the terms and privacy policy 
+                                         _showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
+                                        },
+                                      child: const Text(
+                                          'أوافق على الشروط وسياسة الخصوصية',
+                                          style: TextStyle(
+                                          color: Color.fromARGB(255, 36, 51, 109),
+                                          fontSize: 14,
+                                     ) ), ),
+                                  ],
                                   ),
                                 ),
                                 ]))),
@@ -319,8 +310,7 @@ class _SignUpState extends State<SignUp> {
                           child: Center(
                               child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  50), // Adjust the border radius as needed
+                              borderRadius: BorderRadius.circular(50), 
                               boxShadow: [
                                 BoxShadow(
                                   color: const Color.fromARGB(255, 27, 29, 117)
@@ -419,8 +409,7 @@ class _SignUpState extends State<SignUp> {
                                 backgroundColor: const Color.fromARGB(
                                     255, 15, 26, 107), // Background color
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      50), // Border radius
+                                  borderRadius: BorderRadius.circular(50), 
                                 ),
                               ),
                               child: const Text('اصنع الحساب'),
@@ -467,7 +456,7 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0)), // Adjust the radius as needed
+          top: Radius.circular(20.0)), 
     ),
     builder: (BuildContext context) {
       return FractionallySizedBox(
@@ -483,7 +472,6 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
                   fontSize: 20,
                 ),
               ),
-              // Add more widgets as needed
             ],
           ),
         ),
