@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_story/style.dart';
 
 //this class shows a message with two buttons متأكد و الغاء
 class ConfirmationDialog {
@@ -7,48 +8,51 @@ class ConfirmationDialog {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            title: Text(alertMessage),
+            backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+            actions: [
+              OutlinedButton(
+                onPressed: () {
+                  onConfirm(); //this function received as class parameter
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: YourStoryStyle.titleColor,
+                  foregroundColor: Colors.white,
+                  side: BorderSide(
+                    color: YourStoryStyle.titleColor,
+                    width: 2,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  // Close the dialog
+                  Navigator.of(context).pop();
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: YourStoryStyle.titleColor,
+                  side: BorderSide(
+                    color: YourStoryStyle.titleColor,
+                    width: 2,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+              ),
+            ],
           ),
-          title: Text(alertMessage),
-          backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                onConfirm(); //this function received as class parameter
-              },
-              style: OutlinedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 5, 34, 57),
-                foregroundColor: Colors.white,
-                side: const BorderSide(
-                  color: Color.fromARGB(255, 5, 34, 57),
-                  width: 2,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              child: const Text("متأكد", style: TextStyle(fontSize: 20)),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                // Close the dialog
-                Navigator.of(context).pop();
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 5, 34, 57),
-                side: const BorderSide(
-                  color: Color.fromARGB(255, 5, 34, 57),
-                  width: 2,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              child: const Text("الغاء", style: TextStyle(fontSize: 20)),
-            ),
-          ],
         );
       },
     );
@@ -61,33 +65,35 @@ class Alert {
     showDialog(
       context: context,
       builder: (context) {
-        return Center(
-          child: AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(content),
-                const SizedBox(height: 20), // Adjust as needed for spacing
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(
-                        255, 5, 34, 57), // Button background color
-                  ),
-                  child: const Text(
-                    "حسنا",
-                    style: TextStyle(
-                      color: Colors.white, // Button text color
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Center(
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(content),
+                  const SizedBox(height: 20), // Adjust as needed for spacing
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: YourStoryStyle.titleColor, // Button background color
+                    ),
+                    child: const Text(
+                      "حسنا",
+                      style: TextStyle(
+                        color: Colors.white, // Button text color
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
