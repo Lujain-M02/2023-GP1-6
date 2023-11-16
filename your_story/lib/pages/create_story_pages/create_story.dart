@@ -202,16 +202,18 @@ class _CreateStory extends State<CreateStory> {
                             () {
                               if (_activeStepIndex == 0) {
                                 if (storyTitel.text == "") {
-                                  Alert.show(context,
-                                      "الرجاء إدخال العنوان" // Customize the button text color
-                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                      content: "الرجاء إدخال العنوان",
+                                    ),
+                                  );
                                 } else if (errorMessageHolder.errorMessage !=
                                     null) {
-                                  Alert.show(
-                                      context,
-                                      errorMessageHolder
-                                          .errorMessage! // Customize the button text color
-                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                      content: errorMessageHolder.errorMessage!,
+                                    ),
+                                  );
                                 } else {
                                   // Check if it isn't the last step
                                   setState(
@@ -225,16 +227,18 @@ class _CreateStory extends State<CreateStory> {
                                 }
                               } else if (_activeStepIndex == 1) {
                                 if (storyContent.text == "") {
-                                  Alert.show(context,
-                                      "الرجاء إدخال القصة" // Customize the button text color
-                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                      content: "الرجاء إدخال القصة",
+                                    ),
+                                  );
                                 } else if (errorMessageHolder.errorMessage !=
                                     null) {
-                                  Alert.show(
-                                      context,
-                                      errorMessageHolder
-                                          .errorMessage! // Customize the button text color
-                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                      content: errorMessageHolder.errorMessage!,
+                                    ),
+                                  );
                                 } else {
                                   // Check if it isn't the last step
                                   setState(
