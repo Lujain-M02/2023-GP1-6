@@ -66,82 +66,76 @@ class _CreateStory extends State<CreateStory> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-          //backgroundColor: const Color.fromARGB(255, 238, 245, 255),
-          body: Container(
-            // decoration: const BoxDecoration(
-            //     image: DecorationImage(
-            //         image: AssetImage('assets/background3.png'),
-            //         fit: BoxFit.cover)),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          ConfirmationDialog.show(
-                              context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
-                            // Perform your action on confirmation (e.g., navigate to MainPage)
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MainPage(),
-                              ),
-                            );
-                          });
-                        },
-                      ),
-                      const Text(
-                        "اصنع قصتك",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      const SizedBox(
-                        height: 1,
-                        width: 40,
-                      )
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 0.5,
-                    color: Color.fromARGB(255, 5, 34, 57),
-                  ),
-                  Flexible(
-                    child: Theme(
-                      //this theme make the stepper background transparent
-                      data: ThemeData(canvasColor: Colors.transparent),
-                      child: Stepper(
-                        type: StepperType.horizontal,
-                        elevation: 0,
-                        //this if statment for the circles colors
-                        connectorColor:
-                            MaterialStateProperty.resolveWith((states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return YourStoryStyle.titleColor;
-                          } else if (states.contains(MaterialState.disabled)) {
-                            return const Color.fromARGB(255, 187, 222, 251);
-                          } else {
-                            return Colors.grey; // Use the default color.
-                          }
-                        }),
-                        // This control builder is for the buttons it return empty size box because we used other buttons
-                        controlsBuilder: (context, controls) {
-                          return const SizedBox(
-                            height: 0,
-                            width: 0,
-                          );
-                        },
-                        // this 3 properties is for stepper widget
-                        //onStepTapped: (step) =>
-                        //setState(() => _activeStepIndex = step),
-                        currentStep: _activeStepIndex,
-                        steps: stepList(),
-                      ),
+          appBar: AppBar(
+            leading: IconButton(
+              color: Colors.black,
+              iconSize: 27,
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                ConfirmationDialog.show(
+                    context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainPage(),
+                    ),
+                  );
+                });
+              },
+            ),
+            title: const Text(
+              "اصنع قصتك",
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black), 
+            ),
+            centerTitle: true, 
+            actions: const <Widget>[
+              SizedBox(
+                width:
+                    40, 
+              )
+            ],
+            backgroundColor:
+                Colors.white, 
+          ),
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  child: Theme(
+                    //this theme make the stepper background transparent
+                    data: ThemeData(canvasColor: Colors.transparent),
+                    child: Stepper(
+                      type: StepperType.horizontal,
+                      elevation: 0,
+                      //this if statment for the circles colors
+                      connectorColor:
+                          MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return YourStoryStyle.titleColor;
+                        } else if (states.contains(MaterialState.disabled)) {
+                          return const Color.fromARGB(255, 187, 222, 251);
+                        } else {
+                          return Colors.grey; // Use the default color.
+                        }
+                      }),
+                      // This control builder is for the buttons it return empty size box because we used other buttons
+                      controlsBuilder: (context, controls) {
+                        return const SizedBox(
+                          height: 0,
+                          width: 0,
+                        );
+                      },
+                      // this 3 properties is for stepper widget
+                      //onStepTapped: (step) =>
+                      //setState(() => _activeStepIndex = step),
+                      currentStep: _activeStepIndex,
+                      steps: stepList(),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           //this bar is for the buttons to move between steps on press() is the action

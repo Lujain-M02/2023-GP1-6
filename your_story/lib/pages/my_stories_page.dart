@@ -56,6 +56,17 @@ class _MyStories extends State<MyStories> {
       child: Directionality(
           textDirection: TextDirection.rtl,
           child:Scaffold(
+            appBar: AppBar(
+            title: const Text(
+              "قصصي",
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.black), 
+            ),
+            centerTitle: true, 
+            backgroundColor:
+                Colors.white, 
+          ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               // Navigate to the CreateStory page when the FAB is pressed
