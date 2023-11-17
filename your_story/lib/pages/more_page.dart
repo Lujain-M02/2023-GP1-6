@@ -138,14 +138,16 @@ class SettingsScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            'معلومات الحساب',
-            style: TextStyle(
-              color: Colors.black, // Set the AppBar title text color to black
+            backgroundColor: Colors.white,
+            title: Text(
+              'معلومات الحساب',
+              style: TextStyle(
+                color: Colors.black, // Set the AppBar title text color to black
+              ),
             ),
-          ),
-        ),
+            leading: BackButton(
+              color: Colors.black,
+            )),
         body:
             ProfileUpdateForm(), // Directly embedding the ProfileUpdateForm here
       ),
