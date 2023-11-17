@@ -247,10 +247,10 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          customListTile(Icons.person, "الأسم",
+          customListTile(Icons.person, "الإسم",
               username), // Example usage of customListTile
           // ... Add more widgets as needed
-          customListTile(Icons.email, "الإيميل", useremail)
+          customListTile(Icons.email, "البريد الإلكتروني", useremail)
         ],
       ),
     );
