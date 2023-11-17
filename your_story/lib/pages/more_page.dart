@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
@@ -79,7 +80,8 @@ class MorePage extends StatelessWidget {
                   'تسجيل خروج',
                   () {
                     // Handle the sign-out logic
-                    ConfirmationDialog.show(context, "هل أنت متأكد من تسجيل الخروج؟", () async {
+                    ConfirmationDialog.show(
+                        context, "هل أنت متأكد من تسجيل الخروج؟", () async {
                       try {
                         await FirebaseAuth.instance.signOut();
                         Navigator.pushReplacement(
@@ -181,64 +183,66 @@ class ProfileUpdateForm extends StatefulWidget {
   _ProfileUpdateFormState createState() => _ProfileUpdateFormState();
 }
 
+//State<ProfileUpdateForm>
 class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
-  final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _email = '';
+  // final _formKey = GlobalKey<FormState>();
 
-  void _saveProfile() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState?.save();
-    }
+  final user =
+      FirebaseAuth.instance.currentUser!.uid; //retrieve signed in user ID
+  String username = "";
+  String useremail = "";
+  getUserInfo() async {
+    DocumentSnapshot<Map<String, dynamic>> ds =
+        await FirebaseFirestore.instance.collection("User").doc(user).get();
+
+    Map<String, dynamic>? userData = ds.data();
+
+    String email = userData?['email'];
+    String name = userData?['name'];
+    // print('$email');
+    // print('$name');
+    setState(() {
+      //  username = name;
+      useremail = email;
+
+      //print('$username');
+    });
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+/*
+  Widget d(BuildContext context) {
+    // TODO: implement build
+    getUserInfo();
+
+    throw UnimplementedError();
+  }*/
+
+  //final TextEditingController c = TextEditingController();
+
+  Widget customListTile(IconData icon, String title, String subtitle) {
+    return ListTile(
+      leading: Icon(icon, color: Color.fromARGB(255, 22, 22, 22)),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      // Add other properties and styling as needed
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Implement the actual UI of this widget
     return Scaffold(
-      body: Stack(
+      body: ListView(
         children: <Widget>[
-          // Background for the entire screen
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/background3.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            padding: EdgeInsets.only(top: 30),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image:
-                            AssetImage('assets/your_form_background_image.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(labelText: 'الاسم'),
-                          enabled: false,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(labelText: 'الايميل'),
-                          enabled: false,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          customListTile(Icons.person, "الاسم",
+              username), // Example usage of customListTile
+          // ... Add more widgets as needed
+          customListTile(Icons.email, "الايميل", useremail)
         ],
       ),
     );
