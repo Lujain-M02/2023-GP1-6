@@ -202,7 +202,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
     // print('$email');
     // print('$name');
     setState(() {
-      //  username = name;
+      username = name;
       useremail = email;
 
       //print('$username');
