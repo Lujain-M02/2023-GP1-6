@@ -9,20 +9,6 @@ import 'package:your_story/pages/login%20page/login.dart';
 import '../More_Page/more_content.dart';
 import '../More_Page/more_page.dart';
 
-// class create_account extends StatelessWidget {
-//   const create_account({Key? key})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Directionality(
-//       textDirection: TextDirection.rtl,
-//       child: Scaffold(
-
-//       ),
-//     );
-//   }
-// }
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -33,7 +19,6 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  //final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController1 = TextEditingController();
@@ -274,8 +259,6 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       TextButton(
                                        onPressed: () {
-                                          // Handle the terms and privacy policy 
-                                         //_showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
                                          showCustomModalBottomSheet(context, termsAndCondition());
                                         },
                                       child: const Text(
@@ -288,23 +271,6 @@ class _SignUpState extends State<SignUp> {
                                   ),
                                 ),
                                 ]))),
-
-                        //autovalidateMode: AutovalidateMode.onUserInteraction,
-                        //
-                        // child: ListView(
-                        // children: <Widget>[
-                        // TextFormField(
-                        //   controller: _usernameController,
-                        //   decoration: InputDecoration(labelText: 'اسم المستخدم',
-                        //   prefixIcon: Icon(Icons.person_outlined),
-                        //   ),
-                        //   // validator: (value) {
-                        //   //   if (value.isEmpty) {
-                        //   //     return 'Please enter a username';
-                        //   //   }
-                        //   //   return null;
-                        //   // },
-                        // ),
 
                         SizedBox(
                           height: height * 0.01,
@@ -336,20 +302,11 @@ class _SignUpState extends State<SignUp> {
                                        return;
                                     }
                                 if (_formKey.currentState!.validate()) {
-                                  //   Form is valid, you can process the data here
-                                  //String username = _usernameController.text;
                                   String fullName =
                                       _fullNameController.text.trim();
                                   String email = _emailController.text.trim();
                                   String password =
                                       _passwordController1.text.trim();
-
-                                  // You can save or process the data as needed
-                                  // For now, just print it
-                                  //print('Username: $username');
-                                  // print('Full Name: $fullName');
-                                  // print('Email: $email');
-                                  // print('Password: $password');
 
                                   try {
                                     await FirebaseAuth.instance
@@ -452,34 +409,3 @@ class _SignUpState extends State<SignUp> {
     ));
   }
 }
-// void _showCustomModalBottomSheet(BuildContext context, String text) {
-//   // final width = MediaQuery.of(context).size.width;
-//   //   final height = MediaQuery.of(context).size.height;
-//   showModalBottomSheet(
-//     context: context,
-//     isScrollControlled: true,
-//     shape: const RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(
-//           top: Radius.circular(20.0)), 
-//     ),
-//     builder: (BuildContext context) {
-//       return FractionallySizedBox(
-//         heightFactor: 0.8,
-//         child: Container(
-//           padding: const EdgeInsets.all(16),
-//           child: Column(
-//             children: <Widget>[
-//               Text(
-//                 text,
-//                 style: const TextStyle(
-//                   color: Colors.black,
-//                   fontSize: 20,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
