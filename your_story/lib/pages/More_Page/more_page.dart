@@ -108,8 +108,8 @@ class MorePage extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: Icon(icon,
-              color:
-                  Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
+              color: YourStoryStyle.titleColor),
+                  //Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(
