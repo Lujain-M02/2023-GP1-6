@@ -191,14 +191,29 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       obscureText: isPasswordObscured1,
                                       validator: (value) {
-                                        RegExp regex = RegExp(
-                                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])'); //Min 1 uppercase, 1 lowercase and 1 numeric number
+                                        RegExp regexCapital = RegExp(
+                                            r'(?=.*?[A-Z])'); //Min 1 uppercase, 1 lowercase and 1 numeric number
+                                        RegExp regexSmall = RegExp(
+                                            r'(?=.*?[a-z])');
+                                        RegExp regexdigit = RegExp(
+                                            r'(?=.*?\d)');   
+                                        RegExp regexSpecialChar = RegExp(
+                                            r'(?=.*?[@#$%^&+=])');      
+
                                         if (value!.isEmpty ||
                                             _passwordController1.text.trim() ==
                                                 "") {
                                           return "الحقل مطلوب";
-                                        } else if (!regex.hasMatch(value)) {
-                                          return "كلمة المرور يجب ان تحتوي على حرف كبير وصغير باللغة \n الانجليزية ورقم";
+                                        } else if (!regexCapital.hasMatch(value)) {
+                                          return "كلمة المرور يجب أن تحتوي على حرف كبير";
+                                          }else if (!regexdigit.hasMatch(value)) {
+                                          return "كلمة المرور يجب أن تحتوي على رقم";
+                                          } else if (!regexSmall.hasMatch(value)) {
+                                          return "كلمة المرور يجب أن تحتوي على حرف صغير";
+                                        } else if (!regexSpecialChar.hasMatch(value)) {
+                                          return "كلمة المرور يجب ان تحتوي على رمز خاص";
+                                         } else if (value==_emailController.text) {
+                                          return "كلمة المرور لا يمكن أن تشابه البريد الالكتروني"; 
                                         } else if (value.length < 8) {
                                           return "كلمة المرور يجب أن تكون ثمانية خانات على الأقل";
                                         }
