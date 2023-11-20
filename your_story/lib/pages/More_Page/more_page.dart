@@ -5,6 +5,7 @@ import 'package:your_story/pages/welcome_page.dart';
 import 'package:your_story/style.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'user_info.dart';
+import 'more_content.dart';
 
 class MorePage extends StatelessWidget {
   @override
@@ -45,28 +46,28 @@ class MorePage extends StatelessWidget {
                   FontAwesomeIcons.circleQuestion,
                   'عن تطبيق قصتك',
                   () {
-                    _showCustomModalBottomSheet(context, 'عن تطبيق قصتك');
+                    _showCustomModalBottomSheet(context, aboutAppContent());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.envelope,
                   'تواصل معنا',
                   () {
-                    _showCustomModalBottomSheet(context, 'تواصل معنا');
+                    _showCustomModalBottomSheet(context, Text( 'تواصل معنا'));
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.file,
                   'الشروط والأحكام',
                   () {
-                    _showCustomModalBottomSheet(context, 'الشروط والأحكام');
+                    _showCustomModalBottomSheet(context, Text('الشروط والأحكام'));
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.penToSquare,
                   'سياية الخصوصية',
                   () {
-                    _showCustomModalBottomSheet(context, 'سياسة الخصوصية');
+                    _showCustomModalBottomSheet(context, Text('سياسة الخصوصية'));
                   },
                 ),
                 customListTile(
@@ -126,7 +127,7 @@ class MorePage extends StatelessWidget {
 }
 
 
-void _showCustomModalBottomSheet(BuildContext context, String text) {
+void _showCustomModalBottomSheet(BuildContext context, Widget child) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -139,18 +140,19 @@ void _showCustomModalBottomSheet(BuildContext context, String text) {
         heightFactor: 0.8,
         child: Container(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: <Widget>[
-              Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
-                ),
-              ),
-              // Add more widgets as needed
-            ],
-          ),
+          child: child
+          // Column(
+          //   children: <Widget>[
+          //     Text(
+          //       text,
+          //       style: const TextStyle(
+          //         color: Colors.blue,
+          //         fontSize: 20,
+          //       ),
+          //     ),
+          //     // Add more widgets as needed
+          //   ],
+          // ),
         ),
       );
     },
