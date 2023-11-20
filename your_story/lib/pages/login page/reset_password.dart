@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/style.dart';
 
@@ -59,51 +60,78 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: const Text(
-              'اعادة تعيين كلمة المرور',
-              style: TextStyle(
-                color: Colors.black, // Set the AppBar title text color to black
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('assets/resetPassBG.png'),
+            fit: BoxFit.cover,
+          )),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 300),
+                    const Text(
+                      "إعادة تعيين كلمة المرور:",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    const Text(
+                        "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بارسال ايميل تعيين كلمة المرور اليك."),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: _validateEmail,
+                      decoration: const InputDecoration(
+                        labelText: "البريد الإلكتروني",
+                        prefixIcon: Icon( FontAwesomeIcons.envelope,)
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            YourStoryStyle.titleColor),
+                      ),
+                      onPressed: _isResettingPassword ? null : _resetPassword,
+                      child: _isResettingPassword
+                          ? const CircularProgressIndicator()
+                          : const Text("إرسال"),
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: YourStoryStyle
+                                      .titleColor), // Set border color and width
+                            ),
+                          )),
+                      onPressed: () {
+                            Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "العودة لتسجيل الدخول",
+                        style: TextStyle(color: YourStoryStyle.titleColor),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      _errorMessage,
+                      style: const TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            leading: const BackButton(
-              color: Colors.black,
-            )),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: _validateEmail,
-                  decoration: const InputDecoration(
-                    labelText: "البريد الإلكتروني",
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(YourStoryStyle.titleColor),
-                  ),
-                  onPressed: _isResettingPassword ? null : _resetPassword,
-                  child: _isResettingPassword
-                      ? const CircularProgressIndicator()
-                      : const Text("إرسال"),
-                ),
-                const SizedBox(height: 16.0),
-                Text(
-                  _errorMessage,
-                  style: const TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
-              ],
             ),
           ),
         ),
