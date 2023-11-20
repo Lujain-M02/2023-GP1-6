@@ -9,7 +9,6 @@ import 'package:your_story/pages/login%20page/login.dart';
 import '../More_Page/more_content.dart';
 import '../More_Page/more_page.dart';
 
-
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -26,7 +25,6 @@ class _SignUpState extends State<SignUp> {
   bool isPasswordObscured1 = true;
   bool isPasswordObscured2 = true;
   bool _isAgreedToTerms = false;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +94,6 @@ class _SignUpState extends State<SignUp> {
                         SizedBox(
                           height: height * 0.003,
                         ),
-
                         FadeInUp(
                             duration: const Duration(milliseconds: 1700),
                             child: Container(
@@ -104,8 +101,8 @@ class _SignUpState extends State<SignUp> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
                                     border: Border.all(
-                                        color:
-                                            const Color.fromARGB(75, 135, 145, 198)),
+                                        color: const Color.fromARGB(
+                                            75, 135, 145, 198)),
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Color.fromRGBO(
@@ -173,7 +170,8 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController1,
                                       decoration: InputDecoration(
                                         labelText: 'كلمة المرور',
-                                        prefixIcon: const Icon(FontAwesomeIcons.lock),
+                                        prefixIcon:
+                                            const Icon(FontAwesomeIcons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured1
@@ -191,29 +189,34 @@ class _SignUpState extends State<SignUp> {
                                       ),
                                       obscureText: isPasswordObscured1,
                                       validator: (value) {
-                                        RegExp regexCapital = RegExp(
-                                            r'(?=.*?[A-Z])'); //Min 1 uppercase, 1 lowercase and 1 numeric number
-                                        RegExp regexSmall = RegExp(
-                                            r'(?=.*?[a-z])');
-                                        RegExp regexdigit = RegExp(
-                                            r'(?=.*?\d)');   
-                                        RegExp regexSpecialChar = RegExp(
-                                            r'(?=.*?[@#$%^&+=])');      
+                                        RegExp regexCapital =
+                                            RegExp(r'(?=.*?[A-Z])');
+                                        RegExp regexSmall =
+                                            RegExp(r'(?=.*?[a-z])');
+                                        RegExp regexdigit =
+                                            RegExp(r'(?=.*?\d)');
+                                        RegExp regexSpecialChar =
+                                            RegExp(r'(?=.*?[@#$%^&+=])');
 
                                         if (value!.isEmpty ||
                                             _passwordController1.text.trim() ==
                                                 "") {
                                           return "الحقل مطلوب";
-                                        } else if (!regexCapital.hasMatch(value)) {
+                                        } else if (!regexCapital
+                                            .hasMatch(value)) {
                                           return "كلمة المرور يجب أن تحتوي على حرف كبير";
-                                          }else if (!regexdigit.hasMatch(value)) {
+                                        } else if (!regexdigit
+                                            .hasMatch(value)) {
                                           return "كلمة المرور يجب أن تحتوي على رقم";
-                                          } else if (!regexSmall.hasMatch(value)) {
+                                        } else if (!regexSmall
+                                            .hasMatch(value)) {
                                           return "كلمة المرور يجب أن تحتوي على حرف صغير";
-                                        } else if (!regexSpecialChar.hasMatch(value)) {
+                                        } else if (!regexSpecialChar
+                                            .hasMatch(value)) {
                                           return "كلمة المرور يجب ان تحتوي على رمز خاص";
-                                         } else if (value==_emailController.text) {
-                                          return "كلمة المرور لا يمكن أن تشابه البريد الالكتروني"; 
+                                        } else if (value ==
+                                            _emailController.text) {
+                                          return "كلمة المرور لا يمكن أن تشابه البريد الالكتروني";
                                         } else if (value.length < 8) {
                                           return "كلمة المرور يجب أن تكون ثمانية خانات على الأقل";
                                         }
@@ -229,7 +232,8 @@ class _SignUpState extends State<SignUp> {
                                       controller: _passwordController2,
                                       decoration: InputDecoration(
                                         labelText: 'ادخل كلمة المرور مرة اخرى',
-                                        prefixIcon: const Icon(FontAwesomeIcons.lock),
+                                        prefixIcon:
+                                            const Icon(FontAwesomeIcons.lock),
                                         suffixIcon: IconButton(
                                           icon: Icon(
                                             isPasswordObscured2
@@ -261,32 +265,35 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                   ),
                                   Container(
-                                   padding:  EdgeInsets.all(width*0.0234),
-                                   child: Row(
-                                    children: <Widget>[ 
-                                      Checkbox(
-                                       value: _isAgreedToTerms,
-                                       onChanged: (newValue) {
-                                         setState(() {
-                                         _isAgreedToTerms = newValue!;
-                                         });
-                                        },activeColor: const Color.fromARGB(255, 15, 26, 107)
-                                      ),
-                                      TextButton(
-                                       onPressed: () {
-                                         showCustomModalBottomSheet(context, termsAndCondition());
-                                        },
-                                      child: const Text(
-                                          'أوافق على الشروط وسياسة الخصوصية',
-                                          style: TextStyle(
-                                          color: Color.fromARGB(255, 36, 51, 109),
-                                          fontSize: 14,
-                                     ) ), ),
-                                  ],
+                                    padding: EdgeInsets.all(width * 0.0234),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Checkbox(
+                                            value: _isAgreedToTerms,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                _isAgreedToTerms = newValue!;
+                                              });
+                                            },
+                                            activeColor: const Color.fromARGB(
+                                                255, 15, 26, 107)),
+                                        TextButton(
+                                          onPressed: () {
+                                            showCustomModalBottomSheet(
+                                                context, termsAndCondition());
+                                          },
+                                          child: const Text(
+                                              'أوافق على الشروط وسياسة الخصوصية',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 36, 51, 109),
+                                                fontSize: 14,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
                                 ]))),
-
                         SizedBox(
                           height: height * 0.01,
                         ),
@@ -295,7 +302,7 @@ class _SignUpState extends State<SignUp> {
                           child: Center(
                               child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50), 
+                              borderRadius: BorderRadius.circular(50),
                               boxShadow: [
                                 BoxShadow(
                                   color: const Color.fromARGB(255, 27, 29, 117)
@@ -308,14 +315,15 @@ class _SignUpState extends State<SignUp> {
                             ),
                             child: ElevatedButton(
                               onPressed: () async {
-                                if (!_isAgreedToTerms) {    
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                       CustomSnackBar(
-                                         content: 'يجب أن توافق على الشروط وسياسة الخصوصية أولاً.',
-                                          ),
-                                        );
-                                       return;
-                                    }
+                                if (!_isAgreedToTerms) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    CustomSnackBar(
+                                      content:
+                                          'يجب أن توافق على الشروط وسياسة الخصوصية أولاً.',
+                                    ),
+                                  );
+                                  return;
+                                }
                                 if (_formKey.currentState!.validate()) {
                                   String fullName =
                                       _fullNameController.text.trim();
@@ -385,7 +393,7 @@ class _SignUpState extends State<SignUp> {
                                 backgroundColor: const Color.fromARGB(
                                     255, 15, 26, 107), // Background color
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50), 
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
                               ),
                               child: const Text('اصنع الحساب'),
