@@ -7,7 +7,6 @@ import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 import '../More_Page/more_content.dart';
-import '../More_Page/more_page.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
