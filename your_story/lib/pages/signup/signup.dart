@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/login%20page/login.dart';
+import '../More_Page/more_content.dart';
+import '../More_Page/more_page.dart';
 
 // class create_account extends StatelessWidget {
 //   const create_account({Key? key})
@@ -273,7 +275,8 @@ class _SignUpState extends State<SignUp> {
                                       TextButton(
                                        onPressed: () {
                                           // Handle the terms and privacy policy 
-                                         _showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
+                                         //_showCustomModalBottomSheet(context, 'الشروط و سياسة الخصوصية');
+                                         showCustomModalBottomSheet(context, termsAndCondition());
                                         },
                                       child: const Text(
                                           'أوافق على الشروط وسياسة الخصوصية',
@@ -449,34 +452,34 @@ class _SignUpState extends State<SignUp> {
     ));
   }
 }
-void _showCustomModalBottomSheet(BuildContext context, String text) {
-  // final width = MediaQuery.of(context).size.width;
-  //   final height = MediaQuery.of(context).size.height;
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0)), 
-    ),
-    builder: (BuildContext context) {
-      return FractionallySizedBox(
-        heightFactor: 0.8,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: <Widget>[
-              Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
+// void _showCustomModalBottomSheet(BuildContext context, String text) {
+//   // final width = MediaQuery.of(context).size.width;
+//   //   final height = MediaQuery.of(context).size.height;
+//   showModalBottomSheet(
+//     context: context,
+//     isScrollControlled: true,
+//     shape: const RoundedRectangleBorder(
+//       borderRadius: BorderRadius.vertical(
+//           top: Radius.circular(20.0)), 
+//     ),
+//     builder: (BuildContext context) {
+//       return FractionallySizedBox(
+//         heightFactor: 0.8,
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           child: Column(
+//             children: <Widget>[
+//               Text(
+//                 text,
+//                 style: const TextStyle(
+//                   color: Colors.black,
+//                   fontSize: 20,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }

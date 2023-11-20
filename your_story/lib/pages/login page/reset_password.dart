@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:your_story/alerts.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   @override
@@ -34,12 +35,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         await FirebaseAuth.instance.sendPasswordResetEmail(
           email: _emailController.text,
         );
-
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('تم إرسال رسالة إعادة تعيين  كلمة المرور إلى بريدك الإلكتروني'),
-          ),
-        );
+                                    CustomSnackBar(
+                                      content: 'تم إرسال رسالة إعادة تعيين  كلمة المرور إلى بريدك الإلكتروني',
+                                    ),
+                                  );
       } catch (error) {
         setState(() {
           _errorMessage = error.toString();

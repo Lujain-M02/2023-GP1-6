@@ -46,28 +46,28 @@ class MorePage extends StatelessWidget {
                   FontAwesomeIcons.circleQuestion,
                   'عن تطبيق قصتك',
                   () {
-                    _showCustomModalBottomSheet(context, aboutAppContent());
+                    showCustomModalBottomSheet(context, aboutAppContent());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.envelope,
                   'تواصل معنا',
                   () {
-                    _showCustomModalBottomSheet(context, contactUs());
+                    showCustomModalBottomSheet(context, contactUs());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.file,
                   'الشروط والأحكام',
                   () {
-                    _showCustomModalBottomSheet(context, termsAndCondition());
+                    showCustomModalBottomSheet(context, termsAndCondition());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.penToSquare,
                   'سياسة الخصوصية',
                   () {
-                    _showCustomModalBottomSheet(context, privacyPolicy());
+                    showCustomModalBottomSheet(context, privacyPolicy());
                   },
                 ),
                 customListTile(
@@ -127,7 +127,7 @@ class MorePage extends StatelessWidget {
 }
 
 
-void _showCustomModalBottomSheet(BuildContext context, Widget child) {
+void showCustomModalBottomSheet(BuildContext context, Widget child) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
