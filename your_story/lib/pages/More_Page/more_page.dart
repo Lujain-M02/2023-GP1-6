@@ -125,36 +125,3 @@ class MorePage extends StatelessWidget {
     );
   }
 }
-
-
-void showCustomModalBottomSheet(BuildContext context, Widget child) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20.0)), // Adjust the radius as needed
-    ),
-    builder: (BuildContext context) {
-      return FractionallySizedBox(
-        heightFactor: 0.8,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: child
-          // Column(
-          //   children: <Widget>[
-          //     Text(
-          //       text,
-          //       style: const TextStyle(
-          //         color: Colors.blue,
-          //         fontSize: 20,
-          //       ),
-          //     ),
-          //     // Add more widgets as needed
-          //   ],
-          // ),
-        ),
-      );
-    },
-  );
-}
