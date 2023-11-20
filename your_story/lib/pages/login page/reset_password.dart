@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/alerts.dart';
+import 'package:your_story/style.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   @override
@@ -36,10 +37,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           email: _emailController.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
-                                    CustomSnackBar(
-                                      content: 'تم إرسال رسالة إعادة تعيين  كلمة المرور إلى بريدك الإلكتروني',
-                                    ),
-                                  );
+          CustomSnackBar(
+            content:
+                'تم إرسال رسالة إعادة تعيين  كلمة المرور إلى بريدك الإلكتروني',
+          ),
+        );
       } catch (error) {
         setState(() {
           _errorMessage = error.toString();
@@ -54,40 +56,55 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('إعادة تعيين كلمة المرور'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                validator: _validateEmail, 
-                decoration: const InputDecoration(
-                  labelText: "البريد الإلكتروني",
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: const Text(
+              'اعادة تعيين كلمة المرور',
+              style: TextStyle(
+                color: Colors.black, // Set the AppBar title text color to black
+              ),
+            ),
+            leading: const BackButton(
+              color: Colors.black,
+            )),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _validateEmail,
+                  decoration: const InputDecoration(
+                    labelText: "البريد الإلكتروني",
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _isResettingPassword ? null : _resetPassword,
-                child: _isResettingPassword
-                    ? const CircularProgressIndicator()
-                    : const Text("إرسال"),
-              ),
-              const SizedBox(height: 16.0),
-              Text(
-                _errorMessage,
-                style: const TextStyle(
-                  color: Colors.red,
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(YourStoryStyle.titleColor),
+                  ),
+                  onPressed: _isResettingPassword ? null : _resetPassword,
+                  child: _isResettingPassword
+                      ? const CircularProgressIndicator()
+                      : const Text("إرسال"),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                Text(
+                  _errorMessage,
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

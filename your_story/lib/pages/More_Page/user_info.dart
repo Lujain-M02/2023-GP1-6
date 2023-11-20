@@ -12,13 +12,13 @@ class SettingsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
-            title: Text(
+            title: const Text(
               'معلومات الحساب',
               style: TextStyle(
                 color: Colors.black, // Set the AppBar title text color to black
               ),
             ),
-            leading: BackButton(
+            leading: const BackButton(
               color: Colors.black,
             )),
         body:
