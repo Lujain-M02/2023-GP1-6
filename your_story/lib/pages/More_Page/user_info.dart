@@ -2,6 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
+
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: Text(
+              'معلومات الحساب',
+              style: TextStyle(
+                color: Colors.black, // Set the AppBar title text color to black
+              ),
+            ),
+            leading: BackButton(
+              color: Colors.black,
+            )),
+        body:
+            ProfileUpdateForm(), // Directly embedding the ProfileUpdateForm here
+      ),
+    );
+  }
+}
+
 class ProfileUpdateForm extends StatefulWidget {
   @override
   _ProfileUpdateFormState createState() => _ProfileUpdateFormState();

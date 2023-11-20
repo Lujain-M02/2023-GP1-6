@@ -125,29 +125,6 @@ class MorePage extends StatelessWidget {
   }
 }
 
-class SettingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              'معلومات الحساب',
-              style: TextStyle(
-                color: Colors.black, // Set the AppBar title text color to black
-              ),
-            ),
-            leading: BackButton(
-              color: Colors.black,
-            )),
-        body:
-            ProfileUpdateForm(), // Directly embedding the ProfileUpdateForm here
-      ),
-    );
-  }
-}
 
 void _showCustomModalBottomSheet(BuildContext context, String text) {
   showModalBottomSheet(
