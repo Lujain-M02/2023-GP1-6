@@ -102,6 +102,16 @@ class _MyStories extends State<MyStories> {
                   ),
                   child: Center(
                     child: ListTile(
+                          onTap: () {
+                            showCustomModalBottomSheet(context, Directionality(
+                              textDirection:TextDirection.rtl ,
+                              child: Column(children: [
+                                Center(child: Text(stories[i]['title'],style: const TextStyle(fontSize: 25),)),
+                                const SizedBox(height: 8,),
+                                Text(stories[i]['content'])
+                              ],),
+                            ));
+                          },
                           leading: Image.asset("assets/white.png") ,
                           title: Text("${stories[i]['title']}",style: const TextStyle(fontSize: 25),) ,
                           subtitle: Text("${stories[i]['content']}" ,style: const TextStyle(fontSize: 20),maxLines: 1,),

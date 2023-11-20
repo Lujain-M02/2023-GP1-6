@@ -140,9 +140,11 @@ void showCustomModalBottomSheet(BuildContext context, Widget child) {
     builder: (BuildContext context) {
       return FractionallySizedBox(
         heightFactor: 0.8,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: child
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: child
+          ),
         ),
       );
     },
