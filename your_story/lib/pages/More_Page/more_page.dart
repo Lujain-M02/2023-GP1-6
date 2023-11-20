@@ -53,21 +53,21 @@ class MorePage extends StatelessWidget {
                   FontAwesomeIcons.envelope,
                   'تواصل معنا',
                   () {
-                    _showCustomModalBottomSheet(context, Text( 'تواصل معنا'));
+                    _showCustomModalBottomSheet(context, contactUs());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.file,
                   'الشروط والأحكام',
                   () {
-                    _showCustomModalBottomSheet(context, Text('الشروط والأحكام'));
+                    _showCustomModalBottomSheet(context, termsAndCondition());
                   },
                 ),
                 customListTile(
                   FontAwesomeIcons.penToSquare,
-                  'سياية الخصوصية',
+                  'سياسة الخصوصية',
                   () {
-                    _showCustomModalBottomSheet(context, Text('سياسة الخصوصية'));
+                    _showCustomModalBottomSheet(context, privacyPolicy());
                   },
                 ),
                 customListTile(
