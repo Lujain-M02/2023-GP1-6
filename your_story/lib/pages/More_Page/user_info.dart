@@ -38,15 +38,6 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
     getUserInfo();
     super.initState();
   }
-/*
-  Widget d(BuildContext context) {
-    // TODO: implement build
-    getUserInfo();
-
-    throw UnimplementedError();
-  }*/
-
-  //final TextEditingController c = TextEditingController();
 
   Widget customListTile(IconData icon, String title, String subtitle) {
     return ListTile(
@@ -64,8 +55,7 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
       body: ListView(
         children: <Widget>[
           customListTile(Icons.person, "الإسم",
-              username), // Example usage of customListTile
-          // ... Add more widgets as needed
+              username), 
           customListTile(Icons.email, "البريد الإلكتروني", useremail)
         ],
       ),
