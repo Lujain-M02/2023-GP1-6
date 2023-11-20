@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
+import 'package:your_story/style.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -72,15 +73,15 @@ class _MyStories extends State<MyStories> {
               // Navigate to the CreateStory page when the FAB is pressed
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CreateStory()),
+                MaterialPageRoute(builder: (context) => const CreateStory()),
               );
             },
-            backgroundColor: Color.fromARGB(255, 15, 26, 107),
-            child: Icon(Icons.add),
+            backgroundColor: const Color.fromARGB(255, 15, 26, 107),
+            child: const Icon(Icons.add),
           ),
             body:!isLoaded
-          ? const Center(
-                child: CircularProgressIndicator(), // or any loading widget
+          ?  Center(
+                child: CircularProgressIndicator(color: YourStoryStyle.titleColor,),
           )
           : stories.isEmpty
           ? const Center(
@@ -102,8 +103,8 @@ class _MyStories extends State<MyStories> {
                   child: Center(
                     child: ListTile(
                           leading: Image.asset("assets/white.png") ,
-                          title: Text("${stories[i]['title']}",style: TextStyle(fontSize: 25),) ,
-                          subtitle: Text("${stories[i]['content']}" ,style: TextStyle(fontSize: 20),maxLines: 1,),
+                          title: Text("${stories[i]['title']}",style: const TextStyle(fontSize: 25),) ,
+                          subtitle: Text("${stories[i]['content']}" ,style: const TextStyle(fontSize: 20),maxLines: 1,),
                           trailing: IconButton(onPressed: (){
                             deleteStory(i);
                           }
