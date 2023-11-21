@@ -24,6 +24,7 @@ class _SignUpState extends State<SignUp> {
   bool isPasswordObscured1 = true;
   bool isPasswordObscured2 = true;
   bool _isAgreedToTerms = false;
+  bool isSigning=false;
 
   @override
   Widget build(BuildContext context) {
@@ -330,6 +331,8 @@ class _SignUpState extends State<SignUp> {
                                   String password =
                                       _passwordController1.text.trim();
 
+                                  isSigning=true;
+                                  setState(() {});
                                   try {
                                     await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
@@ -342,21 +345,26 @@ class _SignUpState extends State<SignUp> {
                                         .collection("User")
                                         .doc(user);
 
-                                    await FirebaseFirestore.instance
-                                        .collection('User')
-                                        .doc(user)
-                                        .set(({
+                                    userRef.set(({
                                           'userID': user,
                                           'name': fullName,
                                           'email': email,
                                         }));
                                     // Create the "Stories" subcollection
                                     userRef.collection("Stories");
+                                    isSigning=false;
+                                    setState(() {
+                                      
+                                    });
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => MainPage()));
+                                            builder: (context) => const MainPage()));
                                   } on FirebaseAuthException catch (e) {
+                                    isSigning=false;
+                                    setState(() {
+                                      
+                                    });
                                     if (e.code == 'weak-password') {
                                       print(
                                           'The password provided is too weak.');
@@ -379,6 +387,10 @@ class _SignUpState extends State<SignUp> {
                                       );
                                     }
                                   } catch (e) {
+                                    isSigning=false;
+                                    setState(() {
+                                      
+                                    });
                                     print(e);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
@@ -395,7 +407,15 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                               ),
-                              child: const Text('اصنع الحساب'),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text('اصنع الحساب'),
+                                  if(isSigning)
+                                  (Container(height: 15, width: 15, margin: const EdgeInsets.all(5), child: const CircularProgressIndicator(color: Colors.white) ))
+                                  
+                                ],
+                              ),
                             ),
                           )),
                         ),
