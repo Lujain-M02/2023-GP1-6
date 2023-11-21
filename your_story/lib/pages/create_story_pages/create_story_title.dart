@@ -11,15 +11,15 @@ class CreateStoryTitle extends StatelessWidget {
 
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
-      errorMessageHolder.errorMessage= "الرجاء إدخال العنوان";
+      errorMessageHolder.titleErrorMessage= "الرجاء إدخال العنوان";
     } else if (!RegExp(
             r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
         .hasMatch(value)) {
-      errorMessageHolder.errorMessage= "يجب أن يكون عنوان قصتك باللغة العربية فقط";
+      errorMessageHolder.titleErrorMessage= "يجب أن يكون عنوان قصتك باللغة العربية فقط";
     }else{
-      errorMessageHolder.errorMessage=null;
+      errorMessageHolder.titleErrorMessage=null;
     }
-    return errorMessageHolder.errorMessage;
+    return errorMessageHolder.titleErrorMessage;
   }
 
   @override

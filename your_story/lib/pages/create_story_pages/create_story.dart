@@ -201,11 +201,11 @@ class _CreateStory extends State<CreateStory> {
                                       content: "الرجاء إدخال العنوان",
                                     ),
                                   );
-                                } else if (errorMessageHolder.errorMessage !=
+                                } else if (errorMessageHolder.titleErrorMessage !=
                                     null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
-                                      content: errorMessageHolder.errorMessage!,
+                                      content: errorMessageHolder.titleErrorMessage!,
                                     ),
                                   );
                                 } else {
@@ -226,11 +226,11 @@ class _CreateStory extends State<CreateStory> {
                                       content: "الرجاء إدخال القصة",
                                     ),
                                   );
-                                } else if (errorMessageHolder.errorMessage !=
+                                } else if (errorMessageHolder.contentErrorMessage !=
                                     null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
-                                      content: errorMessageHolder.errorMessage!,
+                                      content: errorMessageHolder.contentErrorMessage!,
                                     ),
                                   );
                                 } else {

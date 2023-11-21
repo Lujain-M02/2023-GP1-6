@@ -1,3 +1,4 @@
 class ErrorMessageHolder {
-  String? errorMessage;
+  String? titleErrorMessage;
+  String? contentErrorMessage;
 }

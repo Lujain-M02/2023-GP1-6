@@ -16,15 +16,15 @@ class CreateStoryContent extends StatelessWidget {
 
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
-      errorMessageHolder.errorMessage = "الرجاء إدخال نص القصة";
+      errorMessageHolder.contentErrorMessage = "الرجاء إدخال نص القصة";
     } else if (!RegExp(
             r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
         .hasMatch(value)) {
-      errorMessageHolder.errorMessage = "القصة يجب أن تكون باللغة العربية فقط";
+      errorMessageHolder.contentErrorMessage = "القصة يجب أن تكون باللغة العربية فقط";
     } else {
-      errorMessageHolder.errorMessage = null;
+      errorMessageHolder.contentErrorMessage = null;
     }
-    return errorMessageHolder.errorMessage;
+    return errorMessageHolder.contentErrorMessage;
   }
 
   @override
