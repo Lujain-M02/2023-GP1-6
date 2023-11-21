@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-
+import '../../style.dart';
+import '../../alerts.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -11,18 +11,14 @@ class SettingsScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: const Text(
-              'معلومات الحساب',
-              style: TextStyle(
-                color: Colors.black, // Set the AppBar title text color to black
-              ),
-            ),
-            leading: const BackButton(
-              color: Colors.black,
-            )),
-        body:
-            ProfileUpdateForm(), // Directly embedding the ProfileUpdateForm here
+          backgroundColor: Colors.white,
+          title: const Text(
+            'معلومات الحساب',
+            style: TextStyle(color: Colors.black),
+          ),
+          leading: const BackButton(color: Colors.black),
+        ),
+        body: ProfileUpdateForm(),
       ),
     );
   }
@@ -33,36 +29,23 @@ class ProfileUpdateForm extends StatefulWidget {
   _ProfileUpdateFormState createState() => _ProfileUpdateFormState();
 }
 
-//State<ProfileUpdateForm>
 class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
-  // final _formKey = GlobalKey<FormState>();
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  final user =
-      FirebaseAuth.instance.currentUser!.uid; //retrieve signed in user ID
-  String username = "";
-  String useremail = "";
-  getUserInfo() async {
-    DocumentSnapshot<Map<String, dynamic>> ds =
-        await FirebaseFirestore.instance.collection("User").doc(user).get();
-
-    Map<String, dynamic>? userData = ds.data();
-
-    String email = userData?['email'];
-    String name = userData?['name'];
-    // print('$email');
-    // print('$name');
-    setState(() {
-      username = name;
-      useremail = email;
-
-      //print('$username');
-    });
-  }
-
-  @override
-  void initState() {
-    getUserInfo();
-    super.initState();
+  Future<Map<String, dynamic>?> fetchUserInfo() async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> ds =
+          await FirebaseFirestore.instance.collection("User").doc(userId).get();
+      return ds.data();
+    } catch (e) {
+      // Handle the error or log it
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          content: "المعذرة، حصل خطأ",
+        ),
+      );
+      return null;
+    }
   }
 
   Widget customListTile(IconData icon, String title, String subtitle) {
@@ -70,21 +53,32 @@ class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
       leading: Icon(icon, color: Color.fromARGB(255, 22, 22, 22)),
       title: Text(title),
       subtitle: Text(subtitle),
-      // Add other properties and styling as needed
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Implement the actual UI of this widget
-    return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          customListTile(Icons.person, "الإسم",
-              username), 
-          customListTile(Icons.email, "البريد الإلكتروني", useremail)
-        ],
-      ),
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: fetchUserInfo(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: CircularProgressIndicator(
+            color: YourStoryStyle.titleColor,
+          ));
+        } else if (snapshot.hasError || !snapshot.hasData) {
+          return Container();
+        } else {
+          String username = snapshot.data?['name'] ?? 'N/A';
+          String useremail = snapshot.data?['email'] ?? 'N/A';
+          return ListView(
+            children: <Widget>[
+              customListTile(Icons.person, "الإسم", username),
+              customListTile(Icons.email, "البريد الإلكتروني", useremail),
+            ],
+          );
+        }
+      },
     );
   }
 }
