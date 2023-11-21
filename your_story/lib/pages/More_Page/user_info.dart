@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../style.dart';
 import '../../alerts.dart';
 
-class SettingsScreen extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -18,18 +18,18 @@ class SettingsScreen extends StatelessWidget {
           ),
           leading: const BackButton(color: Colors.black),
         ),
-        body: ProfileUpdateForm(),
+        body: profileInformation(),
       ),
     );
   }
 }
 
-class ProfileUpdateForm extends StatefulWidget {
+class profileInformation extends StatefulWidget {
   @override
-  _ProfileUpdateFormState createState() => _ProfileUpdateFormState();
+  _profileInformationState createState() => _profileInformationState();
 }
 
-class _ProfileUpdateFormState extends State<ProfileUpdateForm> {
+class _profileInformationState extends State<profileInformation> {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
 
   Future<Map<String, dynamic>?> fetchUserInfo() async {

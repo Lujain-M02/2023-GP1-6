@@ -38,7 +38,7 @@ class MorePage extends StatelessWidget {
                   () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()),
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
                     );
                   },
                 ),
