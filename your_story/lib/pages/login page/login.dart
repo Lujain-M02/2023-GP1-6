@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
  bool isPasswordObscured1 = true;
   bool isEnglish = true;
+  bool isLogging=false;
 
   void checkLanguage(String text) {
     isEnglish = text.isEmpty || text.trim().contains(RegExp(r'^[a-zA-Z0-9]+$'));
@@ -185,10 +186,15 @@ class _LoginPageState extends State<LoginPage> {
                        child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            isLogging=true;
+                                  setState(() {});
+
                             try {
                               await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                       email: EmailController.text, password: passwordController.text);
+                                      isLogging=false;
+                                  setState(() {});
                               Navigator.push( context,MaterialPageRoute(
                                   builder: (context) {
                                     return const MainPage();
@@ -196,6 +202,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               );
                             } catch (e) {
+                              isLogging=false;
+                                  setState(() {});
                               print("pass/email is wrong");
                                ScaffoldMessenger.of(context).showSnackBar(
                                           CustomSnackBar(
@@ -210,10 +218,20 @@ class _LoginPageState extends State<LoginPage> {
                            borderRadius: BorderRadius.circular(50), 
                          ),
                        ),
-                       child: const Text(
-                         "تسجيل الدخول",
-                         style: TextStyle(color: Colors.white),
-                       ),),
+                      //  child: const Text(
+                      //    "تسجيل الدخول",
+                      //    style: TextStyle(color: Colors.white),
+                      //  ),
+                      child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("تسجيل الدخول"),
+                                  if(isLogging)
+                                  (Container(height: 15, width: 15, margin: const EdgeInsets.all(5), child: const CircularProgressIndicator(color: Colors.white) ))
+
+                                ],
+                              ),
+                       ),
                      ),
                    ),
                     const SizedBox(height: 30,),
