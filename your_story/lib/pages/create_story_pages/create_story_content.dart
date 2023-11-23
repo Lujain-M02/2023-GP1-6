@@ -84,7 +84,8 @@ class CreateStoryContent extends StatelessWidget {
           filled: true,
           fillColor: Color.fromARGB(132, 187, 222, 251),
           hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
-          contentPadding: EdgeInsets.all(10),
+          contentPadding: EdgeInsets.only(left: 40, bottom: 30, top: 15, right: 10),
+          
         ),
         validator: validateTitle,
       ),
