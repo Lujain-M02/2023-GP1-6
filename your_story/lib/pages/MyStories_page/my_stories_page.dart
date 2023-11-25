@@ -58,7 +58,7 @@ class _MyStoriesState extends State<MyStories> {
         child: Scaffold(
           appBar: AppBar(
             title: const Text("قصصي",
-                style: TextStyle(fontSize: 25, color: Colors.black)),
+                style: TextStyle(fontSize: 24, color: Colors.black)),
             centerTitle: true,
             backgroundColor: Colors.white,
           ),

@@ -87,7 +87,7 @@ class _CreateStory extends State<CreateStory> {
             title: const Text(
               "اصنع قصتك",
               style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 24,
                   color: Colors.black), 
             ),
             centerTitle: true, 

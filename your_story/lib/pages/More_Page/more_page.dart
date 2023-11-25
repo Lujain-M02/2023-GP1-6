@@ -14,19 +14,17 @@ class MorePage extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          // const Color.fromARGB(255, 238, 245, 255),
-          title: const Text('المزيد'),
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-          ),
-          leading: IconButton(
-            icon:
-                FaIcon(FontAwesomeIcons.bars, color: YourStoryStyle.titleColor),
-            onPressed: () => {},
-          ),
-        ),
+            backgroundColor: Colors.white,
+            // const Color.fromARGB(255, 238, 245, 255),
+            title: const Text(
+              'المزيد',
+            ),
+            centerTitle: true,
+            titleTextStyle: const TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+            ),
+            ),
         body: Stack(
           children: [
             Column(
@@ -108,9 +106,8 @@ class MorePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(icon,
-              color: YourStoryStyle.titleColor),
-                  //Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
+          leading: Icon(icon, color: YourStoryStyle.titleColor),
+          //Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(

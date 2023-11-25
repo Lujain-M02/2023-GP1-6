@@ -16,6 +16,8 @@ class ProfileScreen extends StatelessWidget {
             'معلومات الحساب',
             style: TextStyle(color: Colors.black),
           ),
+          titleTextStyle: const TextStyle(fontSize: 24,),
+          centerTitle: true,
           leading: const BackButton(color: Colors.black),
         ),
         body: profileInformation(),
