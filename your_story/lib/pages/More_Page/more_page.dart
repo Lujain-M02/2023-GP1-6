@@ -14,17 +14,17 @@ class MorePage extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
-            // const Color.fromARGB(255, 238, 245, 255),
-            title: const Text(
-              'المزيد',
-            ),
-            centerTitle: true,
-            titleTextStyle: const TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-            ),
-            ),
+          backgroundColor: Colors.white,
+          // const Color.fromARGB(255, 238, 245, 255),
+          title: const Text(
+            'المزيد',
+          ),
+          centerTitle: true,
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+          ),
+        ),
         body: Stack(
           children: [
             Column(
@@ -77,10 +77,13 @@ class MorePage extends StatelessWidget {
                         context, "هل أنت متأكد من تسجيل الخروج؟", () async {
                       try {
                         await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => WelcomePage()));
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WelcomePage()),
+                          (Route<dynamic> route) =>
+                              false, // this removes all routes below MainPage
+                        );
                         // The user has been successfully signed out
                       } catch (e) {
                         // Handle sign-out errors, if any

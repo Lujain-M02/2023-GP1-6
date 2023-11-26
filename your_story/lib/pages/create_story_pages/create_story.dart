@@ -75,30 +75,26 @@ class _CreateStory extends State<CreateStory> {
               onPressed: () {
                 ConfirmationDialog.show(
                     context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainPage(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const MainPage()),
+                    (Route<dynamic> route) =>
+                        false, // this removes all routes below MainPage
                   );
                 });
               },
             ),
             title: const Text(
               "اصنع قصتك",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.black), 
+              style: TextStyle(fontSize: 24, color: Colors.black),
             ),
-            centerTitle: true, 
+            centerTitle: true,
             actions: const <Widget>[
               SizedBox(
-                width:
-                    40, 
+                width: 40,
               )
             ],
-            backgroundColor:
-                Colors.white, 
+            backgroundColor: Colors.white,
           ),
           body: SafeArea(
             child: Column(
@@ -211,11 +207,13 @@ class _CreateStory extends State<CreateStory> {
                                       content: "الرجاء إدخال العنوان",
                                     ),
                                   );
-                                } else if (errorMessageHolder.titleErrorMessage !=
+                                } else if (errorMessageHolder
+                                        .titleErrorMessage !=
                                     null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
-                                      content: errorMessageHolder.titleErrorMessage!,
+                                      content:
+                                          errorMessageHolder.titleErrorMessage!,
                                     ),
                                   );
                                 } else {
@@ -236,11 +234,13 @@ class _CreateStory extends State<CreateStory> {
                                       content: "الرجاء إدخال القصة",
                                     ),
                                   );
-                                } else if (errorMessageHolder.contentErrorMessage !=
+                                } else if (errorMessageHolder
+                                        .contentErrorMessage !=
                                     null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
-                                      content: errorMessageHolder.contentErrorMessage!,
+                                      content: errorMessageHolder
+                                          .contentErrorMessage!,
                                     ),
                                   );
                                 } else {

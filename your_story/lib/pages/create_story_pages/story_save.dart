@@ -19,12 +19,18 @@ class StorySave extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,color: Colors.black,),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: Text('معالجة القصة',style: TextStyle(color: Colors.black),),
+          title: Text(
+            'معالجة القصة',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         body: Center(
           child: Column(
@@ -42,12 +48,14 @@ class StorySave extends StatelessWidget {
                     backgroundColor:
                         MaterialStatePropertyAll(YourStoryStyle.titleColor)),
                 onPressed: () {
-                  addStoryToCurrentUser(title, content,context);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainPage(),
-                      ));
+                  addStoryToCurrentUser(title, content, context);
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainPage()),
+                    (Route<dynamic> route) =>
+                        false, // this removes all routes below MainPage
+                  );
                 },
                 child: Text('احفظ القصة وعد للصفحة الرئيسية'),
               ),
@@ -59,7 +67,8 @@ class StorySave extends StatelessWidget {
   }
 }
 
-Future<void> addStoryToCurrentUser(String title, String content, BuildContext context) async {
+Future<void> addStoryToCurrentUser(
+    String title, String content, BuildContext context) async {
   try {
     final User? user = FirebaseAuth.instance.currentUser;
 
