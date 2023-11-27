@@ -39,8 +39,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
-            content:
-                'تم إرسال إعادة تعيين كلمة المرور ',
+            content: 'تم إرسال إعادة تعيين كلمة المرور ',
           ),
         );
       } catch (error) {
@@ -89,21 +88,30 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       keyboardType: TextInputType.emailAddress,
                       validator: _validateEmail,
                       decoration: const InputDecoration(
-                        labelText: "البريد الإلكتروني",
-                        prefixIcon: Icon( FontAwesomeIcons.envelope,)
-                      ),
+                          labelText: "البريد الإلكتروني",
+                          prefixIcon: Icon(
+                            FontAwesomeIcons.envelope,
+                          )),
                     ),
                     const SizedBox(height: 16.0),
+
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                             YourStoryStyle.titleColor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
                       ),
                       onPressed: _isResettingPassword ? null : _resetPassword,
                       child: _isResettingPassword
                           ? const CircularProgressIndicator()
                           : const Text("إرسال"),
                     ),
+
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
@@ -111,13 +119,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
                                   color: YourStoryStyle
                                       .titleColor), // Set border color and width
                             ),
                           )),
                       onPressed: () {
-                            Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       },
                       child: Text(
                         "العودة لتسجيل الدخول",
