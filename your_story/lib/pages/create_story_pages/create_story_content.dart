@@ -17,10 +17,10 @@ class CreateStoryContent extends StatelessWidget {
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
       errorMessageHolder.contentErrorMessage = "الرجاء إدخال نص القصة";
-    } else if (!RegExp(
-            r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
         .hasMatch(value)) {
-      errorMessageHolder.contentErrorMessage = "القصة يجب أن تكون باللغة العربية فقط";
+      errorMessageHolder.contentErrorMessage =
+          "استخدم الحروف والأرقام وعلامات الترقيم العربية فقط";
     } else {
       errorMessageHolder.contentErrorMessage = null;
     }
@@ -53,8 +53,7 @@ class CreateStoryContent extends StatelessWidget {
           // height: 50,
           // width: 350,
           width: MediaQuery.of(context).size.width * 0.9,
-          height:
-              MediaQuery.of(context).size.height * 0.05,
+          height: MediaQuery.of(context).size.height * 0.05,
           decoration: const BoxDecoration(
               color: Color.fromARGB(123, 187, 222, 251),
               borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -74,38 +73,38 @@ class CreateStoryContent extends StatelessWidget {
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Container(
-  child: Stack(
-    children: [
-      TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        controller: contentController,
-        maxLines: null,
-        decoration: const InputDecoration(
-          filled: true,
-          fillColor: Color.fromARGB(132, 187, 222, 251),
-          hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
-          contentPadding: EdgeInsets.only(left: 40, bottom: 30, top: 15, right: 10),
-          
-        ),
-        validator: validateTitle,
-      ),
-      Positioned(
-        top: 0,
-        left: 0,
-        child: IconButton(
-          icon: Icon(FontAwesomeIcons.paste),
-          onPressed: () async {
-            ClipboardData? data = await Clipboard.getData('text/plain');
-            if (data != null && data.text != null) {
-              contentController.text = data.text!;
-            }
-          },
-        ),
-      ),
-    ],
-  ),
-),
-
+            child: Stack(
+              children: [
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  controller: contentController,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromARGB(132, 187, 222, 251),
+                    hintText: " اكتب قصتك هنا وأطلق العنان لإبداعاتك!",
+                    contentPadding: EdgeInsets.only(
+                        left: 40, bottom: 30, top: 15, right: 10),
+                  ),
+                  validator: validateTitle,
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: IconButton(
+                    icon: Icon(FontAwesomeIcons.paste),
+                    onPressed: () async {
+                      ClipboardData? data =
+                          await Clipboard.getData('text/plain');
+                      if (data != null && data.text != null) {
+                        contentController.text = data.text!;
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
