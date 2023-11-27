@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'error_message_holder.dart';
 
-
 class CreateStoryTitle extends StatelessWidget {
-  const CreateStoryTitle({Key? key, required this.titleController, required this.errorMessageHolder})
+  const CreateStoryTitle(
+      {Key? key,
+      required this.titleController,
+      required this.errorMessageHolder})
       : super(key: key);
 
   final TextEditingController titleController;
@@ -11,13 +13,13 @@ class CreateStoryTitle extends StatelessWidget {
 
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
-      errorMessageHolder.titleErrorMessage= "الرجاء إدخال العنوان";
-    } else if (!RegExp(
-            r'^[ء-ي\s!"٠٩٨٧٦٥٤٣٢١#\.٪$؛/\|؟؛±§<،…>ًٌٍَُِّْ«»ـ&()*+,\\\-./ﻻ؛<=>:?@[\]^_`{|}~]+$')
+      errorMessageHolder.titleErrorMessage = "الرجاء إدخال العنوان";
+    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
         .hasMatch(value)) {
-      errorMessageHolder.titleErrorMessage= "يجب أن يكون عنوان قصتك باللغة العربية فقط";
-    }else{
-      errorMessageHolder.titleErrorMessage=null;
+      errorMessageHolder.titleErrorMessage =
+          "استخدم الحروف والأرقام وعلامات الترقيم العربية فقط";
+    } else {
+      errorMessageHolder.titleErrorMessage = null;
     }
     return errorMessageHolder.titleErrorMessage;
   }
