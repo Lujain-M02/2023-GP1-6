@@ -17,7 +17,7 @@ class CreateStoryTitle extends StatelessWidget {
     } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
         .hasMatch(value)) {
       errorMessageHolder.titleErrorMessage =
-          "استخدم الحروف والأرقام وعلامات الترقيم العربية فقط";
+          "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
     } else {
       errorMessageHolder.titleErrorMessage = null;
     }
