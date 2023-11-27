@@ -222,9 +222,9 @@ class _LoginPageState extends State<LoginPage> {
                                       try {
                                         await FirebaseAuth.instance
                                             .signInWithEmailAndPassword(
-                                                email: EmailController.text,
+                                                email: EmailController.text.trim(),
                                                 password:
-                                                    passwordController.text);
+                                                    passwordController.text.trim());
                                         isLogging = false;
                                         setState(() {});
                                         Navigator.push(
