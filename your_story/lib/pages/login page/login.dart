@@ -6,6 +6,7 @@ import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/login%20page/reset_password.dart';
 import 'package:your_story/pages/signup/signup.dart';
+import 'package:your_story/style.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 FontAwesomeIcons.envelope,
                                               ),
                                               border: InputBorder.none,
-                                              hintText: "الحساب الالكتروني",
+                                              hintText: "البريد الالكتروني",
                                               hintStyle: TextStyle(
                                                   color: Colors.grey.shade700)),
                                           validator: (value) {
@@ -222,9 +223,11 @@ class _LoginPageState extends State<LoginPage> {
                                       try {
                                         await FirebaseAuth.instance
                                             .signInWithEmailAndPassword(
-                                                email: EmailController.text.trim(),
-                                                password:
-                                                    passwordController.text.trim());
+                                                email:
+                                                    EmailController.text.trim(),
+                                                password: passwordController
+                                                    .text
+                                                    .trim());
                                         isLogging = false;
                                         setState(() {});
                                         Navigator.push(
@@ -286,11 +289,10 @@ class _LoginPageState extends State<LoginPage> {
                                                 builder: (_) => const SignUp()),
                                           );
                                         },
-                                        child: const Text(
+                                        child: Text(
                                           "مستخدم جديد؟ تسجيل حساب",
                                           style: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  49, 39, 79, .6)),
+                                              color: YourStoryStyle.titleColor),
                                         )))),
                           ],
                         ),

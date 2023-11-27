@@ -40,7 +40,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
             content:
-                'تم إرسال إعادة تعيين كلمة المرور   ',
+                'تم إرسال إعادة تعيين كلمة المرور ',
           ),
         );
       } catch (error) {
@@ -83,7 +83,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       style: TextStyle(fontSize: 30),
                     ),
                     const Text(
-                        "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بارسال ايميل تعيين كلمة المرور اليك."),
+                        "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بإرسال رابط إعادة تعيين كلمة المرور اليك."),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,

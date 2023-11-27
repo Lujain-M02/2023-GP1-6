@@ -145,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                                           AutovalidateMode.onUserInteraction,
                                       controller: _emailController,
                                       decoration: const InputDecoration(
-                                          labelText: 'الايميل',
+                                          labelText: 'البريد الالكتروني',
                                           prefixIcon:
                                               Icon(FontAwesomeIcons.envelope)),
                                       validator: (value) {
@@ -283,7 +283,7 @@ class _SignUpState extends State<SignUp> {
                                                 context, termsAndCondition());
                                           },
                                           child: const Text(
-                                              'أوافق على الشروط وسياسة الخصوصية',
+                                              'أوافق على الشروط و الأحكام ',
                                               style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 36, 51, 109),
@@ -319,7 +319,7 @@ class _SignUpState extends State<SignUp> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
                                       content:
-                                          'يجب أن توافق على الشروط وسياسة الخصوصية أولاً.',
+                                          'يجب أن توافق على الشروط و الأحكام أولاً.',
                                     ),
                                   );
                                   return;
@@ -405,7 +405,7 @@ class _SignUpState extends State<SignUp> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Text('اصنع الحساب'),
+                                  const Text('تسجيل الحساب'),
                                   if (isSigning)
                                     (Container(
                                         height: 15,
