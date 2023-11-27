@@ -40,7 +40,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
             content:
-                'تم إرسال رسالة إعادة تعيين  كلمة المرور إلى بريدك الإلكتروني',
+                'تم إرسال إعادة تعيين كلمة المرور   ',
           ),
         );
       } catch (error) {
@@ -63,7 +63,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         body: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-            image: AssetImage('assets/resetPassBG.png'),
+            //image: AssetImage('assets/resetPassBG.png'),
+            image: AssetImage('assets/bg18.png'),
+
             fit: BoxFit.cover,
           )),
           child: Padding(
@@ -75,7 +77,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 300),
+                    //const SizedBox(height: 300),
                     const Text(
                       "إعادة تعيين كلمة المرور:",
                       style: TextStyle(fontSize: 30),
