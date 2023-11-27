@@ -20,7 +20,7 @@ class CreateStoryContent extends StatelessWidget {
     } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
         .hasMatch(value)) {
       errorMessageHolder.contentErrorMessage =
-          "استخدم الحروف والأرقام وعلامات الترقيم العربية فقط";
+          "يجب أن تكون قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
     } else {
       errorMessageHolder.contentErrorMessage = null;
     }
