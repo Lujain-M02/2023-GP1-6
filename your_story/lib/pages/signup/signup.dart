@@ -115,8 +115,8 @@ class _SignUpState extends State<SignUp> {
                                   Container(
                                     padding: const EdgeInsets.all(10),
                                     child: TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
+                                        // autovalidateMode:
+                                        //     AutovalidateMode.onUserInteraction,
                                         controller: _fullNameController,
                                         decoration: const InputDecoration(
                                           labelText: 'الاسم',
@@ -141,9 +141,10 @@ class _SignUpState extends State<SignUp> {
                                   Container(
                                     padding: const EdgeInsets.all(10),
                                     child: TextFormField(
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
+                                      // autovalidateMode:
+                                      //     AutovalidateMode.onUserInteraction,
                                       controller: _emailController,
+                                      keyboardType: TextInputType.emailAddress,
                                       decoration: const InputDecoration(
                                           labelText: 'البريد الالكتروني',
                                           prefixIcon:

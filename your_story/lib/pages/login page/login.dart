@@ -118,8 +118,9 @@ class _LoginPageState extends State<LoginPage> {
                                                     color: Color.fromRGBO(
                                                         37, 23, 118, 0.294)))),
                                         child: TextFormField(
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
+                                          // autovalidateMode: AutovalidateMode
+                                          //     .onUserInteraction,
+                                          keyboardType: TextInputType.emailAddress,
                                           controller: EmailController,
                                           decoration: InputDecoration(
                                               prefixIcon: const Icon(
