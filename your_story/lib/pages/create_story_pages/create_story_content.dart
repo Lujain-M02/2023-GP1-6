@@ -95,7 +95,7 @@ class CreateStoryContent extends StatelessWidget {
           child: Column(
             children: [
               IconButton(
-                icon: Icon(FontAwesomeIcons.paste),
+                icon: const Icon(FontAwesomeIcons.paste),
                 onPressed: () async {
                   ClipboardData? data = await Clipboard.getData('text/plain');
                   if (data != null && data.text != null) {
@@ -103,7 +103,7 @@ class CreateStoryContent extends StatelessWidget {
                   }
                 },
               ),
-              Text(
+              const Text(
                 "لصق",
                 style: TextStyle(fontSize: 12),
               ),

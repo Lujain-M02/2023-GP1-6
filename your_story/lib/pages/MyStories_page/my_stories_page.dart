@@ -115,6 +115,14 @@ class StoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String shortTitle = story['title'].length > 10
+        ? story['title'].substring(0, 10) + '...'
+        : story['title'];
+
+    String shortContent = story['content'].length > 20
+        ? story['content'].substring(0, 20) + '...'
+        : story['content'];
+
     return Container(
       height: 120,
       margin: const EdgeInsets.all(12),
@@ -132,26 +140,89 @@ class StoryTile extends StatelessWidget {
                   child: Column(
                     children: [
                       Center(
-                          child: Text(
-                        story['title'],
-                        style: const TextStyle(fontSize: 25),
-                      )),
-                      const SizedBox(
-                        height: 8,
+                        child: Text(
+                          story['title'],
+                          style: const TextStyle(fontSize: 25),
+                        ),
                       ),
-                      Text(story['content'])
+                      const SizedBox(height: 8),
+                      Text(
+                        story['content'],
+                        style: const TextStyle(fontSize: 20),
+                        maxLines: 1,
+                      ),
                     ],
                   ),
                 ));
           },
           leading: Image.asset("assets/white.png"),
-          title: Text(story['title'], style: const TextStyle(fontSize: 25)),
-          subtitle: Text(story['content'],
-              style: const TextStyle(fontSize: 20), maxLines: 1),
-          trailing:
-              IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+          title: Text(
+            shortTitle,
+            style: const TextStyle(fontSize: 25),
+          ),
+          subtitle: Text(
+            shortContent,
+            style: const TextStyle(fontSize: 20),
+          ),
+          trailing: IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
         ),
       ),
     );
   }
 }
+
+
+
+
+// class StoryTile extends StatelessWidget {
+//   final QueryDocumentSnapshot story;
+//   final VoidCallback onDelete;
+
+//   const StoryTile({
+//     Key? key,
+//     required this.story,
+//     required this.onDelete,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 120,
+//       margin: const EdgeInsets.all(12),
+//       decoration: const BoxDecoration(
+//         color: Color.fromARGB(255, 187, 208, 238),
+//         borderRadius: BorderRadius.all(Radius.circular(10)),
+//       ),
+//       child: Center(
+//         child: ListTile(
+//           onTap: () {
+//             showCustomModalBottomSheet(
+//                 context,
+//                 Directionality(
+//                   textDirection: TextDirection.rtl,
+//                   child: Column(
+//                     children: [
+//                       Center(
+//                           child: Text(
+//                         story['title'],
+//                         style: const TextStyle(fontSize: 25),
+//                       )),
+//                       const SizedBox(
+//                         height: 8,
+//                       ),
+//                       Text(story['content'])
+//                     ],
+//                   ),
+//                 ));
+//           },
+//           leading: Image.asset("assets/white.png"),
+//           title: Text(story['title'], style: const TextStyle(fontSize: 25)),
+//           subtitle: Text(story['content'],
+//               style: const TextStyle(fontSize: 20), maxLines: 1),
+//           trailing:
+//               IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+//         ),
+//       ),
+//     );
+//   }
+// }
