@@ -47,16 +47,40 @@ class StorySave extends StatelessWidget {
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStatePropertyAll(YourStoryStyle.titleColor)),
-                onPressed: () {
-                  addStoryToCurrentUser(title, content, context);
+                // onPressed: () {
+                //   addStoryToCurrentUser(title, content, context);
 
-                  Navigator.pushAndRemoveUntil(
+                //   Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => const MainPage()),
+                //     (Route<dynamic> route) =>
+                //         false, // this removes all routes below MainPage
+                //   );
+                // },
+                onPressed: () async {
+                  bool success =
+                      await addStoryToCurrentUser(title, content, context);
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      CustomSnackBar(
+                        content: "تم الحفظ بنجاح",
+                      ),
+                    );
+                                      Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => const MainPage()),
-                    (Route<dynamic> route) =>
-                        false, // this removes all routes below MainPage
+                    (Route<dynamic> route) => false,
                   );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      CustomSnackBar(
+                        content: "حدث خطأ عند الحفظ",
+                      ),
+                    );
+                  }
+
                 },
+
                 child: Text('احفظ القصة وعد للصفحة الرئيسية'),
               ),
             ],
@@ -67,7 +91,44 @@ class StorySave extends StatelessWidget {
   }
 }
 
-Future<void> addStoryToCurrentUser(
+// Future<void> addStoryToCurrentUser(
+//     String title, String content, BuildContext context) async {
+//   try {
+//     final User? user = FirebaseAuth.instance.currentUser;
+
+//     if (user != null) {
+//       DocumentReference userRef =
+//           FirebaseFirestore.instance.collection("User").doc(user.uid);
+
+//       // Create the "Stories" subcollection reference
+//       CollectionReference storiesCollection = userRef.collection("Stories");
+
+//       // Add a new story document to the subcollection
+//       await storiesCollection.add({
+//         'title': title,
+//         'content': content,
+//       });
+
+//       print("Story added successfully!");
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         CustomSnackBar(
+//           content: "تم الحفظ بنجاح",
+//         ),
+//       );
+//     } else {
+//       print("No user is currently signed in.");
+//     }
+//   } catch (e) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       CustomSnackBar(
+//         content: "حدث خطأ عند الحفظ",
+//       ),
+//     );
+//     print("Error adding story: $e");
+//   }
+// }
+
+Future<bool> addStoryToCurrentUser(
     String title, String content, BuildContext context) async {
   try {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -76,30 +137,21 @@ Future<void> addStoryToCurrentUser(
       DocumentReference userRef =
           FirebaseFirestore.instance.collection("User").doc(user.uid);
 
-      // Create the "Stories" subcollection reference
       CollectionReference storiesCollection = userRef.collection("Stories");
 
-      // Add a new story document to the subcollection
       await storiesCollection.add({
         'title': title,
         'content': content,
       });
 
       print("Story added successfully!");
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: "تم الحفظ بنجاح",
-        ),
-      );
+      return true;
     } else {
       print("No user is currently signed in.");
+      return false;
     }
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      CustomSnackBar(
-        content: "حدث خطأ عند الحفظ",
-      ),
-    );
     print("Error adding story: $e");
+    return false;
   }
 }
