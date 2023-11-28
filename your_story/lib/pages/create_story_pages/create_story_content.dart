@@ -91,22 +91,30 @@ class CreateStoryContent extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: IconButton(
-                    icon: Icon(FontAwesomeIcons.paste),
-                    onPressed: () async {
-                      ClipboardData? data =
-                          await Clipboard.getData('text/plain');
-                      if (data != null && data.text != null) {
-                        contentController.text = data.text!;
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
+                   child: Center(
+          child: Column(
+            children: [
+              IconButton(
+                icon: Icon(FontAwesomeIcons.paste),
+                onPressed: () async {
+                  ClipboardData? data = await Clipboard.getData('text/plain');
+                  if (data != null && data.text != null) {
+                    contentController.text = data.text!;
+                  }
+                },
+              ),
+              Text(
+                "لصق",
+                style: TextStyle(fontSize: 12),
+              ),
+            ],
           ),
         ),
+        ),
       ],
+    )
+    ))]
+    
     );
   }
 }
