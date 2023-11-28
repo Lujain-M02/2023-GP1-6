@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                                 duration: const Duration(milliseconds: 1500),
                                 child: const Center(
                                     child: Text(
-                                  " الدخول الى الحساب",
+                                  " الدخول إلى الحساب",
                                   style: TextStyle(
                                       color: Color.fromRGBO(49, 39, 79, 1),
                                       fontWeight: FontWeight.bold,
@@ -120,14 +120,15 @@ class _LoginPageState extends State<LoginPage> {
                                         child: TextFormField(
                                           // autovalidateMode: AutovalidateMode
                                           //     .onUserInteraction,
-                                          keyboardType: TextInputType.emailAddress,
+                                          keyboardType:
+                                              TextInputType.emailAddress,
                                           controller: EmailController,
                                           decoration: InputDecoration(
                                               prefixIcon: const Icon(
                                                 FontAwesomeIcons.envelope,
                                               ),
                                               border: InputBorder.none,
-                                              hintText: "البريد الالكتروني",
+                                              hintText: "البريد الإلكتروني",
                                               hintStyle: TextStyle(
                                                   color: Colors.grey.shade700)),
                                           validator: (value) {
@@ -247,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
                                             .showSnackBar(
                                           CustomSnackBar(
                                             content:
-                                                "البريد او كلمة المرور غير صحيح/ة",
+                                                "البريد أو كلمة المرور غير صحيح/ة",
                                           ),
                                         );
                                       }
@@ -291,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                                           );
                                         },
                                         child: Text(
-                                          "مستخدم جديد؟ تسجيل حساب",
+                                          "مستخدم جديد؟ أنشئ حساب",
                                           style: TextStyle(
                                               color: YourStoryStyle.titleColor),
                                         )))),
