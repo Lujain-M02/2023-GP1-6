@@ -26,7 +26,6 @@ class _MainPage extends State<MainPage> {
       body: _buildBody(_currentIndex),
       bottomNavigationBar: SalomonBottomBar(
         backgroundColor: Colors.white,
-        // const Color.fromARGB(255, 238, 245, 255),
         currentIndex: _currentIndex,
         margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         onTap: (index) {
@@ -75,17 +74,12 @@ class StoriesPage extends StatelessWidget {
 
    Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color.fromARGB(255, 187, 208, 238),
+      
       body: const Center(
         child: Column(
            mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icon(
-            //   Icons.sentiment_dissatisfied,
-            //   size: 80,
-            //   color: Color.fromARGB(255, 15, 26, 107),
-            // ),
-            SizedBox(height: 16),
+           SizedBox(height: 16),
             Text(
               "سيتم نشر القصص هنا مستقبلاً",
               style: TextStyle(
