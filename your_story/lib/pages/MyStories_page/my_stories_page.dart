@@ -149,7 +149,7 @@ class StoryTile extends StatelessWidget {
                       Text(
                         story['content'],
                         style: const TextStyle(fontSize: 20),
-                        maxLines: 1,
+                      
                       ),
                     ],
                   ),
