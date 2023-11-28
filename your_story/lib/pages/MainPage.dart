@@ -75,22 +75,22 @@ class StoriesPage extends StatelessWidget {
 
    Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Color.fromARGB(255, 187, 208, 238),
       body: const Center(
         child: Column(
            mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.sentiment_dissatisfied,
-              size: 80,
-              color: Color.fromARGB(255, 15, 26, 107),
-            ),
+            // Icon(
+            //   Icons.sentiment_dissatisfied,
+            //   size: 80,
+            //   color: Color.fromARGB(255, 15, 26, 107),
+            // ),
             SizedBox(height: 16),
             Text(
-              "المعذرة، لم يتم نشر أي قصة حتى الآن",
+              "سيتم نشر القصص هنا مستقبلاً",
               style: TextStyle(
                 color: Color.fromARGB(255, 15, 26, 107),
-                fontSize: 16,
+                fontSize: 25,
               ),
             ),
           ],
