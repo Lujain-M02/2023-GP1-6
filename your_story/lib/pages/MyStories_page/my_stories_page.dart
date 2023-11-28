@@ -115,8 +115,8 @@ class StoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String shortTitle = story['title'].length > 10
-        ? story['title'].substring(0, 10) + '...'
+    String shortTitle = story['title'].length > 20
+        ? story['title'].substring(0, 17) + '...'
         : story['title'];
 
     String shortContent = story['content'].length > 20
@@ -142,13 +142,13 @@ class StoryTile extends StatelessWidget {
                       Center(
                         child: Text(
                           story['title'],
-                          style: const TextStyle(fontSize: 25),
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         story['content'],
-                        style: const TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 15),
                       
                       ),
                     ],
@@ -158,11 +158,11 @@ class StoryTile extends StatelessWidget {
           leading: Image.asset("assets/white.png"),
           title: Text(
             shortTitle,
-            style: const TextStyle(fontSize: 25),
+            style: const TextStyle(fontSize: 20),
           ),
           subtitle: Text(
             shortContent,
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 12),
           ),
           trailing: IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
         ),
