@@ -48,7 +48,7 @@ class _CreateStory extends State<CreateStory> {
           title: const Text('اكتب قصتك'),
           content: CreateStoryContent(
             contentController: storyContent,
-            title: storyTitel.text,
+            title: storyTitel.text.trim(),
             errorMessageHolder: errorMessageHolder,
           ),
           state: stepState(1),
@@ -57,7 +57,7 @@ class _CreateStory extends State<CreateStory> {
         Step(
           title: const Text('اقرا قصتك'),
           content: CreateStoryFinal(
-              title: storyTitel.text, content: storyContent.text),
+              title: storyTitel.text.trim(), content: storyContent.text.trim()),
           state: stepState(2),
           isActive: _activeStepIndex >= 2,
         )
@@ -180,6 +180,7 @@ class _CreateStory extends State<CreateStory> {
                         }
                       : null,
                 ),
+                //if it's the last step a new button will apear instead of the arrow
                 if (_activeStepIndex == stepList().length - 1)
                   Container(
                     margin: const EdgeInsets.all(3),
@@ -199,8 +200,8 @@ class _CreateStory extends State<CreateStory> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => StorySave(
-                              title: storyTitel.text,
-                              content: storyContent.text,
+                              title: storyTitel.text.trim(),
+                              content: storyContent.text.trim(),
                             ),
                           ),
                         );
