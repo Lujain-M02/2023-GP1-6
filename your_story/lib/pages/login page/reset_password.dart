@@ -37,7 +37,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       try {
         // Reset password using Firebase Auth API
         await FirebaseAuth.instance.sendPasswordResetEmail(
-          email:_emailController.text.replaceRange(0, 1, _emailController.text[0].toLowerCase()),
+          email:_emailController.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
