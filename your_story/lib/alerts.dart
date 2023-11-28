@@ -114,10 +114,10 @@ class CustomSnackBar extends SnackBar {
                 Icons.warning,
                 color: Color.fromARGB(255, 248, 243, 212),
               ),
-              SizedBox(width: 8), 
+              const SizedBox(width: 8), 
               Text(
                 content,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ),

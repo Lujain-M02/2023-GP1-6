@@ -9,13 +9,15 @@ import 'package:your_story/pages/signup/signup.dart';
 import 'package:your_story/style.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController EmailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordObscured1 = true;
   bool isEnglish = true;
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                           //     .onUserInteraction,
                                           keyboardType:
                                               TextInputType.emailAddress,
-                                          controller: EmailController,
+                                          controller: emailController,
                                           decoration: InputDecoration(
                                               prefixIcon: const Icon(
                                                 FontAwesomeIcons.envelope,
@@ -133,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   color: Colors.grey.shade700)),
                                           validator: (value) {
                                             if (value!.isEmpty ||
-                                                EmailController.text.trim() ==
+                                                emailController.text.trim() ==
                                                     "") {
                                               return "الحقل مطلوب";
                                             } else if (!RegExp(
@@ -226,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                                         await FirebaseAuth.instance
                                             .signInWithEmailAndPassword(
                                                 email:
-                                                    EmailController.text.trim(),
+                                                    emailController.text.trim(),
                                                 password: passwordController
                                                     .text
                                                     .trim());

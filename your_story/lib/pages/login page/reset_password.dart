@@ -5,6 +5,8 @@ import 'package:your_story/alerts.dart';
 import 'package:your_story/style.dart';
 
 class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
+
   @override
   _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
