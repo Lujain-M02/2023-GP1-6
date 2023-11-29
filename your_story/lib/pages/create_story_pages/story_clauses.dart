@@ -5,6 +5,109 @@ import 'package:your_story/style.dart';
 //import 'package:firebase_core/firebase_core.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class StoryClauses extends StatefulWidget {
+  const StoryClauses({
+    Key? key,
+    required this.storyTitle,
+    required this.storyContent,
+  }) : super(key: key);
+
+  final String storyTitle, storyContent;
+
+  @override
+  _StoryClausesState createState() => _StoryClausesState();
+}
+
+class _StoryClausesState extends State<StoryClauses> {
+  String highestScoringSentences = "";
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initiate your request here
+    sendPostRequest();
+  }
+
+  Future<void> sendPostRequest() async {
+    setState(() {
+      isLoading = true; // Set loading to true when the request starts
+    });
+
+    final Map<String, String> data = {
+      'story': widget.storyContent,
+      'title': widget.storyTitle,
+    };
+
+    final response = await http.post(
+      Uri.parse("http://YOUR_SERVER_IP_ADDRESS:5000/calculate_topsis"), // Update with your Flask server URL
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the response data
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      // Extract the TOPSIS scores from the response
+      final topSISscores = responseData;
+
+      // Set the highestScoringSentences variable with the TOPSIS scores
+      setState(() {
+        highestScoringSentences = topSISscores.toString();
+      });
+    } else {
+      // Handle the error
+      setState(() {
+        highestScoringSentences = "Error: ${response.statusCode}";
+      });
+    }
+
+    setState(() {
+      isLoading = false; // Set loading to false when the request completes
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Story Clauses"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            isLoading
+                ? CircularProgressIndicator() // Show a loading indicator while waiting for the response
+                : Text(
+                    highestScoringSentences, // Display the response here
+                    style: TextStyle(fontSize: 16),
+                  ),
+            ElevatedButton(
+              onPressed: () {
+                sendPostRequest();
+              },
+              child: Text('Send POST Request'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+*/
+
 class StoryClauses extends StatefulWidget {
   const StoryClauses(
       {Key? key, required this.storyTitle, required this.storyContent})
@@ -30,7 +133,8 @@ class _StoryClausesState extends State<StoryClauses> {
       isLoading = true; // Set loading to true when the request starts
     });
     final Map<String, String> data = {
-      'arabic_text': widget.storyContent,
+    'story': widget.storyContent, 
+    'title': widget.storyTitle,   
     };
 
     final response = await http.post(

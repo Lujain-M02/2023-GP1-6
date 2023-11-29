@@ -199,9 +199,9 @@ class _CreateStory extends State<CreateStory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => StorySave(
-                              title: storyTitel.text.trim(),
-                              content: storyContent.text.trim(),
+                              builder: (context) => StorySave(
+                                title: storyTitel.text.trim(),
+                                content: storyContent.text.trim(),
                             ),
                           ),
                         );
