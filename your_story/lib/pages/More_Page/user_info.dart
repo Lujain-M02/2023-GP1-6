@@ -41,45 +41,14 @@ class _ProfileInformationState extends State<ProfileInformation> {
           await FirebaseFirestore.instance.collection("User").doc(userId).get();
       return ds.data();
     } catch (e) {
-      // Handle the error or log it
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("المعذرة، حصل خطأ"),
+        CustomSnackBar(
+          content: "المعذرة، حصل خطأ",
         ),
       );
       return null;
     }
   }
-
-  Widget customListTile(BuildContext context, IconData icon, String title, String subtitle, String field) {
-  return InkWell(
-    onTap: () {
-      if (field == 'username') {
-        // Navigate to edit username page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => EditUsernamePage()),
-        );
-      }
-    },
-    child: Card(
-      color: Colors.white,
-      child: ListTile(
-        leading: Icon(icon, color: const Color.fromARGB(255, 15, 26, 107)),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title),
-            if (field == 'username') // Add arrow icon only for the 'username' field
-              const Icon(Icons.arrow_forward_ios, size: 16, color: Color.fromARGB(255, 164, 161, 161)),
-          ],
-        ),
-        subtitle: Text(subtitle),
-      ),
-    ),
-  );
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +83,39 @@ class _ProfileInformationState extends State<ProfileInformation> {
           );
         }
       },
+    );
+  }
+
+  Widget customListTile(BuildContext context, IconData icon, String title, String subtitle, String field) {
+    return InkWell(
+      onTap: () async {
+        if (field == 'username') {
+          bool result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditUsernamePage()),
+          );
+
+          if (result != null && result) {
+            // Refresh user information
+            setState(() {});
+          }
+        }
+      },
+      child: Card(
+        color: Colors.white,
+        child: ListTile(
+          leading: Icon(icon, color: const Color.fromARGB(255, 15, 26, 107)),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title),
+              if (field == 'username')
+                const Icon(Icons.arrow_forward_ios, size: 16, color: Color.fromARGB(255, 164, 161, 161)),
+            ],
+          ),
+          subtitle: Text(subtitle),
+        ),
+      ),
     );
   }
 }
@@ -184,20 +186,19 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                     backgroundColor: YourStoryStyle.titleColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
-                    ), minimumSize: const Size(180, 40),
+                    ),
+                    minimumSize: const Size(180, 40),
                   ),
                   child: const Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-      
-                        Text(
-                          'حفظ',
-                          style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(FontAwesomeIcons.check, color: Colors.white), // Add your desired icon
-                           // Add some space between the icon and text
-                   ],
+                      Text(
+                        'حفظ',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(width: 8),
+                      Icon(FontAwesomeIcons.check, color: Colors.white),
+                    ],
                   ),
                 ),
               ],
@@ -223,11 +224,8 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
         ),
       );
 
-      // Navigate to the profile page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ProfileScreen()),
-      );
+      // Navigate back to the profile page
+      Navigator.pop(context, true);
     } catch (e) {
       // show an error message
       ScaffoldMessenger.of(context).showSnackBar(
