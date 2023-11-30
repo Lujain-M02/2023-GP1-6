@@ -1,3 +1,4 @@
+import math
 from flask import Flask, request, jsonify
 import stanza
 from pyarabic.araby import sentence_tokenize, strip_tashkeel
@@ -297,6 +298,29 @@ def calculate_topsis():
             topsis_scores[clause] = relative_closeness_list[i]
 
         return topsis_scores
+    
+        # Function to process sentences and return structured data with TOPSIS scores
+    def process_sentences_with_topsis(sentences, topsis_scores):
+        sentences_with_clauses = []
+
+        for sentence in sentences:
+            clauses = sentence_tokenize(sentence)
+            clause_scores = []
+
+            for clause in clauses:
+                score = topsis_scores.get(clause, 0)
+                # Check if the score is NaN and replace it with a string or null
+                if math.isnan(score):
+                  score = "NaN"  # or use None
+                clause_scores.append({'clause': clause, 'score': score})
+
+            sorted_clause_scores = sorted(clause_scores, key=lambda x: x['score'], reverse=True)
+            sentences_with_clauses.append({
+                'sentence': sentence,
+                'clauses': sorted_clause_scores
+            })
+
+        return sentences_with_clauses
 
     # Get the JSON data from the HTTP request
     data = request.get_json()
@@ -309,20 +333,22 @@ def calculate_topsis():
     story = strip_tashkeel(story)
     title = strip_tashkeel(title)
 
-    # Print the 'story' after removing tashkeel (for debugging)
-    print(story)
-
     # Calculate clause scores for the Arabic 'story' and 'title'
     scores_matrix, clause_scores = calculate_clause_scores_arabic(story, title)
 
     # Perform TOPSIS ranking using the scores matrix and clause scores
     topsis_scores = topsis_ranking(np.array(scores_matrix), clause_scores)
 
-    # Create a list of dictionaries, each containing 'clause' and 'score' keys
-    topsis_scores_list = [{'clause': clause, 'score': score} for clause, score in topsis_scores.items()]
+    # Tokenize the story into sentences
+    sentences = stanza_sentence_tokenize(story)
 
-    # Return the list of TOPSIS scores as JSON response
-    return jsonify(topsis_scores_list)
+    # Process sentences and get structured data with TOPSIS scores
+    sentences_with_topsis = process_sentences_with_topsis(sentences, topsis_scores)
+
+    print("Sentences with TOPSIS Scores:", sentences_with_topsis)
+
+    # Return the structured data as a JSON response
+    return jsonify(sentences_with_topsis)
 
 
 if __name__ == '__main__':

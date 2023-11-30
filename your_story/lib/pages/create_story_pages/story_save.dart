@@ -41,7 +41,7 @@ class _StorySaveState extends State<StorySave> {
     };
 
     final response = await http.post(
-      Uri.parse("http://192.168.100.161:5000/calculate_topsis"), // Update with your Flask server URL
+      Uri.parse("http://192.168.100.161:5000/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -49,25 +49,31 @@ class _StorySaveState extends State<StorySave> {
     );
 
     if (response.statusCode == 200) {
-      // Parse the response data
       final List<dynamic> responseData = jsonDecode(response.body);
 
-      // Set the topsisScoresList variable with the structured data
-      setState(() {
-        topsisScoresList = List<Map<String, dynamic>>.from(responseData);
-        responseMessage = ''; // Clear the response message
-        topsisScoresList.sort((a, b) => b['score'].compareTo(a['score'])); //sort the clauses based on the scores
+      // Check if any score is "NaN" or null
+      bool hasInvalidScore = responseData.any((sentenceData) {
+        List<dynamic> clauses = sentenceData['clauses'];
+        return clauses.any((clauseData) => clauseData['score'] == "NaN" || clauseData['score'] == null);
       });
 
-      // Check if topsisScoresList is empty after processing
-      if (topsisScoresList.isEmpty) {
-        // Handle the case when topsisScoresList is empty
-        // You can display a message here
+      if (hasInvalidScore) {
+        setState(() {
+          isLoading = false;
+          responseMessage = 'تعذر حساب بعض الدرجات. يرجى المحاولة مرة أخرى.';
+        });
+        return; // Exit the function early
+      } else {
+        setState(() {
+          topsisScoresList = List<Map<String, dynamic>>.from(responseData);
+          responseMessage = ''; // Clear the response message
+        });
       }
     } else {
-      // Handle the error
-      topsisScoresList = []; // Clear the data in case of an error
-      responseMessage = 'حدث خطأ أثناء الاستجابة'; // Set an error message
+      setState(() {
+        topsisScoresList = [];
+        responseMessage = 'حدث خطأ أثناء الاستجابة';
+      });
     }
 
     setState(() {
@@ -77,6 +83,7 @@ class _StorySaveState extends State<StorySave> {
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
+
 
   Future<void> addStoryToCurrentUser(String title, String content, BuildContext context) async {
     try {
@@ -119,14 +126,15 @@ class _StorySaveState extends State<StorySave> {
   }
 
   @override
- Widget build(BuildContext context) {
+ @override
+Widget build(BuildContext context) {
   return Directionality(
     textDirection: TextDirection.rtl,
     child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon:const Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -140,50 +148,61 @@ class _StorySaveState extends State<StorySave> {
         ),
       ),
       body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'نتائج المعالجة :',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                    itemCount: topsisScoresList.length,
-                    itemBuilder: (context, i) {
-                      final cleanedClause = topsisScoresList[i]['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
-                      final score = topsisScoresList[i]['score'];
-                      return ListTile(
-                        title: Text('عبارة ${i + 1}: $cleanedClause'),
-                        subtitle: Text('الدرجة: $score'),
-                      );
-                    },
-                  )
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(YourStoryStyle.titleColor),
+          ? const Center(child: CircularProgressIndicator())
+          : responseMessage.isNotEmpty
+              ? Center(child: Text(responseMessage))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'نتائج المعالجة :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      onPressed: () async {
-                        await addStoryToCurrentUser(widget.title, widget.content, context);
-                      },
-                      child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
-                    ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: topsisScoresList.length,
+                          itemBuilder: (context, sentenceIndex) {
+                            final sentence = topsisScoresList[sentenceIndex];
+                            final clauses = sentence['clauses'] as List<dynamic>;
+
+                            return ExpansionTile(
+                              title: Text('جملة ${sentenceIndex + 1}: ${sentence['sentence']}'),
+                              children: clauses.map((clauseData) {
+                                // Clean up each clause using replaceAll
+                                final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
+                                final score = clauseData['score'];
+
+                                return ListTile(
+                                  title: Text('عبارة: $cleanedClause'),
+                                  subtitle: Text('الدرجة: $score'),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(YourStoryStyle.titleColor),
+                          ),
+                          onPressed: () async {
+                            await addStoryToCurrentUser(widget.title, widget.content, context);
+                          },
+                          child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
     ),
   );
 }
+
 }
