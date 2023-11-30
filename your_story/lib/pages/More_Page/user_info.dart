@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/style.dart';
+
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,14 @@ class ProfileInformation extends StatefulWidget {
 
 class _ProfileInformationState extends State<ProfileInformation> {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
+  late ValueNotifier<bool> refreshNotifier = ValueNotifier<bool>(false);
+
+
+  @override
+  void initState() {
+    super.initState();
+    refreshNotifier = ValueNotifier<bool>(false);
+  }
 
   Future<Map<String, dynamic>?> fetchUserInfo() async {
     try {
@@ -66,20 +75,25 @@ class _ProfileInformationState extends State<ProfileInformation> {
         } else {
           String username = snapshot.data?['name'] ?? 'N/A';
           String useremail = snapshot.data?['email'] ?? 'N/A';
-          return Container(
-            color: const Color.fromARGB(255, 245, 242, 242),
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: customListTile(context, FontAwesomeIcons.user, "الاسم", username, 'username'),
+          return ValueListenableBuilder<bool>(
+            valueListenable: refreshNotifier,
+            builder: (context, _, __) {
+              return Container(
+                color: const Color.fromARGB(255, 245, 242, 242),
+                child: ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: customListTile(context, FontAwesomeIcons.user, "الاسم", username, 'username'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: customListTile(context, FontAwesomeIcons.envelope, "البريد الإلكتروني", useremail, 'email'),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: customListTile(context, FontAwesomeIcons.envelope, "البريد الإلكتروني", useremail, 'email'),
-                ),
-              ],
-            ),
+              );
+            },
           );
         }
       },
@@ -89,17 +103,17 @@ class _ProfileInformationState extends State<ProfileInformation> {
   Widget customListTile(BuildContext context, IconData icon, String title, String subtitle, String field) {
     return InkWell(
       onTap: () async {
-        if (field == 'username') {
-          bool result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditUsernamePage()),
-          );
+            if (field == 'username') {
+              dynamic result = await Navigator.push(
+              context,
+             MaterialPageRoute(builder: (context) => EditUsernamePage()),
+              );
 
-          if (result != null && result) {
-            // Refresh user information
-            setState(() {});
-          }
-        }
+  if (result != null && result is bool && result) {
+    // Refresh user information
+    setState(() {});
+  }
+}
       },
       child: Card(
         color: Colors.white,
@@ -151,7 +165,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start, // Align input at the top
+              mainAxisAlignment: MainAxisAlignment.start, 
               children: [
                 TextFormField(
                   controller: _usernameController,
