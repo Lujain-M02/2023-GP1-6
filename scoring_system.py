@@ -19,7 +19,7 @@ stemmer = ISRIStemmer()
 nltk.download('punkt')
 
 # Initialize Stanza pipeline for Arabic text processing
-nlp = stanza.Pipeline(lang='ar', processors='tokenize,mwt,pos,lemma,depparse,ner')
+nlp = stanza.Pipeline(lang='ar', processors='tokenize,mwt,pos,lemma,depparse')
 
 
 # Define the Flask route for TOPSIS calculation
@@ -29,7 +29,16 @@ def calculate_topsis():
     # Function to stem a list of tokens
     def stem_tokens(tokens):
         return [stemmer.stem(token) for token in tokens]
+    
+    # Function to tokenize sentences using Stanza NLP
+    def stanza_sentence_tokenize(text):
+        # Process the text using Stanza NLP
+        doc = nlp(text)
+        # Extract sentence texts
+        sentences = [sentence.text for sentence in doc.sentences]
 
+        return sentences
+    
     # Function to calculate word probabilities in the story
     def calculate_word_probability(story):
         # Tokenize words in the story
@@ -90,15 +99,6 @@ def calculate_topsis():
 
         # If any stemmed clause token is in the set of stemmed title tokens, return 1, otherwise 0
         return 1 if any(stem in title_stems for stem in clause_stems) else 0
-
-    # Function to tokenize sentences using Stanza NLP
-    def stanza_sentence_tokenize(text):
-        # Process the text using Stanza NLP
-        doc = nlp(text)
-        # Extract sentence texts
-        sentences = [sentence.text for sentence in doc.sentences]
-
-        return sentences
 
     # Function to calculate dissimilarity matrix between clauses in a story
     def calculate_dissimilarity_matrix(story):
