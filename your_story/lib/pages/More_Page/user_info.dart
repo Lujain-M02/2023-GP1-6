@@ -141,7 +141,7 @@ class EditUsernamePage extends StatefulWidget {
 
 class _EditUsernamePageState extends State<EditUsernamePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final String userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
@@ -168,7 +168,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
               mainAxisAlignment: MainAxisAlignment.start, 
               children: [
                 TextFormField(
-                  controller: _usernameController,
+                  controller: _nameController,
                   textAlign: TextAlign.start,
                   decoration: const InputDecoration(
                     labelText: "الاسم الجديد",
@@ -177,12 +177,14 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                     ),
                   ),
                   validator: (value) {
-                    if (value!.isEmpty || _usernameController.text.trim() == "") {
+                    if (value!.isEmpty || _nameController.text.trim() == "") {
                       return "الحقل مطلوب";
-                    } else if (value.length == 1) {
+                    } else if (value.trim().length == 1) {
                       return " يجب أن يحتوي الاسم أكثر من حرف على الأقل";
                     } else if (!RegExp(
-                            r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$")
+                            //r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$"
+                            r"^[\u0600-\u06FFa-zA-Z]+(?:\s[\u0600-\u06FFa-zA-Z]+)?$"
+                            )
                         .hasMatch(value.trim())) {
                       return 'أدخل اسم يحتوي على أحرف فقط';
                     }
@@ -225,7 +227,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
 
   Future<void> updateUsername() async {
     try {
-      final String newUsername = _usernameController.text.trim();
+      final String newUsername = _nameController.text.trim();
       // Update the username in Firebase Firestore
       await FirebaseFirestore.instance.collection("User").doc(userId).update({
         'name': newUsername,

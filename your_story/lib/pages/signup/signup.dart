@@ -132,7 +132,9 @@ class _SignUpState extends State<SignUp> {
                                           } else if (value.trim().length == 1) {
                                             return " يجب أن يحتوي الاسم أكثر من حرف على الأقل";
                                           } else if (!RegExp(
-                                                  r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$")
+                                                  //r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$"
+                                                  r"^[\u0600-\u06FFa-zA-Z]+(?:\s[\u0600-\u06FFa-zA-Z]+)?$"
+                                                  )
                                               .hasMatch(value.trim())) {
                                             return 'أدخل اسم يحتوي على أحرف فقط';
                                           }
