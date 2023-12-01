@@ -75,13 +75,14 @@ def calculate_topsis():
         title_doc = nlp(title)
         clause_doc = nlp(clause)
 
-        # Extract title tokens with part-of-speech ['NOUN', 'X', 'ADJ']
+        # Extract title tokens with part-of-speech ['NOUN', 'ADJ']
+        # We have added type 'X' since from our testing to Stanza, it sometimes assign 'X' to nouns and adjectives if it fails to recognize them
         title_tokens = [word.text for sent in title_doc.sentences for word in sent.words if word.upos in ['NOUN', 'X', 'ADJ']]
 
         # Create a set of stemmed title tokens
         title_stems = set(stem_tokens(title_tokens))
 
-        # Extract clause tokens with part-of-speech ['NOUN', 'X', 'ADJ']
+        # Extract clause tokens with part-of-speech ['NOUN', 'ADJ']
         clause_tokens = [word.text for sent in clause_doc.sentences for word in sent.words if word.upos in ['NOUN', 'X', 'ADJ']]
 
         # Create a set of stemmed clause tokens
@@ -324,7 +325,7 @@ def calculate_topsis():
                 score = topsis_scores.get(clause, 0) # Get the TOPSIS score for each clause
                 # Check if the score is NaN and replace it with a string or null
                 if math.isnan(score):
-                  score = "NaN"  # or use None
+                  score = "NaN"  
                 clause_scores.append({'clause': clause, 'score': score})
             
              # Sort the clauses based on their TOPSIS scores (x[2] == TOPSIS scores in clause_scores)
@@ -366,4 +367,4 @@ def calculate_topsis():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.244', debug=True)
+    app.run(host='192.168.100.161', debug=True)

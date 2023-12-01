@@ -54,7 +54,7 @@ class _StorySaveState extends State<StorySave> {
       // Check if any score is "NaN" or null
       bool hasInvalidScore = responseData.any((sentenceData) {
         List<dynamic> clauses = sentenceData['clauses'];
-        return clauses.any((clauseData) => clauseData['score'] == "NaN" || clauseData['score'] == null);
+        return clauses.any((clauseData) => clauseData['score'] == "NaN");
       });
 
       if (hasInvalidScore) {
@@ -83,6 +83,31 @@ class _StorySaveState extends State<StorySave> {
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
+
+  Future<String> translateClause(String clause) async {
+  const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
+  const to = 'en'; //Destination language
+
+  final url = Uri.parse(
+      'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
+
+  final response = await http.post(url);
+
+  if (response.statusCode == 200) {
+    final body = json.decode(response.body);
+    final translations = body['data']['translations'] as List<dynamic>;
+    final translation = translations.first['translatedText'];
+
+    // Print the translated text to the console
+    print('Original: $clause');
+    print('Translated: $translation');
+
+    return translation;
+  } else {
+    print('Translation Error: ${response.statusCode}');
+    return 'Translation Error: ${response.statusCode}';
+  }
+}
 
 
   Future<void> addStoryToCurrentUser(String title, String content, BuildContext context) async {
@@ -176,6 +201,9 @@ Widget build(BuildContext context) {
                                 // Clean up each clause using replaceAll
                                 final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
                                 final score = clauseData['score'];
+
+                                //translate clauses
+                                translateClause(cleanedClause);
 
                                 return ListTile(
                                   title: Text('عبارة: $cleanedClause'),
