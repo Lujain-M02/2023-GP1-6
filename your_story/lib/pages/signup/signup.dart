@@ -85,7 +85,7 @@ class _SignUpState extends State<SignUp> {
                             duration: const Duration(milliseconds: 1500),
                             child: const Center(
                                 child: Text(
-                              "تسجيل حساب جديد",
+                              "إنشاء حساب جديد",
                               style: TextStyle(
                                   color: Color.fromRGBO(49, 39, 79, 1),
                                   fontWeight: FontWeight.bold,
@@ -146,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                                       controller: _emailController,
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: const InputDecoration(
-                                          labelText: 'البريد الالكتروني',
+                                          labelText: 'البريد الإلكتروني',
                                           prefixIcon:
                                               Icon(FontAwesomeIcons.envelope)),
                                       validator: (value) {
@@ -232,7 +232,7 @@ class _SignUpState extends State<SignUp> {
                                           AutovalidateMode.onUserInteraction,
                                       controller: _passwordController2,
                                       decoration: InputDecoration(
-                                        labelText: 'ادخل كلمة المرور مرة اخرى',
+                                        labelText: 'أدخل كلمة المرور مرة اخرى',
                                         prefixIcon:
                                             const Icon(FontAwesomeIcons.lock),
                                         suffixIcon: IconButton(
@@ -284,7 +284,7 @@ class _SignUpState extends State<SignUp> {
                                                 context, termsAndCondition());
                                           },
                                           child: const Text(
-                                              'أوافق على الشروط و الأحكام ',
+                                              'أوافق على الشروط والأحكام ',
                                               style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 36, 51, 109),
@@ -320,7 +320,7 @@ class _SignUpState extends State<SignUp> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
                                       content:
-                                          'يجب أن توافق على الشروط و الأحكام أولاً.',
+                                          'يجب أن توافق على الشروط والأحكام أولاً.',
                                     ),
                                   );
                                   return;
@@ -380,7 +380,7 @@ class _SignUpState extends State<SignUp> {
                                           .showSnackBar(
                                         CustomSnackBar(
                                           content:
-                                              "البريد الالكتروني موجود مسبقًا",
+                                              "البريد الإلكتروني موجود مسبقًا",
                                         ),
                                       );
                                     }
@@ -406,7 +406,7 @@ class _SignUpState extends State<SignUp> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Text('تسجيل الحساب'),
+                                  const Text('إنشاء الحساب'),
                                   if (isSigning)
                                     (Container(
                                         height: 15,

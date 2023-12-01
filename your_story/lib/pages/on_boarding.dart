@@ -11,8 +11,7 @@ class OnBoarding extends StatelessWidget {
   final List<PageViewModel> pages = [
     PageViewModel(
       title: "المكان الأفضل لصناعة قصصك",
-      body:
-          "أصنع قصتك بكل سهولة، تطبيقنا يسهل رحلة صناعة القصص",
+      body: "اصنع قصتك بكل سهولة، تطبيقنا يسهل رحلة صناعة القصص",
       image: Image.asset('assets/onboarding1.png'),
       decoration: PageDecoration(
         pageColor: const Color.fromARGB(255, 238, 245, 255),
@@ -29,8 +28,8 @@ class OnBoarding extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: "قصص مصوره عن طريق الذكاء الإصطناعي",
-      body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزه لها",
+      title: "قصص مصورة عن طريق الذكاء الإصطناعي",
+      body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزة لها",
       image: Image.asset('assets/onboarding2.png'),
       decoration: PageDecoration(
         pageColor: const Color.fromARGB(255, 238, 245, 255),

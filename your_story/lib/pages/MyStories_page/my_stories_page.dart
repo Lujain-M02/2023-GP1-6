@@ -80,7 +80,7 @@ class _MyStoriesState extends State<MyStories> {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text(
-                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وأبدأ صناعة قصتك الآن",
+                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
                       textAlign: TextAlign.center),
                 );
               }
@@ -149,7 +149,6 @@ class StoryTile extends StatelessWidget {
                       Text(
                         story['content'],
                         style: const TextStyle(fontSize: 15),
-                      
                       ),
                     ],
                   ),
@@ -164,7 +163,8 @@ class StoryTile extends StatelessWidget {
             shortContent,
             style: const TextStyle(fontSize: 12),
           ),
-          trailing: IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+          trailing:
+              IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
         ),
       ),
     );

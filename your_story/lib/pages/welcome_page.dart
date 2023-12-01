@@ -94,7 +94,8 @@ class _WelcomePageState extends State<WelcomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) =>  LoginPage()),
+                                  MaterialPageRoute(
+                                      builder: (_) => LoginPage()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -106,15 +107,16 @@ class _WelcomePageState extends State<WelcomePage> {
                               child: const Text(
                                 'سجل دخولك',
                                 style: TextStyle(
-                                  color:
-                                      Color.fromARGB(255, 1, 16, 87), // Text color
+                                  color: Color.fromARGB(
+                                      255, 1, 16, 87), // Text color
                                 ),
                               ),
                             ),
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const SignUp()),
+                                  MaterialPageRoute(
+                                      builder: (_) => const SignUp()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -124,10 +126,10 @@ class _WelcomePageState extends State<WelcomePage> {
                                 shadowColor: YourStoryStyle.buttonShadowColor,
                               ),
                               child: const Text(
-                                'تسجيل حساب',
+                                'أنشئ حساب',
                                 style: TextStyle(
-                                  color:
-                                      Color.fromARGB(255, 1, 16, 87), // Text color
+                                  color: Color.fromARGB(
+                                      255, 1, 16, 87), // Text color
                                 ),
                               ),
                             )

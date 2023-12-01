@@ -37,7 +37,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       try {
         // Reset password using Firebase Auth API
         await FirebaseAuth.instance.sendPasswordResetEmail(
-          email:_emailController.text,
+          email: _emailController.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
@@ -84,7 +84,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       style: TextStyle(fontSize: 30),
                     ),
                     const Text(
-                        "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بإرسال رابط إعادة تعيين كلمة المرور اليك."),
+                        "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بإرسال رابط إعادة تعيين كلمة المرور إليك."),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
