@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/create_story_pages/story_save.dart';
 import 'package:your_story/pages/mainpage.dart';
@@ -8,7 +6,6 @@ import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';
 import 'package:your_story/pages/create_story_pages/create_story_final.dart';
 import 'package:your_story/alerts.dart';
-import 'story_clauses.dart';
 import 'error_message_holder.dart';
 import 'package:your_story/style.dart';
 
@@ -186,16 +183,6 @@ class _CreateStory extends State<CreateStory> {
                     margin: const EdgeInsets.all(3),
                     child: OutlinedButton(
                       onPressed: () {
-                        //addStoryToCurrentUser(storyTitel.text, storyContent.text);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => StoryClauses(
-                        //       storyTitle: storyTitel.text,
-                        //       storyContent: storyContent.text,
-                        //     ),
-                        //   ),
-                        // );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -295,32 +282,3 @@ class _CreateStory extends State<CreateStory> {
     );
   }
 }
-
-// // Function to add a story to the current user's "Stories" subcollection
-// Future<void> addStoryToCurrentUser(String title, String content) async {
-//   try {
-//     // Get the current user
-//     final User? user = FirebaseAuth.instance.currentUser;
-
-//     if (user != null) {
-//       // Reference to the current user's document
-//       DocumentReference userRef =
-//           FirebaseFirestore.instance.collection("User").doc(user.uid);
-
-//       // Create the "Stories" subcollection reference
-//       CollectionReference storiesCollection = userRef.collection("Stories");
-
-//       // Add a new story document to the subcollection
-//       await storiesCollection.add({
-//         'title': title,
-//         'content': content,
-//       });
-
-//       print("Story added successfully!");
-//     } else {
-//       print("No user is currently signed in.");
-//     }
-//   } catch (e) {
-//     print("Error adding story: $e");
-//   }
-// }

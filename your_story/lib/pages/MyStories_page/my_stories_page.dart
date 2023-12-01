@@ -80,7 +80,7 @@ class _MyStoriesState extends State<MyStories> {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text(
-                      "يبدو أنه لا يوجد لديك قصص\nانتقل للصفحة الرئيسية وأبدأ صناعة قصتك الآن",
+                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وأبدأ صناعة قصتك الآن",
                       textAlign: TextAlign.center),
                 );
               }

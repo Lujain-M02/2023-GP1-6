@@ -128,7 +128,7 @@ class _SignUpState extends State<SignUp> {
                                               _fullNameController.text.trim() ==
                                                   "") {
                                             return "الحقل مطلوب";
-                                          } else if (value.length == 1) {
+                                          } else if (value.trim().length == 1) {
                                             return " يجب أن يحتوي الاسم أكثر من حرف على الأقل";
                                           } else if (!RegExp(
                                                   r"^[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+(?:\s[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FFa-zA-Z]+)?$")
@@ -214,7 +214,7 @@ class _SignUpState extends State<SignUp> {
                                           return "كلمة المرور يجب أن تحتوي على حرف صغير";
                                         } else if (!regexSpecialChar
                                             .hasMatch(value)) {
-                                          return "كلمة المرور يجب ان تحتوي على رمز خاص";
+                                          return "كلمة المرور يجب ان تحتوي على رمز خاص مثل: (@#%^&+=)";
                                         } else if (value ==
                                             _emailController.text) {
                                           return "كلمة المرور لا يمكن أن تشابه البريد الالكتروني";
