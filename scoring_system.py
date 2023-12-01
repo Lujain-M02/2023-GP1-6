@@ -367,4 +367,4 @@ def calculate_topsis():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.161', debug=True)
+    app.run(host='192.168.8.102', debug=True)

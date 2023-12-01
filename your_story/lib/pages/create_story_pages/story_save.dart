@@ -41,7 +41,7 @@ class _StorySaveState extends State<StorySave> {
     };
 
     final response = await http.post(
-      Uri.parse("http://192.168.100.161:5000/calculate_topsis"),
+      Uri.parse("http://192.168.8.102:5000/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -60,7 +60,7 @@ class _StorySaveState extends State<StorySave> {
       if (hasInvalidScore) {
         setState(() {
           isLoading = false;
-          responseMessage = 'تعذر حساب بعض الدرجات. يرجى المحاولة مرة أخرى.';
+          responseMessage = 'تعذر معالجة القصة. يرجى المحاولة مرة أخرى.';
         });
         return; // Exit the function early
       } else {
@@ -173,7 +173,7 @@ Widget build(BuildContext context) {
         ),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: YourStoryStyle.titleColor,))
           : responseMessage.isNotEmpty
               ? Center(child: Text(responseMessage))
               : Padding(
@@ -216,14 +216,24 @@ Widget build(BuildContext context) {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(YourStoryStyle.titleColor),
-                          ),
-                          onPressed: () async {
-                            await addStoryToCurrentUser(widget.title, widget.content, context);
-                          },
-                          child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
+                        child: Column(
+                          children: [
+                            const Text("لم يتم اتاحة تصوير القصة الى الان"),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(YourStoryStyle.titleColor),
+                                shape:
+                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),)
+                              ),
+                              onPressed: () async {
+                                await addStoryToCurrentUser(widget.title, widget.content, context);
+                              },
+                              child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
+                            ),
+                          ],
                         ),
                       ),
                     ],
