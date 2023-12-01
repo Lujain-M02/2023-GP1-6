@@ -49,8 +49,8 @@ def calculate_topsis():
 
         return word_probabilities
 
-    # Function to calculate noun score for a clause
-    def calculate_noun_score(clause, word_probabilities, nlp):
+    # Function to calculate noun weight for a clause
+    def calculate_noun_weight(clause, word_probabilities, nlp):
         # Process the clause using Stanza NLP
         clause_doc = nlp(clause)
 
@@ -60,16 +60,14 @@ def calculate_topsis():
         # Stem the nouns
         stemmed_nouns = stem_tokens(nouns)
 
-        # If there are no nouns or stemmed nouns, return 0 score
-        if len(nouns) == 0:
-            return nouns, 0
+        # If there are no stemmed nouns, return 0 weight
         if len(stemmed_nouns) == 0:
-            return stemmed_nouns, 0
+            return 0
 
-        # Calculate noun score as the average of word probabilities for stemmed nouns
-        noun_score = sum(word_probabilities.get(noun, 0) for noun in stemmed_nouns) / len(stemmed_nouns)
+        # Calculate noun weight as the average of word probabilities for stemmed nouns
+        noun_weight = sum(word_probabilities.get(noun, 0) for noun in stemmed_nouns) / len(stemmed_nouns)
 
-        return stemmed_nouns, noun_score
+        return noun_weight
 
     # Function to calculate title word score for a clause
     def calculate_title_word_score(clause, title, nlp):
@@ -106,8 +104,8 @@ def calculate_topsis():
         # Tokenize the story into clauses
         clauses = sentence_tokenize(story)
 
-        # Stem the tokens in each clause
-        stemmed_clauses = [stem_tokens(clause.split()) for clause in clauses]
+        # Stem the tokens in each clause in the story, excluding punctuation
+        stemmed_clauses = [stem_tokens([word.text for sentence in nlp(clause).sentences for word in sentence.words if word.upos != "PUNCT"]) for clause in clauses]
 
         # Get the number of clauses
         n = len(stemmed_clauses)
@@ -119,7 +117,7 @@ def calculate_topsis():
         for i in range(n):
             for j in range(n):
                 # Check if the clauses are different and not empty
-                if i != j and clauses[i].strip() and clauses[j].strip():
+                if i != j and stemmed_clauses[i] and stemmed_clauses[j]:
                     set_i = set(stemmed_clauses[i])
                     set_j = set(stemmed_clauses[j])
 
@@ -156,10 +154,11 @@ def calculate_topsis():
         return normalized_lengths
 
     # Function to calculate part-of-speech (POS) scores for clauses
-    def calculate_pos_scores(clauses, nlp):
-        pos_scores = []
-
-        for clause in clauses:
+    def calculate_pos_scores(sentences, nlp):
+        all_pos_scores = []
+        for sentence in sentences:
+          clauses = sentence_tokenize(sentence)
+          for clause in clauses:
             if clause.strip():
                 # Process the clause using Stanza NLP
                 clause_doc = nlp(clause)
@@ -169,57 +168,69 @@ def calculate_topsis():
 
                 # Count the number of relevant POS tags in the clause
                 pos_count = sum(word.upos in relevant_pos_tags for sentence in clause_doc.sentences for word in sentence.words)
-
-                pos_scores.append(pos_count)
+                all_pos_scores.append(pos_count)
             else:
-                pos_scores.append(0)
+                all_pos_scores.append(0)
 
-        return pos_scores
+        # Min-Max Scaling for normalization
+        min_pos_score = min(all_pos_scores, default=0)
+        max_pos_score = max(all_pos_scores, default=1)
+
+        if max_pos_score != min_pos_score:
+            normalized_pos_scores = [(score - min_pos_score) / (max_pos_score - min_pos_score) for score in all_pos_scores]
+        else:
+           normalized_pos_scores = all_pos_scores  # Handle the case where all scores are the same
+        return normalized_pos_scores
+
+
 
     # Function to process and score clauses in sentences
     def process_and_score_clauses(sentences, title, nlp, sentiment_model, word_probabilities, title_stems, story):
         scores_matrix = []  # Initialize an empty matrix to store scores for each clause
         clause_scores = {}  # Initialize an empty dictionary to store scores for each clause
+        counter = 0
+        normalized_pos_scores = calculate_pos_scores(sentences, nlp) # Calculate part-of-speech (POS) scores for clauses
+
         for sentence in sentences:
             clauses = sentence_tokenize(sentence)  # Tokenize the sentence into clauses
             dissimilarity_matrix = calculate_dissimilarity_matrix(story)  # Calculate dissimilarity matrix for the story
-
+            
+            # Normlaize dissimilarity
             n = len(dissimilarity_matrix)  # Get the number of clauses in the story
             raw_sums = [sum(dissimilarity_matrix[i]) for i in range(n)]  # Calculate raw sums of dissimilarity scores
             min_sum = min(raw_sums)  # Find the minimum raw sum
             max_sum = max(raw_sums)  # Find the maximum raw sum
             range_sum = max_sum - min_sum  # Calculate the range of raw sums
             normalized_sums = [(raw_sum - min_sum) / range_sum if range_sum > 0 else 0 for raw_sum in raw_sums]  # Normalize raw sums
-
-            pos_scores = calculate_pos_scores(clauses, nlp)  # Calculate part-of-speech (POS) scores for clauses
+            
             normalized_lengths = calculate_normalized_clause_length(story, clauses)  # Calculate normalized clause lengths
 
             for i, clause in enumerate(clauses):
                 if clause.strip():
-                    clause_doc = nlp(clause)  # Process the clause using Stanza NLP
-                    clause_tokens = [word.text for sent in clause_doc.sentences for word in sent.words]
-                    clause_stems = stem_tokens(clause_tokens)  # Stem the tokens in the clause
                     title_word_score = calculate_title_word_score(clause, title, nlp)  # Calculate title word score for the clause
-
+                    
+                    # Sentiment Analysis
                     sentiment_result = sentiment_model(clause)[0]  # Get sentiment analysis results for the clause
                     sentiment_score = 0
                     sentiment_label = sentiment_result['label']
                     if sentiment_label != 'neutral':
                         sentiment_score = sentiment_result['score']  # Assign a sentiment score based on the sentiment label
-
-                    nouns, noun_score = calculate_noun_score(clause, word_probabilities, nlp)  # Calculate noun scores for the clause
-
+                    # Nouns weight
+                    noun_weight = calculate_noun_weight(clause, word_probabilities, nlp)  # Calculate noun scores for the clause
+ 
+                    # Dissimilarity, POS, and Length Scores
                     dissimilarity_score = normalized_sums[i]  # Get the dissimilarity score for the clause
-                    pos_score = pos_scores[i]  # Get the POS score for the clause
+                    pos_score = normalized_pos_scores[counter]  # Get the POS score for the clause
+                    counter = counter + 1 # Increase the counter
                     normalized_length = normalized_lengths[i]  # Get the normalized clause length
 
-                    overall_score = title_word_score + sentiment_score + noun_score + dissimilarity_score + pos_score + normalized_length  # Calculate the overall score for the clause
-
+                    # Overall score
+                    overall_score = title_word_score + sentiment_score + noun_weight + dissimilarity_score + pos_score + normalized_length  # Calculate the overall score for the clause
                     clause_scores[clause] = overall_score  # Store the overall score in the dictionary
-                    scores_matrix.append([sentiment_score, title_word_score, noun_score, dissimilarity_score, pos_score, normalized_length])  # Append scores to the matrix
+                    scores_matrix.append([sentiment_score, title_word_score, noun_weight, dissimilarity_score, pos_score, normalized_length])  # Append scores to the matrix
 
         return scores_matrix, clause_scores  # Return the scores matrix and clause scores as results
-
+    
     # Function to calculate clause scores for Arabic text
     def calculate_clause_scores_arabic(story, title):
         title_doc = nlp(title)  # Process the title using Stanza NLP
@@ -239,12 +250,14 @@ def calculate_topsis():
 
     # Function to normalize a matrix
     def normalize_matrix(matrix):
-        epsilon = 1e-10  # A small constant to prevent division by zero
         denominators = np.sqrt(np.sum(matrix**2, axis=0))  # Calculate the denominator for normalization
         normalized_matrix = np.zeros_like(matrix)  # Initialize an empty matrix with the same shape as the input matrix
 
         for i in range(matrix.shape[1]):
-            normalized_matrix[:, i] = matrix[:, i] / (denominators[i] + epsilon)  # Normalize each column of the matrix
+            if denominators[i] == 0:
+               normalized_matrix[:, i] = 0
+            else:
+               normalized_matrix[:, i] = matrix[:, i] / denominators[i]  # Normalize each column of the matrix
 
         return normalized_matrix  # Return the normalized matrix
 
@@ -276,8 +289,8 @@ def calculate_topsis():
         normalized_matrix = normalize_matrix(decision_matrix)
 
         # Apply weights to the criteria
-        # 2/9 to the most important : noun score,dissimilarity_score, pos_score
-        weights = np.array([1/9, 1/9, 2/9, 2/9, 2/9, 1/9])  # Adjust these weights as needed
+        # 2/8 to the most important : dissimilarity_score, pos_score
+        weights = np.array([1/8, 1/8, 1/8, 2/8, 2/8, 1/8])  # Adjust these weights as needed
         weighted_matrix = normalized_matrix * weights
 
         # Calculate ideal and negative-ideal solutions
@@ -352,4 +365,4 @@ def calculate_topsis():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.161', debug=True)
+    app.run(host='192.168.100.244', debug=True)
