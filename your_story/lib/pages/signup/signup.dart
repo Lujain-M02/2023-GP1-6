@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:your_story/alerts.dart';
@@ -278,19 +279,40 @@ class _SignUpState extends State<SignUp> {
                                             },
                                             activeColor: const Color.fromARGB(
                                                 255, 15, 26, 107)),
-                                        TextButton(
-                                          onPressed: () {
-                                            showCustomModalBottomSheet(
-                                                context, termsAndCondition());
-                                          },
-                                          child: const Text(
-                                              'أوافق على الشروط والأحكام ',
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 36, 51, 109),
-                                                fontSize: 14,
-                                              )),
-                                        ),
+                                        RichText(
+                                          text: TextSpan(
+                                            style: const TextStyle(
+                                                fontSize:
+                                                    14), // Default style for all TextSpans
+                                            children: <TextSpan>[
+                                              const TextSpan(
+                                                text:
+                                                    'أوافق على ', // Your first piece of text
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .black), // Additional styling if needed
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    'الشروط والأحكام', // The clickable part of the text
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 36, 51, 109),
+                                                  decoration: TextDecoration
+                                                      .underline, // Optional: to make it look like a link
+                                                ),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        // Your tap action. For example:
+                                                        showCustomModalBottomSheet(
+                                                            context,
+                                                            termsAndCondition());
+                                                      },
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
