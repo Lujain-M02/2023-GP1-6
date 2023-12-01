@@ -109,9 +109,22 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         ),
                       ),
                       onPressed: _isResettingPassword ? null : _resetPassword,
-                      child: _isResettingPassword
-                          ? const CircularProgressIndicator()
-                          : const Text("إرسال"),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text(
+                            "ارسال",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          if (_isResettingPassword)
+                            (Container(
+                                height: 15,
+                                width: 15,
+                                margin: const EdgeInsets.all(5),
+                                child: const CircularProgressIndicator(
+                                    color: Colors.white)))
+                        ],
+                      ),
                     ),
 
                     ElevatedButton(
