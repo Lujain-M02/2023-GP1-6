@@ -321,12 +321,13 @@ def calculate_topsis():
             clause_scores = []
 
             for clause in clauses:
-                score = topsis_scores.get(clause, 0)
+                score = topsis_scores.get(clause, 0) # Get the TOPSIS score for each clause
                 # Check if the score is NaN and replace it with a string or null
                 if math.isnan(score):
                   score = "NaN"  # or use None
                 clause_scores.append({'clause': clause, 'score': score})
-
+            
+             # Sort the clauses based on their TOPSIS scores (x[2] == TOPSIS scores in clause_scores)
             sorted_clause_scores = sorted(clause_scores, key=lambda x: x['score'], reverse=True)
             sentences_with_clauses.append({
                 'sentence': sentence,
