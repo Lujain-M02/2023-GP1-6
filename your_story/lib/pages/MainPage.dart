@@ -92,7 +92,7 @@ class StoriesPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to the CreateStoryPage when the button is pressed
+          // Navigate to the CreateStory Page when the button is pressed
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CreateStory()),
