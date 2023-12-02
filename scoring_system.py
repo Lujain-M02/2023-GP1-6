@@ -2,7 +2,6 @@ import math
 from flask import Flask, request, jsonify
 import stanza
 from pyarabic.araby import sentence_tokenize, strip_tashkeel
-import nltk
 from nltk.stem.isri import ISRIStemmer
 from transformers import pipeline
 from collections import Counter
@@ -15,7 +14,7 @@ app = Flask(__name__)
 stemmer = ISRIStemmer()
 
 # Initialize Stanza pipeline for Arabic text processing
-nlp = stanza.Pipeline(lang='ar', processors='tokenize,mwt,pos,lemma,depparse')
+nlp = stanza.Pipeline(lang='ar', processors='tokenize,pos')
 
 
 # Define the Flask route for TOPSIS calculation
@@ -369,4 +368,4 @@ def calculate_topsis():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.100.244', debug=True)
+    app.run(host='', debug=True)
