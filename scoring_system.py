@@ -6,7 +6,6 @@ import nltk
 from nltk.stem.isri import ISRIStemmer
 from transformers import pipeline
 from collections import Counter
-from nltk.tokenize import word_tokenize
 import numpy as np
 
 # Initialize the Flask application
@@ -14,9 +13,6 @@ app = Flask(__name__)
 
 # Initialize ISRIStemmer for Arabic text
 stemmer = ISRIStemmer()
-
-# Download NLTK data for tokenization
-nltk.download('punkt')
 
 # Initialize Stanza pipeline for Arabic text processing
 nlp = stanza.Pipeline(lang='ar', processors='tokenize,mwt,pos,lemma,depparse')
@@ -41,8 +37,14 @@ def calculate_topsis():
     
     # Function to calculate word probabilities in the story
     def calculate_word_probability(story):
-        # Tokenize words in the story
-        words = word_tokenize(story)
+        # Process the story using Stanza NLP
+        story_doc = nlp(story)
+
+        words = []
+        # Iterate over the sentences and words
+        for sentence in story_doc.sentences:
+          for word in sentence.words:
+            words.append(word.text)
 
         # Stem the words
         stemmed_words = stem_tokens(words)
@@ -367,4 +369,4 @@ def calculate_topsis():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.8.102', debug=True)
+    app.run(host='192.168.100.244', debug=True)
