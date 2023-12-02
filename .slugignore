@@ -1,0 +1,10 @@
+data/
+models/
+*.md
+docs/
+*.ipynb
+notebooks/
+tests/
+.github/
+__pycache__/
+*.pyc
