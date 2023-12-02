@@ -25,7 +25,7 @@ Widget aboutAppContent() {
           const Text(
               'تطبيق قصـTech هو تطبيق عربي يتيح لمستخدميه حرية كتابة القصص باللغة العربية وتوليد صور مدعِّمة للقصة باستخدام الذكاء الاصطناعي، كما يتيح التطبيق لمستخدميه إمكانية حفظ ومشاركة القصص بصيغة PDF ويسمح بتنزيل القصص المنشورة لقراءتها على جهازهم المحمول.'),
           const SizedBox(height: 8),
-          // Add more content as needed
+          
         ],
       ),
     ),
@@ -61,13 +61,13 @@ Widget contactUs() {
             child: ListTile(
               leading: Image.asset(
                 "assets/Xlogo.png",
-                width: 30, // Width in logical pixels
-                height: 30, // Height in logical pixels
+                width: 30, 
+                height: 30, 
               ),
               title: const Text("@YourStory2023"),
             ),
           )
-          // Add more content as needed
+          
         ],
       ),
     ),
@@ -143,7 +143,7 @@ Widget privacyPolicy() {
           Text(
               "ونود التوضيح أن البيانات المجموعة هي ما يقوم بإدخالها المستخدم عند التسجيل ولا يتم استخدامها خارج التطبيق ابدا."),
           SizedBox(height: 8),
-          // Add more content as needed
+          
         ],
       ),
     ),

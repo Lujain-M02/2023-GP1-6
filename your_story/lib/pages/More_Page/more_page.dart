@@ -17,7 +17,6 @@ class MorePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          // const Color.fromARGB(255, 238, 245, 255),
           title: const Text(
             'المزيد',
           ),
@@ -112,11 +111,10 @@ class MorePage extends StatelessWidget {
       children: <Widget>[
         ListTile(
           leading: Icon(icon, color: YourStoryStyle.titleColor),
-          //Color.fromARGB(255, 57, 96, 130)), // Customize the icon color
           title: Text(
             title,
             style: const TextStyle(
-              color: Colors.black, // Customize the title color
+              color: Colors.black, 
               fontSize: 20,
             ),
           ),

@@ -149,9 +149,6 @@ class _CreateStory extends State<CreateStory> {
                             width: 0,
                           );
                         },
-                        // this 3 properties is for stepper widget
-                        //onStepTapped: (step) =>
-                        //setState(() => _activeStepIndex = step),
                         currentStep: _activeStepIndex,
                         steps: stepList(),
                       ),
