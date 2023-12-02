@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:your_story/pages/login%20page/login.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/signup/signup.dart';
-//import 'create_story_pages/create_story.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -108,7 +107,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                 'سجل دخولك',
                                 style: TextStyle(
                                   color: Color.fromARGB(
-                                      255, 1, 16, 87), // Text color
+                                      255, 1, 16, 87), 
                                 ),
                               ),
                             ),
@@ -129,7 +128,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                 'أنشئ حساب',
                                 style: TextStyle(
                                   color: Color.fromARGB(
-                                      255, 1, 16, 87), // Text color
+                                      255, 1, 16, 87), 
                                 ),
                               ),
                             )
@@ -147,110 +146,3 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 }
-
-// class MainPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-// /*
-//       appBar: AppBar(
-//         title: const Text(''),
-//       ),*/
-
-//       body: Container(
-//         decoration: const BoxDecoration(
-//           image: DecorationImage(
-//             image: AssetImage("assets/background1.png"),
-//             fit: BoxFit.cover,
-//           ),
-//         ),
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: <Widget>[
-//               GradientButton(
-//                 iconData: Icons.add,
-//                 onPressed: () {
-//                   Navigator.of(context).pushReplacement(
-//                     MaterialPageRoute(builder: (_) => const CreateStory()),
-//                   );
-//                 },
-//                 text: 'ابدأ بكتابة قصتك',
-//               ),
-//               const SizedBox(height: 60),
-//               GradientButton(
-//                 iconData: Icons.share, //
-//                 onPressed: () {},
-//                 text: 'القصص المنشورة',
-//               ),
-//               const SizedBox(height: 60),
-//               GradientButton(
-//                 iconData: Icons.edit, //
-//                 onPressed: () {},
-//                 text: '       مسودّة       ',
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class GradientButton extends StatelessWidget {
-//   final VoidCallback onPressed;
-//   final String text;
-//   final IconData iconData; //
-
-//   GradientButton({
-//     required this.onPressed,
-//     required this.text,
-//     required this.iconData, //
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         gradient:const LinearGradient(
-//           colors: [
-//             Color.fromARGB(255, 224, 224, 243),
-//             Color.fromARGB(184, 4, 63, 190),
-//           ],
-//           begin: Alignment.center,
-//           end: Alignment.centerRight,
-//         ),
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//       child: ElevatedButton(
-//         onPressed: onPressed,
-//         style: ElevatedButton.styleFrom(
-//             primary: Colors
-//                 .transparent, // Set the button background color to transparent
-//             onPrimary: Colors.white, // Text color
-//             shadowColor: Colors.lightBlueAccent, // Shadow color
-//             elevation: 10, // Shadow elevation
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(30),
-//             ),
-//             //padding: const EdgeInsets.all(5),
-//             padding: const EdgeInsets.all(15.0)),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Icon(iconData, color: Colors.white), // Display the icon
-//             const SizedBox(width: 15),
-
-//             Text(
-//               text,
-//               style: const TextStyle(
-//                 fontSize: 30,
-//                 color: Color.fromARGB(255, 247, 246, 246),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
