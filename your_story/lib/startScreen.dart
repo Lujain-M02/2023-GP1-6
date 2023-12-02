@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +53,7 @@ class _StartScreenState extends State<StartScreen> {
                     height: 200,
                   ),
                   const SizedBox(height: 20),
+                 
                   // ignore: deprecated_member_use
                   TypewriterAnimatedTextKit(
                     speed: const Duration(milliseconds: 180),
