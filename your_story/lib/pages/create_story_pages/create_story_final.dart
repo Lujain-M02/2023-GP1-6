@@ -30,7 +30,6 @@ class CreateStoryFinal extends StatelessWidget {
             height: 20,
           ),
           Container(
-            //height: 50,
           width: MediaQuery.of(context).size.width * 0.9,
             decoration: const BoxDecoration(
               color: Color.fromARGB(123, 187, 222, 251),
