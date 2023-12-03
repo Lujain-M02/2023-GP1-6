@@ -11,7 +11,7 @@ It is an Arabic application that allows the users to write stories in Arabic lan
 
 
 # Technology
-[![My Skills](https://skillicons.dev/icons?i=dart,flutter,gcp)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=dart,flutter,gcp,firebase,flask,py)](https://skillicons.dev)
 
 # Launching Instructions
 - Open 2023-GP1-6 repository on GitHub
@@ -20,6 +20,8 @@ It is an Arabic application that allows the users to write stories in Arabic lan
 - Unzip the file
 - Open Android Studio or Visual Studio Code
 - Click on File > Open > Location of the saved unzipped file then click on Ok
+- modify the Server IP address in "scoring_system.py" and "story_save.dart".
+- run the "scoring_system.py" file
 - Turn on an Android Emulator or connect an android mobile to your computer using USB
 - Run Techقصـ application
 
