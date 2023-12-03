@@ -11,7 +11,7 @@ It is an Arabic application that allows the users to write stories in Arabic lan
 
 
 # Technology
-[![My Skills](https://skillicons.dev/icons?i=dart,flutter,gcp,firebase,flask,py)](https://skillicons.dev)
+![My Skills](https://skillicons.dev/icons?i=dart,flutter,gcp,firebase,flask,py)
 
 # Launching Instructions
 - Open 2023-GP1-6 repository on GitHub
@@ -24,4 +24,7 @@ It is an Arabic application that allows the users to write stories in Arabic lan
 - run the "scoring_system.py" file
 - Turn on an Android Emulator or connect an android mobile to your computer using USB
 - Run Techقصـ application
+
+# Repository Link
+https://github.com/Lujain-M02/2023-GP1-6
 
