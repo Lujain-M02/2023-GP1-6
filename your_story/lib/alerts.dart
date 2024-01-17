@@ -14,7 +14,6 @@ class ConfirmationDialog {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            //hi
             title: Text(alertMessage),
             backgroundColor: const Color.fromARGB(201, 232, 242, 255),
             actions: [
