@@ -193,18 +193,17 @@ def calculate_topsis():
         counter = 0
         normalized_pos_scores = calculate_pos_scores(sentences, nlp) # Calculate part-of-speech (POS) scores for clauses
 
+        # Normlaize dissimilarity
+        dissimilarity_matrix = calculate_dissimilarity_matrix(story)  # Calculate dissimilarity matrix for the story
+        n = len(dissimilarity_matrix)  # Get the number of clauses in the story
+        raw_sums = [sum(dissimilarity_matrix[i]) for i in range(n)]  # Calculate raw sums of dissimilarity scores
+        min_sum = min(raw_sums)  # Find the minimum raw sum
+        max_sum = max(raw_sums)  # Find the maximum raw sum
+        range_sum = max_sum - min_sum  # Calculate the range of raw sums
+        normalized_sums = [(raw_sum - min_sum) / range_sum if range_sum > 0 else 0 for raw_sum in raw_sums]  # Normalize raw sums
+
         for sentence in sentences:
-            clauses = sentence_tokenize(sentence)  # Tokenize the sentence into clauses
-            dissimilarity_matrix = calculate_dissimilarity_matrix(story)  # Calculate dissimilarity matrix for the story
-            
-            # Normlaize dissimilarity
-            n = len(dissimilarity_matrix)  # Get the number of clauses in the story
-            raw_sums = [sum(dissimilarity_matrix[i]) for i in range(n)]  # Calculate raw sums of dissimilarity scores
-            min_sum = min(raw_sums)  # Find the minimum raw sum
-            max_sum = max(raw_sums)  # Find the maximum raw sum
-            range_sum = max_sum - min_sum  # Calculate the range of raw sums
-            normalized_sums = [(raw_sum - min_sum) / range_sum if range_sum > 0 else 0 for raw_sum in raw_sums]  # Normalize raw sums
-            
+            clauses = sentence_tokenize(sentence)  # Tokenize the sentence into clauses          
             normalized_lengths = calculate_normalized_clause_length(story, clauses)  # Calculate normalized clause lengths
 
             for i, clause in enumerate(clauses):
@@ -221,7 +220,7 @@ def calculate_topsis():
                     noun_weight = calculate_noun_weight(clause, word_probabilities, nlp)  # Calculate noun scores for the clause
  
                     # Dissimilarity, POS, and Length Scores
-                    dissimilarity_score = normalized_sums[i]  # Get the dissimilarity score for the clause
+                    dissimilarity_score = normalized_sums[counter]  # Get the dissimilarity score for the clause
                     pos_score = normalized_pos_scores[counter]  # Get the POS score for the clause
                     counter = counter + 1 # Increase the counter
                     normalized_length = normalized_lengths[i]  # Get the normalized clause length
