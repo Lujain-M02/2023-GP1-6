@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                 const SizedBox(  height: 10),
                   SizedBox(
-                    height: height * 0.33,
+                    height: height * 0.25,
                     child: Stack(
                       children: <Widget>[
                         Positioned(
@@ -324,7 +324,7 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             )),
                                         ),
-                          ],
+                          const SizedBox(height: 50,)],
                         ),
                       ))
               ))],

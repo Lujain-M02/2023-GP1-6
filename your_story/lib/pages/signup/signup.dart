@@ -35,53 +35,55 @@ class _SignUpState extends State<SignUp> {
         child: Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromARGB(255, 0, 48, 96),
           body: SingleChildScrollView(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                     const SizedBox(  height: 10),
                 SizedBox(
-                  height: height * 0.33,
+                  height: height * 0.25,
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        top: -40,
-                        height: height,
-                        width: width,
                         child: FadeInUp(
                             duration: const Duration(seconds: 1),
                             child: Container(
                               decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                      image: AssetImage('assets/bg19.png'),
-                                      fit: BoxFit.fill)),
+                                      image: AssetImage('assets/login2.gif'),
+                                      )),
                             )),
                       ),
-                      Positioned(
-                        top: -40,
-                        height: height,
-                        width: width,
-                        child: FadeInUp(
-                            duration: const Duration(milliseconds: 1000),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('assets/bg18.png'),
-                                      fit: BoxFit.fill)),
-                            )),
-                      )
+                      
                     ],
                   ),
                 ),
+                FadeInUp(duration: const Duration(milliseconds: 1500),
+                 child: Container(
+                 padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: 100,
+                ),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 244, 247, 252),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
+                  ),
+                ),
+                  child:
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-
-                      // child:ListView(
+                     
                       children: <Widget>[
+                       SizedBox(   height: height * 0.03,    ),
                         FadeInUp(
                             duration: const Duration(milliseconds: 1500),
                             child: const Center(
@@ -425,7 +427,7 @@ class _SignUpState extends State<SignUp> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Text('إنشاء الحساب'),
+                                  const Text('إنشاء الحساب',style: TextStyle(color: Colors.white)),
                                   if (isSigning)
                                     (Container(
                                         height: 15,
@@ -466,7 +468,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                 )
-              ]))),
+        ))]))),
     ));
   }
 }
