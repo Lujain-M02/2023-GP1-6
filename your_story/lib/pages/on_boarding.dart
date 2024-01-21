@@ -10,39 +10,40 @@ import 'package:your_story/pages/welcome_page.dart';
 class OnBoarding extends StatelessWidget {
   final List<PageViewModel> pages = [
     PageViewModel(
-      title: "المكان الأفضل لصناعة قصصك",
-      body: "اصنع قصتك بكل سهولة، تطبيقنا يسهل رحلة صناعة القصص",
-      image: Image.asset('assets/onboarding1.png'),
+      title: "",
+      body: "",
+      image: Image.asset('assets/onboarding11.png'),
       decoration: PageDecoration(
+        imagePadding: EdgeInsets.all(0.1),
         pageColor: const Color.fromARGB(255, 238, 245, 255),
-        imageFlex: -3,
-        titleTextStyle: TextStyle(
-          fontSize: 27.0,
-          fontWeight: FontWeight.bold,
-          color: YourStoryStyle.titleColor,
+        imageFlex: 120,
+        // titleTextStyle: TextStyle(
+        //   fontSize: 27.0,
+        //   fontWeight: FontWeight.bold,
+        //   color: YourStoryStyle.titleColor,
         ),
-        bodyTextStyle: TextStyle(
-          fontSize: 24.0,
-          color: Colors.black,
-        ),
-      ),
+        // bodyTextStyle: TextStyle(
+        //   fontSize: 24.0,
+        //   color: Colors.black,
+        // ),
+      // ),
     ),
     PageViewModel(
-      title: "قصص مصورة عن طريق الذكاء الإصطناعي",
-      body: "تقنياتنا تمكنك من صناعة قصتك وإنشاء صور مميزة لها",
-      image: Image.asset('assets/onboarding2.png'),
+      title: "",
+      body: "",
+      image: Image.asset('assets/onboarding22.png'),
       decoration: PageDecoration(
         pageColor: const Color.fromARGB(255, 238, 245, 255),
-        imageFlex: -3,
-        titleTextStyle: TextStyle(
-          fontSize: 27.0,
-          fontWeight: FontWeight.bold,
-          color: YourStoryStyle.titleColor,
-        ),
-        bodyTextStyle: TextStyle(
-          fontSize: 24.0,
-          color: Colors.black,
-        ),
+        imageFlex: 120,
+        // titleTextStyle: TextStyle(
+        //   fontSize: 27.0,
+        //   fontWeight: FontWeight.bold,
+        //   color: YourStoryStyle.titleColor,
+        // ),
+        // bodyTextStyle: TextStyle(
+        //   fontSize: 24.0,
+        //   color: Colors.black,
+        // ),
       ),
     ),
   ];
@@ -95,7 +96,7 @@ class OnBoarding extends StatelessWidget {
             ),
             dotsDecorator: DotsDecorator(
               size: Size(10.0, 10.0),
-              color: Colors.grey,
+              color: const Color.fromARGB(255, 92, 91, 91),
               activeSize: Size(22.0, 10.0),
               activeColor: YourStoryStyle.titleColor,
               activeShape: RoundedRectangleBorder(
