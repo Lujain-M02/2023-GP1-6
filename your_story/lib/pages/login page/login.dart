@@ -35,44 +35,62 @@ class _LoginPageState extends State<LoginPage> {
       child: Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color.fromARGB(255, 0, 48, 96),
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                const SizedBox(  height: 10),
                   SizedBox(
                     height: height * 0.33,
                     child: Stack(
                       children: <Widget>[
                         Positioned(
-                          top: -40,
-                          height: height,
-                          width: width,
+                          // top: -40,
+                          // height: height,
+                          // width: width,
                           child: FadeInUp(
                               duration: const Duration(seconds: 1),
                               child: Container(
                                 decoration: const BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage('assets/bg19.png'),
-                                        fit: BoxFit.fill)),
+                                        image: AssetImage('assets/login1'),
+                                        )),
                               )),
                         ),
-                        Positioned(
-                          top: -40,
-                          height: height,
-                          width: width,
-                          child: FadeInUp(
-                              duration: const Duration(milliseconds: 1000),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage('assets/bg18.png'),
-                                        fit: BoxFit.fill)),
-                              )),
-                        )
+                        // Positioned(
+                        //   top: -40,
+                        //   height: height,
+                        //   width: width,
+                        //   child: FadeInUp(
+                        //       duration: const Duration(milliseconds: 1000),
+                        //       child: Container(
+                        //         decoration: const BoxDecoration(
+                        //             image: DecorationImage(
+                        //                 image: AssetImage('assets/bg18.png'),
+                        //                 fit: BoxFit.fill)),
+                        //       )),
+                        // )
                       ],
                     ),
                   ),
+                   FadeInUp(duration: const Duration(milliseconds: 1500),
+                
+                 child: Container(
+                 padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                 bottom: 100,
+                ),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 244, 247, 252),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
+                  ),
+                ),
+                  child: 
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Form(
@@ -80,6 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
+                            SizedBox(
+                          height: height * 0.03,    ),
                             FadeInUp(
                                 duration: const Duration(milliseconds: 1500),
                                 child: const Center(
@@ -254,7 +274,8 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     }
                                   },
-                                  style: ElevatedButton.styleFrom(
+                                  style: ElevatedButton.styleFrom(elevation: 10,
+                                shadowColor: YourStoryStyle.buttonShadowColor,
                                     backgroundColor:
                                         const Color.fromARGB(255, 15, 26, 107),
                                     shape: RoundedRectangleBorder(
@@ -264,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Text("تسجيل الدخول"),
+                                      const Text("تسجيل الدخول",style: TextStyle(color: Colors.white)),
                                       if (isLogging)
                                         (Container(
                                             height: 15,
@@ -283,23 +304,29 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             FadeInUp(
                                 duration: const Duration(milliseconds: 2000),
-                                child: Center(
-                                    child: TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (_) => const SignUp()),
-                                          );
-                                        },
-                                        child: Text(
-                                          "مستخدم جديد؟ أنشئ حساب",
-                                          style: TextStyle(
-                                              color: YourStoryStyle.titleColor),
-                                        )))),
+                                 child: Center(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text("مستخدم جديد؟",style: TextStyle(color: Colors.black),),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (_) => SignUp()),
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Color.fromARGB(255, 21, 0, 98),
+                                    ),
+                                    child: const Text("انشئ حساب"))
+                              ],
+                            )),
+                                        ),
                           ],
                         ),
                       ))
-                ],
+              ))],
               ),
             ),
           )),
