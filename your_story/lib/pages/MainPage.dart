@@ -97,7 +97,7 @@ class StoriesPage extends StatelessWidget {
                 color: Color.fromARGB(255, 244, 247, 252),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(60),
-                  // Add other corners if needed
+                  
                 ),
               ),
               child: const Text(
