@@ -74,17 +74,39 @@ class StoriesPage extends StatelessWidget {
 
    Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: const Center(
+      backgroundColor: const Color.fromARGB(255, 0, 48, 96),
+      body: SingleChildScrollView(
         child: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-           SizedBox(height: 16),
-            Text(
-              "سيتم نشر القصص هنا مستقبلاً",
-              style: TextStyle(
-                color: Color.fromARGB(255, 15, 26, 107),
-                fontSize: 25,
+            const SizedBox(height: 50),
+            const Text(
+              "القصص المنشورة",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            const SizedBox(height: 20), // space between the text and the box
+            Container(
+              padding: const EdgeInsets.only(
+                left: 20,
+                top: 30,
+                right: 20,
+                bottom: 700, 
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 244, 247, 252),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  // Add other corners if needed
+                ),
+              ),
+              child: const Text(
+                "سيتم نشر القصص هنا مستقبلاً",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 15, 26, 107),
+                  fontSize: 25,
+                ),
               ),
             ),
           ],
@@ -99,7 +121,7 @@ class StoriesPage extends StatelessWidget {
           );
         },
         backgroundColor: const Color.fromARGB(255, 15, 26, 107),
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,color: Colors.white,),
       ),
     );
   }
