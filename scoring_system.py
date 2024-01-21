@@ -100,14 +100,32 @@ def calculate_topsis():
 
         # If any stemmed clause token is in the set of stemmed title tokens, return 1, otherwise 0
         return 1 if any(stem in title_stems for stem in clause_stems) else 0
+    
+    # Function to read stop words from a file and return a list of stop words
+    def read_stop_words(file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            stop_words = [line.strip() for line in file]
+        return stop_words
+
+    # Function to remove stop words from a given words list
+    def remove_stop_words(words_list, stop_words):
+        filtered_words = [word for word in words_list if word not in stop_words]
+        return filtered_words
 
     # Function to calculate dissimilarity matrix between clauses in a story
     def calculate_dissimilarity_matrix(story):
+        # Path to the file containing stop words
+        file_path = 'list.txt'
+
+        # Reading stop words from the file
+        stop_words = read_stop_words(file_path)
+        
         # Tokenize the story into clauses
         clauses = sentence_tokenize(story)
 
         # Stem the tokens in each clause in the story, excluding punctuation
         stemmed_clauses = [stem_tokens([word.text for sentence in nlp(clause).sentences for word in sentence.words if word.upos != "PUNCT"]) for clause in clauses]
+        stemmed_clauses = [remove_stop_words(clause, stop_words) for clause in stemmed_clauses]
 
         # Get the number of clauses
         n = len(stemmed_clauses)
