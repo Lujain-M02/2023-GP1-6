@@ -33,6 +33,7 @@ class OnBoarding extends StatelessWidget {
       body: "",
       image: Image.asset('assets/onboarding22.png'),
       decoration: PageDecoration(
+        imagePadding: EdgeInsets.all(0.1),
         pageColor: const Color.fromARGB(255, 238, 245, 255),
         imageFlex: 120,
         // titleTextStyle: TextStyle(
