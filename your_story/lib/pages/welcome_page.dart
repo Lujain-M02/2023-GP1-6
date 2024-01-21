@@ -15,7 +15,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: YourStoryStyle.backgroundColor,
+      backgroundColor: Colors.white,
       body: SizedBox(
         width: double.infinity,
         child: Column(
@@ -25,7 +25,7 @@ class _WelcomePageState extends State<WelcomePage> {
             FadeInRight(
               duration: const Duration(milliseconds: 100),
               child: Image.asset(
-                'assets/wel.png',
+                'assets/welcome.gif',
               ),
             ),
             FadeInUp(
@@ -40,7 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 22, 62, 95),
+                  color:Color.fromARGB(255, 0, 48, 96),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(60),
                     topRight: Radius.circular(60),
