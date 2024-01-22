@@ -101,12 +101,12 @@ class StoriesPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 40),
             const Text(
               "القصص المنشورة",
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
-            const SizedBox(height: 20), // space between the text and the box
+            const SizedBox(height: 10), // space between the text and the box
             Container(
               padding: const EdgeInsets.only(
                 left: 20,

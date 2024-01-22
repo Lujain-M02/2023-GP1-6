@@ -14,23 +14,45 @@ class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'المزيد',
-          ),
-          centerTitle: true,
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-          ),
-        ),
-        body: Stack(
+      child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   title: const Text(
+        //     'المزيد',
+        //   ),
+        //   centerTitle: true,
+        //   titleTextStyle: const TextStyle(
+        //     color: Colors.black,
+        //     fontSize: 24,
+        //   ),
+        // ),
+        body:  Stack(
           children: [
-            Column(
+            Column( 
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
+            const SizedBox(height: 40),
+            const Text(
+              'المزيد', style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+            const SizedBox(height: 10),
+               Expanded(
+                 child: Container(
+                 padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 30,
+                  right: 20,
+                            ),
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 244, 247, 252),
+                  borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  ),
+                    ),
+            child: SingleChildScrollView(  
+              child: Column(
+                children: [
                 customListTile(
                   FontAwesomeIcons.user,
                   'معلومات الحساب',
@@ -93,8 +115,13 @@ class MorePage extends StatelessWidget {
                       }
                     });
                   },
+                )
+                ]
                 ),
-              ],
+                ),
+            )
+            )
+            ],
             ),
           ],
         ),
