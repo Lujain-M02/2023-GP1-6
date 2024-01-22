@@ -217,7 +217,7 @@ class _CreateStory extends State<CreateStory> {
                                   if (storyTitel.text == "") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: "الرجاء إدخال العنوان",
+                                        content: "الرجاء إدخال العنوان",icon: Icons.warning
                                       ),
                                     );
                                   } else if (errorMessageHolder
@@ -226,7 +226,7 @@ class _CreateStory extends State<CreateStory> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
                                         content:
-                                            errorMessageHolder.titleErrorMessage!,
+                                            errorMessageHolder.titleErrorMessage!,icon: Icons.warning
                                       ),
                                     );
                                   } else {
@@ -244,7 +244,7 @@ class _CreateStory extends State<CreateStory> {
                                   if (storyContent.text == "") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: "الرجاء إدخال القصة",
+                                        content: "الرجاء إدخال القصة",icon: Icons.warning
                                       ),
                                     );
                                   } else if (errorMessageHolder
@@ -253,7 +253,7 @@ class _CreateStory extends State<CreateStory> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
                                         content: errorMessageHolder
-                                            .contentErrorMessage!,
+                                            .contentErrorMessage!,icon: Icons.warning
                                       ),
                                     );
                                   } else {

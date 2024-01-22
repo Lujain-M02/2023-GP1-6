@@ -269,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                                             .showSnackBar(
                                           CustomSnackBar(
                                             content:
-                                                "البريد أو كلمة المرور غير صحيح/ة",
+                                                "البريد أو كلمة المرور غير صحيح/ة",icon: Icons.warning
                                           ),
                                         );
                                       }

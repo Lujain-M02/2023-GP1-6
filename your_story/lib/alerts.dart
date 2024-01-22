@@ -106,13 +106,14 @@ class CustomSnackBar extends SnackBar {
   CustomSnackBar({
     Key? key,
     required String content,
+    required IconData icon,
   }) : super(
           key: key,
           content: Row(
             children: <Widget>[
-              const Icon(
-                Icons.warning,
-                color: Color.fromARGB(255, 248, 243, 212),
+               Icon(
+                 icon,
+                color: const Color.fromARGB(255, 248, 243, 212),
               ),
               const SizedBox(width: 8), 
               Text(

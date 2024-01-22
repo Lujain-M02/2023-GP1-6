@@ -39,11 +39,11 @@ class _MyStoriesState extends State<MyStories> {
             .doc(docId)
             .delete();
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(content: 'تم الحذف بنجاح'),
+          CustomSnackBar(content: 'تم الحذف بنجاح',icon: Icons.check_circle,),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(content: 'حدث خطأ اثناء الحذف'),
+          CustomSnackBar(content: 'حدث خطأ اثناء الحذف',icon: Icons.warning,),
         );
       }
       Navigator.pop(context); // Close the dialog

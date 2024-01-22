@@ -341,7 +341,7 @@ class _SignUpState extends State<SignUp> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     CustomSnackBar(
                                       content:
-                                          'يجب أن توافق على الشروط والأحكام أولاً.',
+                                          'يجب أن توافق على الشروط والأحكام أولاً.',icon: Icons.warning
                                     ),
                                   );
                                   return;
@@ -390,7 +390,7 @@ class _SignUpState extends State<SignUp> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         CustomSnackBar(
-                                          content: "كلمة المرور ضعيفة",
+                                          content: "كلمة المرور ضعيفة",icon: Icons.warning
                                         ),
                                       );
                                     } else if (e.code ==
@@ -401,7 +401,7 @@ class _SignUpState extends State<SignUp> {
                                           .showSnackBar(
                                         CustomSnackBar(
                                           content:
-                                              "البريد الإلكتروني موجود مسبقًا",
+                                              "البريد الإلكتروني موجود مسبقًا",icon: Icons.warning
                                         ),
                                       );
                                     }
@@ -411,7 +411,7 @@ class _SignUpState extends State<SignUp> {
                                     print(e);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: "يوجد خطأ",
+                                        content: "يوجد خطأ",icon: Icons.warning
                                       ),
                                     );
                                   }

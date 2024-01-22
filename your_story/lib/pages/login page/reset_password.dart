@@ -41,7 +41,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
-            content: 'تم إرسال إعادة تعيين كلمة المرور ',
+            content: 'تم إرسال إعادة تعيين كلمة المرور ',icon: Icons.check_circle
           ),
         );
       } catch (error) {

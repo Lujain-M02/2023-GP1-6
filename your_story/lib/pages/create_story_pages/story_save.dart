@@ -128,7 +128,7 @@ class _StorySaveState extends State<StorySave> {
         print("Story added successfully!");
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackBar(
-            content: "تم الحفظ بنجاح",
+            content: "تم الحفظ بنجاح",icon: Icons.check_circle
           ),
         );
         Navigator.pushAndRemoveUntil(
@@ -144,7 +144,7 @@ class _StorySaveState extends State<StorySave> {
       print("Error adding story: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: "حدث خطأ عند الحفظ",
+          content: "حدث خطأ عند الحفظ",icon: Icons.warning
         ),
       );
     }

@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';

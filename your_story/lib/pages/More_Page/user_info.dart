@@ -52,7 +52,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: "المعذرة، حصل خطأ",
+          content: "المعذرة، حصل خطأ",icon: Icons.warning
         ),
       );
       return null;
@@ -235,7 +235,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: 'تم تحديث الاسم بنجاح',
+          content: 'تم تحديث الاسم بنجاح',icon: Icons.check_circle
         ),
       );
 
@@ -245,7 +245,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
       // show an error message
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: 'حدث خطأ أثناء تحديث الاسم',
+          content: 'حدث خطأ أثناء تحديث الاسم',icon: Icons.warning
         ),
       );
     }
