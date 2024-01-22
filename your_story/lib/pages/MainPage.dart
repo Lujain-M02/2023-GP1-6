@@ -1,8 +1,10 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';
+import 'package:your_story/style.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -24,35 +26,56 @@ class _MainPage extends State<MainPage> {
     return Directionality(textDirection: TextDirection.rtl, child: Scaffold(
     
       body: _buildBody(_currentIndex),
-      bottomNavigationBar: SalomonBottomBar(
+       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
-        currentIndex: _currentIndex,
-        margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        index: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Icons.home),
-            title: const Text("القصص المنشورة"),
-            selectedColor: const Color.fromARGB(255, 1, 16, 87),
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Icons.library_books),
-            title: const Text("قصصي"),
-            selectedColor: const Color.fromARGB(255, 1, 16, 87),
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Icons.more_vert_sharp),
-            title: const Text("المزيد"),
-            selectedColor: const Color.fromARGB(255, 1, 16, 87),
-          ),
+        items: const <Widget>[
+          Icon(Icons.home, size: 30,color: Colors.white),
+          Icon(Icons.library_books, size: 30,color: Colors.white),
+          Icon(Icons.more_vert_sharp, size: 30 , color: Colors.white,),
         ],
+        color:  YourStoryStyle.primarycolor,
+        buttonBackgroundColor:YourStoryStyle.primarycolor,
+        // You can customize the appearance more if needed
       ),
-    )
-  );
+    ));
+  }
+       
+       
+        //SalomonBottomBar(
+      //   backgroundColor: Colors.white,
+      //   currentIndex: _currentIndex,
+      //   margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //   },
+      //   items: [
+      //     SalomonBottomBarItem(
+      //       icon: const Icon(Icons.home),
+      //       title: const Text("القصص المنشورة"),
+      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
+      //     ),
+      //     SalomonBottomBarItem(
+      //       icon: const Icon(Icons.library_books),
+      //       title: const Text("قصصي"),
+      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
+      //     ),
+      //     SalomonBottomBarItem(
+      //       icon: const Icon(Icons.more_vert_sharp),
+      //       title: const Text("المزيد"),
+      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
+      //     ),
+      //   ],
+      // ),
+  
+  
   }
 
   Widget _buildBody(int currentIndex) {
@@ -67,7 +90,7 @@ class _MainPage extends State<MainPage> {
         }
     return Container();
   }
-}
+
 
 class StoriesPage extends StatelessWidget {
   const StoriesPage({super.key});
