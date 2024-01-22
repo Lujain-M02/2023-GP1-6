@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:your_story/firebase_options.dart';
 import 'package:your_story/startscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TECHقصـ',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // Set the default font to Vazirmatn
+        textTheme: GoogleFonts.vazirmatnTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
       home: StartScreen(),
     );
   }
