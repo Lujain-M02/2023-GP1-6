@@ -173,7 +173,7 @@ Widget build(BuildContext context) {
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(color: YourStoryStyle.titleColor,))
+          ? Center(child: CircularProgressIndicator(color: YourStoryStyle.primarycolor,))
           : responseMessage.isNotEmpty
               ? Center(child: Text(responseMessage))
               : Padding(
@@ -221,7 +221,7 @@ Widget build(BuildContext context) {
                             const Text("لم يتم اتاحة تصوير القصة الى الان"),
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(YourStoryStyle.titleColor),
+                                backgroundColor: MaterialStateProperty.all(YourStoryStyle.primarycolor),
                                 shape:
                                 MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(

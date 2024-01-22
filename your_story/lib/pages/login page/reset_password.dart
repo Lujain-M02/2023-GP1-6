@@ -100,7 +100,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                            YourStoryStyle.titleColor),
+                            YourStoryStyle.primarycolor),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -137,7 +137,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               borderRadius: BorderRadius.circular(50),
                               side: BorderSide(
                                   color: YourStoryStyle
-                                      .titleColor), // Set border color and width
+                                      .primarycolor), // Set border color and width
                             ),
                           )),
                       onPressed: () {
@@ -145,7 +145,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                       },
                       child: Text(
                         "العودة لتسجيل الدخول",
-                        style: TextStyle(color: YourStoryStyle.titleColor),
+                        style: TextStyle(color: YourStoryStyle.primarycolor),
                       ),
                     ),
                     const SizedBox(height: 16.0),

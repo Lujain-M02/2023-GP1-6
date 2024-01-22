@@ -22,10 +22,10 @@ class ConfirmationDialog {
                   onConfirm(); //this function received as class parameter
                 },
                 style: OutlinedButton.styleFrom(
-                  backgroundColor: YourStoryStyle.titleColor,
+                  backgroundColor: YourStoryStyle.primarycolor,
                   foregroundColor: Colors.white,
                   side: BorderSide(
-                    color: YourStoryStyle.titleColor,
+                    color: YourStoryStyle.primarycolor,
                     width: 2,
                   ),
                   shape: RoundedRectangleBorder(
@@ -40,9 +40,9 @@ class ConfirmationDialog {
                   Navigator.of(context).pop();
                 },
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: YourStoryStyle.titleColor,
+                  foregroundColor: YourStoryStyle.primarycolor,
                   side: BorderSide(
-                    color: YourStoryStyle.titleColor,
+                    color: YourStoryStyle.primarycolor,
                     width: 2,
                   ),
                   shape: RoundedRectangleBorder(
@@ -83,7 +83,7 @@ class Alert {
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: YourStoryStyle.titleColor, // Button background color
+                      backgroundColor: YourStoryStyle.primarycolor, // Button background color
                     ),
                     child: const Text(
                       "حسنا",

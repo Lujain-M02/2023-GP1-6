@@ -66,7 +66,7 @@ class _MyStoriesState extends State<MyStories> {
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const CreateStory())),
             backgroundColor: const Color.fromARGB(255, 15, 26, 107),
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.add,color: Colors.white,),
           ),
           body: StreamBuilder<List<QueryDocumentSnapshot>>(
             stream: storiesStream,
@@ -74,7 +74,7 @@ class _MyStoriesState extends State<MyStories> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
-                      color: YourStoryStyle.titleColor),
+                      color: YourStoryStyle.primarycolor),
                 );
               }
               if (!snapshot.hasData || snapshot.data!.isEmpty) {

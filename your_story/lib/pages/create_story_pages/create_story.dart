@@ -135,7 +135,7 @@ class _CreateStory extends State<CreateStory> {
                         connectorColor:
                             MaterialStateProperty.resolveWith((states) {
                           if (states.contains(MaterialState.selected)) {
-                            return YourStoryStyle.titleColor;
+                            return YourStoryStyle.primarycolor;
                           } else if (states.contains(MaterialState.disabled)) {
                             return const Color.fromARGB(255, 187, 222, 251);
                           } else {
@@ -163,7 +163,7 @@ class _CreateStory extends State<CreateStory> {
               children: [
                 IconButton(
                   iconSize: 40,
-                  color: YourStoryStyle.titleColor,
+                  color: YourStoryStyle.primarycolor,
                   icon: const Icon(Icons.arrow_back),
                   onPressed: _activeStepIndex > 0
                       ? () {
@@ -191,10 +191,10 @@ class _CreateStory extends State<CreateStory> {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: YourStoryStyle.titleColor,
+                        backgroundColor: YourStoryStyle.primarycolor,
                         foregroundColor: Colors.white,
                         side: BorderSide(
-                          color: YourStoryStyle.titleColor,
+                          color: YourStoryStyle.primarycolor,
                           width: 2,
                         ),
                         shape: RoundedRectangleBorder(
@@ -207,7 +207,7 @@ class _CreateStory extends State<CreateStory> {
                 else
                   IconButton(
                     iconSize: 40,
-                    color: YourStoryStyle.titleColor,
+                    color: YourStoryStyle.primarycolor,
                     icon: const Icon(Icons.arrow_forward),
                     onPressed: _activeStepIndex != 2
                         ? () {

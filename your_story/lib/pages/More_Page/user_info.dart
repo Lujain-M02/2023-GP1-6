@@ -67,7 +67,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
-              color: YourStoryStyle.titleColor,
+              color: YourStoryStyle.primarycolor,
             ),
           );
         } else if (snapshot.hasError || !snapshot.hasData) {
@@ -198,7 +198,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: YourStoryStyle.titleColor,
+                    backgroundColor: YourStoryStyle.primarycolor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),

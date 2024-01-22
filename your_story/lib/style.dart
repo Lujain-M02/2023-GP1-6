@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class YourStoryStyle {
+  static Color s2Color = const Color.fromARGB(
+      255, 0, 48, 96);//1, 16, 87
   static Color backgroundColor = const Color.fromARGB(
       255, 238, 245, 255); //  background color
   static Color buttonColor = const Color.fromARGB(
       255, 238, 239, 223); // button color
   static Color buttonShadowColor = const Color.fromARGB(
       255, 230, 224, 224); //  button shadow color
-  static Color titleColor = const
+  static Color primarycolor = const
       Color.fromARGB(255, 1, 16, 87); //  title color
   static Color textColor = const
       Color.fromARGB(255, 37, 53, 120); // text color

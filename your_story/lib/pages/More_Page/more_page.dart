@@ -110,7 +110,7 @@ class MorePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          leading: Icon(icon, color: YourStoryStyle.titleColor),
+          leading: Icon(icon, color: YourStoryStyle.primarycolor),
           title: Text(
             title,
             style: const TextStyle(

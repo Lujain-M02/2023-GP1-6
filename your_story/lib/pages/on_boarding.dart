@@ -79,19 +79,19 @@ class OnBoarding extends StatelessWidget {
             skip: Text(
               "تخطي",
               style: TextStyle(
-                color: YourStoryStyle.titleColor,
+                color: YourStoryStyle.primarycolor,
                 fontSize: 23.0,
               ),
             ),
             next: Icon(
               Icons.arrow_forward,
-              color: YourStoryStyle.titleColor,
+              color: YourStoryStyle.primarycolor,
             ),
             done: Text(
               "تم",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: YourStoryStyle.titleColor,
+                color: YourStoryStyle.primarycolor,
                 fontSize: 23.0,
               ),
             ),
@@ -99,7 +99,7 @@ class OnBoarding extends StatelessWidget {
               size: Size(10.0, 10.0),
               color: const Color.fromARGB(255, 92, 91, 91),
               activeSize: Size(22.0, 10.0),
-              activeColor: YourStoryStyle.titleColor,
+              activeColor: YourStoryStyle.primarycolor,
               activeShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
               ),
