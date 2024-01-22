@@ -33,7 +33,7 @@ class CreateStoryTitle extends StatelessWidget {
           color: Colors.transparent,
           elevation: 0,
           child: ListTile(
-            horizontalTitleGap: -15,
+            horizontalTitleGap: -5,
             contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
             leading: Icon(
               Icons.lightbulb,
