@@ -22,6 +22,18 @@ class _StorySaveState extends State<StorySave> {
   List<Map<String, dynamic>> topsisScoresList = [];
   bool isLoading = false;
   String responseMessage = ''; // To store the response message
+  int NumberOfImages=1;
+
+    void _showNumberPickerDialog(BuildContext context) {
+    NumberPickerAlertDialog.show(
+      context,
+      'Select a Number',
+      (selectedNumber) {
+        NumberOfImages=selectedNumber!;
+        print('Selected number: $selectedNumber');
+      },4
+    );
+  }
 
   @override
   void initState() {
@@ -67,6 +79,7 @@ class _StorySaveState extends State<StorySave> {
         setState(() {
           topsisScoresList = List<Map<String, dynamic>>.from(responseData);
           responseMessage = ''; // Clear the response message
+          _showNumberPickerDialog(context);
         });
       }
     } else {
