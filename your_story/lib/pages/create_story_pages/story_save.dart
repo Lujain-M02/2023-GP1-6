@@ -30,7 +30,11 @@ class _StorySaveState extends State<StorySave> {
       'Select a Number',
       (selectedNumber) {
         NumberOfImages=selectedNumber!;
-        print('Selected number: $selectedNumber');
+        // print('Selected number: $selectedNumber');
+        // print('NumberOfImages: $NumberOfImages');
+        setState(() {
+      isLoading = false; // Set loading to false when the request completes
+    });
       },
       topsisScoresList.length
     );
@@ -90,9 +94,9 @@ class _StorySaveState extends State<StorySave> {
       });
     }
 
-    setState(() {
-      isLoading = false; // Set loading to false when the request completes
-    });
+    // setState(() {
+    //   isLoading = false; // Set loading to false when the request completes
+    // });
 
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
