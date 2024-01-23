@@ -151,3 +151,80 @@ void showCustomModalBottomSheet(BuildContext context, Widget child) {
     },
   );
 }
+
+class NumberPickerAlertDialog {
+  static void show(BuildContext context, String title, Function(int?) onConfirm, int size) {
+    int? selectedNumber = 1; // Default selected number
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context,setState) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+                title: Text(title),
+                content: DropdownButton<int>(
+                  value: selectedNumber,
+                  items: List.generate(
+                    size,
+                    (index) => DropdownMenuItem(
+                      value: index + 1,
+                      child: Text('${index + 1}'),
+                    ),
+                  ),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedNumber = newValue;
+                    });
+                  },
+                ),
+                actions: [
+                  OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      if (selectedNumber != null) {
+                        onConfirm(selectedNumber);
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: YourStoryStyle.primarycolor,
+                      foregroundColor: Colors.white,
+                      side: BorderSide(
+                        color: YourStoryStyle.primarycolor,
+                        width: 2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      side: BorderSide(
+                        color: YourStoryStyle.primarycolor,
+                        width: 2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+                  ),
+                ],
+              ),
+            );
+          }
+        );
+      },
+    );
+  }
+}
