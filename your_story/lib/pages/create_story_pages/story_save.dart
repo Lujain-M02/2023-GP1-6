@@ -31,7 +31,8 @@ class _StorySaveState extends State<StorySave> {
       (selectedNumber) {
         NumberOfImages=selectedNumber!;
         print('Selected number: $selectedNumber');
-      },4
+      },
+      topsisScoresList.length
     );
   }
 
