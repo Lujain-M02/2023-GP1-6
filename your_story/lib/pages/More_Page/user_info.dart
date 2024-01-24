@@ -11,18 +11,8 @@ class ProfileScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'معلومات الحساب',
-            style: TextStyle(color: Colors.black),
-          ),
-          titleTextStyle: const TextStyle(fontSize: 24),
-          centerTitle: true,
-          leading: const BackButton(color: Colors.black),
-        ),
-        body: ProfileInformation(),
+       
+       body: ProfileInformation(),
       ),
     );
   }
@@ -35,105 +25,139 @@ class ProfileInformation extends StatefulWidget {
 
 class _ProfileInformationState extends State<ProfileInformation> {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
-  late ValueNotifier<bool> refreshNotifier = ValueNotifier<bool>(false);
-
+  late ValueNotifier<bool> refreshNotifier;
+  Map<String, dynamic>? userInfo;
 
   @override
   void initState() {
     super.initState();
     refreshNotifier = ValueNotifier<bool>(false);
+    fetchUserInfo();
   }
 
-  Future<Map<String, dynamic>?> fetchUserInfo() async {
+  Future<void> fetchUserInfo() async {
     try {
       DocumentSnapshot<Map<String, dynamic>> ds =
           await FirebaseFirestore.instance.collection("User").doc(userId).get();
-      return ds.data();
+      userInfo = ds.data();
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: "المعذرة، حصل خطأ",icon: Icons.warning
-        ),
+         CustomSnackBar(
+          content: "المعذرة، حصل خطأ",icon: Icons.warning),
       );
-      return null;
     }
   }
 
-  @override
+  
+
+
+   
+ @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: fetchUserInfo(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: YourStoryStyle.primarycolor,
-            ),
-          );
-        } else if (snapshot.hasError || !snapshot.hasData) {
-          return Container();
-        } else {
-          String username = snapshot.data?['name'] ?? 'N/A';
-          String useremail = snapshot.data?['email'] ?? 'N/A';
-          return ValueListenableBuilder<bool>(
-            valueListenable: refreshNotifier,
-            builder: (context, _, __) {
-              return Container(
-                color: const Color.fromARGB(255, 245, 242, 242),
-                child: ListView(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: customListTile(context, FontAwesomeIcons.user, "الاسم", username, 'username'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: customListTile(context, FontAwesomeIcons.envelope, "البريد الإلكتروني", useremail, 'email'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  }
-
-  Widget customListTile(BuildContext context, IconData icon, String title, String subtitle, String field) {
-    return InkWell(
-      onTap: () async {
-            if (field == 'username') {
-              dynamic result = await Navigator.push(
-              context,
-             MaterialPageRoute(builder: (context) => EditUsernamePage()),
-              );
-
-  if (result != null && result is bool && result) {
-    // Refresh user information
-    setState(() {});
-  }
-}
-      },
-      child: Card(
-        color: Colors.white,
-        child: ListTile(
-          leading: Icon(icon, color: const Color.fromARGB(255, 15, 26, 107)),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title),
-              if (field == 'username')
-                const Icon(Icons.arrow_forward_ios, size: 16, color: Color.fromARGB(255, 164, 161, 161)),
-            ],
-          ),
-          subtitle: Text(subtitle),
+    return Scaffold(backgroundColor: YourStoryStyle.primarycolor,
+      appBar: AppBar(
+        leading: BackButton(color: Colors.white), 
+        backgroundColor:YourStoryStyle.primarycolor,
+        elevation: 0,
+        title: const Text(
+          'معلومات الحساب',
+          style: TextStyle(color: Colors.white),
         ),
+        centerTitle: true,
       ),
+      body: userInfo == null
+          ? Center(child: CircularProgressIndicator(backgroundColor: Colors.white,))
+          : Directionality(
+              textDirection: TextDirection.rtl,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 5),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      top: 100,
+                      right: 20,
+                      bottom: 350,
+                    ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 244, 247, 252),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                      ),
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: Card(
+                        elevation: 5,
+                        shadowColor: const Color.fromARGB(255, 6, 14, 21),
+                        color: Color.fromARGB(175, 17, 68, 120),
+                        margin: EdgeInsets.all(20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage: AssetImage('assets/sss.png'),
+                                radius: 50,
+                                backgroundColor: const Color.fromARGB(255, 255, 255, 255), 
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'الاسم: ${userInfo?['name'] ?? 'N/A'}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.edit, color: Colors.white),
+                                    onPressed: () async {
+                                      final result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditUsernamePage()),
+                                      );
+                                      if (result == true) {
+                                        fetchUserInfo();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'البريد الإلكتروني: ${userInfo?['email'] ?? 'N/A'}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }
-
 class EditUsernamePage extends StatefulWidget {
   @override
   _EditUsernamePageState createState() => _EditUsernamePageState();
@@ -231,6 +255,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
       await FirebaseFirestore.instance.collection("User").doc(userId).update({
         'name': newUsername,
       });
+
 
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
