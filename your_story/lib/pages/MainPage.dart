@@ -38,7 +38,7 @@ class _MainPage extends State<MainPage> {
           Icon(Icons.library_books, size: 30,color: Colors.white),
           Icon(Icons.more_vert_sharp, size: 30 , color: Colors.white,),
         ],
-        color:  YourStoryStyle.primarycolor,
+        color: Color.fromARGB(202, 80, 123, 165),
         buttonBackgroundColor:YourStoryStyle.primarycolor,
         // You can customize the appearance more if needed
       ),
