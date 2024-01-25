@@ -22,7 +22,8 @@ class _MainPage extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(textDirection: TextDirection.rtl, child: Scaffold(
+    return SafeArea(
+      child: Directionality(textDirection: TextDirection.rtl, child: Scaffold(
     
       body: _buildBody(_currentIndex),
        bottomNavigationBar: CurvedNavigationBar(
@@ -42,7 +43,7 @@ class _MainPage extends State<MainPage> {
         buttonBackgroundColor:YourStoryStyle.primarycolor,
         // You can customize the appearance more if needed
       ),
-    ));
+    )));
   }
        
        
@@ -101,7 +102,7 @@ class StoriesPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 15),
             const Text(
               "القصص المنشورة",
               style: TextStyle(color: Colors.white, fontSize: 24),

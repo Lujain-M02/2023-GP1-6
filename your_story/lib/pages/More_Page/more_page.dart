@@ -31,7 +31,7 @@ class MorePage extends StatelessWidget {
             Column( 
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 15),
             const Text(
               'المزيد', style: TextStyle(color: Colors.white, fontSize: 24),
             ),
