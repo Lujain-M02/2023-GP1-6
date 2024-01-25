@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:your_story/pages/create_story_pages/story_save.dart';
+import 'package:your_story/pages/create_story_pages/process_story.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';
@@ -183,7 +183,7 @@ class _CreateStory extends State<CreateStory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => StorySave(
+                              builder: (context) => process_story(
                                 title: storyTitel.text.trim(),
                                 content: storyContent.text.trim(),
                             ),
