@@ -72,87 +72,89 @@ class _ProfileInformationState extends State<ProfileInformation> {
           ? Center(child: CircularProgressIndicator(backgroundColor: Colors.white,))
           : Directionality(
               textDirection: TextDirection.rtl,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 5),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      top: 100,
-                      right: 20,
-                      bottom: 350,
-                    ),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 244, 247, 252),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        top: 100,
+                        right: 20,
+                        bottom: 350,
                       ),
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: Card(
-                        elevation: 5,
-                        shadowColor: const Color.fromARGB(255, 6, 14, 21),
-                        color: Color.fromARGB(175, 17, 68, 120),
-                        margin: EdgeInsets.all(20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 244, 247, 252),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundImage: AssetImage('assets/sss.png'),
-                                radius: 50,
-                                backgroundColor: const Color.fromARGB(255, 255, 255, 255), 
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'الاسم: ${userInfo?['name'] ?? 'N/A'}',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.edit, color: Colors.white),
-                                    onPressed: () async {
-                                      final result = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => EditUsernamePage()),
-                                      );
-                                      if (result == true) {
-                                        fetchUserInfo();
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                'البريد الإلكتروني: ${userInfo?['email'] ?? 'N/A'}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Card(
+                          elevation: 5,
+                          shadowColor: const Color.fromARGB(255, 6, 14, 21),
+                          color: Color.fromARGB(175, 17, 68, 120),
+                          margin: EdgeInsets.all(20),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  backgroundImage: AssetImage('assets/sss.png'),
+                                  radius: 50,
+                                  backgroundColor: const Color.fromARGB(255, 255, 255, 255), 
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'الاسم: ${userInfo?['name'] ?? 'N/A'}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.edit, color: Colors.white),
+                                      onPressed: () async {
+                                        final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => EditUsernamePage()),
+                                        );
+                                        if (result == true) {
+                                          fetchUserInfo();
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'البريد الإلكتروني: ${userInfo?['email'] ?? 'N/A'}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
     );
