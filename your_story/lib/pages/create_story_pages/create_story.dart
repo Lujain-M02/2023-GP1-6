@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:your_story/pages/create_story_pages/process_story.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/process_story.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
 import 'package:your_story/pages/create_story_pages/create_story_content.dart';

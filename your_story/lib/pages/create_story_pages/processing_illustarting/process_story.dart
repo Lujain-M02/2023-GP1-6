@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/MainPage.dart';
-import '../../style.dart';
-import '../../alerts.dart';
+import '../../../style.dart';
+import '../../../alerts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
