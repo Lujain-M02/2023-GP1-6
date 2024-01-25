@@ -55,12 +55,12 @@ class _MyStoriesState extends State<MyStories> {
     return SafeArea(
       child: Directionality(
         textDirection: TextDirection.rtl,
-        child: Scaffold(
+        child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
           appBar: AppBar(
             title: const Text("قصصي",
-                style: TextStyle(fontSize: 24, color: Colors.black)),
+                style: TextStyle(fontSize: 24, color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.white,
+            backgroundColor: YourStoryStyle.s2Color,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.push(context,
@@ -74,18 +74,48 @@ class _MyStoriesState extends State<MyStories> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
-                      color: YourStoryStyle.primarycolor),
+                  color: YourStoryStyle.primarycolor),
                 );
               }
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
+                return Container(padding: const EdgeInsets.only(
+                left: 20,
+                top: 30,
+                right: 20,
+                bottom: 700, 
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 244, 247, 252),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  
+                ),
+              ),
+                child: Center(
                   child: Text(
                       "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
                       textAlign: TextAlign.center),
-                );
+                ));
               }
+              
+              
+
+              //   return const Center(
+              //     child: Text(
+              //         "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+              //         textAlign: TextAlign.center),
+              //   );
+              // }
               final stories = snapshot.data!;
-              return ListView.builder(
+              return Container(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 244, 247, 252),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+                ),
+                child:
+               ListView.builder(
                 itemCount: stories.length,
                 itemBuilder: (context, index) {
                   final story = stories[index];
@@ -94,7 +124,7 @@ class _MyStoriesState extends State<MyStories> {
                     onDelete: () => deleteStory(story.id),
                   );
                 },
-              );
+              ));
             },
           ),
         ),
