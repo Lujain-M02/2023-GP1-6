@@ -27,7 +27,7 @@ class _StorySaveState extends State<StorySave> {
     void _showNumberPickerDialog(BuildContext context) {
     NumberPickerAlertDialog.show(
       context,
-      'Select a Number',
+      'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
       (selectedNumber) {
         NumberOfImages=selectedNumber!;
         // print('Selected number: $selectedNumber');
@@ -126,6 +126,28 @@ class _StorySaveState extends State<StorySave> {
     return 'Translation Error: ${response.statusCode}';
   }
 }
+//this method to return just a clauses sorted 
+List<Map<String, dynamic>> sortClausesByScore(List<Map<String, dynamic>> data) {
+  // Create a list to store clauses and their scores
+  List<Map<String, dynamic>> allClausesWithScores = [];
+
+  // Extract clauses and their scores
+  for (var item in data) {
+    List<dynamic> clauses = item['clauses'];
+    for (var clause in clauses) {
+      allClausesWithScores.add({
+        'clause': clause['clause'],
+        'score': clause['score'],
+      });
+    }
+  }
+
+  // Sort the list by score in descending order
+  allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
+
+  return allClausesWithScores;
+}
+
 
 
   Future<void> addStoryToCurrentUser(String title, String content, BuildContext context) async {
@@ -195,7 +217,7 @@ Widget build(BuildContext context) {
           : responseMessage.isNotEmpty
               ? Center(child: Text(responseMessage))
               : Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding:  EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -206,51 +228,131 @@ Widget build(BuildContext context) {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: topsisScoresList.length,
-                          itemBuilder: (context, sentenceIndex) {
-                            final sentence = topsisScoresList[sentenceIndex];
-                            final clauses = sentence['clauses'] as List<dynamic>;
+                      const SizedBox(height: 8,),
+                  Text("قام النظام باقتراح الـ $NumberOfImages عبارات التاليه ليقوم بتصويرها "),
+                      const SizedBox(height: 8,),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(onPressed: (){
+                        Alert.show(context, "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
+                        }
+                        , child: Text("معرفة معايير التقييم",style: TextStyle(color: YourStoryStyle.s2Color),)),
+                      )
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //     itemCount: topsisScoresList.length,
+                      //     itemBuilder: (context, sentenceIndex) {
+                      //       final sentence = topsisScoresList[sentenceIndex];
+                      //       final clauses = sentence['clauses'] as List<dynamic>;
+                  
+                      //       return ExpansionTile(
+                      //         title: Text('جملة ${sentenceIndex + 1}: ${sentence['sentence']}'),
+                      //         children: clauses.map((clauseData) {
+                      //           // Clean up each clause using replaceAll
+                      //           final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
+                      //           final score = clauseData['score'];
+                  
+                      //           //translate clauses
+                      //           translateClause(cleanedClause);
+                  
+                      //           return ListTile(
+                      //             title: Text('عبارة: $cleanedClause'),
+                      //             subtitle: Text('الدرجة: $score'),
+                      //           );
+                      //         }).toList(),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                      ,Container(
+                    child: FutureBuilder<List<Map<String, dynamic>>>(
+                      future: Future(() => sortClausesByScore(topsisScoresList)),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator(color: YourStoryStyle.primarycolor,);
+                        } else if (snapshot.hasError) {
+                          return const Text("يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                        } else if (snapshot.hasData) {
+                          // Get top clauses
+                          var topClauses = snapshot.data!.take(NumberOfImages).toList();
+                  
+                          return Column(
+                            children: topClauses.map((clauseData) {
+                                                              final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
 
-                            return ExpansionTile(
-                              title: Text('جملة ${sentenceIndex + 1}: ${sentence['sentence']}'),
-                              children: clauses.map((clauseData) {
-                                // Clean up each clause using replaceAll
-                                final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
-                                final score = clauseData['score'];
-
-                                //translate clauses
-                                translateClause(cleanedClause);
-
-                                return ListTile(
-                                  title: Text('عبارة: $cleanedClause'),
-                                  subtitle: Text('الدرجة: $score'),
-                                );
-                              }).toList(),
-                            );
-                          },
-                        ),
-                      ),
+                              return ListTile(
+                                title: Text('عبارة: $cleanedClause'),
+                                //subtitle: Text('الدرجة: ${clauseData['score']}'),
+                              );
+                            }).toList(),
+                          );
+                        } else {
+                          return const Text("يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                        }
+                      },
+                    ),
+                  ),
+                  
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const Text("لم يتم اتاحة تصوير القصة الى الان"),
                             ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(YourStoryStyle.primarycolor),
-                                shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),)
-                              ),
-                              onPressed: () async {
-                                await addStoryToCurrentUser(widget.title, widget.content, context);
-                              },
-                              child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(YourStoryStyle.primarycolor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
                             ),
+                          )),
+                      onPressed: () {
+                        /////////////////////////////////////-----------------------------
+                      },
+                      child: const Text(
+                        "الاستمرار مع مقترحات النظام",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                            ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                  color: YourStoryStyle
+                                      .primarycolor), // Set border color and width
+                            ),
+                          )),
+                      onPressed: () {
+                        /////////////////////////////////////-----------------------------
+                      },
+                      child: Text(
+                        "الاختيار يدويا",
+                        style: TextStyle(color: YourStoryStyle.primarycolor),
+                      ),
+                    ),
+                            // const Text("لم يتم اتاحة تصوير القصة الى الان"),
+                            // ElevatedButton(
+                            //   style: ButtonStyle(
+                            //     backgroundColor: MaterialStateProperty.all(YourStoryStyle.primarycolor),
+                            //     shape:
+                            //     MaterialStateProperty.all<RoundedRectangleBorder>(
+                            //   RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(50),
+                            //   ),)
+                            //   ),
+                            //   onPressed: () async {
+                            //     await addStoryToCurrentUser(widget.title, widget.content, context);
+                            //   },
+                            //   child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
+                            // ),
                           ],
                         ),
                       ),
