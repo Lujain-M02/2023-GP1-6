@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -58,20 +59,48 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            //image: AssetImage('assets/resetPassBG.png'),
-            image: AssetImage('assets/bg18.png'),
-
-            fit: BoxFit.cover,
-          )),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
+    final height = MediaQuery.of(context).size.height;
+      return SafeArea(
+      child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            backgroundColor: Color.fromARGB(255, 0, 48, 96),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: height * 0.25,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                              child: FadeInUp(
+                              duration: const Duration(seconds: 1),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/reset.gif'),
+                                                         )                    
+                                                        ),
+                                              )
+                                             ),
+                                  ),
+                                ],
+                    ),
+                  ),
+      FadeInUp(
+          duration: const Duration(milliseconds: 1500),
+          child: Container(
+            padding: const EdgeInsets.only(left: 20, right: 20,   top: 30, bottom: 300, ),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 244, 247, 252),
+              borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60),
+                                       ),
+                                     ),
+           child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -82,7 +111,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     const Text(
                       "إعادة تعيين كلمة المرور:",
                       style: TextStyle(fontSize: 30),
-                    ),
+                    ),const SizedBox(height: 10,),
                     const Text(
                         "أدخل بريدك الالكتروني المرتبط بحسابك وسنقوم بإرسال رابط إعادة تعيين كلمة المرور إليك."),
                     TextFormField(
@@ -161,7 +190,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             ),
           ),
         ),
-      ),
-    );
+            ])),
+      )));
   }
 }
