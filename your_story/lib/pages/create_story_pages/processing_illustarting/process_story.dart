@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import '../../../style.dart';
 import '../../../alerts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class process_story extends StatefulWidget {
+class ProcessStory extends StatefulWidget {
+
+
+  ProcessStory({required this.title, required this.content});
   final String title;
   final String content;
-
-  process_story({required this.title, required this.content});
-
   @override
-  _process_storyState createState() => _process_storyState();
+  _ProcessStoryState createState() => _ProcessStoryState();
 }
 
-class _process_storyState extends State<process_story> {
+class _ProcessStoryState extends State<ProcessStory> {
   List<Map<String, dynamic>> topsisScoresList = [];
   bool isLoading = false;
   String responseMessage = ''; // To store the response message
   int numberOfImages = 1;
+    List<String> topClausesToIllustrate = []; // this array stores the top clauses and send it to other page 
+
 
   void _showNumberPickerDialog(BuildContext context) {
     NumberPickerAlertDialog.show(context,
@@ -32,6 +35,8 @@ class _process_storyState extends State<process_story> {
       // print('NumberOfImages: $NumberOfImages');
       setState(() {
         isLoading = false; // Set loading to false when the request completes
+        topClausesToIllustrate = getTopClauses(topsisScoresList); // Update topClausesToIllustrate
+
       });
     }, topsisScoresList.length);
   }
@@ -123,28 +128,30 @@ class _process_storyState extends State<process_story> {
     }
   }
 
-//this method to return just a clauses sorted
-  List<Map<String, dynamic>> sortClausesByScore(
-      List<Map<String, dynamic>> data) {
-    // Create a list to store clauses and their scores
-    List<Map<String, dynamic>> allClausesWithScores = [];
 
-    // Extract clauses and their scores
-    for (var item in data) {
-      List<dynamic> clauses = item['clauses'];
-      for (var clause in clauses) {
-        allClausesWithScores.add({
-          'clause': clause['clause'],
-          'score': clause['score'],
-        });
-      }
+
+List<String> getTopClauses(List<Map<String, dynamic>> data) {
+  // Create a list to store clauses and their scores
+  List<Map<String, dynamic>> allClausesWithScores = [];
+
+  // Extract clauses and their scores
+  for (var item in data) {
+    List<dynamic> clauses = item['clauses'];
+    for (var clause in clauses) {
+      allClausesWithScores.add({
+        'clause': clause['clause'],
+        'score': clause['score'],
+      });
     }
-
-    // Sort the list by score in descending order
-    allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
-
-    return allClausesWithScores;
   }
+
+  // Sort the list by score in descending order
+  allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
+
+  // Get the top two clauses (without scores) if available
+  return allClausesWithScores.take(numberOfImages).map((item) => item['clause'].toString()).toList();
+}
+
 
   Future<void> addStoryToCurrentUser(
       String title, String content, BuildContext context) async {
@@ -271,43 +278,52 @@ class _process_storyState extends State<process_story> {
                         //   ),
                         // ),
                         ,
+                        //Container(
+                          // child: FutureBuilder<List<Map<String, dynamic>>>(
+                          //   future: Future(
+                          //       () => sortClausesByScore(topsisScoresList)),
+                          //   builder: (context, snapshot) {
+                          //     if (snapshot.connectionState ==
+                          //         ConnectionState.waiting) {
+                          //       return CircularProgressIndicator(
+                          //         color: YourStoryStyle.primarycolor,
+                          //       );
+                          //     } else if (snapshot.hasError) {
+                          //       return const Text(
+                          //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                          //     } else if (snapshot.hasData) {
+                          //       // Get top clauses
+                          //       var topClauses = snapshot.data!
+                          //           .take(numberOfImages)
+                          //           .toList();
+                          //           return Column(
+                          //         children: topClauses.map((clauseData) {
+                          //           final cleanedClause = clauseData['clause']
+                          //               .replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
+
+                          //           return ListTile(
+                          //             title: Text('عبارة: $cleanedClause'),
+                          //             //subtitle: Text('الدرجة: ${clauseData['score']}'),
+                          //           );
+                          //         }).toList(),
+                          //       );
+                          //     } else {
+                          //       return const Text(
+                          //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                          //     }
+                          //   },
+                          // ),
+                        //),
                         Container(
-                          child: FutureBuilder<List<Map<String, dynamic>>>(
-                            future: Future(
-                                () => sortClausesByScore(topsisScoresList)),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator(
-                                  color: YourStoryStyle.primarycolor,
-                                );
-                              } else if (snapshot.hasError) {
-                                return const Text(
-                                    "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                              } else if (snapshot.hasData) {
-                                // Get top clauses
-                                var topClauses = snapshot.data!
-                                    .take(numberOfImages)
-                                    .toList();
-
-                                return Column(
-                                  children: topClauses.map((clauseData) {
-                                    final cleanedClause = clauseData['clause']
-                                        .replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
-
-                                    return ListTile(
-                                      title: Text('عبارة: $cleanedClause'),
-                                      //subtitle: Text('الدرجة: ${clauseData['score']}'),
-                                    );
-                                  }).toList(),
-                                );
-                              } else {
-                                return const Text(
-                                    "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                              }
-                            },
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: topClausesToIllustrate.map((clause) {
+                            return Text(
+                              "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
+                            );
+                          }).toList(),
                         ),
+                      ),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -325,7 +341,16 @@ class _process_storyState extends State<process_story> {
                                       ),
                                     )),
                                 onPressed: () {
-                                  /////////////////////////////////////-----------------------------
+                                  
+                                              Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => Illustration(
+                  title: widget.title,
+                  content: widget.content,
+                  clausesToIllujstrate: topClausesToIllustrate,
+                ),
+              ),
+            );
                                 },
                                 child: const Text(
                                   "الاستمرار مع مقترحات النظام",

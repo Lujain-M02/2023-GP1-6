@@ -183,7 +183,7 @@ class _CreateStory extends State<CreateStory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => process_story(
+                              builder: (context) => ProcessStory(
                                 title: storyTitel.text.trim(),
                                 content: storyContent.text.trim(),
                             ),
