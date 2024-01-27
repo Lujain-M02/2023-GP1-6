@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/filtering.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import '../../../style.dart';
 import '../../../alerts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'global_story.dart';
 
 class ProcessStory extends StatefulWidget {
   ProcessStory({required this.title, required this.content});
@@ -35,6 +37,11 @@ class _ProcessStoryState extends State<ProcessStory> {
         isLoading = false; // Set loading to false when the request completes
         topClausesToIllustrate =
             getTopClauses(topsisScoresList); // Update topClausesToIllustrate
+            //update the global variables
+            globalTitle=widget.title;
+            globalContent=widget.content;
+            globaltopClausesToIllustrate=topClausesToIllustrate;
+            globaltopsisScoresList=topsisScoresList;
       });
     }, topsisScoresList.length);
   }
@@ -369,7 +376,12 @@ class _ProcessStoryState extends State<ProcessStory> {
                                       ),
                                     )),
                                 onPressed: () {
-                                  /////////////////////////////////////-----------------------------
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => Filtering(
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   "الاختيار يدويا",
