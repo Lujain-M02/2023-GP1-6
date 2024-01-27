@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/style.dart';
 
@@ -60,7 +63,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
     return SafeArea(
       child: Scaffold(backgroundColor: YourStoryStyle.primarycolor,
         appBar: AppBar(
-          leading: BackButton(color: Colors.white), 
+          leading: const BackButton(color: Colors.white), 
           backgroundColor:YourStoryStyle.primarycolor,
           elevation: 0,
           title: const Text(
@@ -70,14 +73,14 @@ class _ProfileInformationState extends State<ProfileInformation> {
           centerTitle: true,
         ),
         body: userInfo == null
-            ? Center(child: CircularProgressIndicator(backgroundColor: Colors.white,))
+            ? Center( child: Lottie.asset('assets/loading.json',width: 200,height: 200))
             : Directionality(
                 textDirection: TextDirection.rtl,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.9,
                         padding: const EdgeInsets.only(
@@ -87,46 +90,47 @@ class _ProfileInformationState extends State<ProfileInformation> {
                           bottom: 350,
                         ),
                         width: double.infinity,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 244, 247, 252),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(60),
                           ),
                         ),
+                        // ignore: sized_box_for_whitespace
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: Card(
                             elevation: 5,
                             shadowColor: const Color.fromARGB(255, 6, 14, 21),
-                            color: Color.fromARGB(175, 17, 68, 120),
-                            margin: EdgeInsets.all(20),
+                            color: const Color.fromARGB(175, 17, 68, 120),
+                            margin: const EdgeInsets.all(20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundImage: AssetImage('assets/sss.png'),
                                     radius: 50,
-                                    backgroundColor: const Color.fromARGB(255, 255, 255, 255), 
+                                    backgroundColor: Color.fromARGB(255, 255, 255, 255), 
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         'الاسم: ${userInfo?['name'] ?? 'N/A'}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                         ),
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.edit, color: Colors.white),
+                                        icon: const Icon(Icons.edit, color: Colors.white),
                                         onPressed: () async {
                                           final result = await Navigator.push(
                                             context,
@@ -140,10 +144,10 @@ class _ProfileInformationState extends State<ProfileInformation> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Text(
                                     'البريد الإلكتروني: ${userInfo?['email'] ?? 'N/A'}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
                                     ),

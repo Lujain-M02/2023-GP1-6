@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
@@ -73,8 +74,7 @@ class _MyStoriesState extends State<MyStories> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: CircularProgressIndicator(
-                  color: YourStoryStyle.primarycolor),
+                  child: Lottie.asset('assets/loading.json',width: 200,height: 200),
                 );
               }
               if (!snapshot.hasData || snapshot.data!.isEmpty) {

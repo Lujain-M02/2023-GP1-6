@@ -64,7 +64,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       child: Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            backgroundColor: Color.fromARGB(255, 0, 48, 96),
+            backgroundColor: const Color.fromARGB(255, 0, 48, 96),
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
