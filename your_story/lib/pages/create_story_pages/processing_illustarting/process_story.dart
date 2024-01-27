@@ -9,8 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProcessStory extends StatefulWidget {
-
-
   ProcessStory({required this.title, required this.content});
   final String title;
   final String content;
@@ -23,8 +21,8 @@ class _ProcessStoryState extends State<ProcessStory> {
   bool isLoading = false;
   String responseMessage = ''; // To store the response message
   int numberOfImages = 1;
-    List<String> topClausesToIllustrate = []; // this array stores the top clauses and send it to other page 
-
+  List<String> topClausesToIllustrate =
+      []; // this array stores the top clauses and send it to other page
 
   void _showNumberPickerDialog(BuildContext context) {
     NumberPickerAlertDialog.show(context,
@@ -35,8 +33,8 @@ class _ProcessStoryState extends State<ProcessStory> {
       // print('NumberOfImages: $NumberOfImages');
       setState(() {
         isLoading = false; // Set loading to false when the request completes
-        topClausesToIllustrate = getTopClauses(topsisScoresList); // Update topClausesToIllustrate
-
+        topClausesToIllustrate =
+            getTopClauses(topsisScoresList); // Update topClausesToIllustrate
       });
     }, topsisScoresList.length);
   }
@@ -59,7 +57,7 @@ class _ProcessStoryState extends State<ProcessStory> {
     };
 
     final response = await http.post(
-      Uri.parse("http://192.168.8.102:5000/calculate_topsis"),
+      Uri.parse("http://192.168.100.244:5000/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -103,7 +101,7 @@ class _ProcessStoryState extends State<ProcessStory> {
     print('Response Body: ${response.body}');
   }
 
-  Future<String> translateClause(String clause) async {
+  /*Future<String> translateClause(String clause) async {
     const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
     const to = 'en'; //Destination language
 
@@ -126,32 +124,32 @@ class _ProcessStoryState extends State<ProcessStory> {
       print('Translation Error: ${response.statusCode}');
       return 'Translation Error: ${response.statusCode}';
     }
-  }
+  }*/
 
+  List<String> getTopClauses(List<Map<String, dynamic>> data) {
+    // Create a list to store clauses and their scores
+    List<Map<String, dynamic>> allClausesWithScores = [];
 
-
-List<String> getTopClauses(List<Map<String, dynamic>> data) {
-  // Create a list to store clauses and their scores
-  List<Map<String, dynamic>> allClausesWithScores = [];
-
-  // Extract clauses and their scores
-  for (var item in data) {
-    List<dynamic> clauses = item['clauses'];
-    for (var clause in clauses) {
-      allClausesWithScores.add({
-        'clause': clause['clause'],
-        'score': clause['score'],
-      });
+    // Extract clauses and their scores
+    for (var item in data) {
+      List<dynamic> clauses = item['clauses'];
+      for (var clause in clauses) {
+        allClausesWithScores.add({
+          'clause': clause['clause'],
+          'score': clause['score'],
+        });
+      }
     }
+
+    // Sort the list by score in descending order
+    allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
+
+    // Get the top two clauses (without scores) if available
+    return allClausesWithScores
+        .take(numberOfImages)
+        .map((item) => item['clause'].toString())
+        .toList();
   }
-
-  // Sort the list by score in descending order
-  allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
-
-  // Get the top two clauses (without scores) if available
-  return allClausesWithScores.take(numberOfImages).map((item) => item['clause'].toString()).toList();
-}
-
 
   Future<void> addStoryToCurrentUser(
       String title, String content, BuildContext context) async {
@@ -279,51 +277,51 @@ List<String> getTopClauses(List<Map<String, dynamic>> data) {
                         // ),
                         ,
                         //Container(
-                          // child: FutureBuilder<List<Map<String, dynamic>>>(
-                          //   future: Future(
-                          //       () => sortClausesByScore(topsisScoresList)),
-                          //   builder: (context, snapshot) {
-                          //     if (snapshot.connectionState ==
-                          //         ConnectionState.waiting) {
-                          //       return CircularProgressIndicator(
-                          //         color: YourStoryStyle.primarycolor,
-                          //       );
-                          //     } else if (snapshot.hasError) {
-                          //       return const Text(
-                          //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                          //     } else if (snapshot.hasData) {
-                          //       // Get top clauses
-                          //       var topClauses = snapshot.data!
-                          //           .take(numberOfImages)
-                          //           .toList();
-                          //           return Column(
-                          //         children: topClauses.map((clauseData) {
-                          //           final cleanedClause = clauseData['clause']
-                          //               .replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
+                        // child: FutureBuilder<List<Map<String, dynamic>>>(
+                        //   future: Future(
+                        //       () => sortClausesByScore(topsisScoresList)),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.connectionState ==
+                        //         ConnectionState.waiting) {
+                        //       return CircularProgressIndicator(
+                        //         color: YourStoryStyle.primarycolor,
+                        //       );
+                        //     } else if (snapshot.hasError) {
+                        //       return const Text(
+                        //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                        //     } else if (snapshot.hasData) {
+                        //       // Get top clauses
+                        //       var topClauses = snapshot.data!
+                        //           .take(numberOfImages)
+                        //           .toList();
+                        //           return Column(
+                        //         children: topClauses.map((clauseData) {
+                        //           final cleanedClause = clauseData['clause']
+                        //               .replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
 
-                          //           return ListTile(
-                          //             title: Text('عبارة: $cleanedClause'),
-                          //             //subtitle: Text('الدرجة: ${clauseData['score']}'),
-                          //           );
-                          //         }).toList(),
-                          //       );
-                          //     } else {
-                          //       return const Text(
-                          //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                          //     }
-                          //   },
-                          // ),
+                        //           return ListTile(
+                        //             title: Text('عبارة: $cleanedClause'),
+                        //             //subtitle: Text('الدرجة: ${clauseData['score']}'),
+                        //           );
+                        //         }).toList(),
+                        //       );
+                        //     } else {
+                        //       return const Text(
+                        //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
+                        //     }
+                        //   },
+                        // ),
                         //),
                         Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: topClausesToIllustrate.map((clause) {
-                            return Text(
-                              "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                            );
-                          }).toList(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: topClausesToIllustrate.map((clause) {
+                              return Text(
+                                "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -341,16 +339,16 @@ List<String> getTopClauses(List<Map<String, dynamic>> data) {
                                       ),
                                     )),
                                 onPressed: () {
-                                  
-                                              Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Illustration(
-                  title: widget.title,
-                  content: widget.content,
-                  clausesToIllujstrate: topClausesToIllustrate,
-                ),
-              ),
-            );
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => Illustration(
+                                        title: widget.title,
+                                        content: widget.content,
+                                        clausesToIllujstrate:
+                                            topClausesToIllustrate,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: const Text(
                                   "الاستمرار مع مقترحات النظام",
