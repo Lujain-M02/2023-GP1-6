@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class Illustration extends StatefulWidget {
@@ -89,7 +91,8 @@ class _IllustrationState extends State<Illustration> {
 }
 
 Future<String> generateImage(String prompt) async {
-  OpenAI.apiKey = "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";
+  OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
+  //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
   try {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
       prompt: prompt,
@@ -112,9 +115,10 @@ Future<String> generateImage(String prompt) async {
 }
 
 Future<String> translateClause(String clause) async {
-  print(
-      "==================================================================== in the translateClause  ");
-  const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
+  var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
+
+  //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
+  //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
   const to = 'en'; //Destination language
 
   final url = Uri.parse(
