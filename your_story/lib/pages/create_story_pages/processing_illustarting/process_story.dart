@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:your_story/pages/MainPage.dart';
+// import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/filtering.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import '../../../style.dart';
 import '../../../alerts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'global_story.dart';
 
 class ProcessStory extends StatefulWidget {
@@ -100,38 +100,13 @@ class _ProcessStoryState extends State<ProcessStory> {
       });
     }
 
-    // setState(() {
-    //   isLoading = false; // Set loading to false when the request completes
-    // });
+
 
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
 
-  /*Future<String> translateClause(String clause) async {
-    const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
-    const to = 'en'; //Destination language
 
-    final url = Uri.parse(
-        'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
-
-    final response = await http.post(url);
-
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      final translations = body['data']['translations'] as List<dynamic>;
-      final translation = translations.first['translatedText'];
-
-      // Print the translated text to the console
-      print('Original: $clause');
-      print('Translated: $translation');
-
-      return translation;
-    } else {
-      print('Translation Error: ${response.statusCode}');
-      return 'Translation Error: ${response.statusCode}';
-    }
-  }*/
 
   List<String> getTopClauses(List<Map<String, dynamic>> data) {
     // Create a list to store clauses and their scores
@@ -158,42 +133,42 @@ class _ProcessStoryState extends State<ProcessStory> {
         .toList();
   }
 
-  Future<void> addStoryToCurrentUser(
-      String title, String content, BuildContext context) async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
+  // Future<void> addStoryToCurrentUser(
+  //     String title, String content, BuildContext context) async {
+  //   try {
+  //     final User? user = FirebaseAuth.instance.currentUser;
 
-      if (user != null) {
-        DocumentReference userRef =
-            FirebaseFirestore.instance.collection("User").doc(user.uid);
+  //     if (user != null) {
+  //       DocumentReference userRef =
+  //           FirebaseFirestore.instance.collection("User").doc(user.uid);
 
-        CollectionReference storiesCollection = userRef.collection("Stories");
+  //       CollectionReference storiesCollection = userRef.collection("Stories");
 
-        await storiesCollection.add({
-          'title': title,
-          'content': content,
-        });
+  //       await storiesCollection.add({
+  //         'title': title,
+  //         'content': content,
+  //       });
 
-        print("Story added successfully!");
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(content: "تم الحفظ بنجاح", icon: Icons.check_circle),
-        );
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const MainPage()),
-          (Route<dynamic> route) =>
-              false, // this removes all routes below MainPage
-        );
-      } else {
-        print("No user is currently signed in.");
-      }
-    } catch (e) {
-      print("Error adding story: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(content: "حدث خطأ عند الحفظ", icon: Icons.warning),
-      );
-    }
-  }
+  //       print("Story added successfully!");
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         CustomSnackBar(content: "تم الحفظ بنجاح", icon: Icons.check_circle),
+  //       );
+  //       Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const MainPage()),
+  //         (Route<dynamic> route) =>
+  //             false, // this removes all routes below MainPage
+  //       );
+  //     } else {
+  //       print("No user is currently signed in.");
+  //     }
+  //   } catch (e) {
+  //     print("Error adding story: $e");
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       CustomSnackBar(content: "حدث خطأ عند الحفظ", icon: Icons.warning),
+  //     );
+  //   }
+  // }
 
   @override
   @override
@@ -283,42 +258,6 @@ class _ProcessStoryState extends State<ProcessStory> {
                         //   ),
                         // ),
                         ,
-                        //Container(
-                        // child: FutureBuilder<List<Map<String, dynamic>>>(
-                        //   future: Future(
-                        //       () => sortClausesByScore(topsisScoresList)),
-                        //   builder: (context, snapshot) {
-                        //     if (snapshot.connectionState ==
-                        //         ConnectionState.waiting) {
-                        //       return CircularProgressIndicator(
-                        //         color: YourStoryStyle.primarycolor,
-                        //       );
-                        //     } else if (snapshot.hasError) {
-                        //       return const Text(
-                        //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                        //     } else if (snapshot.hasData) {
-                        //       // Get top clauses
-                        //       var topClauses = snapshot.data!
-                        //           .take(numberOfImages)
-                        //           .toList();
-                        //           return Column(
-                        //         children: topClauses.map((clauseData) {
-                        //           final cleanedClause = clauseData['clause']
-                        //               .replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
-
-                        //           return ListTile(
-                        //             title: Text('عبارة: $cleanedClause'),
-                        //             //subtitle: Text('الدرجة: ${clauseData['score']}'),
-                        //           );
-                        //         }).toList(),
-                        //       );
-                        //     } else {
-                        //       return const Text(
-                        //           "يبدو انه حصلت مشكلة المعذرة حاول لاحقا");
-                        //     }
-                        //   },
-                        // ),
-                        //),
                         Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
