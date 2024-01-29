@@ -73,7 +73,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
           centerTitle: true,
         ),
         body: userInfo == null
-            ? Center( child: Lottie.asset('assets/loading.json',width: 200,height: 200))
+            ? Center( child: Lottie.asset('assets/loading2.json',width: 200,height: 200))
             : Directionality(
                 textDirection: TextDirection.rtl,
                 child: SingleChildScrollView(

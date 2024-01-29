@@ -39,43 +39,13 @@ class _MainPage extends State<MainPage> {
           Icon(Icons.library_books, size: 30,color: Colors.white),
           Icon(Icons.more_vert_sharp, size: 30 , color: Colors.white,),
         ],
-        color: Color.fromARGB(202, 80, 123, 165),
+        color: const Color.fromARGB(199, 0, 29, 57),
         buttonBackgroundColor:YourStoryStyle.primarycolor,
         // You can customize the appearance more if needed
       ),
     )));
   }
        
-       
-        //SalomonBottomBar(
-      //   backgroundColor: Colors.white,
-      //   currentIndex: _currentIndex,
-      //   margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //   },
-      //   items: [
-      //     SalomonBottomBarItem(
-      //       icon: const Icon(Icons.home),
-      //       title: const Text("القصص المنشورة"),
-      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
-      //     ),
-      //     SalomonBottomBarItem(
-      //       icon: const Icon(Icons.library_books),
-      //       title: const Text("قصصي"),
-      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
-      //     ),
-      //     SalomonBottomBarItem(
-      //       icon: const Icon(Icons.more_vert_sharp),
-      //       title: const Text("المزيد"),
-      //       selectedColor: const Color.fromARGB(255, 1, 16, 87),
-      //     ),
-      //   ],
-      // ),
-  
-  
   }
 
   Widget _buildBody(int currentIndex) {
@@ -86,7 +56,7 @@ class _MainPage extends State<MainPage> {
       // stories Page 
       return const MyStories();
     } else if (currentIndex == 2) {
-        return MorePage();       
+        return const MorePage();       
         }
     return Container();
   }

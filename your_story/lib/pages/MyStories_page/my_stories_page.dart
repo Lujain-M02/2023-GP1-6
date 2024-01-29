@@ -62,6 +62,7 @@ class _MyStoriesState extends State<MyStories> {
                 style: TextStyle(fontSize: 24, color: Colors.white)),
             centerTitle: true,
             backgroundColor: YourStoryStyle.s2Color,
+            automaticallyImplyLeading: false,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.push(context,
@@ -74,7 +75,7 @@ class _MyStoriesState extends State<MyStories> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: Lottie.asset('assets/loading.json',width: 200,height: 200),
+                  child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
                 );
               }
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
