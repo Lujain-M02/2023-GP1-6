@@ -4,18 +4,20 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'global_story.dart';
 
 class Illustration extends StatefulWidget {
   final String title;
   final String content;
-  final List<dynamic> clausesToIllujstrate;
+  //final List<dynamic> clausesToIllujstrate;
 
-  Illustration(
-      {Key? key,
-      required this.title,
-      required this.content,
-      required this.clausesToIllujstrate})
-      : super(key: key);
+  Illustration({
+    Key? key,
+    required this.title,
+    required this.content,
+    required List<String> clausesToIllujstrate,
+    //required this.clausesToIllujstrate
+  }) : super(key: key);
 
   @override
   State<Illustration> createState() => _IllustrationState();
@@ -52,17 +54,18 @@ class _IllustrationState extends State<Illustration> {
     setState(() {
       isLoading = true;
     });
-    List<String> urls = [];
-    for (var clause in widget.clausesToIllujstrate) {
+    //List<String> urls = [];
+    for (var clause in globaltopClausesToIllustrate) {
       // Translate the clause first
       String translatedClause = await translateClause(clause);
 
       // Then generate image for the translated clause
       String imageUrl = await generateImage(translatedClause);
-      urls.add(imageUrl);
+      globalImagesUrls.add(imageUrl);
+      //urls.add(imageUrl);
     }
     setState(() {
-      imageUrls = urls;
+      //imageUrls = urls;
       isLoading = false;
     });
   }
@@ -78,10 +81,10 @@ class _IllustrationState extends State<Illustration> {
           : Container(
               color: Colors.blue,
               child: ListView.builder(
-                itemCount: imageUrls.length,
+                itemCount: globalImagesUrls.length,
                 itemBuilder: (context, index) {
-                  return imageUrls[index].isNotEmpty
-                      ? Image.network(imageUrls[index])
+                  return globalImagesUrls[index].isNotEmpty
+                      ? Image.network(globalImagesUrls[index])
                       : Text("No image available");
                 },
               ),
