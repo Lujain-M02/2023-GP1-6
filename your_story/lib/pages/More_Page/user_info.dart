@@ -61,10 +61,10 @@ class _ProfileInformationState extends State<ProfileInformation> {
  @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(backgroundColor: YourStoryStyle.primarycolor,
+      child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
         appBar: AppBar(
           leading: const BackButton(color: Colors.white), 
-          backgroundColor:YourStoryStyle.primarycolor,
+          backgroundColor:YourStoryStyle.s2Color,
           elevation: 0,
           title: const Text(
             'معلومات الحساب',
@@ -230,7 +230,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: YourStoryStyle.primarycolor,
+                    backgroundColor: YourStoryStyle.s2Color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
