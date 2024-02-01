@@ -7,9 +7,9 @@ import 'package:lottie/lottie.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:your_story/pages/MainPage.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../create_story_pages/processing_illustarting/global_story.dart';
 
 class PdfGenerationPage extends StatefulWidget {
@@ -181,10 +181,19 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     try {
       final pdfBytes = await generatePdf(widget.title, widget.content);
       await addPdfToCurrentUser(widget.title, pdfBytes);
+     // After successful generation and upload, navigate to the "My Stories" page.
+    _navigateToMyStoriesPage();
     } catch (e) {
       print("Error generating or uploading PDF: $e");
     }
   }
+  
+   void _navigateToMyStoriesPage() {    Navigator.of(context).pushAndRemoveUntil(
+        //       MaterialPageRoute(builder: (context) => const StoriesPage()),
+        //       
+        //     );
+    MaterialPageRoute(   builder: (context) => const MyStories(),),(Route<dynamic> route) => false,) ;  
+   }
 
   Future<String> uploadPdfToFirebaseStorage(
       Uint8List pdfFile, String fileName) async {
@@ -239,20 +248,28 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        leading: IconButton(
-          icon: Icon(Icons.home),
-          onPressed: () {
-            // Navigate to the main page
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => StoriesPage()),
-              (Route<dynamic> route) => false,
-            );
-          },
-        ),
+         automaticallyImplyLeading: false,
+
       ),
       body: Center(
-        child: Lottie.asset('assets/loading.json', width: 200, height: 200),
+  child: Column(
+    mainAxisSize: MainAxisSize.min, 
+    children: [
+      Lottie.asset('assets/loading.json', width: 200, height: 200),
+      const SizedBox(height: 20), //  space between the Lottie animation and the text
+      const Text(
+        'من فضلك انتظر قليلا لإنتاج الملف',
+        style: TextStyle(
+          fontSize: 16, 
+          fontWeight: FontWeight.bold, 
+          
+        ),
+        textAlign: TextAlign.center, 
       ),
+    ],
+  ),
+),
     );
   }
+
 }

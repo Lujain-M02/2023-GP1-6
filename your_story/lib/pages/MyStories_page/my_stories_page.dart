@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:share/share.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
@@ -14,6 +15,120 @@ class MyStories extends StatefulWidget {
 }
 
 class _MyStoriesState extends State<MyStories> {
+     late final String userId;
+  late final Stream<List<QueryDocumentSnapshot>> pdfS;
+
+  @override
+
+   // futurePdfs = fetchUserPdfs();
+   void initState() {
+    super.initState();
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    pdfS = FirebaseFirestore.instance
+        .collection("User")
+        .doc(userId)
+        .collection("pdf")
+        .snapshots()
+        .map((snapshot) => snapshot.docs);
+  
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold( appBar: AppBar(
+            title: const Text( "قصصي",
+                style: TextStyle(fontSize: 24, color: Colors.white)),
+            centerTitle: true,
+            backgroundColor: YourStoryStyle.s2Color,
+            automaticallyImplyLeading: false,
+          ),
+      backgroundColor: const Color.fromARGB(255, 0, 48, 96),
+      body: StreamBuilder<List<QueryDocumentSnapshot>>(
+            stream: pdfS,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
+                );
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Container(padding: const EdgeInsets.only(
+                left: 20,
+                top: 30,
+                right: 20,
+                bottom: 700, 
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 244, 247, 252),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  
+                ),
+              ),
+                child: const Center(
+                  child: Text(
+                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+                      textAlign: TextAlign.center),
+                ));
+              }
+                  
+              final stories = snapshot.data!;
+              return Container(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
+                decoration: const BoxDecoration(
+                   color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+                ),
+                child:
+               ListView.builder(
+                itemCount: stories.length,
+                itemBuilder: (context, index) {
+                  final pdfData = stories[index].data() as Map<String, dynamic>?;
+                  final String title = pdfData?['title'] ?? 'Untitled';
+                  // ignore: unused_local_variable
+                  final String pdfUrl = pdfData?['url'] ?? '#';
+
+
+
+    return Card(
+          child: ListTile(
+            leading: Icon(Icons.picture_as_pdf, color: Color.fromARGB(255, 31, 47, 195)),
+            title: Text(title, style: TextStyle(fontSize:22,color: Colors.black)),
+        onTap: () {
+              // Preview
+            },
+            trailing: IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: () {
+                // Share the PDF URL
+                Share.share('Check out this PDF: $pdfUrl');
+              },
+            ),
+          ),
+        );
+  },
+              ));
+            },
+          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateStory()),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 15, 26, 107),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+
+  }
+}
+
+/*
+
   late final String userId;
   late final Stream<List<QueryDocumentSnapshot>> storiesStream;
 
@@ -52,158 +167,153 @@ class _MyStoriesState extends State<MyStories> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
-          appBar: AppBar(
-            title: const Text("قصصي",
-                style: TextStyle(fontSize: 24, color: Colors.white)),
-            centerTitle: true,
-            backgroundColor: YourStoryStyle.s2Color,
-            automaticallyImplyLeading: false,
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const CreateStory())),
-            backgroundColor: const Color.fromARGB(255, 15, 26, 107),
-            child: const Icon(Icons.add,color: Colors.white,),
-          ),
-          body: StreamBuilder<List<QueryDocumentSnapshot>>(
-            stream: storiesStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
-                );
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Container(padding: const EdgeInsets.only(
-                left: 20,
-                top: 30,
-                right: 20,
-                bottom: 700, 
-              ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 244, 247, 252),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
+  Widget build(BuildContext context) {*/
+//  return SafeArea(
+//       child: Directionality(
+//         textDirection: TextDirection.rtl,
+//         child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
+//           appBar: AppBar(
+//             title: const Text("قصصي",
+//                 style: TextStyle(fontSize: 24, color: Colors.white)),
+//             centerTitle: true,
+//             backgroundColor: YourStoryStyle.s2Color,
+//             automaticallyImplyLeading: false,
+//           ),
+//           floatingActionButton: FloatingActionButton(
+//             onPressed: () => Navigator.push(context,
+//                 MaterialPageRoute(builder: (context) => const CreateStory())),
+//             backgroundColor: const Color.fromARGB(255, 15, 26, 107),
+//             child: const Icon(Icons.add,color: Colors.white,),
+//           ),
+//           body: StreamBuilder<List<QueryDocumentSnapshot>>(
+//             stream: storiesStream,
+//             builder: (context, snapshot) {
+//               if (snapshot.connectionState == ConnectionState.waiting) {
+//                 return Center(
+//                   child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
+//                 );
+//               }
+//               if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//                 return Container(padding: const EdgeInsets.only(
+//                 left: 20,
+//                 top: 30,
+//                 right: 20,
+//                 bottom: 700, 
+//               ),
+//               width: double.infinity,
+//               decoration: const BoxDecoration(
+//                 color: Color.fromARGB(255, 244, 247, 252),
+//                 borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(60),
                   
-                ),
-              ),
-                child: Center(
-                  child: Text(
-                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-                      textAlign: TextAlign.center),
-                ));
-              }
+//                 ),
+//               ),
+//                 child: Center(
+//                   child: Text(
+//                       "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+//                       textAlign: TextAlign.center),
+//                 ));
+//               }
               
               
 
-              //   return const Center(
-              //     child: Text(
-              //         "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-              //         textAlign: TextAlign.center),
-              //   );
-              // }
-              final stories = snapshot.data!;
-              return Container(
-                padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 244, 247, 252),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-                ),
-                child:
-               ListView.builder(
-                itemCount: stories.length,
-                itemBuilder: (context, index) {
-                  final story = stories[index];
-                  return StoryTile(
-                    story: story,
-                    onDelete: () => deleteStory(story.id),
-                  );
-                },
-              ));
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
+//               //   return const Center(
+//               //     child: Text(
+//               //         "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+//               //         textAlign: TextAlign.center),
+//               //   );
+//               // }
+//               final stories = snapshot.data!;
+//               return Container(
+//                 padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
+//                 decoration: const BoxDecoration(
+//                   color: Color.fromARGB(255, 244, 247, 252),
+//                   borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+//                 ),
+//                 child:
+//                ListView.builder(
+//                 itemCount: stories.length,
+//                 itemBuilder: (context, index) {
+//                   final story = stories[index];
+//                   return StoryTile(
+//                     story: story,
+//                     onDelete: () => deleteStory(story.id),
+//                   );
+//                 },
+//               ));
+//             },
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class StoryTile extends StatelessWidget {
-  final QueryDocumentSnapshot story;
-  final VoidCallback onDelete;
+// class StoryTile extends StatelessWidget {
+//   final QueryDocumentSnapshot story;
+//   final VoidCallback onDelete;
 
-  const StoryTile({
-    Key? key,
-    required this.story,
-    required this.onDelete,
-  }) : super(key: key);
+//   const StoryTile({
+//     Key? key,
+//     required this.story,
+//     required this.onDelete,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    String shortTitle = story['title'].length > 20
-        ? story['title'].substring(0, 17) + '...'
-        : story['title'];
+//   @override
+//   Widget build(BuildContext context) {
+//     String shortTitle = story['title'].length > 20
+//         ? story['title'].substring(0, 17) + '...'
+//         : story['title'];
 
-    String shortContent = story['content'].length > 20
-        ? story['content'].substring(0, 20) + '...'
-        : story['content'];
+//     String shortContent = story['content'].length > 20
+//         ? story['content'].substring(0, 20) + '...'
+//         : story['content'];
 
-    return Container(
-      height: 120,
-      margin: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 187, 208, 238),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Center(
-        child: ListTile(
-          onTap: () {
-            showCustomModalBottomSheet(
-                context,
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Text(
-                          story['title'],
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        story['content'],
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                ));
-          },
-          leading: Image.asset("assets/white.png"),
-          title: Text(
-            shortTitle,
-            style: const TextStyle(fontSize: 20),
-          ),
-          subtitle: Text(
-            shortContent,
-            style: const TextStyle(fontSize: 12),
-          ),
-          trailing:
-              IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
-        ),
-      ),
-    );
-  }
-}
-
-
-
+//     return Container(
+//       height: 120,
+//       margin: const EdgeInsets.all(12),
+//       decoration: const BoxDecoration(
+//         color: Color.fromARGB(255, 187, 208, 238),
+//         borderRadius: BorderRadius.all(Radius.circular(10)),
+//       ),
+//       child: Center(
+//         child: ListTile(
+//           onTap: () {
+//             showCustomModalBottomSheet(
+//                 context,
+//                 Directionality(
+//                   textDirection: TextDirection.rtl,
+//                   child: Column(
+//                     children: [
+//                       Center(
+//                         child: Text(
+//                           story['title'],
+//                           style: const TextStyle(fontSize: 20),
+//                         ),
+//                       ),
+//                       const SizedBox(height: 8),
+//                       Text(
+//                         story['content'],
+//                         style: const TextStyle(fontSize: 15),
+//                       ),
+//                     ],
+//                   ),
+//                 ));
+//           },
+//           leading: Image.asset("assets/white.png"),
+//           title: Text(
+//             shortTitle,
+//             style: const TextStyle(fontSize: 20),
+//           ),
+//           subtitle: Text(
+//             shortContent,
+//             style: const TextStyle(fontSize: 12),
+//           ),
+//           trailing:
+//               IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
+//         ),
+//       ),
+//     );
 
 // class StoryTile extends StatelessWidget {
 //   final QueryDocumentSnapshot story;
