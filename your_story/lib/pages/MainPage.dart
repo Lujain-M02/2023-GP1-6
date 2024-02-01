@@ -7,6 +7,9 @@ import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';
 import 'package:your_story/style.dart';
+import 'package:share/share.dart';
+
+
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -124,7 +127,7 @@ class _StoriesPageState extends State<StoriesPage> {
                   
                 ),
               ),
-                child: Center(
+                child: const Center(
                   child: Text(
                       "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
                       textAlign: TextAlign.center),
@@ -141,23 +144,30 @@ class _StoriesPageState extends State<StoriesPage> {
                 child:
                ListView.builder(
                 itemCount: stories.length,
-  itemBuilder: (context, index) {
-    final pdfData = stories[index].data() as Map<String, dynamic>?;
-    final String title = pdfData?['title'] ?? 'Untitled';
-    // ignore: unused_local_variable
-    final String pdfUrl = pdfData?['url'] ?? '#';
+                itemBuilder: (context, index) {
+                  final pdfData = stories[index].data() as Map<String, dynamic>?;
+                  final String title = pdfData?['title'] ?? 'Untitled';
+                  // ignore: unused_local_variable
+                  final String pdfUrl = pdfData?['url'] ?? '#';
 
 
 
     return Card(
-      child: ListTile(
-        leading: Icon(Icons.picture_as_pdf, color: Colors.red), // PDF Icon
-        title: Text(title, style: TextStyle(color: Colors.black)),
+          child: ListTile(
+            leading: Icon(Icons.picture_as_pdf, color: Colors.red),
+            title: Text(title, style: TextStyle(color: Colors.black)),
         onTap: () {
-          //تنزيل الملف 
-        },
-      ),
-    );
+              // Preview
+            },
+            trailing: IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: () {
+                // Share the PDF URL
+                Share.share('Check out this PDF: $pdfUrl');
+              },
+            ),
+          ),
+        );
   },
               ));
             },
