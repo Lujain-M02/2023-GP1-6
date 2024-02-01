@@ -10,22 +10,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:printing/printing.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
-
+import 'package:http/http.dart' as http;
+import '../create_story_pages/processing_illustarting/global_story.dart';
 
 class PdfGenerationPage extends StatefulWidget {
   final String title;
   final String content;
- // final List<String> imageUrls;
+  // final List<String> imageUrls;
 
-  const PdfGenerationPage({Key? key, required this.title, required this.content,   }) : super(key: key);
+  const PdfGenerationPage({
+    Key? key,
+    required this.title,
+    required this.content,
+  }) : super(key: key);
 
   @override
   _PdfGenerationPageState createState() => _PdfGenerationPageState();
 }
 
 class _PdfGenerationPageState extends State<PdfGenerationPage> {
-  
   late pw.Font customFont;
 
   @override
@@ -34,13 +37,23 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     _loadCustomFont();
     generateAndUploadPdf();
   }
-  
+
   Future<void> _loadCustomFont() async {
-    final fontData = await rootBundle.load('assets/fonts/Vazirmatn-VariableFont_wght.ttf');
+    final fontData =
+        await rootBundle.load('assets/fonts/Vazirmatn-VariableFont_wght.ttf');
     customFont = pw.Font.ttf(fontData.buffer.asByteData());
   }
 
-  Future<Uint8List> generatePdf(String title, String content,) async {
+  Future<Uint8List> downloadImageData(String imageUrl) async {
+    final response = await http.get(Uri.parse(imageUrl));
+    if (response.statusCode == 200) {
+      return Uint8List.fromList(response.bodyBytes);
+    } else {
+      throw Exception('Failed to download image');
+    }
+  }
+
+  /*Future<Uint8List> generatePdf(String title, String content,) async {
     final Uint8List backgroundImageData = await _loadImage('assets/pdfback.png');
     final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
 
@@ -94,7 +107,77 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     
 
     return (pdf.save());
+  }*/
+  // Modified generatePdf method
+
+  Future<Uint8List> generatePdf(
+    String title,
+    String content,
+  ) async {
+    final Uint8List backgroundImageData =
+        await _loadImage('assets/pdfback.png');
+    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
+
+    final pdf = pw.Document();
+
+    // Download images from globalImagesUrls
+    final List<pw.MemoryImage> images = [];
+    for (String url in globalImagesUrls) {
+      final imageBytes = await downloadImageData(url);
+      images.add(pw.MemoryImage(imageBytes));
+    }
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Stack(
+              children: [
+                pw.Positioned.fill(
+                  child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+                ),
+                pw.Directionality(
+                  textDirection: pw.TextDirection.rtl,
+                  child: pw.Padding(
+                    padding: const pw.EdgeInsets.symmetric(horizontal: 30),
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.symmetric(vertical: 50)),
+                        pw.Text(title,
+                            style:
+                                pw.TextStyle(font: customFont, fontSize: 20)),
+                        pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.symmetric(vertical: 10)),
+                        pw.Text(content,
+                            style:
+                                pw.TextStyle(font: customFont, fontSize: 12)),
+                        // Add images to the PDF
+                        for (var image in images)
+                          pw.Padding(
+                            padding:
+                                const pw.EdgeInsets.symmetric(vertical: 10),
+                            child: pw.Image(image, width: 400, height: 300),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    return pdf.save();
   }
+
   Future<void> generateAndUploadPdf() async {
     try {
       final pdfBytes = await generatePdf(widget.title, widget.content);
@@ -104,45 +187,46 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  Future<String> uploadPdfToFirebaseStorage(Uint8List pdfFile, String fileName) async {
-  // Create a reference to the Firebase Storage bucket
-  final pdfRef = FirebaseStorage.instance.ref().child("pdfs/$fileName.pdf");
+  Future<String> uploadPdfToFirebaseStorage(
+      Uint8List pdfFile, String fileName) async {
+    // Create a reference to the Firebase Storage bucket
+    final pdfRef = FirebaseStorage.instance.ref().child("pdfs/$fileName.pdf");
 
-  // Upload the file
-  await pdfRef.putData(pdfFile);
-  
-  // Get the download URL
-  String downloadUrl = await pdfRef.getDownloadURL();
-  return downloadUrl;
-}
- Future<void> addPdfToCurrentUser(
-      String title, Uint8List pdfFile, ) async {
+    // Upload the file
+    await pdfRef.putData(pdfFile);
+
+    // Get the download URL
+    String downloadUrl = await pdfRef.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<void> addPdfToCurrentUser(
+    String title,
+    Uint8List pdfFile,
+  ) async {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
         DocumentReference userRef =
             FirebaseFirestore.instance.collection("User").doc(user.uid);
-      // Upload PDF to Firebase Storage and get the download URL
-      String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
+        // Upload PDF to Firebase Storage and get the download URL
+        String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
 
-      // Add PDF reference to Firestore
-      CollectionReference pdfCollection = userRef.collection("pdf");
+        // Add PDF reference to Firestore
+        CollectionReference pdfCollection = userRef.collection("pdf");
 
-      await pdfCollection.add({
-        'title': title,
-        'url': pdfUrl, // Store the URL 
-      });
-        
+        await pdfCollection.add({
+          'title': title,
+          'url': pdfUrl, // Store the URL
+        });
 
         print("Story added successfully!");
-        
       } else {
         print("No user is currently signed in.");
       }
     } catch (e) {
       print("Error adding story: $e");
-      
     }
   }
 
@@ -153,25 +237,23 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),leading: IconButton(
-        icon: Icon(Icons.home),
-        onPressed: () {
-          // Navigate to the main page
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => StoriesPage()), 
-            (Route<dynamic> route) => false,
-          );
-        },
+        title: Text(widget.title),
+        leading: IconButton(
+          icon: Icon(Icons.home),
+          onPressed: () {
+            // Navigate to the main page
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => StoriesPage()),
+              (Route<dynamic> route) => false,
+            );
+          },
+        ),
       ),
-    ),  body: Center(
-          child: Lottie.asset('assets/loading.json',width: 200,height: 200),
- 
+      body: Center(
+        child: Lottie.asset('assets/loading.json', width: 200, height: 200),
       ),
-      
     );
   }
 }
-
