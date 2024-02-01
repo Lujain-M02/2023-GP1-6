@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
-import 'package:flutter_config/flutter_config.dart';
+// import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import 'global_story.dart';
 
 class Illustration extends StatefulWidget {
@@ -89,6 +90,18 @@ class _IllustrationState extends State<Illustration> {
                 },
               ),
             ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: () async {Navigator.of(context).push(
+               MaterialPageRoute(
+               builder: (context) => PdfGenerationPage(
+               title: widget.title, 
+               content: widget.content,  
+                 ),
+               ),
+             );  
+           },
+        child: Icon(Icons.picture_as_pdf),
+      ),
     );
   }
 }

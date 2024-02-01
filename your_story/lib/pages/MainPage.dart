@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';
@@ -61,25 +64,53 @@ class _MainPage extends State<MainPage> {
     return Container();
   }
 
-
-class StoriesPage extends StatelessWidget {
+class StoriesPage extends StatefulWidget {
   const StoriesPage({super.key});
 
-   Widget build(BuildContext context) {
-    return Scaffold(
+  @override
+  State<StoriesPage> createState() => _StoriesPageState();
+}
+
+class _StoriesPageState extends State<StoriesPage> {
+  late final String userId;
+  late final Stream<List<QueryDocumentSnapshot>> pdfS;
+
+  @override
+
+   // futurePdfs = fetchUserPdfs();
+   void initState() {
+    super.initState();
+    userId = FirebaseAuth.instance.currentUser!.uid;
+    pdfS = FirebaseFirestore.instance
+        .collection("User")
+        .doc(userId)
+        .collection("pdf")
+        .snapshots()
+        .map((snapshot) => snapshot.docs);
+  
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold( appBar: AppBar(
+            title: const Text( "القصص المنشورة",
+                style: TextStyle(fontSize: 24, color: Colors.white)),
+            centerTitle: true,
+            backgroundColor: YourStoryStyle.s2Color,
+            automaticallyImplyLeading: false,
+          ),
       backgroundColor: const Color.fromARGB(255, 0, 48, 96),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 15),
-            const Text(
-              "القصص المنشورة",
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-            const SizedBox(height: 10), // space between the text and the box
-            Container(
-              padding: const EdgeInsets.only(
+      body: StreamBuilder<List<QueryDocumentSnapshot>>(
+            stream: pdfS,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
+                );
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Container(padding: const EdgeInsets.only(
                 left: 20,
                 top: 30,
                 right: 20,
@@ -93,28 +124,53 @@ class StoriesPage extends StatelessWidget {
                   
                 ),
               ),
-              child: const Text(
-                "سيتم نشر القصص هنا مستقبلاً",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 15, 26, 107),
-                  fontSize: 25,
+                child: Center(
+                  child: Text(
+                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+                      textAlign: TextAlign.center),
+                ));
+              }
+                  
+              final stories = snapshot.data!;
+              return Container(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
+                decoration: const BoxDecoration(
+                   color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
                 ),
-              ),
-            ),
-          ],
-        ),
+                child:
+               ListView.builder(
+                itemCount: stories.length,
+  itemBuilder: (context, index) {
+    final pdfData = stories[index].data() as Map<String, dynamic>?;
+    final String title = pdfData?['title'] ?? 'Untitled';
+    // ignore: unused_local_variable
+    final String pdfUrl = pdfData?['url'] ?? '#';
+
+
+
+    return Card(
+      child: ListTile(
+        leading: Icon(Icons.picture_as_pdf, color: Colors.red), // PDF Icon
+        title: Text(title, style: TextStyle(color: Colors.black)),
+        onTap: () {
+          //تنزيل الملف 
+        },
       ),
+    );
+  },
+              ));
+            },
+          ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to the CreateStory Page when the button is pressed
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CreateStory()),
           );
         },
         backgroundColor: const Color.fromARGB(255, 15, 26, 107),
-        child: const Icon(Icons.add,color: Colors.white,),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
