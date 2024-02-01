@@ -7,7 +7,6 @@ import 'package:lottie/lottie.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:printing/printing.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
