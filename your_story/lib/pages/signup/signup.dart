@@ -373,7 +373,7 @@ class _SignUpState extends State<SignUp> {
                                       'email': email,
                                     }));
                                     // Create the "Stories" subcollection
-                                    userRef.collection("Stories");
+                                    //userRef.collection("Stories");
                                     isSigning = false;
                                     setState(() {});
                                     Navigator.pushReplacement(
