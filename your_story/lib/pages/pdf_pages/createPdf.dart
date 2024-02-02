@@ -9,6 +9,7 @@ import 'package:pdf/pdf.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../create_story_pages/processing_illustarting/global_story.dart';
 
@@ -192,7 +193,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         //       MaterialPageRoute(builder: (context) => const StoriesPage()),
         //       
         //     );
-    MaterialPageRoute(   builder: (context) => const MyStories(),),(Route<dynamic> route) => false,) ;  
+    MaterialPageRoute(   builder: (context) => const MainPage(),),(Route<dynamic> route) => false,) ;  
    }
 
   Future<String> uploadPdfToFirebaseStorage(
