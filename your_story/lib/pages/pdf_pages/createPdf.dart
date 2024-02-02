@@ -14,14 +14,12 @@ import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../create_story_pages/processing_illustarting/global_story.dart';
 
 class PdfGenerationPage extends StatefulWidget {
-  final String title;
-  final String content;
+
   // final List<String> imageUrls;
 
   const PdfGenerationPage({
     Key? key,
-    required this.title,
-    required this.content,
+
   }) : super(key: key);
 
   @override
@@ -180,8 +178,8 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
 
   Future<void> generateAndUploadPdf() async {
     try {
-      final pdfBytes = await generatePdf(widget.title, widget.content);
-      await addPdfToCurrentUser(widget.title, pdfBytes);
+      final pdfBytes = await generatePdf(globalTitle, globalContent);
+      await addPdfToCurrentUser(globalTitle, pdfBytes);
      // After successful generation and upload, navigate to the "My Stories" page.
     _navigateToMyStoriesPage();
     } catch (e) {
@@ -248,7 +246,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(globalTitle),
          automaticallyImplyLeading: false,
 
       ),

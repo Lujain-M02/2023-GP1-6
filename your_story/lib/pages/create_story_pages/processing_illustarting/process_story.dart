@@ -288,10 +288,6 @@ class _ProcessStoryState extends State<ProcessStory> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => Illustration(
-                                        title: widget.title,
-                                        content: widget.content,
-                                        clausesToIllujstrate:
-                                            topClausesToIllustrate,
                                       ),
                                     ),
                                   );

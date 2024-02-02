@@ -8,15 +8,10 @@ import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import 'global_story.dart';
 
 class Illustration extends StatefulWidget {
-  final String title;
-  final String content;
   //final List<dynamic> clausesToIllujstrate;
 
   Illustration({
     Key? key,
-    required this.title,
-    required this.content,
-    required List<String> clausesToIllujstrate,
     //required this.clausesToIllujstrate
   }) : super(key: key);
 
@@ -94,8 +89,6 @@ class _IllustrationState extends State<Illustration> {
         onPressed: () async {Navigator.of(context).push(
                MaterialPageRoute(
                builder: (context) => PdfGenerationPage(
-               title: widget.title, 
-               content: widget.content,  
                  ),
                ),
              );  
