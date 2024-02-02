@@ -57,7 +57,7 @@ class _MyStoriesState extends State<MyStories> {
                 left: 20,
                 top: 30,
                 right: 20,
-                bottom: 700, 
+                //bottom: 700, 
               ),
               width: double.infinity,
               decoration: const BoxDecoration(
