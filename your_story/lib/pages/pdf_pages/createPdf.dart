@@ -244,30 +244,33 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(globalTitle),
-         automaticallyImplyLeading: false,
-
-      ),
-      body: Center(
-  child: Column(
-    mainAxisSize: MainAxisSize.min, 
-    children: [
-      Lottie.asset('assets/loading.json', width: 200, height: 200),
-      const SizedBox(height: 20), //  space between the Lottie animation and the text
-      const Text(
-        'من فضلك انتظر قليلا لإنتاج الملف',
-        style: TextStyle(
-          fontSize: 16, 
-          fontWeight: FontWeight.bold, 
-          
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(globalTitle),
+           automaticallyImplyLeading: false,
+      
         ),
-        textAlign: TextAlign.center, 
+        body: Center(
+        child: Column(
+      mainAxisSize: MainAxisSize.min, 
+      children: [
+        Lottie.asset('assets/loading.json', width: 200, height: 200),
+        const SizedBox(height: 20), //  space between the Lottie animation and the text
+        const Text(
+          'من فضلك انتظر قليلا لإنتاج الملف',
+          style: TextStyle(
+            fontSize: 16, 
+            fontWeight: FontWeight.bold, 
+            
+          ),
+          textAlign: TextAlign.center, 
+        ),
+      ],
+        ),
       ),
-    ],
-  ),
-),
+      ),
     );
   }
 
