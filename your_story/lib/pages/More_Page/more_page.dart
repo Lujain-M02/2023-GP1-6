@@ -100,13 +100,20 @@ class MorePage extends StatelessWidget {
                         context, "هل أنت متأكد من تسجيل الخروج؟", () async {
                       try {
                         await FirebaseAuth.instance.signOut();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => WelcomePage()),
-                          (Route<dynamic> route) =>
-                              false, // this removes all routes below MainPage
-                        );
+                        // Navigator.pushAndRemoveUntil(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => WelcomePage()),
+                        //   (Route<dynamic> route) =>
+                        //       false, // this removes all routes below MainPage
+                        // );
+                        //  Navigator.pushReplacement(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                     builder: (context) =>
+                        //                         WelcomePage()));
+                         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    WelcomePage()), (Route<dynamic> route) => false);
                         // The user has been successfully signed out
                       } catch (e) {
                         // Handle sign-out errors, if any

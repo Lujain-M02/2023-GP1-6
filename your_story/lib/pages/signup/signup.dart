@@ -376,11 +376,13 @@ class _SignUpState extends State<SignUp> {
                                     //userRef.collection("Stories");
                                     isSigning = false;
                                     setState(() {});
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MainPage()));
+                                    // Navigator.pushReplacement(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             const MainPage()));
+                                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    const MainPage()), (Route<dynamic> route) => false);
                                   } on FirebaseAuthException catch (e) {
                                     isSigning = false;
                                     setState(() {});

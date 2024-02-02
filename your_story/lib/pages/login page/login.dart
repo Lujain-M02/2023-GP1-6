@@ -253,14 +253,16 @@ class _LoginPageState extends State<LoginPage> {
                                                     .trim());
                                         isLogging = false;
                                         setState(() {});
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) {
-                                              return const MainPage();
-                                            },
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) {
+                                        //       return const MainPage();
+                                        //     },
+                                        //   ),
+                                        // );
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    const MainPage()), (Route<dynamic> route) => false);
                                       } catch (e) {
                                         isLogging = false;
                                         setState(() {});
