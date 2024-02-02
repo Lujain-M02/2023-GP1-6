@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import 'global_story.dart';
 
 class Filtering extends StatefulWidget {
@@ -83,7 +84,16 @@ class _Filtering extends State<Filtering> {
                       .where((entry) => entry.value)
                       .map((entry) => entry.key)
                       .toList();
-                  print("Selected clauses: $selectedClauses");
+                  globaltopClausesToIllustrate=selectedClauses;
+                  print("title: $globalTitle");
+                  print("content: $globalContent");
+                  print("Selected clauses: $globaltopClausesToIllustrate");
+                  Navigator.of(context).push(
+               MaterialPageRoute(
+               builder: (context) => Illustration(
+                 ),
+               ),
+             );
                 } : null,
                 child: Text('البدأ بالتصوير'),
               ),
