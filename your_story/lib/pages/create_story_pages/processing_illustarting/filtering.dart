@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
+import 'package:your_story/style.dart';
 import 'global_story.dart';
 
 class Filtering extends StatefulWidget {
@@ -51,6 +53,8 @@ class _Filtering extends State<Filtering> {
 
         sentenceWidgets.add(ExpansionTile(
           title: Text(sentence),
+          backgroundColor: Colors.green,
+          collapsedBackgroundColor: Colors.amber,
           children: clauseWidgets,
         ));
       }
@@ -68,7 +72,21 @@ class _Filtering extends State<Filtering> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('اختر ما ترغب بتصويره من القصه (سيتم تصوير $totalSelected صور)'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('اختر ما ترغب بتصويره من القصه (سيتم تصوير $totalSelected صور)'),
+                  TextButton(
+                              onPressed: () {
+                                Alert.show(context,
+                                    "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
+                              },
+                              child: Text(
+                                "معرفة معايير التقييم",
+                                style: TextStyle(color: YourStoryStyle.s2Color),
+                              )),
+                ],
+              ),
             ),
             Expanded(
               child: ListView(
@@ -79,6 +97,15 @@ class _Filtering extends State<Filtering> {
               width: double.infinity,
               padding: EdgeInsets.all(8.0),
               child: ElevatedButton(
+                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        YourStoryStyle.primarycolor),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                    )),
                 onPressed: totalSelected > 0 ? () {
                   final selectedClauses = selections.entries
                       .where((entry) => entry.value)
@@ -95,7 +122,7 @@ class _Filtering extends State<Filtering> {
                ),
              );
                 } : null,
-                child: Text('البدأ بالتصوير'),
+                child: const Text('البدأ بالتصوير',style: TextStyle(color: Colors.white),),
               ),
             ),
           ],
