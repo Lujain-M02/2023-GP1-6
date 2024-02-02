@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-// import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/filtering.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import '../../../style.dart';
 import '../../../alerts.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'global_story.dart';
 
 class ProcessStory extends StatefulWidget {
@@ -37,11 +34,11 @@ class _ProcessStoryState extends State<ProcessStory> {
         isLoading = false; // Set loading to false when the request completes
         topClausesToIllustrate =
             getTopClauses(topsisScoresList); // Update topClausesToIllustrate
-            //update the global variables
-            globalTitle=widget.title;
-            globalContent=widget.content;
-            globaltopClausesToIllustrate=topClausesToIllustrate;
-            globaltopsisScoresList=topsisScoresList;
+        //update the global variables
+        globalTitle = widget.title;
+        globalContent = widget.content;
+        globaltopClausesToIllustrate = topClausesToIllustrate;
+        globaltopsisScoresList = topsisScoresList;
       });
     }, topsisScoresList.length);
   }
@@ -100,13 +97,9 @@ class _ProcessStoryState extends State<ProcessStory> {
       });
     }
 
-
-
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
-
-
 
   List<String> getTopClauses(List<Map<String, dynamic>> data) {
     // Create a list to store clauses and their scores
@@ -132,43 +125,6 @@ class _ProcessStoryState extends State<ProcessStory> {
         .map((item) => item['clause'].toString())
         .toList();
   }
-
-  // Future<void> addStoryToCurrentUser(
-  //     String title, String content, BuildContext context) async {
-  //   try {
-  //     final User? user = FirebaseAuth.instance.currentUser;
-
-  //     if (user != null) {
-  //       DocumentReference userRef =
-  //           FirebaseFirestore.instance.collection("User").doc(user.uid);
-
-  //       CollectionReference storiesCollection = userRef.collection("Stories");
-
-  //       await storiesCollection.add({
-  //         'title': title,
-  //         'content': content,
-  //       });
-
-  //       print("Story added successfully!");
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         CustomSnackBar(content: "تم الحفظ بنجاح", icon: Icons.check_circle),
-  //       );
-  //       Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => const MainPage()),
-  //         (Route<dynamic> route) =>
-  //             false, // this removes all routes below MainPage
-  //       );
-  //     } else {
-  //       print("No user is currently signed in.");
-  //     }
-  //   } catch (e) {
-  //     print("Error adding story: $e");
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       CustomSnackBar(content: "حدث خطأ عند الحفظ", icon: Icons.warning),
-  //     );
-  //   }
-  // }
 
   @override
   @override
@@ -202,7 +158,7 @@ class _ProcessStoryState extends State<ProcessStory> {
                 : Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
                           'نتائج المعالجة :',
@@ -214,13 +170,16 @@ class _ProcessStoryState extends State<ProcessStory> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Text(
-                            "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Text(
+                              "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
                         Align(
-                          alignment: Alignment.bottomRight,
+                          alignment: Alignment.topRight,
                           child: TextButton(
                               onPressed: () {
                                 Alert.show(context,
@@ -230,6 +189,9 @@ class _ProcessStoryState extends State<ProcessStory> {
                                 "معرفة معايير التقييم",
                                 style: TextStyle(color: YourStoryStyle.s2Color),
                               )),
+                        ),
+                        const SizedBox(
+                          height: 8,
                         )
                         // Expanded(
                         //   child: ListView.builder(
@@ -259,13 +221,31 @@ class _ProcessStoryState extends State<ProcessStory> {
                         // ),
                         ,
                         Container(
+                          padding: EdgeInsets.all(
+                              10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: topClausesToIllustrate.map((clause) {
-                              return Text(
-                                "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                              );
-                            }).toList(),
+                            children: topClausesToIllustrate
+                                .map((clause) => Container(
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(
+                                              123, 187, 222, 251),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      width: MediaQuery.of(context).size.width,
+                                      margin: EdgeInsets.only(
+                                          bottom:
+                                              10), // Adds space between containers
+                                      child: Padding(
+                                        padding: EdgeInsets.all(
+                                            8.0), // Padding inside each container for the text
+                                        child: Text(
+                                          "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
                           ),
                         ),
                         Align(
@@ -287,8 +267,7 @@ class _ProcessStoryState extends State<ProcessStory> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => Illustration(
-                                      ),
+                                      builder: (context) => Illustration(),
                                     ),
                                   );
                                 },
@@ -313,8 +292,7 @@ class _ProcessStoryState extends State<ProcessStory> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => Filtering(
-                                      ),
+                                      builder: (context) => Filtering(),
                                     ),
                                   );
                                 },
@@ -324,21 +302,6 @@ class _ProcessStoryState extends State<ProcessStory> {
                                       color: YourStoryStyle.primarycolor),
                                 ),
                               ),
-                              // const Text("لم يتم اتاحة تصوير القصة الى الان"),
-                              // ElevatedButton(
-                              //   style: ButtonStyle(
-                              //     backgroundColor: MaterialStateProperty.all(YourStoryStyle.primarycolor),
-                              //     shape:
-                              //     MaterialStateProperty.all<RoundedRectangleBorder>(
-                              //   RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(50),
-                              //   ),)
-                              //   ),
-                              //   onPressed: () async {
-                              //     await addStoryToCurrentUser(widget.title, widget.content, context);
-                              //   },
-                              //   child: const Text('احفظ القصة وعد للصفحة الرئيسية'),
-                              // ),
                             ],
                           ),
                         ),
