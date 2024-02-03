@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share/share.dart';
-// import 'package:your_story/alerts.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
 
@@ -15,13 +15,13 @@ class MyStories extends StatefulWidget {
 }
 
 class _MyStoriesState extends State<MyStories> {
-     late final String userId;
+  late final String userId;
   late final Stream<List<QueryDocumentSnapshot>> pdfS;
 
   @override
 
-   // futurePdfs = fetchUserPdfs();
-   void initState() {
+  // futurePdfs = fetchUserPdfs();
+  void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
     pdfS = FirebaseFirestore.instance
@@ -30,88 +30,128 @@ class _MyStoriesState extends State<MyStories> {
         .collection("pdf")
         .snapshots()
         .map((snapshot) => snapshot.docs);
-  
+  }
 
+  void deleteStory(String docId) {
+    ConfirmationDialog.show(context,
+        "هل أنت متأكد من أنك تريد حذف هذه القصة؟ لا يمكنك التراجع بعد ذلك.",
+        () async {
+      Navigator.of(context).pop();
+
+      try {
+        await FirebaseFirestore.instance
+            .collection("User")
+            .doc(userId)
+            .collection("pdf") // Ensure this matches your collection name
+            .doc(docId)
+            .delete();
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(
+              content: 'تم حذف القصة بنجاح', icon: Icons.check_circle),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackBar(
+              content: 'حدث خطأ أثناء حذف القصة: $e', icon: Icons.error),
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( appBar: AppBar(
-            title: const Text( "قصصي",
-                style: TextStyle(fontSize: 24, color: Colors.white)),
-            centerTitle: true,
-            backgroundColor: YourStoryStyle.s2Color,
-            automaticallyImplyLeading: false,
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("قصصي",
+            style: TextStyle(fontSize: 24, color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: YourStoryStyle.s2Color,
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: const Color.fromARGB(255, 0, 48, 96),
       body: StreamBuilder<List<QueryDocumentSnapshot>>(
-            stream: pdfS,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
-                );
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Container(padding: const EdgeInsets.only(
-                left: 20,
-                top: 30,
-                right: 20,
-                //bottom: 700, 
-              ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 244, 247, 252),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                  
+        stream: pdfS,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child:
+                  Lottie.asset('assets/loading2.json', width: 200, height: 200),
+            );
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Container(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  top: 30,
+                  right: 20,
+                  //bottom: 700,
                 ),
-              ),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 244, 247, 252),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                  ),
+                ),
                 child: const Center(
                   child: Text(
                       "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
                       textAlign: TextAlign.center),
                 ));
-              }
-                  
-              final stories = snapshot.data!;
-              return Container(
-                padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
-                decoration: const BoxDecoration(
-                   color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-                ),
-                child:
-               ListView.builder(
+          }
+
+          final stories = snapshot.data!;
+          return Container(
+              padding: const EdgeInsets.only(
+                  left: 20, top: 30, right: 20, bottom: 20),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+              ),
+              child: ListView.builder(
                 itemCount: stories.length,
                 itemBuilder: (context, index) {
-                  final pdfData = stories[index].data() as Map<String, dynamic>?;
+                  final pdfData =
+                      stories[index].data() as Map<String, dynamic>?;
                   final String title = pdfData?['title'] ?? 'Untitled';
                   // ignore: unused_local_variable
                   final String pdfUrl = pdfData?['url'] ?? '#';
+                  final String docId =
+                      stories[index].id; // Get document ID for deletion
 
-
-
-    return Card(
-          child: ListTile(
-            leading: Icon(Icons.picture_as_pdf, color: Color.fromARGB(255, 31, 47, 195)),
-            title: Text(title, style: TextStyle(fontSize:22,color: Colors.black)),
-        onTap: () {
-              // Preview
-            },
-            trailing: IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: () {
-                // Share the PDF URL
-                Share.share('Check out this PDF: $pdfUrl');
-              },
-            ),
-          ),
-        );
-  },
+                  return Card(
+                    child: ListTile(
+                      leading: Icon(Icons.picture_as_pdf,
+                          color: Color.fromARGB(255, 31, 47, 195)),
+                      title: Text(title,
+                          style: TextStyle(fontSize: 22, color: Colors.black)),
+                      onTap: () {
+                        // Preview
+                      },
+                      trailing: Row(
+                        mainAxisSize:
+                            MainAxisSize.min, // Add this line to avoid overflow
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.share),
+                            onPressed: () {
+                              // Share the PDF URL
+                              Share.share('Check out this PDF: $pdfUrl');
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () => deleteStory(
+                                docId), // Call deleteStory method here
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ));
-            },
-          ),
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -123,7 +163,6 @@ class _MyStoriesState extends State<MyStories> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
-
   }
 }
 
@@ -198,14 +237,14 @@ class _MyStoriesState extends State<MyStories> {
 //                 left: 20,
 //                 top: 30,
 //                 right: 20,
-//                 bottom: 700, 
+//                 bottom: 700,
 //               ),
 //               width: double.infinity,
 //               decoration: const BoxDecoration(
 //                 color: Color.fromARGB(255, 244, 247, 252),
 //                 borderRadius: BorderRadius.only(
 //                   topLeft: Radius.circular(60),
-                  
+
 //                 ),
 //               ),
 //                 child: Center(
@@ -214,8 +253,6 @@ class _MyStoriesState extends State<MyStories> {
 //                       textAlign: TextAlign.center),
 //                 ));
 //               }
-              
-              
 
 //               //   return const Center(
 //               //     child: Text(
