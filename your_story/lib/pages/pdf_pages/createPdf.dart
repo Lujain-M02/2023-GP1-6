@@ -1,21 +1,17 @@
 import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
-import '../create_story_pages/processing_illustarting/global_story.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart'; 
 
 class PdfGenerationPage extends StatefulWidget {
-
-  // final List<String> imageUrls;
 
   const PdfGenerationPage({
     Key? key,
@@ -51,63 +47,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  /*Future<Uint8List> generatePdf(String title, String content,) async {
-    final Uint8List backgroundImageData = await _loadImage('assets/pdfback.png');
-    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
-
-
-    final pdf = pw.Document();
-  //   final List<pw.MemoryImage> images = [];
-  //    for (String url in imageUrls) {
-  //   final imageBytes = await downloadImage(url);
-  //   images.add(pw.MemoryImage(imageBytes));
-  // }
-
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-         build: (pw.Context context) {
-        return pw.FullPage(
-          ignoreMargins: true,
-          child: pw.Stack(
-            children:   [
-              pw.Positioned.fill(
-                child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
-              ),
-               pw.Directionality(
-            textDirection: pw.TextDirection.rtl, 
-            child: pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(horizontal: 30), // Adjust padding as needed
-                child: pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-              pw.Padding(padding: const pw.EdgeInsets.symmetric(vertical: 50)),              
-                pw.Expanded(
-                  child: pw.Column(
-                    children: [
-                      pw.Text(title, style: pw.TextStyle(font: customFont, fontSize: 20)),
-                      pw.Padding(padding: const pw.EdgeInsets.symmetric(vertical: 10)),
-                      pw.Text(content, style: pw.TextStyle(font: customFont, fontSize: 12)),
-                       //for (var image in images) pw.Image(image),
-                    ],
-                  ),
-                ),
-                
-              ],
-                ),
-              ),
-          )],
-          ),
-        );
-      },
-    ),
-  );
-    
-
-    return (pdf.save());
-  }*/
-  // Modified generatePdf method
-
+  
   Future<Uint8List> generatePdf(
     String title,
     String content,
@@ -125,57 +65,48 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       images.add(pw.MemoryImage(imageBytes));
     }
 
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.FullPage(
-            ignoreMargins: true,
-            child: pw.Stack(
-              children: [
-                pw.Positioned.fill(
-                  child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
-                ),
-                pw.Directionality(
-                  textDirection: pw.TextDirection.rtl,
-                  child: pw.Padding(
-                    padding: const pw.EdgeInsets.symmetric(horizontal: 30),
-                    child: pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Padding(
-                            padding:
-                                const pw.EdgeInsets.symmetric(vertical: 50)),
-                        pw.Text(title,
-                            style:
-                                pw.TextStyle(font: customFont, fontSize: 20)),
-                        pw.Padding(
-                            padding:
-                                const pw.EdgeInsets.symmetric(vertical: 10)),
-                        pw.Text(content,
-                            style:
-                                pw.TextStyle(font: customFont, fontSize: 12)),
-                        // Add images to the PDF
-                        for (var image in images)
-                          pw.Padding(
-                            padding:
-                                const pw.EdgeInsets.symmetric(vertical: 10),
-                            child: pw.Image(image, width: 400, height: 300),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+  pdf.addPage(
+  pw.MultiPage(
+    pageTheme: pw.PageTheme(
+      margin:   const pw.EdgeInsets.symmetric(vertical: 100,horizontal: 40),
+      theme: pw.ThemeData.withFont(
+        base: customFont, 
       ),
-    );
-
+      buildBackground: (pw.Context context) => pw.FullPage(
+        ignoreMargins: true,
+        child: pw.Image(backgroundImage, fit: pw.BoxFit.cover), 
+      ),
+    ),
+    build: (pw.Context context) => [
+        pw.Padding(
+    padding: const pw.EdgeInsets.only(bottom: 8.0), 
+    child: pw.Directionality(
+      textDirection: pw.TextDirection.rtl,
+child: pw.Align(
+      alignment: pw.Alignment.center, 
+      child: pw.Text(
+        title,
+        style: pw.TextStyle(font: customFont, fontSize: 20),
+        textAlign: pw.TextAlign.center, 
+      ),
+    ),    ),
+  ),
+      pw.Directionality(
+        textDirection: pw.TextDirection.rtl, 
+        child: pw.Padding(
+          padding: const pw.EdgeInsets.symmetric(vertical: 10),
+          child: pw.Text(content, style: pw.TextStyle(font: customFont, fontSize: 12)),
+        ),
+      ),
+      ...images.map((image) => pw.Padding(
+            padding: const pw.EdgeInsets.symmetric(vertical: 10),
+            child: pw.Image(image, width: 200, height: 200),
+          )),
+    ],
+  ),
+);
     return pdf.save();
   }
-
   Future<void> generateAndUploadPdf() async {
     try {
       final pdfBytes = await generatePdf(globalTitle, globalContent);
@@ -187,11 +118,9 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
   
-   void _navigateToMyStoriesPage() {    Navigator.of(context).pushAndRemoveUntil(
-        //       MaterialPageRoute(builder: (context) => const StoriesPage()),
-        //       
-        //     );
-    MaterialPageRoute(   builder: (context) => const MainPage(),),(Route<dynamic> route) => false,) ;  
+   void _navigateToMyStoriesPage() { 
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    const MainPage()), (Route<dynamic> route) => false);  
    }
 
   Future<String> uploadPdfToFirebaseStorage(
@@ -229,11 +158,9 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         });
 
         print("Story added successfully!");
-      } else {
-        print("No user is currently signed in.");
-      }
+      } 
     } catch (e) {
-      print("Error adding story: $e");
+      print("Error adding PDF: $e");
     }
   }
 
@@ -257,7 +184,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       mainAxisSize: MainAxisSize.min, 
       children: [
         Lottie.asset('assets/loading.json', width: 200, height: 200),
-        const SizedBox(height: 20), //  space between the Lottie animation and the text
+        const SizedBox(height: 20), 
         const Text(
           'من فضلك انتظر قليلا لإنتاج الملف',
           style: TextStyle(
