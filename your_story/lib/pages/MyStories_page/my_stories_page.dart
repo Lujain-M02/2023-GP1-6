@@ -1,8 +1,11 @@
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart'; 
+import 'package:share/share.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:share/share.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
@@ -19,8 +22,6 @@ class _MyStoriesState extends State<MyStories> {
   late final Stream<List<QueryDocumentSnapshot>> pdfS;
 
   @override
-
-  // futurePdfs = fetchUserPdfs();
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
@@ -33,37 +34,76 @@ class _MyStoriesState extends State<MyStories> {
   }
 
   void deleteStory(String docId) {
-    ConfirmationDialog.show(context,
-        "هل أنت متأكد من أنك تريد حذف هذه القصة؟ لا يمكنك التراجع بعد ذلك.",
-        () async {
-      Navigator.of(context).pop();
+    ConfirmationDialog.show(
+      context,
+      "هل أنت متأكد من أنك تريد حذف هذه القصة؟ لا يمكنك التراجع بعد ذلك.",
+      () async {
+        Navigator.of(context).pop();
 
-      try {
-        await FirebaseFirestore.instance
-            .collection("User")
-            .doc(userId)
-            .collection("pdf") // Ensure this matches your collection name
-            .doc(docId)
-            .delete();
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(
-              content: 'تم حذف القصة بنجاح', icon: Icons.check_circle),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(
-              content: 'حدث خطأ أثناء حذف القصة: $e', icon: Icons.error),
-        );
-      }
-    });
+        try {
+          await FirebaseFirestore.instance
+              .collection("User")
+              .doc(userId)
+              .collection("pdf")
+              .doc(docId)
+              .delete();
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'تم حذف القصة بنجاح',
+              icon: Icons.check_circle,
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'حدث خطأ أثناء حذف القصة: $e',
+              icon: Icons.error,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> sharePdf(String pdfUrl, String title) async {
+    try {
+      final response = await http.get(Uri.parse(pdfUrl));
+      final bytes = response.bodyBytes;
+
+      // Get the temporary directory and save the PDF file
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$title.pdf');
+      await file.writeAsBytes(bytes);
+
+      // Share the local file path
+      Share.shareFiles([file.path], text: 'ملف القصة: $title.pdf');
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('خطأ'),
+          content: Text('لا يمكن مشاركة الملف: $e'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('حسنًا'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("قصصي",
-            style: TextStyle(fontSize: 24, color: Colors.white)),
+        title: const Text(
+          "قصصي",
+          style: TextStyle(fontSize: 24, color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: YourStoryStyle.s2Color,
         automaticallyImplyLeading: false,
@@ -74,82 +114,86 @@ class _MyStoriesState extends State<MyStories> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child:
-                  Lottie.asset('assets/loading2.json', width: 200, height: 200),
+              child: Lottie.asset('assets/loading2.json', width: 200, height: 200),
             );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Container(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 30,
-                  right: 20,
-                  //bottom: 700,
+              padding: const EdgeInsets.only(
+                left: 20,
+                top: 30,
+                right: 20,
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 244, 247, 252),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
                 ),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 244, 247, 252),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                  ),
+              ),
+              child: const Center(
+                child: Text(
+                  "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+                  textAlign: TextAlign.center,
                 ),
-                child: const Center(
-                  child: Text(
-                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-                      textAlign: TextAlign.center),
-                ));
+              ),
+            );
           }
 
           final stories = snapshot.data!;
           return Container(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 30, right: 20, bottom: 20),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-              ),
-              child: ListView.builder(
-                itemCount: stories.length,
-                itemBuilder: (context, index) {
-                  final pdfData =
-                      stories[index].data() as Map<String, dynamic>?;
-                  final String title = pdfData?['title'] ?? 'Untitled';
-                  // ignore: unused_local_variable
-                  final String pdfUrl = pdfData?['url'] ?? '#';
-                  final String docId =
-                      stories[index].id; // Get document ID for deletion
+            padding: const EdgeInsets.only(
+              left: 20,
+              top: 30,
+              right: 20,
+              bottom: 20,
+            ),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 255, 255, 255),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+            ),
+            child: ListView.builder(
+              itemCount: stories.length,
+              itemBuilder: (context, index) {
+                final pdfData = stories[index].data() as Map<String, dynamic>?;
+                final String title = pdfData?['title'] ?? 'Untitled';
+                final String pdfUrl = pdfData?['url'] ?? '#';
+                final String docId = stories[index].id;
 
-                  return Card(
-                    child: ListTile(
-                      leading: Icon(Icons.picture_as_pdf,
-                          color: Color.fromARGB(255, 31, 47, 195)),
-                      title: Text(title,
-                          style: TextStyle(fontSize: 22, color: Colors.black)),
-                      onTap: () {
-                        // Preview
-                      },
-                      trailing: Row(
-                        mainAxisSize:
-                            MainAxisSize.min, // Add this line to avoid overflow
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.share),
-                            onPressed: () {
-                              // Share the PDF URL
-                              Share.share('ملف القصة : $pdfUrl');
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () => deleteStory(
-                                docId), // Call deleteStory method here
-                          ),
-                        ],
-                      ),
+                return Card(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.picture_as_pdf,
+                      color: Color.fromARGB(255, 31, 47, 195),
                     ),
-                  );
-                },
-              ));
+                    title: Text(
+                      title,
+                      style: TextStyle(fontSize: 22, color: Colors.black),
+                    ),
+                    onTap: () {
+                      // Preview
+                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.share),
+                          onPressed: () {
+                            // Share the PDF file
+                            sharePdf(pdfUrl, title);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => deleteStory(docId),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -165,6 +209,7 @@ class _MyStoriesState extends State<MyStories> {
     );
   }
 }
+
 
 /*
 
