@@ -201,7 +201,7 @@ class _CreateStory extends State<CreateStory> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: const Text("الحفظ و الاستمرار لمعالجة القصة"),
+                      child: const Text("الاستمرار لمعالجة القصة"),
                     ),
                   )
                 else
