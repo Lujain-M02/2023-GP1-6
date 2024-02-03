@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/filtering.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/system_recom.dart';
 import '../../../style.dart';
 import '../../../alerts.dart';
 import 'global_story.dart';
@@ -21,29 +22,29 @@ class _ProcessStoryState extends State<ProcessStory> {
   List<Map<String, dynamic>> topsisScoresList = [];
   bool isLoading = false;
   String responseMessage = ''; // To store the response message
-  int numberOfImages = 1;
-  List<String> topClausesToIllustrate =
-      []; // this array stores the top clauses and send it to other page
+  //int numberOfImages = 1;
+  //List<String> topClausesToIllustrate =
+      //[]; // this array stores the top clauses and send it to other page
 
-  void _showNumberPickerDialog(BuildContext context) {
-    NumberPickerAlertDialog.show(context,
-        'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
-        (selectedNumber) {
-      numberOfImages = selectedNumber!;
-      // print('Selected number: $selectedNumber');
-      // print('NumberOfImages: $NumberOfImages');
-      setState(() {
-        isLoading = false; // Set loading to false when the request completes
-        topClausesToIllustrate =
-            getTopClauses(topsisScoresList); // Update topClausesToIllustrate
-        //update the global variables
-        globalTitle = widget.title;
-        globalContent = widget.content;
-        globaltopClausesToIllustrate = topClausesToIllustrate;
-        globaltopsisScoresList = topsisScoresList;
-      });
-    }, topsisScoresList.length);
-  }
+  // void _showNumberPickerDialog(BuildContext context) {
+  //   NumberPickerAlertDialog.show(context,
+  //       'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
+  //       (selectedNumber) {
+  //     numberOfImages = selectedNumber!;
+  //     // print('Selected number: $selectedNumber');
+  //     // print('NumberOfImages: $NumberOfImages');
+  //     setState(() {
+  //       isLoading = false; // Set loading to false when the request completes
+  //       topClausesToIllustrate =
+  //           getTopClauses(topsisScoresList); // Update topClausesToIllustrate
+  //       //update the global variables
+  //       globalTitle = widget.title;
+  //       globalContent = widget.content;
+  //       globaltopClausesToIllustrate = topClausesToIllustrate;
+  //       globaltopsisScoresList = topsisScoresList;
+  //     });
+  //   }, topsisScoresList.length);
+  // }
 
   @override
   void initState() {
@@ -89,7 +90,12 @@ class _ProcessStoryState extends State<ProcessStory> {
         setState(() {
           topsisScoresList = List<Map<String, dynamic>>.from(responseData);
           responseMessage = ''; // Clear the response message
-          _showNumberPickerDialog(context);
+          //_showNumberPickerDialog(context);
+
+                  //update the global variables
+        globalTitle = widget.title;
+        globalContent = widget.content;
+        globaltopsisScoresList = topsisScoresList;
         });
       }
     } else {
@@ -99,34 +105,38 @@ class _ProcessStoryState extends State<ProcessStory> {
       });
     }
 
+setState(() {
+  isLoading=false;
+});
+
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
 
-  List<String> getTopClauses(List<Map<String, dynamic>> data) {
-    // Create a list to store clauses and their scores
-    List<Map<String, dynamic>> allClausesWithScores = [];
+  // List<String> getTopClauses(List<Map<String, dynamic>> data) {
+  //   // Create a list to store clauses and their scores
+  //   List<Map<String, dynamic>> allClausesWithScores = [];
 
-    // Extract clauses and their scores
-    for (var item in data) {
-      List<dynamic> clauses = item['clauses'];
-      for (var clause in clauses) {
-        allClausesWithScores.add({
-          'clause': clause['clause'],
-          'score': clause['score'],
-        });
-      }
-    }
+  //   // Extract clauses and their scores
+  //   for (var item in data) {
+  //     List<dynamic> clauses = item['clauses'];
+  //     for (var clause in clauses) {
+  //       allClausesWithScores.add({
+  //         'clause': clause['clause'],
+  //         'score': clause['score'],
+  //       });
+  //     }
+  //   }
 
-    // Sort the list by score in descending order
-    allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
+  //   // Sort the list by score in descending order
+  //   allClausesWithScores.sort((a, b) => b['score'].compareTo(a['score']));
 
-    // Get the top two clauses (without scores) if available
-    return allClausesWithScores
-        .take(numberOfImages)
-        .map((item) => item['clause'].toString())
-        .toList();
-  }
+  //   // Get the top two clauses (without scores) if available
+  //   return allClausesWithScores
+  //       .take(numberOfImages)
+  //       .map((item) => item['clause'].toString())
+  //       .toList();
+  // }
 
   @override
   @override
@@ -185,11 +195,11 @@ class _ProcessStoryState extends State<ProcessStory> {
                         const SizedBox(
                           height: 8,
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                              "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.topRight,
+                        //   child: Text(
+                        //       "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
+                        // ),
                         const SizedBox(
                           height: 8,
                         ),
@@ -235,34 +245,38 @@ class _ProcessStoryState extends State<ProcessStory> {
                         //   ),
                         // ),
                         ,
-                        Container(
-                          padding: const EdgeInsets.all(
-                              10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: topClausesToIllustrate
-                                .map((clause) => Container(
-                                      decoration: const BoxDecoration(
-                                          color: Color.fromARGB(
-                                              123, 187, 222, 251),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      width: MediaQuery.of(context).size.width,
-                                      margin: const EdgeInsets.only(
-                                          bottom:
-                                              10), // Adds space between containers
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(
-                                            8.0), // Padding inside each container for the text
-                                        child: Text(
-                                          "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.all(
+                        //       10),
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: topClausesToIllustrate
+                        //         .map((clause) => Container(
+                        //               decoration: const BoxDecoration(
+                        //                   color: Color.fromARGB(
+                        //                       123, 187, 222, 251),
+                        //                   borderRadius: BorderRadius.all(
+                        //                       Radius.circular(10))),
+                        //               width: MediaQuery.of(context).size.width,
+                        //               margin: const EdgeInsets.only(
+                        //                   bottom:
+                        //                       10), // Adds space between containers
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.all(
+                        //                     8.0), // Padding inside each container for the text
+                        //                 child: Text(
+                        //                   "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
+                        //                   style: const TextStyle(fontSize: 14),
+                        //                 ),
+                        //               ),
+                        //             ))
+                        //         .toList(),
+                        //   ),
+                        // ),
+                        Container(child: Text("صفحة الريبورت"),),
+                        SizedBox(height: 30,),
+                        Container(child: Text(globaltopsisScoresList[0]['sentence']),),
+                        Container(child: Text(globaltopsisScoresList.length.toString()),),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -282,39 +296,15 @@ class _ProcessStoryState extends State<ProcessStory> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => Illustration(),
+                                      builder: (context) => const SystemRecom(
+                                        //title: globalTitle,content: globalContent,
+                                        ),
                                     ),
                                   );
                                 },
                                 child: const Text(
-                                  "الاستمرار مع مقترحات النظام",
+                                  "الاستمرار لتصوير القصة",
                                   style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.white),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                        side: BorderSide(
-                                            color: YourStoryStyle
-                                                .primarycolor), // Set border color and width
-                                      ),
-                                    )),
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => Filtering(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "الاختيار يدويا",
-                                  style: TextStyle(
-                                      color: YourStoryStyle.primarycolor),
                                 ),
                               ),
                             ],
