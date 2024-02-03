@@ -160,6 +160,7 @@ class NumberPickerAlertDialog {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return StatefulBuilder(
           builder: (context,setState) {
@@ -187,40 +188,42 @@ class NumberPickerAlertDialog {
                   },
                 ),
                 actions: [
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      if (selectedNumber != null) {
-                        onConfirm(selectedNumber);
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: YourStoryStyle.primarycolor,
-                      foregroundColor: Colors.white,
-                      side: BorderSide(
-                        color: YourStoryStyle.primarycolor,
-                        width: 2,
+                  Center(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        if (selectedNumber != null) {
+                          onConfirm(selectedNumber);
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: YourStoryStyle.primarycolor,
+                        foregroundColor: Colors.white,
+                        side: BorderSide(
+                          color: YourStoryStyle.primarycolor,
+                          width: 2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+                      child: const Text("متأكد", style: TextStyle(fontSize: 20)),
                     ),
-                    child: const Text("متأكد", style: TextStyle(fontSize: 20)),
                   ),
-                  OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      side: BorderSide(
-                        color: YourStoryStyle.primarycolor,
-                        width: 2,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-                    child: const Text("الغاء", style: TextStyle(fontSize: 20)),
-                  ),
+                  // OutlinedButton(
+                  //   onPressed: () => Navigator.of(context).pop(),
+                  //   style: OutlinedButton.styleFrom(
+                  //     foregroundColor: Colors.black,
+                  //     side: BorderSide(
+                  //       color: YourStoryStyle.primarycolor,
+                  //       width: 2,
+                  //     ),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(15.0),
+                  //     ),
+                  //   ),
+                  //   child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+                  // ),
                 ],
               ),
             );
