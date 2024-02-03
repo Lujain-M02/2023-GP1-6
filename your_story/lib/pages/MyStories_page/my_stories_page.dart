@@ -136,7 +136,7 @@ class _MyStoriesState extends State<MyStories> {
                             icon: const Icon(Icons.share),
                             onPressed: () {
                               // Share the PDF URL
-                              Share.share('Check out this PDF: $pdfUrl');
+                              Share.share('ملف القصة : $pdfUrl');
                             },
                           ),
                           IconButton(
