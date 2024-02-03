@@ -9,13 +9,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart'; 
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 
 class PdfGenerationPage extends StatefulWidget {
-
   const PdfGenerationPage({
     Key? key,
-
   }) : super(key: key);
 
   @override
@@ -47,7 +45,6 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  
   Future<Uint8List> generatePdf(
     String title,
     String content,
@@ -65,63 +62,77 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       images.add(pw.MemoryImage(imageBytes));
     }
 
-  pdf.addPage(
-  pw.MultiPage(
-    pageTheme: pw.PageTheme(
-      margin:   const pw.EdgeInsets.symmetric(vertical: 100,horizontal: 40),
-      theme: pw.ThemeData.withFont(
-        base: customFont, 
-      ),
-      buildBackground: (pw.Context context) => pw.FullPage(
-        ignoreMargins: true,
-        child: pw.Image(backgroundImage, fit: pw.BoxFit.cover), 
-      ),
-    ),
-    build: (pw.Context context) => [
-        pw.Padding(
-    padding: const pw.EdgeInsets.only(bottom: 8.0), 
-    child: pw.Directionality(
-      textDirection: pw.TextDirection.rtl,
-child: pw.Align(
-      alignment: pw.Alignment.center, 
-      child: pw.Text(
-        title,
-        style: pw.TextStyle(font: customFont, fontSize: 20),
-        textAlign: pw.TextAlign.center, 
-      ),
-    ),    ),
-  ),
-      pw.Directionality(
-        textDirection: pw.TextDirection.rtl, 
-        child: pw.Padding(
-          padding: const pw.EdgeInsets.symmetric(vertical: 10),
-          child: pw.Text(content, style: pw.TextStyle(font: customFont, fontSize: 12)),
+    pdf.addPage(
+      pw.MultiPage(
+        pageTheme: pw.PageTheme(
+          margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+          theme: pw.ThemeData.withFont(
+            base: customFont,
+          ),
+          buildBackground: (pw.Context context) => pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+          ),
         ),
+        build: (pw.Context context) => [
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 8.0),
+            child: pw.Directionality(
+              textDirection: pw.TextDirection.rtl,
+              child: pw.Align(
+                alignment: pw.Alignment.center,
+                child: pw.Text(
+                  title,
+                  style: pw.TextStyle(font: customFont, fontSize: 20),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          pw.Directionality(
+            textDirection: pw.TextDirection.rtl,
+            child: pw.Padding(
+              padding: const pw.EdgeInsets.symmetric(vertical: 10),
+              child: pw.Text(content,
+                  style: pw.TextStyle(font: customFont, fontSize: 12)),
+            ),
+          ),
+          ...images.map((image) => pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                child: pw.Image(image, width: 200, height: 200),
+              )),
+        ],
       ),
-      ...images.map((image) => pw.Padding(
-            padding: const pw.EdgeInsets.symmetric(vertical: 10),
-            child: pw.Image(image, width: 200, height: 200),
-          )),
-    ],
-  ),
-);
+    );
     return pdf.save();
   }
+
   Future<void> generateAndUploadPdf() async {
     try {
       final pdfBytes = await generatePdf(globalTitle, globalContent);
       await addPdfToCurrentUser(globalTitle, pdfBytes);
-     // After successful generation and upload, navigate to the "My Stories" page.
-    _navigateToMyStoriesPage();
+      // After successful generation and upload, clear global variables
+      clearGlobalVariables();
+      // After successful generation and upload, navigate to the "My Stories" page.
+      _navigateToMyStoriesPage();
     } catch (e) {
       print("Error generating or uploading PDF: $e");
     }
   }
-  
-   void _navigateToMyStoriesPage() { 
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    const MainPage()), (Route<dynamic> route) => false);  
-   }
+
+  void clearGlobalVariables() {
+    globalTitle = "";
+    globalContent = "";
+    globaltopsisScoresList = [];
+    globaltopClausesToIllustrate = [];
+    globalImagesUrls = [];
+  }
+
+  void _navigateToMyStoriesPage() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainPage()),
+        (Route<dynamic> route) => false);
+  }
 
   Future<String> uploadPdfToFirebaseStorage(
       Uint8List pdfFile, String fileName) async {
@@ -158,7 +169,7 @@ child: pw.Align(
         });
 
         print("Story added successfully!");
-      } 
+      }
     } catch (e) {
       print("Error adding PDF: $e");
     }
@@ -176,29 +187,26 @@ child: pw.Align(
       child: Scaffold(
         appBar: AppBar(
           title: Text(globalTitle),
-           automaticallyImplyLeading: false,
-      
+          automaticallyImplyLeading: false,
         ),
         body: Center(
-        child: Column(
-      mainAxisSize: MainAxisSize.min, 
-      children: [
-        Lottie.asset('assets/loading.json', width: 200, height: 200),
-        const SizedBox(height: 20), 
-        const Text(
-          'من فضلك انتظر قليلا لإنتاج الملف',
-          style: TextStyle(
-            fontSize: 16, 
-            fontWeight: FontWeight.bold, 
-            
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset('assets/loading.json', width: 200, height: 200),
+              const SizedBox(height: 20),
+              const Text(
+                'من فضلك انتظر قليلا لإنتاج الملف',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          textAlign: TextAlign.center, 
         ),
-      ],
-        ),
-      ),
       ),
     );
   }
-
 }
