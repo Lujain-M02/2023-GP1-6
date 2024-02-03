@@ -6,6 +6,8 @@ import 'package:your_story/pages/create_story_pages/processing_illustarting/illu
 import '../../../style.dart';
 import '../../../alerts.dart';
 import 'global_story.dart';
+import 'package:lottie/lottie.dart';
+
 
 class ProcessStory extends StatefulWidget {
   ProcessStory({required this.title, required this.content});
@@ -150,9 +152,22 @@ class _ProcessStoryState extends State<ProcessStory> {
         ),
         body: isLoading
             ? Center(
-                child: CircularProgressIndicator(
-                color: YourStoryStyle.primarycolor,
-              ))
+                child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset('assets/loading.json', width: 200, height: 200),
+              const SizedBox(height: 20),
+              const Text(
+                'من فضلك انتظر قليلا لمعالجة القصة ',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+              )
             : responseMessage.isNotEmpty
                 ? Center(child: Text(responseMessage))
                 : Padding(
@@ -221,7 +236,7 @@ class _ProcessStoryState extends State<ProcessStory> {
                         // ),
                         ,
                         Container(
-                          padding: EdgeInsets.all(
+                          padding: const EdgeInsets.all(
                               10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,15 +248,15 @@ class _ProcessStoryState extends State<ProcessStory> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10))),
                                       width: MediaQuery.of(context).size.width,
-                                      margin: EdgeInsets.only(
+                                      margin: const EdgeInsets.only(
                                           bottom:
                                               10), // Adds space between containers
                                       child: Padding(
-                                        padding: EdgeInsets.all(
+                                        padding: const EdgeInsets.all(
                                             8.0), // Padding inside each container for the text
                                         child: Text(
                                           "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                                          style: TextStyle(fontSize: 14),
+                                          style: const TextStyle(fontSize: 14),
                                         ),
                                       ),
                                     ))
