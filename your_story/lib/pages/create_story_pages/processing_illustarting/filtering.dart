@@ -51,11 +51,18 @@ class _Filtering extends State<Filtering> {
           );
         }).toList();
 
-        sentenceWidgets.add(ExpansionTile(
-          title: Text(sentence),
-          backgroundColor: Colors.green,
-          collapsedBackgroundColor: Colors.amber,
-          children: clauseWidgets,
+        sentenceWidgets.add(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ExpansionTile(
+            title: Text(sentence),
+            backgroundColor: Color.fromARGB(255, 187, 222, 251),
+            collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+                            shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                collapsedShape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+            children: clauseWidgets,
+          ),
         ));
       }
       return sentenceWidgets;
