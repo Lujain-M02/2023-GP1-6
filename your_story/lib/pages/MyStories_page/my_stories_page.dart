@@ -96,6 +96,68 @@ class _MyStoriesState extends State<MyStories> {
     }
   }
 
+  Widget _buildPdfCard(String title, String pdfUrl, String docId, int index) {
+    return Container(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFF5F9FD),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF475269).withOpacity(0.3),
+            blurRadius: 5,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                // preview
+              },
+                  child: Image.asset( 
+                  "assets/6.png",                                  
+                ),
+              ),
+            ),
+        
+          Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF475269),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.share, color: Color.fromARGB(255, 5, 0, 58)),
+                onPressed: () => sharePdf(pdfUrl, title),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete,),
+                onPressed: () => deleteStory(docId),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +170,7 @@ class _MyStoriesState extends State<MyStories> {
         backgroundColor: YourStoryStyle.s2Color,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: const Color.fromARGB(255, 0, 48, 96),
+      backgroundColor: YourStoryStyle.s2Color,
       body: StreamBuilder<List<QueryDocumentSnapshot>>(
         stream: pdfS,
         builder: (context, snapshot) {
@@ -141,61 +203,93 @@ class _MyStoriesState extends State<MyStories> {
           }
 
           final stories = snapshot.data!;
+          
           return Container(
             padding: const EdgeInsets.only(
-              left: 20,
-              top: 30,
-              right: 20,
-              bottom: 20,
-            ),
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-            ),
-            child: ListView.builder(
+                left: 20,               
+                right: 20,
+              ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 244, 247, 252),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                ),
+              ),
+
+            child: GridView.builder(
+              padding: const EdgeInsets.all(20),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.68,
+              ),
               itemCount: stories.length,
               itemBuilder: (context, index) {
                 final pdfData = stories[index].data() as Map<String, dynamic>?;
                 final String title = pdfData?['title'] ?? 'Untitled';
                 final String pdfUrl = pdfData?['url'] ?? '#';
                 final String docId = stories[index].id;
-
-                return Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.picture_as_pdf,
-                      color: Color.fromARGB(255, 31, 47, 195),
-                    ),
-                    title: Text(
-                      title,
-                      style: TextStyle(fontSize: 22, color: Colors.black),
-                    ),
-                    onTap: () {
-                      // Preview
-                    },
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.share),
-                          onPressed: () {
-                            // Share the PDF file
-                            sharePdf(pdfUrl, title);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => deleteStory(docId),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+            
+                return _buildPdfCard(title, pdfUrl, docId, index);
               },
             ),
           );
-        },
-      ),
+
+          // return Container(
+          //   padding: const EdgeInsets.only(
+          //     left: 20,
+          //     top: 30,
+          //     right: 20,
+          //     bottom: 20,
+          //   ),
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 255, 255, 255),
+          //     borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+          //   ),
+          //   child: ListView.builder(
+          //     itemCount: stories.length,
+          //     itemBuilder: (context, index) {
+          //       final pdfData = stories[index].data() as Map<String, dynamic>?;
+          //       final String title = pdfData?['title'] ?? 'Untitled';
+          //       final String pdfUrl = pdfData?['url'] ?? '#';
+          //       final String docId = stories[index].id;
+
+          //       return Card(
+          //         child: ListTile(
+          //           leading: Icon(
+          //             Icons.picture_as_pdf,
+          //             color: Color.fromARGB(255, 31, 47, 195),
+          //           ),
+          //           title: Text(
+          //             title,
+          //             style: TextStyle(fontSize: 22, color: Colors.black),
+          //           ),
+          //           onTap: () {
+          //             // Preview
+          //           },
+          //           trailing: Row(
+          //             mainAxisSize: MainAxisSize.min,
+          //             children: [
+          //               IconButton(
+          //                 icon: const Icon(Icons.share),
+          //                 onPressed: () {
+          //                   // Share the PDF file
+          //                   sharePdf(pdfUrl, title);
+          //                 },
+          //               ),
+          //               IconButton(
+          //                 icon: Icon(Icons.delete),
+          //                 onPressed: () => deleteStory(docId),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       );
+              },
+            ),
+          
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
