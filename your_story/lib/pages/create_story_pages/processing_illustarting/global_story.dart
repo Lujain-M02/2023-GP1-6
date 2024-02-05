@@ -1,5 +1,6 @@
 String globalTitle = "";
-String globalContent = "I am a global variable";
+String globalContent = "";
+int globalTotalNumberOfClauses=0;
 List<Map<String, dynamic>> globaltopsisScoresList = [];
 List<String> globaltopClausesToIllustrate = [];
 List<String> globalImagesUrls = [];

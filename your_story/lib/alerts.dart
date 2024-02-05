@@ -155,8 +155,8 @@ void showCustomModalBottomSheet(BuildContext context, Widget child) {
 
 //this alert is special for choosing the images number for story
 class NumberPickerAlertDialog {
-  static void show(BuildContext context, String title, Function(int?) onConfirm, int size) {
-    int? selectedNumber = 1; // Default selected number
+  static void show(BuildContext context, String title, Function(int?) onConfirm, int size,int selectedDefault) {
+    int? selectedNumber = selectedDefault; // Default selected number
 
     showDialog(
       context: context,

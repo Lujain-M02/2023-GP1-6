@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/filtering.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/system_recom.dart';
 import '../../../style.dart';
-import '../../../alerts.dart';
 import 'global_story.dart';
 import 'package:lottie/lottie.dart';
-
 
 class ProcessStory extends StatefulWidget {
   ProcessStory({required this.title, required this.content});
@@ -22,29 +18,6 @@ class _ProcessStoryState extends State<ProcessStory> {
   List<Map<String, dynamic>> topsisScoresList = [];
   bool isLoading = false;
   String responseMessage = ''; // To store the response message
-  //int numberOfImages = 1;
-  //List<String> topClausesToIllustrate =
-      //[]; // this array stores the top clauses and send it to other page
-
-  // void _showNumberPickerDialog(BuildContext context) {
-  //   NumberPickerAlertDialog.show(context,
-  //       'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
-  //       (selectedNumber) {
-  //     numberOfImages = selectedNumber!;
-  //     // print('Selected number: $selectedNumber');
-  //     // print('NumberOfImages: $NumberOfImages');
-  //     setState(() {
-  //       isLoading = false; // Set loading to false when the request completes
-  //       topClausesToIllustrate =
-  //           getTopClauses(topsisScoresList); // Update topClausesToIllustrate
-  //       //update the global variables
-  //       globalTitle = widget.title;
-  //       globalContent = widget.content;
-  //       globaltopClausesToIllustrate = topClausesToIllustrate;
-  //       globaltopsisScoresList = topsisScoresList;
-  //     });
-  //   }, topsisScoresList.length);
-  // }
 
   @override
   void initState() {
@@ -92,10 +65,10 @@ class _ProcessStoryState extends State<ProcessStory> {
           responseMessage = ''; // Clear the response message
           //_showNumberPickerDialog(context);
 
-                  //update the global variables
-        globalTitle = widget.title;
-        globalContent = widget.content;
-        globaltopsisScoresList = topsisScoresList;
+          //update the global variables
+          globalTitle = widget.title;
+          globalContent = widget.content;
+          globaltopsisScoresList = topsisScoresList;
         });
       }
     } else {
@@ -105,15 +78,209 @@ class _ProcessStoryState extends State<ProcessStory> {
       });
     }
 
-setState(() {
-  isLoading=false;
-});
+    setState(() {
+      isLoading = false;
+    });
 
     print('Response Status Code: ${response.statusCode}');
     print('Response Body: ${response.body}');
   }
 
-  // List<String> getTopClauses(List<Map<String, dynamic>> data) {
+  @override
+  Widget build(BuildContext context) {
+    int totalClauses = globaltopsisScoresList.fold<int>(
+        0,
+        (previousValue, element) =>
+            previousValue + (element['clauses'] as List).length);
+    globalTotalNumberOfClauses=totalClauses;        
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text(
+            'معالجة القصة',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        body: isLoading
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/loading.json',
+                        width: 200, height: 200),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'من فضلك انتظر قليلا لمعالجة القصة ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
+            : responseMessage.isNotEmpty
+                ? Center(child: Text(responseMessage))
+                : Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        const Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: ListTile(
+                            horizontalTitleGap: -5,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 0.0),
+                            leading: Icon(
+                              Icons.lightbulb,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
+                            title: Text(
+                              "تبدو قصتك رائعة !",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('نتائج المعالجة لقصة ${globalTitle}:',
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                              'عدد الفقرات في القصة: ${globaltopsisScoresList.length}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                              'عدد العبارات في القصة: $totalClauses',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  )),
+                        ),
+                        Expanded(
+                              child: ListView.builder(
+                                itemCount: globaltopsisScoresList.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text('الفقرة ${index + 1}'),
+                                    subtitle: Text(
+                                        'عدد العبارات: ${globaltopsisScoresList[index]['clauses'].length}'),
+                                  );
+                                },
+                              ),
+                            ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        YourStoryStyle.primarycolor),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                    )),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const SystemRecom(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "الاستمرار لتصوير القصة",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+      ),
+    );
+  }
+}
+
+                            // Expanded(
+                            //   child: ListView.builder(
+                            //     itemCount: globaltopsisScoresList.length,
+                            //     itemBuilder: (context, index) {
+                            //       return ListTile(
+                            //         title: Text('Sentence ${index + 1}'),
+                            //         subtitle: Text(
+                            //             'Clauses count: ${globaltopsisScoresList[index]['clauses'].length}'),
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
+                            //                               Flexible(
+                            //   fit: FlexFit.loose,
+                            //   child: ListView.builder(
+                            //     itemCount: globaltopsisScoresList.length,
+                            //     itemBuilder: (context, index) {
+                            //       return ListTile(
+                            //         title: Text('Sentence ${index + 1}'),
+                            //         subtitle: Text(
+                            //             'Clauses count: ${globaltopsisScoresList[index]['clauses'].length}'),
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
+
+  //int numberOfImages = 1;
+  //List<String> topClausesToIllustrate =
+  //[]; // this array stores the top clauses and send it to other page
+
+  // void _showNumberPickerDialog(BuildContext context) {
+  //   NumberPickerAlertDialog.show(context,
+  //       'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
+  //       (selectedNumber) {
+  //     numberOfImages = selectedNumber!;
+  //     // print('Selected number: $selectedNumber');
+  //     // print('NumberOfImages: $NumberOfImages');
+  //     setState(() {
+  //       isLoading = false; // Set loading to false when the request completes
+  //       topClausesToIllustrate =
+  //           getTopClauses(topsisScoresList); // Update topClausesToIllustrate
+  //       //update the global variables
+  //       globalTitle = widget.title;
+  //       globalContent = widget.content;
+  //       globaltopClausesToIllustrate = topClausesToIllustrate;
+  //       globaltopsisScoresList = topsisScoresList;
+  //     });
+  //   }, topsisScoresList.length);
+  // }
+
+    // List<String> getTopClauses(List<Map<String, dynamic>> data) {
   //   // Create a list to store clauses and their scores
   //   List<Map<String, dynamic>> allClausesWithScores = [];
 
@@ -138,103 +305,23 @@ setState(() {
   //       .toList();
   // }
 
-  @override
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text(
-            'معالجة القصة',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        body: isLoading
-            ? Center(
-                child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Lottie.asset('assets/loading.json', width: 200, height: 200),
-              const SizedBox(height: 20),
-              const Text(
-                'من فضلك انتظر قليلا لمعالجة القصة ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-              )
-            : responseMessage.isNotEmpty
-                ? Center(child: Text(responseMessage))
-                : Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'نتائج المعالجة :',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        // Align(
-                        //   alignment: Alignment.topRight,
-                        //   child: Text(
-                        //       "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
-                        // ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: TextButton(
-                              onPressed: () {
-                                Alert.show(context,
-                                    "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
-                              },
-                              child: Text(
-                                "معرفة معايير التقييم",
-                                style: TextStyle(color: YourStoryStyle.s2Color),
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        )
                         // Expanded(
                         //   child: ListView.builder(
                         //     itemCount: topsisScoresList.length,
                         //     itemBuilder: (context, sentenceIndex) {
                         //       final sentence = topsisScoresList[sentenceIndex];
                         //       final clauses = sentence['clauses'] as List<dynamic>;
-
+                    
                         //       return ExpansionTile(
                         //         title: Text('جملة ${sentenceIndex + 1}: ${sentence['sentence']}'),
                         //         children: clauses.map((clauseData) {
                         //           // Clean up each clause using replaceAll
                         //           final cleanedClause = clauseData['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), '');
                         //           final score = clauseData['score'];
-
+                    
                         //           //translate clauses
                         //           translateClause(cleanedClause);
-
+                    
                         //           return ListTile(
                         //             title: Text('عبارة: $cleanedClause'),
                         //             subtitle: Text('الدرجة: $score'),
@@ -244,7 +331,8 @@ setState(() {
                         //     },
                         //   ),
                         // ),
-                        ,
+
+
                         // Container(
                         //   padding: const EdgeInsets.all(
                         //       10),
@@ -273,47 +361,3 @@ setState(() {
                         //         .toList(),
                         //   ),
                         // ),
-                        Container(child: Text("صفحة الريبورت"),),
-                        SizedBox(height: 30,),
-                        Container(child: Text(globaltopsisScoresList[0]['sentence']),),
-                        Container(child: Text(globaltopsisScoresList.length.toString()),),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        YourStoryStyle.primarycolor),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                    )),
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const SystemRecom(
-                                        //title: globalTitle,content: globalContent,
-                                        ),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  "الاستمرار لتصوير القصة",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-      ),
-    );
-  }
-}
