@@ -4,6 +4,7 @@ import 'package:dart_openai/dart_openai.dart';
 // import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import 'global_story.dart';
 
@@ -60,13 +61,20 @@ class _IllustrationState extends State<Illustration> {
       globalImagesUrls.add(imageUrl);
       //urls.add(imageUrl);
     }
-    setState(() {
+    // Navigate to the PdfGenerationPage (which should be your waiting screen)
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => PdfGenerationPage(),
+      ),
+    );
+
+    /*setState(() {
       //imageUrls = urls;
       isLoading = false;
-    });
+    });*/
   }
 
-  @override
+  /*@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -85,15 +93,44 @@ class _IllustrationState extends State<Illustration> {
                 },
               ),
             ),
-        floatingActionButton: FloatingActionButton(
-        onPressed: () async {Navigator.of(context).push(
-               MaterialPageRoute(
-               builder: (context) => PdfGenerationPage(
-                 ),
-               ),
-             );  
-           },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PdfGenerationPage(),
+            ),
+          );
+        },
         child: Icon(Icons.picture_as_pdf),
+      ),
+    );
+  }*/
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(globalTitle),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset('assets/loading.json', width: 200, height: 200),
+              const SizedBox(height: 20),
+              const Text(
+                'من فضلك انتظر قليلا لإنتاج الصور',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
