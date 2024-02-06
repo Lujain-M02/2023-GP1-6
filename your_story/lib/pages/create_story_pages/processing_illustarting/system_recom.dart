@@ -13,7 +13,7 @@ class SystemRecom extends StatefulWidget {
 }
 
 class _SystemRecom extends State<SystemRecom> {
-  bool isLoading = false;
+  bool isChoosing = false;
   int numberOfImages = globaltopsisScoresList.length;
   List<String> topClausesToIllustrate = [];
 
@@ -25,7 +25,7 @@ class _SystemRecom extends State<SystemRecom> {
       // print('Selected number: $selectedNumber');
       // print('NumberOfImages: $NumberOfImages');
       setState(() {
-        isLoading = false; // Set loading to false when the request completes
+        isChoosing = false; // Set loading to false when the request completes
         topClausesToIllustrate = getTopClauses(
             globaltopsisScoresList); // Update topClausesToIllustrate
         globaltopClausesToIllustrate = topClausesToIllustrate;
@@ -36,7 +36,7 @@ class _SystemRecom extends State<SystemRecom> {
   @override
   void initState() {
     super.initState();
-    isLoading = true;
+    isChoosing = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showNumberPickerDialog(context);
     });
@@ -89,131 +89,133 @@ class _SystemRecom extends State<SystemRecom> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: isLoading
+        body: isChoosing
             ? Center()
-            : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'نتائج المعالجة :',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+            : SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'نتائج المعالجة :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                          "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                          onPressed: () {
-                            Alert.show(context,
-                                "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
-                          },
-                          child: Text(
-                            "معرفة معايير التقييم",
-                            style: TextStyle(color: YourStoryStyle.s2Color),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: topClausesToIllustrate
-                            .map((clause) => Container(
-                                  decoration: const BoxDecoration(
-                                      color: Color.fromARGB(123, 187, 222, 251),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: const EdgeInsets.only(
-                                      bottom:
-                                          10), // Adds space between containers
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(
-                                        8.0), // Padding inside each container for the text
-                                    child: Text(
-                                      "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
+                      const SizedBox(
+                        height: 8,
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    YourStoryStyle.primarycolor),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                )),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                            "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها "),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: TextButton(
                             onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => Illustration(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              "الاستمرار مع مقترحات النظام",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                    side: BorderSide(
-                                        color: YourStoryStyle
-                                            .primarycolor), // Set border color and width
-                                  ),
-                                )),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => Filtering(),
-                                ),
-                              );
+                              Alert.show(context,
+                                  "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
                             },
                             child: Text(
-                              "الاختيار يدويا",
-                              style:
-                                  TextStyle(color: YourStoryStyle.primarycolor),
-                            ),
-                          ),
-                        ],
+                              "معرفة معايير التقييم",
+                              style: TextStyle(color: YourStoryStyle.s2Color),
+                            )),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: topClausesToIllustrate
+                              .map((clause) => Container(
+                                    decoration: const BoxDecoration(
+                                        color: Color.fromARGB(123, 187, 222, 251),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: const EdgeInsets.only(
+                                        bottom:
+                                            10), // Adds space between containers
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(
+                                          8.0), // Padding inside each container for the text
+                                      child: Text(
+                                        "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      YourStoryStyle.primarycolor),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  )),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Illustration(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "الاستمرار مع مقترحات النظام",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                      side: BorderSide(
+                                          color: YourStoryStyle
+                                              .primarycolor), // Set border color and width
+                                    ),
+                                  )),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Filtering(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "الاختيار يدويا",
+                                style:
+                                    TextStyle(color: YourStoryStyle.primarycolor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+            ),
       ),
     );
   }
