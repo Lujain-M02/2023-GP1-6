@@ -40,12 +40,19 @@ class Illustration extends StatefulWidget {
 class _IllustrationState extends State<Illustration> {
   List<String> imageUrls = [];
   bool isLoading = false;
-
+  //String translatedStory = "";
+  int generatedImagesCount = 0;
+  int numberOfImages = globaltopClausesToIllustrate.length;
   @override
   void initState() {
     super.initState();
+    //translateStory();
     generateAllImages();
   }
+
+  /*void translateStory() async {
+    translatedStory = await translateClause(globalContent);
+  }*/
 
   void generateAllImages() async {
     setState(() {
@@ -54,12 +61,26 @@ class _IllustrationState extends State<Illustration> {
     //List<String> urls = [];
     for (var clause in globaltopClausesToIllustrate) {
       // Translate the clause first
-      String translatedClause = await translateClause(clause);
+      //String translatedClause = await translateClause(clause);
+      String sentence = findSentenceContainingClause(clause);
 
+      String translatedClause = await translateClause(clause);
+      String translatedSentence = await translateClause(sentence);
+      //String translatedStory = await translateClause(globalContent);
       // Then generate image for the translated clause
-      String imageUrl = await generateImage(translatedClause);
-      globalImagesUrls.add(imageUrl);
+      /*String imageUrl =
+          await generateImage(translatedSentence, translatedClause);
+      globalImagesUrls.add(imageUrl);*/
       //urls.add(imageUrl);
+      await generateImage(translatedSentence, translatedClause)
+          .then((imageUrl) {
+        setState(() {
+          generatedImagesCount++;
+          globalImagesUrls.add(imageUrl);
+        });
+      }).catchError((error) {
+        print("Error generating image: $error");
+      });
     }
     // Navigate to the PdfGenerationPage (which should be your waiting screen)
     Navigator.of(context).pushReplacement(
@@ -72,6 +93,23 @@ class _IllustrationState extends State<Illustration> {
       //imageUrls = urls;
       isLoading = false;
     });*/
+  }
+
+// Function to find and return the sentence that contains the clause
+  String findSentenceContainingClause(String clause) {
+    // Split the story into sentences
+    var sentences = globalContent.split(RegExp(r'[.؟!]\s', multiLine: true));
+
+    // Find the sentence that contains the clause
+    for (var sentence in sentences) {
+      if (sentence.contains(clause)) {
+        print("sentence: $sentence");
+        return sentence;
+      }
+    }
+
+    // If no sentence contains the clause, return the clause itself or handle as needed
+    return clause;
   }
 
   /*@override
@@ -120,8 +158,17 @@ class _IllustrationState extends State<Illustration> {
             children: [
               Lottie.asset('assets/loading.json', width: 200, height: 200),
               const SizedBox(height: 20),
+              Text(
+                'تم إنشاء $generatedImagesCount / $numberOfImages صورة حتى الآن',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
               const Text(
-                'من فضلك انتظر قليلا لإنتاج الصور',
+                'من فضلك انتظر قليلا لإنتاج جميع الصور',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -136,12 +183,13 @@ class _IllustrationState extends State<Illustration> {
   }
 }
 
-Future<String> generateImage(String prompt) async {
+Future<String> generateImage(String sentence, String prompt) async {
   OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
   //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
   try {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
-      prompt: prompt,
+      //prompt: "from this sentence:'$sentence' generate:'$prompt'",
+      prompt: "from this story:'$sentence' generate:'$prompt'",
       model: "dall-e-2", // Explicitly specifying the model
       n: 1,
       size: OpenAIImageSize.size1024,
@@ -178,8 +226,8 @@ Future<String> translateClause(String clause) async {
     final translation = translations.first['translatedText'];
 
     // Print the translated text to the console
-    print('Original: $clause');
-    print('Translated: $translation');
+    //print('Original: $clause');
+    //print('Translated: $translation');
 
     return translation;
   } else {
