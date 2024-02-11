@@ -19,7 +19,7 @@ class _SystemRecom extends State<SystemRecom> {
 
   void _showNumberPickerDialog(BuildContext context) {
     NumberPickerAlertDialog.show(context,
-        'لقد انتهت المعالجة بنجاح! رجاء قم باختبار عدد الصور الذي ترغب به في قصتك',
+        ' رجاء قم باختيار عدد الصور الذي ترغب به في قصتك',
         (selectedNumber) {
       numberOfImages = selectedNumber!;
       // print('Selected number: $selectedNumber');
@@ -116,15 +116,17 @@ class _SystemRecom extends State<SystemRecom> {
                       ),
                       Align(
                         alignment: Alignment.topRight,
-                        child: TextButton(
+                        child: TextButton.icon(
                             onPressed: () {
                               Alert.show(context,
-                                  "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
+                                  "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.");
                             },
-                            child: Text(
+                            label: Text(
                               "معرفة معايير التقييم",
                               style: TextStyle(color: YourStoryStyle.s2Color),
-                            )),
+                            ),
+                            icon: Icon(Icons.announcement_outlined,color: YourStoryStyle.s2Color,),
+                            ),
                       ),
                       const SizedBox(
                         height: 8,

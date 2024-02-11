@@ -83,15 +83,17 @@ class _Filtering extends State<Filtering> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('اختر ما ترغب بتصويره من القصه (سيتم تصوير $totalSelected صور)'),
-                  TextButton(
-                              onPressed: () {
-                                Alert.show(context,
-                                    "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد. \n\n قد لا يكون تقييما شاملا لكن نطمح بأن يكون قادرا على تصوير قصتكم بشكل صحيح.");
-                              },
-                              child: Text(
-                                "معرفة معايير التقييم",
-                                style: TextStyle(color: YourStoryStyle.s2Color),
-                              )),
+                  TextButton.icon(
+                            onPressed: () {
+                              Alert.show(context,
+                                  "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.");
+                            },
+                            label: Text(
+                              "معرفة معايير التقييم",
+                              style: TextStyle(color: YourStoryStyle.s2Color),
+                            ),
+                            icon: Icon(Icons.announcement_outlined,color: YourStoryStyle.s2Color,),
+                            ),
                 ],
               ),
             ),
