@@ -130,7 +130,13 @@ class _Filtering extends State<Filtering> {
                  ),
                ),
              );
-                } : null,
+                } : (){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                                      CustomSnackBar(
+                                        content: "قم باختيار عبارة واحدة على الاقل",icon: Icons.warning
+                                      ),
+                                    );
+                },
                 child: const Text('البدأ بالتصوير',style: TextStyle(color: Colors.white),),
               ),
             ),
