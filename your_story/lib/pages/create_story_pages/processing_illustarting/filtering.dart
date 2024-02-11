@@ -36,37 +36,76 @@ class _Filtering extends State<Filtering> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> buildSentenceWidgets() {
-      List<Widget> sentenceWidgets = [];
-      for (var sentenceMap in globaltopsisScoresList) {
-        String sentence = sentenceMap['sentence'];
-        List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
-          String clause = clauseMap['clause'];
-          return CheckboxListTile(
-            title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
-            value: selections[clause],
-            onChanged: (bool? value) {
-              toggleSelection(clause);
-            },
-          );
-        }).toList();
+    //without score 
 
-        sentenceWidgets.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ExpansionTile(
-            title: Text(sentence),
-            backgroundColor: Color.fromARGB(255, 187, 222, 251),
-            collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
-                            shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                collapsedShape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
-            children: clauseWidgets,
-          ),
-        ));
-      }
-      return sentenceWidgets;
-    }
+    // List<Widget> buildSentenceWidgets() {
+    //   List<Widget> sentenceWidgets = [];
+    //   for (var sentenceMap in globaltopsisScoresList) {
+    //     String sentence = sentenceMap['sentence'];
+    //     List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
+    //       String clause = clauseMap['clause'];
+    //       return CheckboxListTile(
+    //         title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
+    //         value: selections[clause],
+    //         onChanged: (bool? value) {
+    //           toggleSelection(clause);
+    //         },
+    //       );
+    //     }).toList();
+
+    //     sentenceWidgets.add(Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: ExpansionTile(
+    //         title: Text(sentence),
+    //         backgroundColor: Color.fromARGB(255, 187, 222, 251),
+    //         collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+    //                         shape: const RoundedRectangleBorder(
+    //                 borderRadius: BorderRadius.all(Radius.circular(20))),
+    //             collapsedShape: const RoundedRectangleBorder(
+    //                 borderRadius: BorderRadius.all(Radius.circular(50))),
+    //         children: clauseWidgets,
+    //       ),
+    //     ));
+    //   }
+    //   return sentenceWidgets;
+    // }
+
+
+//with score 
+    List<Widget> buildSentenceWidgets() {
+  List<Widget> sentenceWidgets = [];
+  for (var sentenceMap in globaltopsisScoresList) {
+    String sentence = sentenceMap['sentence'];
+    List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
+      String clause = clauseMap['clause'];
+      double score = clauseMap['score']; // Extract the score for each clause
+      return CheckboxListTile(
+        title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
+        subtitle: Text('الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
+        value: selections[clause],
+        onChanged: (bool? value) {
+          toggleSelection(clause);
+        },
+      );
+    }).toList();
+
+    sentenceWidgets.add(Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ExpansionTile(
+        title: Text(sentence),
+        backgroundColor: Color.fromARGB(255, 187, 222, 251),
+        collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+        shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+        collapsedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(50))),
+        children: clauseWidgets,
+      ),
+    ));
+  }
+  return sentenceWidgets;
+}
+
 
     return Directionality(
       textDirection: TextDirection.rtl,
