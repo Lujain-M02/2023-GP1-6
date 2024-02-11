@@ -26,7 +26,8 @@ class _Filtering extends State<Filtering> {
     }
   }
 
-  int get totalSelected => selections.values.where((selected) => selected).length;
+  int get totalSelected =>
+      selections.values.where((selected) => selected).length;
 
   void toggleSelection(String clause) {
     setState(() {
@@ -36,7 +37,7 @@ class _Filtering extends State<Filtering> {
 
   @override
   Widget build(BuildContext context) {
-    //without score 
+    //without score
 
     // List<Widget> buildSentenceWidgets() {
     //   List<Widget> sentenceWidgets = [];
@@ -70,42 +71,43 @@ class _Filtering extends State<Filtering> {
     //   return sentenceWidgets;
     // }
 
-
-//with score 
+//with score
     List<Widget> buildSentenceWidgets() {
-  List<Widget> sentenceWidgets = [];
-  for (var sentenceMap in globaltopsisScoresList) {
-    String sentence = sentenceMap['sentence'];
-    List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
-      String clause = clauseMap['clause'];
-      double score = clauseMap['score']; // Extract the score for each clause
-      return CheckboxListTile(
-        title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
-        subtitle: Text('الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
-        value: selections[clause],
-        onChanged: (bool? value) {
-          toggleSelection(clause);
-        },
-      );
-    }).toList();
+      List<Widget> sentenceWidgets = [];
+      for (var sentenceMap in globaltopsisScoresList) {
+        String sentence = sentenceMap['sentence'];
+        List<Widget> clauseWidgets =
+            (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
+          String clause = clauseMap['clause'];
+          double score =
+              clauseMap['score']; // Extract the score for each clause
+          return CheckboxListTile(
+            title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
+            subtitle: Text(
+                'الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
+            value: selections[clause],
+            onChanged: (bool? value) {
+              toggleSelection(clause);
+            },
+          );
+        }).toList();
 
-    sentenceWidgets.add(Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ExpansionTile(
-        title: Text(sentence),
-        backgroundColor: Color.fromARGB(255, 187, 222, 251),
-        collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
-        shape: const RoundedRectangleBorder(
+        sentenceWidgets.add(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ExpansionTile(
+            title: Text(sentence),
+            backgroundColor: Color.fromARGB(255, 187, 222, 251),
+            collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
-        collapsedShape: const RoundedRectangleBorder(
+            collapsedShape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50))),
-        children: clauseWidgets,
-      ),
-    ));
-  }
-  return sentenceWidgets;
-}
-
+            children: clauseWidgets,
+          ),
+        ));
+      }
+      return sentenceWidgets;
+    }
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -121,18 +123,22 @@ class _Filtering extends State<Filtering> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('اختر ما ترغب بتصويره من القصه (سيتم تصوير $totalSelected صور)'),
+                  Text(
+                      'اختر ما ترغب بتصويره من القصه (سيتم تصوير $totalSelected صور)'),
                   TextButton.icon(
-                            onPressed: () {
-                              Alert.show(context,
-                                  "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.");
-                            },
-                            label: Text(
-                              "معرفة معايير التقييم",
-                              style: TextStyle(color: YourStoryStyle.s2Color),
-                            ),
-                            icon: Icon(Icons.announcement_outlined,color: YourStoryStyle.s2Color,),
-                            ),
+                    onPressed: () {
+                      Alert.show(context,
+                          "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.");
+                    },
+                    label: Text(
+                      "معرفة معايير التقييم",
+                      style: TextStyle(color: YourStoryStyle.s2Color),
+                    ),
+                    icon: Icon(
+                      Icons.announcement_outlined,
+                      color: YourStoryStyle.s2Color,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -146,37 +152,41 @@ class _Filtering extends State<Filtering> {
               padding: EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        YourStoryStyle.primarycolor),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                    )),
-                onPressed: totalSelected > 0 ? () {
-                  final selectedClauses = selections.entries
-                      .where((entry) => entry.value)
-                      .map((entry) => entry.key)
-                      .toList();
-                  globaltopClausesToIllustrate=selectedClauses;
-                  print("title: $globalTitle");
-                  print("content: $globalContent");
-                  print("Selected clauses: $globaltopClausesToIllustrate");
-                  Navigator.of(context).push(
-               MaterialPageRoute(
-               builder: (context) => Illustration(
-                 ),
-               ),
-             );
-                } : (){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                                      CustomSnackBar(
-                                        content: "قم باختيار عبارة واحدة على الاقل",icon: Icons.warning
-                                      ),
-                                    );
-                },
-                child: const Text('البدأ بالتصوير',style: TextStyle(color: Colors.white),),
+                    backgroundColor:
+                        MaterialStateProperty.all(YourStoryStyle.primarycolor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    )),
+                onPressed: totalSelected > 0
+                    ? () {
+                        final selectedClauses = selections.entries
+                            .where((entry) => entry.value)
+                            .map((entry) => entry.key)
+                            .toList();
+                        globaltopClausesToIllustrate = selectedClauses;
+                        print("title: $globalTitle");
+                        print("content: $globalContent");
+                        print(
+                            "Selected clauses: $globaltopClausesToIllustrate");
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Illustration(),
+                          ),
+                        );
+                      }
+                    : () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          CustomSnackBar(
+                              content: "قم باختيار عبارة واحدة على الاقل",
+                              icon: Icons.warning),
+                        );
+                      },
+                child: const Text(
+                  'البدأ بالتصوير',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],
