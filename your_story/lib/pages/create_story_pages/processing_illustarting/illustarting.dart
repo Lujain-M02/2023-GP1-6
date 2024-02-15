@@ -54,7 +54,7 @@ class _IllustrationState extends State<Illustration> {
     translatedStory = await translateClause(globalContent);
   }*/
 
-  void generateAllImages() async {
+  /*void generateAllImages() async {
     setState(() {
       isLoading = true;
     });
@@ -87,12 +87,66 @@ class _IllustrationState extends State<Illustration> {
       MaterialPageRoute(
         builder: (context) => PdfGenerationPage(),
       ),
-    );
+    );*/
 
-    /*setState(() {
+  /*setState(() {
       //imageUrls = urls;
       isLoading = false;
-    });*/
+    });
+  }*/
+  Future<void> generateAllImages() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    List<Map<String, dynamic>> tempSentenceImagePairs = [];
+    List<String> clauses = [];
+
+    for (var sentenceMap in globaltopsisScoresList) {
+      String sentence = sentenceMap['sentence'];
+      //print("sentence: $sentence");
+      List<String> imagesForSentence = [];
+      print("sentence: $sentence");
+      for (var clause in globaltopClausesToIllustrate) {
+        if (sentence.contains(clause)) {
+          clauses.add(clause);
+          try {
+            // Generate an image for the sentence containing the clause
+            String imageUrl = await generateImage(sentence, clause);
+            imagesForSentence.add(imageUrl);
+            setState(() {
+              generatedImagesCount++;
+            });
+          } catch (error) {
+            print("Error generating image for sentence '$sentence': $error");
+          }
+        }
+      }
+
+      // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
+      tempSentenceImagePairs.add({
+        "sentence": sentence.trim(),
+        "images":
+            imagesForSentence, // This could be an empty list if no images were generated
+      });
+      print("tempSentenceImagePairs: $tempSentenceImagePairs");
+      print("clauses: $clauses");
+    }
+
+    // Update the global sentenceImagePairs with the generated data
+    setState(() {
+      sentenceImagePairs = tempSentenceImagePairs;
+      //print(sentenceImagePairs);
+      isLoading = false;
+    });
+
+    // You might want to navigate or update UI here to reflect that the process is complete
+    print("Completed image generation for sentences.");
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => PdfGenerationPage(),
+      ),
+    );
   }
 
 // Function to find and return the sentence that contains the clause

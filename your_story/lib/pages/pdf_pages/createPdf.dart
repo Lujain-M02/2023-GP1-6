@@ -26,8 +26,12 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   @override
   void initState() {
     super.initState();
-    _loadCustomFont();
-    generateAndUploadPdf();
+    _loadCustomFont().then((_) {
+      // Continue with other operations after the font has loaded
+      preloadImagesForPdf().then((_) {
+        generateAndUploadPdf();
+      });
+    });
   }
 
   Future<void> _loadCustomFont() async {
@@ -45,7 +49,24 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  Future<Uint8List> generatePdf(
+  Future<void> preloadImagesForPdf() async {
+    for (var pair in sentenceImagePairs) {
+      List<Uint8List> preloadedImages = [];
+      for (String imageUrl in pair['images']) {
+        try {
+          final Uint8List imageData = await downloadImageData(imageUrl);
+          preloadedImages.add(imageData);
+        } catch (e) {
+          print("Error downloading image: $e");
+          // Optionally handle the error, e.g., by adding a placeholder image
+        }
+      }
+      // Replace image URLs with their corresponding Uint8List data
+      pair['images'] = preloadedImages;
+    }
+  }
+
+  /*Future<Uint8List> generatePdf(
     String title,
     String content,
   ) async {
@@ -105,11 +126,78 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       ),
     );
     return pdf.save();
+  }*/
+
+  Future<Uint8List> generatePdf(String title) async {
+    final pdf = pw.Document();
+    final Uint8List backgroundImageData =
+        await _loadImage('assets/pdfback.png');
+    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
+
+    await _loadCustomFont();
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageTheme: pw.PageTheme(
+          margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+          theme: pw.ThemeData.withFont(base: customFont),
+          buildBackground: (pw.Context context) => pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+          ),
+        ),
+        build: (context) => [
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 8.0),
+            child: pw.Directionality(
+              textDirection: pw.TextDirection.rtl,
+              child: pw.Align(
+                alignment: pw.Alignment.center,
+                child: pw.Text(
+                  title,
+                  style: pw.TextStyle(font: customFont, fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+          ...sentenceImagePairs.map((pair) {
+            return pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                if (pair['images'].isNotEmpty)
+                  pw.Column(
+                    children:
+                        (pair['images'] as List<Uint8List>).map((imageData) {
+                      return pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                        child: pw.Image(pw.MemoryImage(imageData),
+                            width: 100, height: 100),
+                      );
+                    }).toList(),
+                  ),
+                pw.Expanded(
+                  child: pw.Padding(
+                    padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                    child: pw.Text(
+                      pair['sentence'],
+                      style: pw.TextStyle(font: customFont, fontSize: 12),
+                      textDirection: pw.TextDirection.rtl,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }).toList(),
+        ],
+      ),
+    );
+
+    return pdf.save();
   }
 
   Future<void> generateAndUploadPdf() async {
     try {
-      final pdfBytes = await generatePdf(globalTitle, globalContent);
+      final pdfBytes = await generatePdf(globalTitle);
       await addPdfToCurrentUser(globalTitle, pdfBytes);
       // After successful generation and upload, clear global variables
       clearGlobalVariables();
@@ -123,9 +211,11 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   void clearGlobalVariables() {
     globalTitle = "";
     globalContent = "";
+    globalTotalNumberOfClauses = 0;
     globaltopsisScoresList = [];
     globaltopClausesToIllustrate = [];
     globalImagesUrls = [];
+    sentenceImagePairs = [];
   }
 
   void _navigateToMyStoriesPage() {
