@@ -9,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
+import 'package:dio/dio.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -96,6 +97,37 @@ class _MyStoriesState extends State<MyStories> {
     }
   }
 
+  Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
+    final dio = Dio();
+    final response = await dio.get(
+      url,
+      options: Options(responseType: ResponseType.bytes),
+    );
+    final bytes = response.data;
+
+    final downloadsDirectory = await getExternalStorageDirectory();
+    final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
+
+    File file = File(filePath);
+    await file.writeAsBytes(bytes);
+
+    if (file.existsSync()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          content: 'تم تحميل القصة بنجاح',
+          icon: Icons.check_circle,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          content: 'فشل تحميل القصة',
+          icon: Icons.error,
+        ),
+      );
+    }
+  }
+
   Widget _buildPdfCard(String title, String pdfUrl, String docId, int index) {
     return Container(
       padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
@@ -142,13 +174,23 @@ class _MyStoriesState extends State<MyStories> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: const Icon(Icons.share, color: Color.fromARGB(255, 5, 0, 58)),
-                onPressed: () => sharePdf(pdfUrl, title),
+              Expanded(
+                child: IconButton(
+                  icon: const Icon(Icons.share, color: Color.fromARGB(255, 5, 0, 58)),
+                  onPressed: () => sharePdf(pdfUrl, title),
+                ),
               ),
-              IconButton(
-                icon: const Icon(Icons.delete,),
-                onPressed: () => deleteStory(docId),
+              Expanded(
+                child: IconButton(
+                  icon: const Icon(Icons.delete,),
+                  onPressed: () => deleteStory(docId),
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_downward,),
+                  onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
+                ),
               ),
             ],
           ),
@@ -236,57 +278,6 @@ class _MyStoriesState extends State<MyStories> {
               },
             ),
           );
-
-          // return Container(
-          //   padding: const EdgeInsets.only(
-          //     left: 20,
-          //     top: 30,
-          //     right: 20,
-          //     bottom: 20,
-          //   ),
-          //   decoration: const BoxDecoration(
-          //     color: Color.fromARGB(255, 255, 255, 255),
-          //     borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-          //   ),
-          //   child: ListView.builder(
-          //     itemCount: stories.length,
-          //     itemBuilder: (context, index) {
-          //       final pdfData = stories[index].data() as Map<String, dynamic>?;
-          //       final String title = pdfData?['title'] ?? 'Untitled';
-          //       final String pdfUrl = pdfData?['url'] ?? '#';
-          //       final String docId = stories[index].id;
-
-          //       return Card(
-          //         child: ListTile(
-          //           leading: Icon(
-          //             Icons.picture_as_pdf,
-          //             color: Color.fromARGB(255, 31, 47, 195),
-          //           ),
-          //           title: Text(
-          //             title,
-          //             style: TextStyle(fontSize: 22, color: Colors.black),
-          //           ),
-          //           onTap: () {
-          //             // Preview
-          //           },
-          //           trailing: Row(
-          //             mainAxisSize: MainAxisSize.min,
-          //             children: [
-          //               IconButton(
-          //                 icon: const Icon(Icons.share),
-          //                 onPressed: () {
-          //                   // Share the PDF file
-          //                   sharePdf(pdfUrl, title);
-          //                 },
-          //               ),
-          //               IconButton(
-          //                 icon: Icon(Icons.delete),
-          //                 onPressed: () => deleteStory(docId),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       );
               },
             ),
           
@@ -304,242 +295,3 @@ class _MyStoriesState extends State<MyStories> {
   }
 }
 
-
-/*
-
-  late final String userId;
-  late final Stream<List<QueryDocumentSnapshot>> storiesStream;
-
-  @override
-  void initState() {
-    super.initState();
-    userId = FirebaseAuth.instance.currentUser!.uid;
-    storiesStream = FirebaseFirestore.instance
-        .collection("User")
-        .doc(userId)
-        .collection("Stories")
-        .snapshots()
-        .map((snapshot) => snapshot.docs);
-  }
-
-  void deleteStory(String docId) {
-    ConfirmationDialog.show(context, "عملية الحذف نهائية هل أنت متأكد؟",
-        () async {
-      try {
-        await FirebaseFirestore.instance
-            .collection("User")
-            .doc(userId)
-            .collection("Stories")
-            .doc(docId)
-            .delete();
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(content: 'تم الحذف بنجاح',icon: Icons.check_circle,),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackBar(content: 'حدث خطأ اثناء الحذف',icon: Icons.warning,),
-        );
-      }
-      Navigator.pop(context); // Close the dialog
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {*/
-//  return SafeArea(
-//       child: Directionality(
-//         textDirection: TextDirection.rtl,
-//         child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
-//           appBar: AppBar(
-//             title: const Text("قصصي",
-//                 style: TextStyle(fontSize: 24, color: Colors.white)),
-//             centerTitle: true,
-//             backgroundColor: YourStoryStyle.s2Color,
-//             automaticallyImplyLeading: false,
-//           ),
-//           floatingActionButton: FloatingActionButton(
-//             onPressed: () => Navigator.push(context,
-//                 MaterialPageRoute(builder: (context) => const CreateStory())),
-//             backgroundColor: const Color.fromARGB(255, 15, 26, 107),
-//             child: const Icon(Icons.add,color: Colors.white,),
-//           ),
-//           body: StreamBuilder<List<QueryDocumentSnapshot>>(
-//             stream: storiesStream,
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return Center(
-//                   child: Lottie.asset('assets/loading2.json',width: 200,height: 200),
-//                 );
-//               }
-//               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-//                 return Container(padding: const EdgeInsets.only(
-//                 left: 20,
-//                 top: 30,
-//                 right: 20,
-//                 bottom: 700,
-//               ),
-//               width: double.infinity,
-//               decoration: const BoxDecoration(
-//                 color: Color.fromARGB(255, 244, 247, 252),
-//                 borderRadius: BorderRadius.only(
-//                   topLeft: Radius.circular(60),
-
-//                 ),
-//               ),
-//                 child: Center(
-//                   child: Text(
-//                       "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-//                       textAlign: TextAlign.center),
-//                 ));
-//               }
-
-//               //   return const Center(
-//               //     child: Text(
-//               //         "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-//               //         textAlign: TextAlign.center),
-//               //   );
-//               // }
-//               final stories = snapshot.data!;
-//               return Container(
-//                 padding: const EdgeInsets.only(left: 20, top: 30, right: 20, bottom: 20),
-//                 decoration: const BoxDecoration(
-//                   color: Color.fromARGB(255, 244, 247, 252),
-//                   borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-//                 ),
-//                 child:
-//                ListView.builder(
-//                 itemCount: stories.length,
-//                 itemBuilder: (context, index) {
-//                   final story = stories[index];
-//                   return StoryTile(
-//                     story: story,
-//                     onDelete: () => deleteStory(story.id),
-//                   );
-//                 },
-//               ));
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class StoryTile extends StatelessWidget {
-//   final QueryDocumentSnapshot story;
-//   final VoidCallback onDelete;
-
-//   const StoryTile({
-//     Key? key,
-//     required this.story,
-//     required this.onDelete,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     String shortTitle = story['title'].length > 20
-//         ? story['title'].substring(0, 17) + '...'
-//         : story['title'];
-
-//     String shortContent = story['content'].length > 20
-//         ? story['content'].substring(0, 20) + '...'
-//         : story['content'];
-
-//     return Container(
-//       height: 120,
-//       margin: const EdgeInsets.all(12),
-//       decoration: const BoxDecoration(
-//         color: Color.fromARGB(255, 187, 208, 238),
-//         borderRadius: BorderRadius.all(Radius.circular(10)),
-//       ),
-//       child: Center(
-//         child: ListTile(
-//           onTap: () {
-//             showCustomModalBottomSheet(
-//                 context,
-//                 Directionality(
-//                   textDirection: TextDirection.rtl,
-//                   child: Column(
-//                     children: [
-//                       Center(
-//                         child: Text(
-//                           story['title'],
-//                           style: const TextStyle(fontSize: 20),
-//                         ),
-//                       ),
-//                       const SizedBox(height: 8),
-//                       Text(
-//                         story['content'],
-//                         style: const TextStyle(fontSize: 15),
-//                       ),
-//                     ],
-//                   ),
-//                 ));
-//           },
-//           leading: Image.asset("assets/white.png"),
-//           title: Text(
-//             shortTitle,
-//             style: const TextStyle(fontSize: 20),
-//           ),
-//           subtitle: Text(
-//             shortContent,
-//             style: const TextStyle(fontSize: 12),
-//           ),
-//           trailing:
-//               IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
-//         ),
-//       ),
-//     );
-
-// class StoryTile extends StatelessWidget {
-//   final QueryDocumentSnapshot story;
-//   final VoidCallback onDelete;
-
-//   const StoryTile({
-//     Key? key,
-//     required this.story,
-//     required this.onDelete,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 120,
-//       margin: const EdgeInsets.all(12),
-//       decoration: const BoxDecoration(
-//         color: Color.fromARGB(255, 187, 208, 238),
-//         borderRadius: BorderRadius.all(Radius.circular(10)),
-//       ),
-//       child: Center(
-//         child: ListTile(
-//           onTap: () {
-//             showCustomModalBottomSheet(
-//                 context,
-//                 Directionality(
-//                   textDirection: TextDirection.rtl,
-//                   child: Column(
-//                     children: [
-//                       Center(
-//                           child: Text(
-//                         story['title'],
-//                         style: const TextStyle(fontSize: 25),
-//                       )),
-//                       const SizedBox(
-//                         height: 8,
-//                       ),
-//                       Text(story['content'])
-//                     ],
-//                   ),
-//                 ));
-//           },
-//           leading: Image.asset("assets/white.png"),
-//           title: Text(story['title'], style: const TextStyle(fontSize: 25)),
-//           subtitle: Text(story['content'],
-//               style: const TextStyle(fontSize: 20), maxLines: 1),
-//           trailing:
-//               IconButton(onPressed: onDelete, icon: const Icon(Icons.delete)),
-//         ),
-//       ),
-//     );
-//   }
-// }
