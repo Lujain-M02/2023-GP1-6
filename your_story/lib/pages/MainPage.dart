@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';
@@ -145,6 +147,36 @@ class _MainPage extends State<MainPage> {
         );
       }
     }
+      Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
+    final dio = Dio();
+    final response = await dio.get(
+      url,
+      options: Options(responseType: ResponseType.bytes),
+    );
+    final bytes = response.data;
+
+    final downloadsDirectory = await getExternalStorageDirectory();
+    final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
+
+    File file = File(filePath);
+    await file.writeAsBytes(bytes);
+
+    if (file.existsSync()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          content: 'تم تحميل القصة بنجاح',
+          icon: Icons.check_circle,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+          content: 'فشل تحميل القصة',
+          icon: Icons.error,
+        ),
+      );
+    }
+  }
 
     Widget _buildPdfCard(String title, String pdfUrl, String docId, int index) {
       return Container(
@@ -190,11 +222,19 @@ class _MainPage extends State<MainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.share,
-                      color: Color.fromARGB(255, 5, 0, 58)),
-                  onPressed: () => sharePdf(pdfUrl, title, context),
+                Expanded(
+                  child: IconButton(
+                    icon: const Icon(Icons.share,
+                        color: Color.fromARGB(255, 5, 0, 58)),
+                    onPressed: () => sharePdf(pdfUrl, title, context),
+                  ),
                 ),
+                Expanded(
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_downward,),
+                  onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
+                ),
+              ),
               ],
             ),
           ],
