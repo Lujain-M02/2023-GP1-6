@@ -65,7 +65,7 @@ class _MainPage extends State<MainPage> {
             .doc(userId)
             .collection('Story')
             .where('type', isEqualTo: 'illustrated') // Filter by type
-            .where('published', isEqualTo: true) // Filter by published status
+            //.where('published', isEqualTo: true) // Filter by published status
             .get()
             .then((pdfSnapshot) {
           for (var pdfDoc in pdfSnapshot.docs) {
