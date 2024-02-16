@@ -22,6 +22,7 @@ class CreateStoryContent extends StatefulWidget {
 class _CreateStoryContentState extends State<CreateStoryContent> {
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+bool attemptedNavigation = false;
 
  @override
   void initState() {
@@ -140,6 +141,12 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
                 ),
                 // validator: validateTitle,
               ),
+               if (attemptedNavigation &&
+              widget.errorMessageHolder.contentErrorMessage != null)
+              Text(
+                widget.errorMessageHolder.contentErrorMessage!,
+                style: const TextStyle(color: Colors.red),
+            ),
 
               Positioned(
                 top: 0,
@@ -170,11 +177,11 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
         ),
       ),
 
-      if (widget.errorMessageHolder.contentErrorMessage != null)
-        Text(
-          widget.errorMessageHolder.contentErrorMessage!,
-          style: const TextStyle(color: Colors.red),
-        ),
+      // if (widget.errorMessageHolder.contentErrorMessage != null)
+      //   Text(
+      //     widget.errorMessageHolder.contentErrorMessage!,
+      //     style: const TextStyle(color: Colors.red),
+      //   ),
     ],
   );
 } }

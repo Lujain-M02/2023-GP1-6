@@ -110,11 +110,11 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
                 ),
 
                 // Error message widget
-                if (widget.errorMessageHolder.titleErrorMessage != null)
-                  Text(
-                    widget.errorMessageHolder.titleErrorMessage!,
-                    style: TextStyle(color: Colors.red),
-                  ),
+                // if (widget.errorMessageHolder.titleErrorMessage != null)
+                //   Text(
+                //     widget.errorMessageHolder.titleErrorMessage!,
+                //     style: TextStyle(color: Colors.red),
+                //   ),
               ],
             ),
           ),
