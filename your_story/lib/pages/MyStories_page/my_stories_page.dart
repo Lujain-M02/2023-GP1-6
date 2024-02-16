@@ -98,36 +98,36 @@ class _MyStoriesState extends State<MyStories> {
     }
   }
 
-  Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
-    final dio = Dio();
-    final response = await dio.get(
-      url,
-      options: Options(responseType: ResponseType.bytes),
+Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
+  final dio = Dio();
+  final response = await dio.get(
+    url,
+    options: Options(responseType: ResponseType.bytes),
+  );
+  final bytes = response.data;
+
+  final downloadsDirectory = await getDownloadsDirectory();
+  final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
+
+  File file = File(filePath);
+  await file.writeAsBytes(bytes);
+
+  if (file.existsSync()) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        content: 'تم تحميل القصة بنجاح',
+        icon: Icons.check_circle,
+      ),
     );
-    final bytes = response.data;
-
-    final downloadsDirectory = await getExternalStorageDirectory();
-    final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
-
-    File file = File(filePath);
-    await file.writeAsBytes(bytes);
-
-    if (file.existsSync()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: 'تم تحميل القصة بنجاح',
-          icon: Icons.check_circle,
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: 'فشل تحميل القصة',
-          icon: Icons.error,
-        ),
-      );
-    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        content: 'فشل تحميل القصة',
+        icon: Icons.error,
+      ),
+    );
   }
+}
 
   Widget _buildPdfCard(String title, String pdfUrl, String docId, int index) {
     return Container(
