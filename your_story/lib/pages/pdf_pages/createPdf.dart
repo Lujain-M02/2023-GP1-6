@@ -251,10 +251,12 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
 
         // Add PDF reference to Firestore
-        CollectionReference pdfCollection = userRef.collection("pdf");
+        CollectionReference storiesCollection = userRef.collection("Story");
 
-        await pdfCollection.add({
+        await storiesCollection.add({
           'title': title,
+          'type': 'illustrated',
+          'published': false, // Use a boolean for published status
           'url': pdfUrl, // Store the URL
         });
 

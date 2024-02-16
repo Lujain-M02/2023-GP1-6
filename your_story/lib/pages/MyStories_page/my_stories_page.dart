@@ -20,16 +20,17 @@ class MyStories extends StatefulWidget {
 
 class _MyStoriesState extends State<MyStories> {
   late final String userId;
-  late final Stream<List<QueryDocumentSnapshot>> pdfS;
+  late final Stream<List<QueryDocumentSnapshot>> storiesList;
 
   @override
   void initState() {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
-    pdfS = FirebaseFirestore.instance
+    storiesList = FirebaseFirestore.instance
         .collection("User")
         .doc(userId)
-        .collection("pdf")
+        .collection("Story")
+        .where('type', isEqualTo: 'illustrated') // Filter by type
         .snapshots()
         .map((snapshot) => snapshot.docs);
   }
@@ -45,7 +46,7 @@ class _MyStoriesState extends State<MyStories> {
           await FirebaseFirestore.instance
               .collection("User")
               .doc(userId)
-              .collection("pdf")
+              .collection("Story")
               .doc(docId)
               .delete();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -214,7 +215,7 @@ class _MyStoriesState extends State<MyStories> {
       ),
       backgroundColor: YourStoryStyle.s2Color,
       body: StreamBuilder<List<QueryDocumentSnapshot>>(
-        stream: pdfS,
+        stream: storiesList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(

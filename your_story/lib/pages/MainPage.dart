@@ -63,7 +63,9 @@ class _MainPage extends State<MainPage> {
         await FirebaseFirestore.instance
             .collection('User')
             .doc(userId)
-            .collection('pdf')
+            .collection('Story')
+            .where('type', isEqualTo: 'illustrated') // Filter by type
+            .where('published', isEqualTo: true) // Filter by published status
             .get()
             .then((pdfSnapshot) {
           for (var pdfDoc in pdfSnapshot.docs) {
