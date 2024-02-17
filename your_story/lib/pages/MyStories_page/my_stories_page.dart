@@ -246,41 +246,106 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
           }
 
           final stories = snapshot.data!;
-          
-          return Container(
+           return Container(
             padding: const EdgeInsets.only(
-                left: 20,               
-                right: 20,
-              ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 244, 247, 252),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                ),
-              ),
-
-            child: GridView.builder(
-              padding: const EdgeInsets.all(20),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.68,
-              ),
-              itemCount: stories.length,
+              left: 20,
+              top: 30,
+              right: 20,
+            ),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 255, 255, 255),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+            ),
+            child: ListView.builder(
+                  itemCount: stories.length,
               itemBuilder: (context, index) {
                 final pdfData = stories[index].data() as Map<String, dynamic>?;
                 final String title = pdfData?['title'] ?? 'Untitled';
                 final String pdfUrl = pdfData?['url'] ?? '#';
                 final String docId = stories[index].id;
-            
-                return _buildPdfCard(title, pdfUrl, docId, index);
+
+                return Card(
+                  color: Color(0xFFE0F7FA), // Change card color here
+                child: Container(
+                height: 80, 
+                    child: ListTile(
+                    leading:Image.asset( 
+                  "assets/6.png",                                  
+                ),
+                    // Icon(
+                    //   Icons.picture_as_pdf,
+                    //   color: Color.fromARGB(255, 31, 47, 195),
+                    // ),
+              title: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF475269),
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              ),
+                    onTap: () {
+                      // Preview
+                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.share),
+                          onPressed: () {
+                            // Share the PDF file
+                            sharePdf(pdfUrl, title);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => deleteStory(docId),
+                        ),
+                        IconButton( 
+                          icon: const Icon(Icons.arrow_downward,),
+                          onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
+                         )
+                      ],
+                    ),
+                  ),
+                 ) );
               },
             ),
           );
-              },
-            ),
+        },),
+      
+          
+            //   width: double.infinity,
+            //   decoration: const BoxDecoration(
+            //     color: Color.fromARGB(255, 244, 247, 252),
+            //     borderRadius: BorderRadius.only(
+            //       topLeft: Radius.circular(60),
+            //     ),
+            //   ),
+
+            // child: GridView.builder(
+            //   padding: const EdgeInsets.all(20),
+            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //     crossAxisCount: 2,
+            //     crossAxisSpacing: 10,
+            //     mainAxisSpacing: 10,
+            //     childAspectRatio: 0.68,
+            //   ),
+            //   itemCount: stories.length,
+            //   itemBuilder: (context, index) {
+            //     final pdfData = stories[index].data() as Map<String, dynamic>?;
+            //     final String title = pdfData?['title'] ?? 'Untitled';
+            //     final String pdfUrl = pdfData?['url'] ?? '#';
+            //     final String docId = stories[index].id;
+            
+            //     return _buildPdfCard(title, pdfUrl, docId, index);
+            //   },
+            // ),
+          // ));
+            //   },
+            // ),
           
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -293,6 +358,7 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
-  }
-}
-
+        }
+        }
+      
+  
