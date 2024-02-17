@@ -209,8 +209,8 @@ class _IllustrationState extends State<Illustration> {
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Lottie.asset('assets/loading.json', width: 200, height: 200),
+            children: [Image.asset("assets/log.gif"),
+              // Lottie.asset('assets/loading.json', width: 200, height: 200),
               const SizedBox(height: 20),
               Text(
                 'تم إنشاء $generatedImagesCount / $numberOfImages صورة حتى الآن',
