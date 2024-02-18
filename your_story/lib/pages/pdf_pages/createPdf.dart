@@ -171,7 +171,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                       return pw.Padding(
                         padding: const pw.EdgeInsets.symmetric(vertical: 10),
                         child: pw.Image(pw.MemoryImage(imageData),
-                            width: 100, height: 100),
+                            width: 150, height: 150),
                       );
                     }).toList(),
                   ),
@@ -180,7 +180,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                     padding: const pw.EdgeInsets.symmetric(vertical: 10),
                     child: pw.Text(
                       pair['sentence'],
-                      style: pw.TextStyle(font: customFont, fontSize: 12),
+                      style: pw.TextStyle(font: customFont, fontSize: 14),
                       textDirection: pw.TextDirection.rtl,
                     ),
                   ),
