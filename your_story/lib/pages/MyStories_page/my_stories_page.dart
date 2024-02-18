@@ -228,20 +228,37 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
                 final pdfData = stories[index].data() as Map<String, dynamic>?;
                 final String title = pdfData?['title'] ?? 'Untitled';
                 final String pdfUrl = pdfData?['url'] ?? '#';
+                final bool published = pdfData?['published'] ?? false;
                 final String docId = stories[index].id;
                 
               return Card(color: YourStoryStyle.backgroundColor,
                 child:Center(
                 child: ListTile(           
-              title: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF475269),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              title: Row(
+                children: [
+                  Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF475269),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  ),
+                  Container(
+                     padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                     margin: EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey,width: 2),
+              
+              
+            ),
+            child: Text(published?'منشوره': 'غير منشوره' , style: TextStyle(fontSize: 9),),
+            
+                  )
+                ],
               ),
                 trailing: IconButton(
                 icon: Icon(Icons.more_vert),
