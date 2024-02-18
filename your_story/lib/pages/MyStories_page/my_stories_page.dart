@@ -85,28 +85,28 @@ class _MyStoriesState extends State<MyStories> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                  leading: Icon(Icons.delete),
-                  title: Text('حذف القصة'),
+                  leading: const Icon(Icons.delete),
+                  title: const Text('حذف القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
                     deleteStory(docId,context);
                   }),
               ListTile(
-                  leading: Icon(Icons.share),
-                  title: Text('مشاركة القصه'),
+                  leading: const Icon(Icons.share),
+                  title: const Text('مشاركة القصه'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
                     sharePdf(pdfUrl, title,context);
                   }),
               ListTile(
-                  leading: Icon(Icons.download),
-                  title: Text('تحميل القصة'),
+                  leading: const Icon(Icons.download),
+                  title: const Text('تحميل القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
                     downloadAndSaveFile(pdfUrl, title, context);
                   }),
                   ListTile(
-                  leading: Icon(Icons.public),
+                  leading: const Icon(Icons.public),
                   title:Text(status?'ايقاف نشر القصة':'نشر القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
@@ -157,21 +157,21 @@ class _MyStoriesState extends State<MyStories> {
                   overflow: TextOverflow.ellipsis,
                   ),
                   Container(
-                     padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                     margin: EdgeInsets.all(6),
+                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                     margin: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Colors.grey,width: 2),
               
               
             ),
-            child: Text(status?'منشوره': 'غير منشوره' , style: TextStyle(fontSize: 9),),
+            child: Text(status?'منشوره': 'غير منشوره' , style: const TextStyle(fontSize: 9),),
             
                   )
                 ],
               ),
                 trailing: IconButton(
-                icon: Icon(Icons.more_vert),
+                icon: const Icon(Icons.more_vert),
                 onPressed: () => showMoreOptionsBottomSheet(context, docId, pdfUrl, title,status),
                ),
               )

@@ -90,7 +90,7 @@ class _SystemRecom extends State<SystemRecom> {
           ),
         ),
         body: isChoosing
-            ? Center()
+            ? const Center()
             : SingleChildScrollView(
               child: Padding(
                   padding: const EdgeInsets.all(16.0),

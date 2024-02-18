@@ -5,7 +5,7 @@ import 'package:your_story/style.dart';
 import 'global_story.dart';
 
 class Filtering extends StatefulWidget {
-  Filtering({Key? key}) : super(key: key);
+  const Filtering({Key? key}) : super(key: key);
 
   @override
   State<Filtering> createState() => _Filtering();
@@ -96,8 +96,8 @@ class _Filtering extends State<Filtering> {
           padding: const EdgeInsets.all(8.0),
           child: ExpansionTile(
             title: Text(sentence),
-            backgroundColor: Color.fromARGB(255, 187, 222, 251),
-            collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+            backgroundColor: const Color.fromARGB(255, 187, 222, 251),
+            collapsedBackgroundColor: const Color.fromARGB(160, 187, 222, 251),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             collapsedShape: const RoundedRectangleBorder(
@@ -113,7 +113,7 @@ class _Filtering extends State<Filtering> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('التصوير يدويا'),
+          title: const Text('التصوير يدويا'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +149,7 @@ class _Filtering extends State<Filtering> {
             ),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:

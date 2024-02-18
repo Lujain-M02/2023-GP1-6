@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
-            backgroundColor: Color.fromARGB(255, 0, 48, 96),
+            backgroundColor: const Color.fromARGB(255, 0, 48, 96),
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    ResetPasswordPage()),
+                                                    const ResetPasswordPage()),
                                           );
                                         },
                                         child: const Text(
@@ -316,11 +316,11 @@ class _LoginPageState extends State<LoginPage> {
                                     onPressed: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (_) => SignUp()),
+                                            builder: (_) => const SignUp()),
                                       );
                                     },
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Color.fromARGB(255, 21, 0, 98),
+                                      foregroundColor: const Color.fromARGB(255, 21, 0, 98),
                                     ),
                                     child: const Text("انشئ حساب"))
                               ],
