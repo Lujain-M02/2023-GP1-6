@@ -59,7 +59,40 @@ class _MyStoriesState extends State<MyStories> {
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             CustomSnackBar(
-              content: 'حدث خطأ أثناء حذف القصة: $e',
+              content: 'حدث خطأ أثناء حذف القصة',
+              icon: Icons.error,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+    void publishStory (String docId , bool status) {
+    ConfirmationDialog.show(
+      context,
+      status?'هل أنت متأكد من إيقاف نشر القصة؟ لن يتمكن المستخدمون الآخرون من قرائتها':"هل أنت متأكد من نشر القصة؟ سيتمكن جميع المستخدمون من قراءتها",
+      () async {
+        Navigator.of(context).pop();
+
+        try {
+          await FirebaseFirestore.instance
+              .collection("User")
+              .doc(userId)
+              .collection("Story")
+              .doc(docId)
+              .update({
+              'published': !status});
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'تم تحديث حالة القصة بنجاح',
+              icon: Icons.check_circle,
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'تعذر تحديث حالة القصة، حاول لاحقا',
               icon: Icons.error,
             ),
           );
@@ -82,21 +115,12 @@ class _MyStoriesState extends State<MyStories> {
       Share.shareFiles([file.path], text: 'ملف القصة: $title.pdf');
     } catch (e) {
       // ignore: use_build_context_synchronously
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('خطأ'),
-          content: Text('لا يمكن مشاركة الملف: $e'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('حسنًا'),
-            ),
-          ],
-        ),
-      );
+          ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        content: 'المعذرة، لا يمكن مشاركة القصة حاول لاحقا',
+        icon: Icons.error,
+      ),
+    );
     }
   }
 
@@ -175,35 +199,45 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
             );
           }
 
-   void showMoreOptionsBottomSheet(BuildContext context, String docId, String pdfUrl, String title) {
+   void showMoreOptionsBottomSheet(BuildContext context, String docId, String pdfUrl, String title, bool status) {
   showModalBottomSheet(
     context: context,
     builder: (BuildContext bc) {
       return SafeArea(
-        child: Wrap(
-          children: <Widget>[
-            ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('Delete'),
-                onTap: () {
-                  Navigator.of(context).pop(); // Close the bottom sheet
-                  deleteStory(docId);
-                }),
-            ListTile(
-                leading: Icon(Icons.share),
-                title: Text('Share'),
-                onTap: () {
-                  Navigator.of(context).pop(); // Close the bottom sheet
-                  sharePdf(pdfUrl, title);
-                }),
-            ListTile(
-                leading: Icon(Icons.download),
-                title: Text('Download'),
-                onTap: () {
-                  Navigator.of(context).pop(); // Close the bottom sheet
-                  downloadAndSaveFile(pdfUrl, title, context);
-                }),
-          ],
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                  leading: Icon(Icons.delete),
+                  title: Text('حذف القصة'),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close the bottom sheet
+                    deleteStory(docId);
+                  }),
+              ListTile(
+                  leading: Icon(Icons.share),
+                  title: Text('مشاركة القصه'),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close the bottom sheet
+                    sharePdf(pdfUrl, title);
+                  }),
+              ListTile(
+                  leading: Icon(Icons.download),
+                  title: Text('تحميل القصة'),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close the bottom sheet
+                    downloadAndSaveFile(pdfUrl, title, context);
+                  }),
+                  ListTile(
+                  leading: Icon(Icons.public),
+                  title:Text(status?'ايقاف نشر القصة':'نشر القصة'),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close the bottom sheet
+                    publishStory(docId,status);
+                  }),
+            ],
+          ),
         ),
       );
     },
@@ -228,7 +262,7 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
                 final pdfData = stories[index].data() as Map<String, dynamic>?;
                 final String title = pdfData?['title'] ?? 'Untitled';
                 final String pdfUrl = pdfData?['url'] ?? '#';
-                final bool published = pdfData?['published'] ?? false;
+                final bool status = pdfData?['published'] ?? false;
                 final String docId = stories[index].id;
                 
               return Card(color: YourStoryStyle.backgroundColor,
@@ -255,14 +289,14 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
               
               
             ),
-            child: Text(published?'منشوره': 'غير منشوره' , style: TextStyle(fontSize: 9),),
+            child: Text(status?'منشوره': 'غير منشوره' , style: TextStyle(fontSize: 9),),
             
                   )
                 ],
               ),
                 trailing: IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () => showMoreOptionsBottomSheet(context, docId, pdfUrl, title),
+                onPressed: () => showMoreOptionsBottomSheet(context, docId, pdfUrl, title,status),
                ),
               )
               )
