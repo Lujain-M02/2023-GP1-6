@@ -1,15 +1,10 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart'; 
-import 'package:share/share.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
-import 'package:dio/dio.dart';
+import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -35,125 +30,6 @@ class _MyStoriesState extends State<MyStories> {
         .snapshots()
         .map((snapshot) => snapshot.docs);
   }
-
-  void deleteStory(String docId) {
-    ConfirmationDialog.show(
-      context,
-      "هل أنت متأكد من أنك تريد حذف هذه القصة؟ لا يمكنك التراجع بعد ذلك.",
-      () async {
-        Navigator.of(context).pop();
-
-        try {
-          await FirebaseFirestore.instance
-              .collection("User")
-              .doc(userId)
-              .collection("Story")
-              .doc(docId)
-              .delete();
-          ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'تم حذف القصة بنجاح',
-              icon: Icons.check_circle,
-            ),
-          );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'حدث خطأ أثناء حذف القصة',
-              icon: Icons.error,
-            ),
-          );
-        }
-      },
-    );
-  }
-
-    void publishStory (String docId , bool status) {
-    ConfirmationDialog.show(
-      context,
-      status?'هل أنت متأكد من إيقاف نشر القصة؟ لن يتمكن المستخدمون الآخرون من قرائتها':"هل أنت متأكد من نشر القصة؟ سيتمكن جميع المستخدمون من قراءتها",
-      () async {
-        Navigator.of(context).pop();
-
-        try {
-          await FirebaseFirestore.instance
-              .collection("User")
-              .doc(userId)
-              .collection("Story")
-              .doc(docId)
-              .update({
-              'published': !status});
-          ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'تم تحديث حالة القصة بنجاح',
-              icon: Icons.check_circle,
-            ),
-          );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'تعذر تحديث حالة القصة، حاول لاحقا',
-              icon: Icons.error,
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Future<void> sharePdf(String pdfUrl, String title) async {
-    try {
-      final response = await http.get(Uri.parse(pdfUrl));
-      final bytes = response.bodyBytes;
-
-      // Get the temporary directory and save the PDF file
-      final tempDir = await getTemporaryDirectory();
-      final file = File('${tempDir.path}/$title.pdf');
-      await file.writeAsBytes(bytes);
-
-      // Share the local file path
-      Share.shareFiles([file.path], text: 'ملف القصة: $title.pdf');
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(
-      CustomSnackBar(
-        content: 'المعذرة، لا يمكن مشاركة القصة حاول لاحقا',
-        icon: Icons.error,
-      ),
-    );
-    }
-  }
-
-Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
-  final dio = Dio();
-  final response = await dio.get(
-    url,
-    options: Options(responseType: ResponseType.bytes),
-  );
-  final bytes = response.data;
-
-  final downloadsDirectory = await getDownloadsDirectory();
-  final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
-
-  File file = File(filePath);
-  await file.writeAsBytes(bytes);
-
-  if (file.existsSync()) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      CustomSnackBar(
-        content: 'تم تحميل القصة بنجاح',
-        icon: Icons.check_circle,
-      ),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      CustomSnackBar(
-        content: 'فشل تحميل القصة',
-        icon: Icons.error,
-      ),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -213,14 +89,14 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
                   title: Text('حذف القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
-                    deleteStory(docId);
+                    deleteStory(docId,context);
                   }),
               ListTile(
                   leading: Icon(Icons.share),
                   title: Text('مشاركة القصه'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
-                    sharePdf(pdfUrl, title);
+                    sharePdf(pdfUrl, title,context);
                   }),
               ListTile(
                   leading: Icon(Icons.download),
@@ -234,7 +110,7 @@ Future<void> downloadAndSaveFile(String url, String fileName, BuildContext conte
                   title:Text(status?'ايقاف نشر القصة':'نشر القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
-                    publishStory(docId,status);
+                    publishStory(docId,status,context);
                   }),
             ],
           ),
