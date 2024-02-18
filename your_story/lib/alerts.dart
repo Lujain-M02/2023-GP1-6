@@ -83,7 +83,8 @@ class Alert {
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: YourStoryStyle.primarycolor, // Button background color
+                      backgroundColor: YourStoryStyle
+                          .primarycolor, // Button background color
                     ),
                     child: const Text(
                       "حسنا",
@@ -101,6 +102,7 @@ class Alert {
     );
   }
 }
+
 //class for styling snackBar
 class CustomSnackBar extends SnackBar {
   CustomSnackBar({
@@ -111,18 +113,18 @@ class CustomSnackBar extends SnackBar {
           key: key,
           content: Row(
             children: <Widget>[
-               Icon(
-                 icon,
+              Icon(
+                icon,
                 color: const Color.fromARGB(255, 248, 243, 212),
               ),
-              const SizedBox(width: 8), 
+              const SizedBox(width: 8),
               Text(
                 content,
                 style: const TextStyle(color: Colors.white),
               ),
             ],
           ),
-          backgroundColor: const Color.fromARGB( 255, 15, 26, 107),
+          backgroundColor: const Color.fromARGB(255, 15, 26, 107),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -142,92 +144,153 @@ void showCustomModalBottomSheet(BuildContext context, Widget child) {
       return FractionallySizedBox(
         heightFactor: 0.8,
         child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: child
-          ),
+          child: Container(padding: const EdgeInsets.all(16), child: child),
         ),
       );
     },
   );
 }
 
-
 //this alert is special for choosing the images number for story
 class NumberPickerAlertDialog {
-  static void show(BuildContext context, String title, Function(int?) onConfirm, int size,int selectedDefault) {
+  static void show(BuildContext context, String title, Function(int?) onConfirm,
+      int size, int selectedDefault) {
     int? selectedNumber = selectedDefault; // Default selected number
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context,setState) {
-            return Directionality(
-              textDirection: TextDirection.rtl,
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-                title: Text(title),
-                content: DropdownButton<int>(
-                  value: selectedNumber,
-                  items: List.generate(
-                    size,
-                    (index) => DropdownMenuItem(
-                      value: index + 1,
-                      child: Text('${index + 1}'),
-                    ),
-                  ),
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      selectedNumber = newValue;
-                    });
-                  },
-                ),
-                actions: [
-                  Center(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        if (selectedNumber != null) {
-                          onConfirm(selectedNumber);
-                        }
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: YourStoryStyle.primarycolor,
-                        foregroundColor: Colors.white,
-                        side: BorderSide(
-                          color: YourStoryStyle.primarycolor,
-                          width: 2,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                      child: const Text("متأكد", style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  // OutlinedButton(
-                  //   onPressed: () => Navigator.of(context).pop(),
-                  //   style: OutlinedButton.styleFrom(
-                  //     foregroundColor: Colors.black,
-                  //     side: BorderSide(
-                  //       color: YourStoryStyle.primarycolor,
-                  //       width: 2,
-                  //     ),
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //   ),
-                  //   child: const Text("الغاء", style: TextStyle(fontSize: 20)),
-                  // ),
-                ],
+        return StatefulBuilder(builder: (context, setState) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
-            );
-          }
+              backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+              title: Text(title),
+              content: DropdownButton<int>(
+                value: selectedNumber,
+                items: List.generate(
+                  size,
+                  (index) => DropdownMenuItem(
+                    value: index + 1,
+                    child: Text('${index + 1}'),
+                  ),
+                ),
+                onChanged: (int? newValue) {
+                  setState(() {
+                    selectedNumber = newValue;
+                  });
+                },
+              ),
+              actions: [
+                Center(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      if (selectedNumber != null) {
+                        onConfirm(selectedNumber);
+                      }
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: YourStoryStyle.primarycolor,
+                      foregroundColor: Colors.white,
+                      side: BorderSide(
+                        color: YourStoryStyle.primarycolor,
+                        width: 2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
+                    child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+                  ),
+                ),
+                // OutlinedButton(
+                //   onPressed: () => Navigator.of(context).pop(),
+                //   style: OutlinedButton.styleFrom(
+                //     foregroundColor: Colors.black,
+                //     side: BorderSide(
+                //       color: YourStoryStyle.primarycolor,
+                //       width: 2,
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15.0),
+                //     ),
+                //   ),
+                //   child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+                // ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+}
+
+//This alert is special for choosing the images style
+class ImageStylePickerDialog {
+  static Future<String?> show(BuildContext context) async {
+    String? selectedStyle = 'واقعية'; //the default style
+
+    // Define the styles available for selection
+    final Map<String, String> stylesMap = {
+      'واقعية': 'Photorealistic',
+      'فنية': 'Artistic',
+      'سريالية': 'Surreal',
+      'كرتون': 'Cartoon',
+    };
+
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          title: Text('اختر نمط الصورة', textAlign: TextAlign.center),
+          backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    value: selectedStyle,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedStyle = newValue!;
+                      });
+                    },
+                    items: stylesMap.entries
+                        .map<DropdownMenuItem<String>>((entry) {
+                      return DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Text(entry.key, textAlign: TextAlign.center),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: <Widget>[
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(stylesMap[selectedStyle]);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: YourStoryStyle.primarycolor,
+                ),
+                child: Text('حسنا', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
         );
       },
     );

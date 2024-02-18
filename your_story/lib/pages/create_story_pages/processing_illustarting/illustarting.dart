@@ -5,8 +5,11 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import 'global_story.dart';
+
+String? selectedImageStyle;
 
 class Illustration extends StatefulWidget {
   //final List<dynamic> clausesToIllujstrate;
@@ -47,7 +50,12 @@ class _IllustrationState extends State<Illustration> {
   void initState() {
     super.initState();
     //translateStory();
-    generateAllImages();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      selectedImageStyle = await ImageStylePickerDialog.show(context);
+      if (selectedImageStyle != null) {
+        generateAllImages(); // Call generateAllImages here
+      }
+    });
   }
 
   /*void translateStory() async {
@@ -102,37 +110,38 @@ class _IllustrationState extends State<Illustration> {
     List<Map<String, dynamic>> tempSentenceImagePairs = [];
     List<String> clauses = [];
 
-    for (var sentenceMap in globaltopsisScoresList) {
-      String sentence = sentenceMap['sentence'];
-      //print("sentence: $sentence");
-      List<String> imagesForSentence = [];
-      print("sentence: $sentence");
-      for (var clause in globaltopClausesToIllustrate) {
-        if (sentence.contains(clause)) {
-          clauses.add(clause);
-          try {
-            // Generate an image for the sentence containing the clause
-            String imageUrl = await generateImage(sentence, clause);
-            imagesForSentence.add(imageUrl);
-            setState(() {
-              generatedImagesCount++;
-            });
-          } catch (error) {
-            print("Error generating image for sentence '$sentence': $error");
+    if (selectedImageStyle != null) {
+      for (var sentenceMap in globaltopsisScoresList) {
+        String sentence = sentenceMap['sentence'];
+        //print("sentence: $sentence");
+        List<String> imagesForSentence = [];
+        print("sentence: $sentence");
+        for (var clause in globaltopClausesToIllustrate) {
+          if (sentence.contains(clause)) {
+            clauses.add(clause);
+            try {
+              // Generate an image for the sentence containing the clause
+              String imageUrl = await generateImage(sentence, clause);
+              imagesForSentence.add(imageUrl);
+              setState(() {
+                generatedImagesCount++;
+              });
+            } catch (error) {
+              print("Error generating image for sentence '$sentence': $error");
+            }
           }
         }
+
+        // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
+        tempSentenceImagePairs.add({
+          "sentence": sentence.trim(),
+          "images":
+              imagesForSentence, // This could be an empty list if no images were generated
+        });
+        print("tempSentenceImagePairs: $tempSentenceImagePairs");
+        print("clauses: $clauses");
       }
-
-      // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
-      tempSentenceImagePairs.add({
-        "sentence": sentence.trim(),
-        "images":
-            imagesForSentence, // This could be an empty list if no images were generated
-      });
-      print("tempSentenceImagePairs: $tempSentenceImagePairs");
-      print("clauses: $clauses");
     }
-
     // Update the global sentenceImagePairs with the generated data
     setState(() {
       sentenceImagePairs = tempSentenceImagePairs;
@@ -209,7 +218,8 @@ class _IllustrationState extends State<Illustration> {
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Image.asset("assets/log.gif"),
+            children: [
+              Image.asset("assets/log.gif"),
               // Lottie.asset('assets/loading.json', width: 200, height: 200),
               const SizedBox(height: 20),
               Text(
@@ -240,10 +250,14 @@ class _IllustrationState extends State<Illustration> {
 Future<String> generateImage(String sentence, String prompt) async {
   OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
   //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
+  String imageStylePrompt =
+      selectedImageStyle != null ? " in style $selectedImageStyle" : "";
+
   try {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
       //prompt: "from this sentence:'$sentence' generate:'$prompt'",
-      prompt: "from this story:'$sentence' generate:'$prompt'",
+      prompt:
+          "from this story:'$sentence' generate:'$prompt' and the image to be in $imageStylePrompt style",
       model: "dall-e-2", // Explicitly specifying the model
       n: 1,
       size: OpenAIImageSize.size1024,
