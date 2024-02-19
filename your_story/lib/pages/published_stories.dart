@@ -5,6 +5,7 @@ import 'package:your_story/style.dart';
 import 'package:lottie/lottie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 
 
@@ -50,67 +51,70 @@ class _StoriesPageState extends State<StoriesPage> {
 
   Widget _buildPdfCard(String title, String pdfUrl, String docId, int index,
       BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFF5F9FD),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF475269).withOpacity(0.3),
-            blurRadius: 5,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                // preview
-              },
+    return GestureDetector(
+      onTap: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
+                      );
+                },
+      child: Container(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFF5F9FD),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF475269).withOpacity(0.3),
+              blurRadius: 5,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
               child: Image.asset(
                 "assets/6.png",
               ),
             ),
-          ),
-          Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF475269),
+            Center(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF475269),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: IconButton(
-                  icon: const Icon(Icons.share,
-                      color: Color.fromARGB(255, 5, 0, 58)),
-                  onPressed: () => sharePdf(pdfUrl, title, context),
-                ),
-              ),
-              Expanded(
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_downward,
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: IconButton(
+                    icon: const Icon(Icons.share,
+                        color: Color.fromARGB(255, 5, 0, 58)),
+                    onPressed: () => sharePdf(pdfUrl, title, context),
                   ),
-                  onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Expanded(
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_downward,
+                    ),
+                    onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

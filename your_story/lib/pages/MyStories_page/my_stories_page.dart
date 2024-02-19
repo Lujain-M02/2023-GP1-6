@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
+import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -177,6 +178,12 @@ class _MyStoriesState extends State<MyStories> {
                 icon: const Icon(Icons.more_vert),
                 onPressed: () => showMoreOptionsBottomSheet(context, docId, pdfUrl, title,status),
                ),
+               onTap: () {
+                 Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
+                    );
+               },
               )
               )
             );

@@ -37,7 +37,7 @@ class _ProcessStoryState extends State<ProcessStory> {
     };
 
     final response = await http.post(
-      Uri.parse("http://192.168.100.244:5000/calculate_topsis"),
+      Uri.parse("http://192.168.100.4:5000/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

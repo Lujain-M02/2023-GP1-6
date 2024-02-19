@@ -60,6 +60,7 @@ dependencies:
   share: ^2.0.4
   languagetool_textfield: ^0.0.6
   dio: ^5.4.0
+  syncfusion_flutter_pdfviewer: ^24.2.6
 
     
 
