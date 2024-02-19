@@ -144,30 +144,33 @@ class _MyStoriesState extends State<MyStories> {
               return Card(color: YourStoryStyle.backgroundColor,
                 child:Center(
                 child: ListTile(           
-              title: Row(
+              title: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF475269),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Row(
+                  mainAxisSize: MainAxisSize.min, // This makes the Row as small as possible
+
                 children: [
-                  Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF475269),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  ),
                   Container(
-                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                     margin: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.grey,width: 2),
-              
-              
-            ),
-            child: Text(status?'منشوره': 'غير منشوره' , style: const TextStyle(fontSize: 9),),
-            
-                  )
+                  
+                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                         margin: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey,width: 2),
+                  
+                  
+                              ),
+                              child: Text(status?'منشوره': 'غير منشوره' , style: const TextStyle(fontSize: 9),),
+                              
+                      ),
                 ],
               ),
                 trailing: IconButton(
