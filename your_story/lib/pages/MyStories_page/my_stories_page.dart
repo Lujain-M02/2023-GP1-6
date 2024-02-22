@@ -121,10 +121,10 @@ class _MyStoriesState extends State<MyStories> {
                   leading: const Icon(Icons.remove_red_eye),
                   title: const Text('قراءة'),
                   onTap: () {
-                 Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
-                    );
+                //  Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
+                //     );
                }),
             ],
           ),

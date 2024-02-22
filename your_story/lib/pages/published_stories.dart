@@ -53,10 +53,10 @@ class _StoriesPageState extends State<StoriesPage> {
       BuildContext context) {
     return GestureDetector(
       onTap: () {
-                  Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
-                      );
+                  // Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
+                  //     );
                 },
       child: Container(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
