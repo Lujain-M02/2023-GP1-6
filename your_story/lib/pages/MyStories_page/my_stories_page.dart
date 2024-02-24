@@ -140,13 +140,13 @@ class _MyStoriesState extends State<MyStories> {
          children: <Widget>[
           SearchBox(onChanged: (value) {}, ),
           storyType(),
-          SizedBox(height: kDefaultPadding / 2),
+          const SizedBox(height: kDefaultPadding / 2),
           Expanded(
             child: Stack(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(top: 70),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.only(top: 70),
+                  decoration: const BoxDecoration(
                     color: kBackgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(40),
@@ -163,24 +163,24 @@ class _MyStoriesState extends State<MyStories> {
                 final bool status = pdfData?['published'] ?? false;
                 final String docId = stories[index].id;
                 return Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                 horizontal: kDefaultPadding,
                 vertical: kDefaultPadding / 2,
                 ),
-                   height: 160,
+                   height: 160,//140
                child: InkWell(
                  child: Stack(
                    alignment: Alignment.bottomCenter,
                     children: <Widget>[
                       Container(
-                        height: 136,
+                        height: 136,//116
                         decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(22),
                         color: index.isEven ? kBlueColor : kSecondaryColor,
                         boxShadow: [kDefaultShadow],
                          ),
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(22),
@@ -194,9 +194,9 @@ class _MyStoriesState extends State<MyStories> {
               child: Hero(
                tag:index,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  height: 160,
-                  width: 200,
+                  padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  height: 160,//140
+                  width: 200,//180
                   child: Image.asset(
                     "assets/pdfimg.png",
                     fit: BoxFit.cover,
@@ -214,33 +214,31 @@ class _MyStoriesState extends State<MyStories> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding),
                       child: Text(
                         title,
                         style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF475269),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              
-                        // style: Theme.of(context).textTheme.labelLarge,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF475269),
+                      ),
+                       maxLines: 1,
+                       overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: kDefaultPadding * 0.5, 
-                            vertical: kDefaultPadding / 6, 
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding * 0.4, 
+                            vertical: kDefaultPadding *0.0007, 
                           ),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: kSecondaryColor,
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(22),
