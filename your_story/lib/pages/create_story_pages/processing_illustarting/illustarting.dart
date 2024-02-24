@@ -51,7 +51,24 @@ class _IllustrationState extends State<Illustration> {
     super.initState();
     //translateStory();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      selectedImageStyle = await ImageStylePickerDialog.show(context);
+      //selectedImageStyle = await ImageStylePickerDialog.show(context);
+      List<ImageStyle> imageStyles = [
+        ImageStyle(
+            title: "واقعية",
+            style: "Photorealistic",
+            imagePath: "assets/Photorealistic.png"),
+        ImageStyle(
+            title: "فنية", style: "Artistic", imagePath: "assets/Artistic.png"),
+        ImageStyle(
+            title: "سريالية",
+            style: "Surreal",
+            imagePath: "assets/Surreal.png"),
+        ImageStyle(
+            title: "كرتون", style: "Cartoon", imagePath: "assets/Cartoon.png"),
+      ];
+      selectedImageStyle =
+          await ImageStylePickerDialog.show(context, imageStyles);
+
       if (selectedImageStyle != null) {
         generateAllImages(); // Call generateAllImages here
       }
@@ -250,15 +267,15 @@ class _IllustrationState extends State<Illustration> {
 Future<String> generateImage(String sentence, String prompt) async {
   OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
   //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
-  String imageStylePrompt =
-      selectedImageStyle != null ? " in style $selectedImageStyle" : "";
+  // String imageStylePrompt =
+  //     selectedImageStyle != null ? " in style $selectedImageStyle" : "";
 
   try {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
       //prompt: "from this sentence:'$sentence' generate:'$prompt'",
       prompt:
-          "from this story:'$sentence' generate:'$prompt' and the image to be in $imageStylePrompt style",
-      model: "dall-e-2", // Explicitly specifying the model
+          "from this story:'$sentence' generate:'$prompt' and the image to be in $selectedImageStyle style",
+      model: "dall-e-3", // Explicitly specifying the model
       n: 1,
       size: OpenAIImageSize.size1024,
       responseFormat: OpenAIImageResponseFormat.url,

@@ -231,66 +231,160 @@ class NumberPickerAlertDialog {
   }
 }
 
-//This alert is special for choosing the images style
-class ImageStylePickerDialog {
-  static Future<String?> show(BuildContext context) async {
-    String? selectedStyle = 'واقعية'; //the default style
+// //This alert is special for choosing the images style
+// class ImageStylePickerDialog {
+//   static Future<String?> show(BuildContext context) async {
+//     String? selectedStyle = 'واقعية'; //the default style
 
-    // Define the styles available for selection
-    final Map<String, String> stylesMap = {
-      'واقعية': 'Photorealistic',
-      'فنية': 'Artistic',
-      'سريالية': 'Surreal',
-      'كرتون': 'Cartoon',
-    };
+//     // Define the styles available for selection
+//     final Map<String, String> stylesMap = {
+//       'واقعية': 'Photorealistic',
+//       'فنية': 'Artistic',
+//       'سريالية': 'Surreal',
+//       'كرتون': 'Cartoon',
+//     };
+
+//     return showDialog<String>(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(10.0),
+//           ),
+//           title: Text('اختر نمط الصورة', textAlign: TextAlign.center),
+//           backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+//           content: StatefulBuilder(
+//             builder: (BuildContext context, StateSetter setState) {
+//               return Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   DropdownButton<String>(
+//                     isExpanded: true,
+//                     value: selectedStyle,
+//                     onChanged: (String? newValue) {
+//                       setState(() {
+//                         selectedStyle = newValue!;
+//                       });
+//                     },
+//                     items: stylesMap.entries
+//                         .map<DropdownMenuItem<String>>((entry) {
+//                       return DropdownMenuItem<String>(
+//                         value: entry.key,
+//                         child: Text(entry.key, textAlign: TextAlign.center),
+//                       );
+//                     }).toList(),
+//                   ),
+//                 ],
+//               );
+//             },
+//           ),
+//           actions: <Widget>[
+//             Center(
+//               child: ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.of(context).pop(stylesMap[selectedStyle]);
+//                 },
+//                 style: ElevatedButton.styleFrom(
+//                   primary: YourStoryStyle.primarycolor,
+//                 ),
+//                 child: Text('حسنا', style: TextStyle(color: Colors.white)),
+//               ),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
+class ImageStyle {
+  final String title;
+  final String style;
+  final String imagePath;
+
+  ImageStyle(
+      {required this.title, required this.style, required this.imagePath});
+}
+
+class ImageStylePickerDialog {
+  static Future<String?> show(
+      BuildContext context, List<ImageStyle> imageStyles) async {
+    String? selectedStyle;
 
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          title: Text('اختر نمط الصورة', textAlign: TextAlign.center),
-          backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: selectedStyle,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedStyle = newValue!;
-                      });
-                    },
-                    items: stylesMap.entries
-                        .map<DropdownMenuItem<String>>((entry) {
-                      return DropdownMenuItem<String>(
-                        value: entry.key,
-                        child: Text(entry.key, textAlign: TextAlign.center),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: <Widget>[
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(stylesMap[selectedStyle]);
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: YourStoryStyle.primarycolor,
-                ),
-                child: Text('حسنا', style: TextStyle(color: Colors.white)),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                'اختر نمط الصورة',
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              content: SingleChildScrollView(
+                child: Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: 20, // Horizontal space between buttons
+                  runSpacing: 20, // Vertical space between buttons
+                  children: imageStyles.map((imageStyle) {
+                    bool isSelected = imageStyle.style == selectedStyle;
+                    return InkWell(
+                      onTap: () =>
+                          setState(() => selectedStyle = imageStyle.style),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      isSelected ? Colors.green : Colors.grey,
+                                  width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Image.asset(
+                                  imageStyle.imagePath,
+                                  width: 80,
+                                  height: 80,
+                                ),
+                                if (isSelected)
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Icon(Icons.check_circle,
+                                        color: Colors.green),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(imageStyle.title),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(selectedStyle),
+                  style: ElevatedButton.styleFrom(
+                    primary: YourStoryStyle.primarycolor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  child:
+                      const Text("حسنا", style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          },
         );
       },
     );
