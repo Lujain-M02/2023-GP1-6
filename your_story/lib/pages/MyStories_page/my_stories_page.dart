@@ -167,13 +167,13 @@ class _MyStoriesState extends State<MyStories> {
                 horizontal: kDefaultPadding,
                 vertical: kDefaultPadding / 2,
                 ),
-                   height: 160,//140
+                   height: 140,//140
                child: InkWell(
                  child: Stack(
                    alignment: Alignment.bottomCenter,
                     children: <Widget>[
                       Container(
-                        height: 136,//116
+                        height: 116,//116
                         decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(22),
                         color: index.isEven ? kBlueColor : kSecondaryColor,
@@ -195,8 +195,8 @@ class _MyStoriesState extends State<MyStories> {
                tag:index,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  height: 160,//140
-                  width: 200,//180
+                  height: 140,//140
+                  width: 180,//180
                   child: Image.asset(
                     "assets/pdfimg.png",
                     fit: BoxFit.cover,
