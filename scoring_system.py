@@ -347,10 +347,10 @@ def calculate_topsis():
                 clause_scores.append({'clause': clause, 'score': score})
             
              # Sort the clauses based on their TOPSIS scores (x[2] == TOPSIS scores in clause_scores)
-            sorted_clause_scores = sorted(clause_scores, key=lambda x: x['score'], reverse=True)
+            # sorted_clause_scores = sorted(clause_scores, key=lambda x: x['score'], reverse=True)
             sentences_with_clauses.append({
                 'sentence': sentence,
-                'clauses': sorted_clause_scores
+                'clauses': clause_scores
             })
 
         return sentences_with_clauses
