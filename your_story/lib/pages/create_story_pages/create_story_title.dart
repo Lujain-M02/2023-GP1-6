@@ -107,6 +107,7 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
                     contentPadding: EdgeInsets.all(10),
                   ),
                   style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  applyNewLineFilter: true
                 ),
 
                 // Error message widget
