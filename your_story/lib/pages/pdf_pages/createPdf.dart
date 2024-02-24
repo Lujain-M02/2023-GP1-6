@@ -285,7 +285,8 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Lottie.asset('assets/loading.json', width: 200, height: 200),
+              // Lottie.asset('assets/loading.json', width: 200, height: 200),
+              Image.asset("assets/loadingLogo.gif"),
               const SizedBox(height: 20),
               const Text(
                 'من فضلك انتظر قليلا لإنتاج الملف',

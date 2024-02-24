@@ -118,11 +118,12 @@ class _ProcessStoryState extends State<ProcessStory> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Lottie.asset('assets/loading.json',
-                        width: 200, height: 200),
+                    Image.asset("assets/loadingLogo.gif"),
+                    // Lottie.asset('assets/loadingLogo.gif',
+                    //     width: 200, height: 200),
                     const SizedBox(height: 20),
                     const Text(
-                      'من فضلك انتظر قليلا لمعالجة القصة ',
+                      'من فضلك انتظر قليلا ريثما يقرأ النظام قصتك ',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

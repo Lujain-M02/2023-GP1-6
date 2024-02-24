@@ -219,7 +219,7 @@ class _IllustrationState extends State<Illustration> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset("assets/log.gif"),
+              Image.asset("assets/loadingLogo.gif"),
               // Lottie.asset('assets/loading.json', width: 200, height: 200),
               const SizedBox(height: 20),
               Text(
