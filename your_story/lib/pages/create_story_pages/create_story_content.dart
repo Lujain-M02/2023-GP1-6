@@ -128,6 +128,7 @@ bool attemptedNavigation = false;
                 // autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: widget.contentController,
                 maxLines: null,
+                minLines: 20,
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Color.fromARGB(132, 187, 222, 251),
