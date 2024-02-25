@@ -76,7 +76,7 @@ class Alert {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(content),
+                  Text(content,style: const TextStyle(fontSize: 20),),
                   const SizedBox(height: 20), // Adjust as needed for spacing
                   ElevatedButton(
                     onPressed: () {
@@ -89,7 +89,8 @@ class Alert {
                     child: const Text(
                       "حسنا",
                       style: TextStyle(
-                        color: Colors.white, // Button text color
+                        color: Colors.white,
+                        fontSize: 20 // Button text color
                       ),
                     ),
                   ),

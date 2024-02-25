@@ -78,7 +78,7 @@ class _Filtering extends State<Filtering> {
       case 'متوسطة الأهمية':
         return Colors.orange;
       case 'منخفضة الأهمية':
-        return const Color.fromRGBO(255, 241, 147, 1.0);;
+        return const Color.fromRGBO(255, 241, 147, 1.0);
       default:
         return Colors.black; // Default color
     }
@@ -152,10 +152,10 @@ class _Filtering extends State<Filtering> {
                   TextButton.icon(
                     onPressed: () {
                       Alert.show(context,
-                          "في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.");
+  'في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.\n يتم تصنيف كل جملة بناءً على أدائها في كل معيار إلى فئات عالية، متوسطة، ومنخفضة، ونوصي بتصوير الجمل ذات التصنيف العالي.');
                     },
                     label: Text(
-                      "معرفة معايير التقييم",
+                      "معرفة معايير التصنيف",
                       style: TextStyle(color: YourStoryStyle.s2Color),
                     ),
                     icon: Icon(
