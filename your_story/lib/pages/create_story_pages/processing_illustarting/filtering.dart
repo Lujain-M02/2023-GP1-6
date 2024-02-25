@@ -13,10 +13,13 @@ class Filtering extends StatefulWidget {
 
 class _Filtering extends State<Filtering> {
   Map<String, bool> selections = {};
+  double maxScore = 0;
 
   @override
   void initState() {
     super.initState();
+    maxScore = getMaxScore();
+
     // Initialize all selections to false based on the clauses in globaltopsisScoresList.
     for (var sentenceMap in globaltopsisScoresList) {
       for (var clauseMap in sentenceMap['clauses']) {
@@ -35,42 +38,54 @@ class _Filtering extends State<Filtering> {
     });
   }
 
+  // Function to categorize scores into high, medium, or low dynamically based on the range
+  String getCategoryFromScore(double score) {
+    // Calculate thresholds based on the maximum score
+    double highThreshold = maxScore * 0.75;
+    double mediumThreshold = maxScore * 0.5;
+    // Categorize the score
+    if (score >= highThreshold) {
+      return 'عالية الأهمية';
+    } else if (score >= mediumThreshold) {
+      return 'متوسطة الأهمية';
+    } else {
+      return 'منخفضة الأهمية';
+    }
+  }
+
+  double getMaxScore() {
+    double maxScore =
+        double.negativeInfinity; // Initialize maxScore to negative infinity
+
+    // Iterate through each item in the list
+    for (var item in globaltopsisScoresList) {
+      // Iterate through each clause in the item
+      for (var clauseMap in item['clauses']) {
+        double score = clauseMap['score']; // Extract the score
+        if (score > maxScore) {
+          maxScore = score; // Update maxScore if a higher score is found
+        }
+      }
+    }
+
+    return maxScore;
+  }
+
+  Color getColorForCategory(String category) {
+    switch (category) {
+      case 'عالية الأهمية':
+        return Colors.green;
+      case 'متوسطة الأهمية':
+        return Colors.orange;
+      case 'منخفضة الأهمية':
+        return const Color.fromRGBO(255, 241, 147, 1.0);;
+      default:
+        return Colors.black; // Default color
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //without score
-
-    // List<Widget> buildSentenceWidgets() {
-    //   List<Widget> sentenceWidgets = [];
-    //   for (var sentenceMap in globaltopsisScoresList) {
-    //     String sentence = sentenceMap['sentence'];
-    //     List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
-    //       String clause = clauseMap['clause'];
-    //       return CheckboxListTile(
-    //         title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
-    //         value: selections[clause],
-    //         onChanged: (bool? value) {
-    //           toggleSelection(clause);
-    //         },
-    //       );
-    //     }).toList();
-
-    //     sentenceWidgets.add(Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: ExpansionTile(
-    //         title: Text(sentence),
-    //         backgroundColor: Color.fromARGB(255, 187, 222, 251),
-    //         collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
-    //                         shape: const RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.all(Radius.circular(20))),
-    //             collapsedShape: const RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.all(Radius.circular(50))),
-    //         children: clauseWidgets,
-    //       ),
-    //     ));
-    //   }
-    //   return sentenceWidgets;
-    // }
-
 //with score
     List<Widget> buildSentenceWidgets() {
       List<Widget> sentenceWidgets = [];
@@ -81,10 +96,19 @@ class _Filtering extends State<Filtering> {
           String clause = clauseMap['clause'];
           double score =
               clauseMap['score']; // Extract the score for each clause
+          String scoreCategory =
+              getCategoryFromScore(score); // Get category based on score
+
           return CheckboxListTile(
             title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
+            // subtitle: Text(
+            //     'الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
             subtitle: Text(
-                'الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
+              'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
+              style: TextStyle(
+                color: getColorForCategory(scoreCategory),
+              ),
+            ), // Display the score category as a subtitle
             value: selections[clause],
             onChanged: (bool? value) {
               toggleSelection(clause);
@@ -195,3 +219,37 @@ class _Filtering extends State<Filtering> {
     );
   }
 }
+
+//without score
+
+// List<Widget> buildSentenceWidgets() {
+//   List<Widget> sentenceWidgets = [];
+//   for (var sentenceMap in globaltopsisScoresList) {
+//     String sentence = sentenceMap['sentence'];
+//     List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
+//       String clause = clauseMap['clause'];
+//       return CheckboxListTile(
+//         title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
+//         value: selections[clause],
+//         onChanged: (bool? value) {
+//           toggleSelection(clause);
+//         },
+//       );
+//     }).toList();
+
+//     sentenceWidgets.add(Padding(
+//       padding: const EdgeInsets.all(8.0),
+//       child: ExpansionTile(
+//         title: Text(sentence),
+//         backgroundColor: Color.fromARGB(255, 187, 222, 251),
+//         collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
+//                         shape: const RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.all(Radius.circular(20))),
+//             collapsedShape: const RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.all(Radius.circular(50))),
+//         children: clauseWidgets,
+//       ),
+//     ));
+//   }
+//   return sentenceWidgets;
+// }
