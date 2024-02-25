@@ -100,6 +100,7 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
               children: [
                 CustomLanguageToolTextField(
                   controller: widget.titleController,
+                  maxLines: 1,
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: Color.fromARGB(132, 187, 222, 251),
@@ -107,7 +108,7 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
                     contentPadding: EdgeInsets.all(10),
                   ),
                   style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                  applyNewLineFilter: true
+                  //applyNewLineFilter: true
                 ),
 
                 // Error message widget
