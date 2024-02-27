@@ -48,11 +48,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
-//import 'package:flutter/services.dart';
 
 class CustomLanguageToolTextField extends LanguageToolTextField {
   final String? Function(String?)? customValidator;
-  //final bool applyNewLineFilter;
   final Widget? child;
 
   CustomLanguageToolTextField({
@@ -84,7 +82,6 @@ class CustomLanguageToolTextField extends LanguageToolTextField {
     bool enabled = true,
     GestureTapCallback? onTap,
     bool readOnly = false,
-    //this.applyNewLineFilter = false,
     TextEditingController? controllerToCopyFrom,
   }) : super(
     key: key,
@@ -145,9 +142,6 @@ class _CustomLanguageToolTextFieldState extends State<CustomLanguageToolTextFiel
           scrollController: _scrollController,
           decoration: inputDecoration,
           minLines: widget.minLines,
-            // inputFormatters: widget.applyNewLineFilter
-            // ? [FilteringTextInputFormatter.deny(RegExp(r'\n'))]
-            // : null,
           maxLines: widget.maxLines,
           expands: widget.expands,
           style: widget.style,
