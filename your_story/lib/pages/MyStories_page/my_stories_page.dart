@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MyStories_page/searchBox.dart';
 import 'package:your_story/pages/MyStories_page/typeBar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
 import 'package:your_story/pages/pdf_pages/pdf_view.dart';
@@ -138,7 +139,25 @@ class _MyStoriesState extends State<MyStories> {
           final stories = snapshot.data!;
           return Column(
          children: <Widget>[
-          SearchBox(onChanged: (value) {}, ),
+            Row(mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: SearchBox(onChanged: (value) {}),
+        ),
+        
+        IconButton(
+          icon: Icon(Icons.add, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CreateStory()),
+            );
+          },
+          color: Color.fromARGB(255, 15, 26, 107),
+          padding: EdgeInsets.only(left:24), 
+        ),
+      ],
+    ),
           storyType(),
           const SizedBox(height: kDefaultPadding / 2),
           Expanded(
@@ -197,10 +216,28 @@ class _MyStoriesState extends State<MyStories> {
                   padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   height: 140,//140
                   width: 180,//180
-                  child: Image.asset(
-                    "assets/pdfimg.png",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Stack(
+  children: <Widget>[
+    Image.asset(
+      "assets/pdfimg.png",
+      fit: BoxFit.cover,
+    ),
+    Positioned(
+      top: 15,
+      left: 40,
+      child: Image.asset(
+      "assets/applicationIcon.png",
+              width: 45,
+              height: 45,
+              fit: BoxFit.cover,
+            ),
+    ),
+  ],
+)
+                  // child: Image.asset(
+                  //   "assets/pdfimg.png",
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
             ),

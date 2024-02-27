@@ -28,7 +28,7 @@ class _storyTypeState extends State<storyType> {
             alignment: Alignment.center,
             margin: EdgeInsets.only(
               left: kDefaultPadding,
-              right: index == categories.length - 1 ? kDefaultPadding : 0,
+              right:kDefaultPadding ,
             ),
             padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
             decoration: BoxDecoration(
