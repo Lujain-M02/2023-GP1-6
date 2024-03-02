@@ -76,7 +76,10 @@ class Alert {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(content,style: const TextStyle(fontSize: 20),),
+                  Text(
+                    content,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                   const SizedBox(height: 20), // Adjust as needed for spacing
                   ElevatedButton(
                     onPressed: () {
@@ -89,9 +92,8 @@ class Alert {
                     child: const Text(
                       "حسنا",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20 // Button text color
-                      ),
+                          color: Colors.white, fontSize: 20 // Button text color
+                          ),
                     ),
                   ),
                 ],
@@ -232,72 +234,6 @@ class NumberPickerAlertDialog {
   }
 }
 
-// //This alert is special for choosing the images style
-// class ImageStylePickerDialog {
-//   static Future<String?> show(BuildContext context) async {
-//     String? selectedStyle = 'واقعية'; //the default style
-
-//     // Define the styles available for selection
-//     final Map<String, String> stylesMap = {
-//       'واقعية': 'Photorealistic',
-//       'فنية': 'Artistic',
-//       'سريالية': 'Surreal',
-//       'كرتون': 'Cartoon',
-//     };
-
-//     return showDialog<String>(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(10.0),
-//           ),
-//           title: Text('اختر نمط الصورة', textAlign: TextAlign.center),
-//           backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-//           content: StatefulBuilder(
-//             builder: (BuildContext context, StateSetter setState) {
-//               return Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   DropdownButton<String>(
-//                     isExpanded: true,
-//                     value: selectedStyle,
-//                     onChanged: (String? newValue) {
-//                       setState(() {
-//                         selectedStyle = newValue!;
-//                       });
-//                     },
-//                     items: stylesMap.entries
-//                         .map<DropdownMenuItem<String>>((entry) {
-//                       return DropdownMenuItem<String>(
-//                         value: entry.key,
-//                         child: Text(entry.key, textAlign: TextAlign.center),
-//                       );
-//                     }).toList(),
-//                   ),
-//                 ],
-//               );
-//             },
-//           ),
-//           actions: <Widget>[
-//             Center(
-//               child: ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.of(context).pop(stylesMap[selectedStyle]);
-//                 },
-//                 style: ElevatedButton.styleFrom(
-//                   primary: YourStoryStyle.primarycolor,
-//                 ),
-//                 child: Text('حسنا', style: TextStyle(color: Colors.white)),
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
-
 class ImageStyle {
   final String title;
   final String style;
@@ -307,6 +243,7 @@ class ImageStyle {
       {required this.title, required this.style, required this.imagePath});
 }
 
+// This alert is special for choosing the images style
 class ImageStylePickerDialog {
   static Future<String?> show(
       BuildContext context, List<ImageStyle> imageStyles) async {
@@ -314,6 +251,7 @@ class ImageStylePickerDialog {
 
     return showDialog<String>(
       context: context,
+      barrierDismissible: false, // Prevent closing dialog by tapping outside
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -372,16 +310,31 @@ class ImageStylePickerDialog {
                 ),
               ),
               actions: <Widget>[
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(selectedStyle),
-                  style: ElevatedButton.styleFrom(
-                    primary: YourStoryStyle.primarycolor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (selectedStyle == null) {
+                        // If no style is selected, show a SnackBar instead of closing the dialog
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          CustomSnackBar(
+                            content: 'يرجى اختيار نمط الصورة قبل الاستمرار',
+                            icon: Icons.info_outline,
+                          ),
+                        );
+                      } else {
+                        // If a style is selected, close the dialog and return the selected style
+                        Navigator.of(context).pop(selectedStyle);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: YourStoryStyle.primarycolor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
                     ),
+                    child: const Text("الاستمرار",
+                        style: TextStyle(color: Colors.white)),
                   ),
-                  child:
-                      const Text("حسنا", style: TextStyle(color: Colors.white)),
                 ),
               ],
             );
