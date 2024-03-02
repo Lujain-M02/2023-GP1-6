@@ -388,38 +388,36 @@ class _StoriesPageState extends State<StoriesPage> {
 
           return SingleChildScrollView(
             child: Container(
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 30,
-                  right: 20,
-                  bottom: 700,
+              padding: const EdgeInsets.only(
+                left: 20,
+                top: 30,
+                right: 20,
+                //bottom: 700,
+              ),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+              ),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.75,
                 ),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-                ),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(20),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: stories.length,
-                  itemBuilder: (context, index) {
-                    final pdfData =
-                        stories[index].data() as Map<String, dynamic>?;
-                    final String title = pdfData?['title'] ?? 'Untitled';
-                    final String pdfUrl = pdfData?['url'] ?? '#';
-                    final String docId = stories[index].id;
-
-                    return _buildPdfCard(title, pdfUrl, docId, index, context);
-                  },
-                ),
+                itemCount: stories.length,
+                itemBuilder: (context, index) {
+                  final pdfData =
+                      stories[index].data() as Map<String, dynamic>?;
+                  final String title = pdfData?['title'] ?? 'Untitled';
+                  final String pdfUrl = pdfData?['url'] ?? '#';
+                  final String docId = stories[index].id;
+            
+                  return _buildPdfCard(title, pdfUrl, docId, index, context);
+                },
               ),
             ),
           );
