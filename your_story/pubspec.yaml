@@ -58,7 +58,9 @@ dependencies:
   printing: ^5.11.1
   syncfusion_flutter_pdf: ^24.1.47
   share: ^2.0.4
-  languagetool_textfield: ^0.0.6
+  languagetool_textfield: 
+   git:
+    url: https://github.com/HessahAlsubaie/languagetool_textfield
   dio: ^5.4.0
   shimmer: ^3.0.0
 
