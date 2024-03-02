@@ -467,11 +467,12 @@ packages:
   languagetool_textfield:
     dependency: "direct main"
     description:
-      name: languagetool_textfield
-      sha256: f9f12309f1c6a0c8123402f29392614bcbfcea6ec7b18c73fa5d979b46496cc8
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.6"
+      path: "."
+      ref: HEAD
+      resolved-ref: ce85472e1a6e86035743b07106050636951d7028
+      url: "https://github.com/HessahAlsubaie/languagetool_textfield"
+    source: git
+    version: "0.1.0"
   lints:
     dependency: transitive
     description:
@@ -745,10 +746,10 @@ packages:
     dependency: transitive
     description:
       name: throttling
-      sha256: "0b328adb283db092373b2835574fbcdf7d0e472d24f0455717c836ef9824def9"
+      sha256: e48a4c681b1838b8bf99c1a4f822efe43bb69132f9a56091cd5b7d931c862255
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:

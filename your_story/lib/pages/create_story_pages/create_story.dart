@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:languagetool_textfield/core/controllers/language_tool_controller.dart';
+import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/process_story.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
