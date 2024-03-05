@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/MyStories_Page/pdf_methods.dart';
 import 'package:your_story/style.dart';
-import 'package:lottie/lottie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:your_story/pages/pdf_pages/pdf_view.dart';
+//import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 class StoriesPage extends StatefulWidget {
   const StoriesPage({Key? key}) : super(key: key);
@@ -59,8 +57,8 @@ class _StoriesPageState extends State<StoriesPage> {
   late final StreamController<List<QueryDocumentSnapshot>>
       _storiesStreamController;
 
-  bool _isRefreshing = false;
-  bool _isMounted = false;
+  // bool _isRefreshing = false;
+  // bool _isMounted = false;
 
   @override
   void initState() {
@@ -70,7 +68,7 @@ class _StoriesPageState extends State<StoriesPage> {
 
     _updateCombinedStoriesStream();
 
-    _isMounted = true;
+    //_isMounted = true;
   }
 
   //  create combined stories stream
@@ -105,26 +103,26 @@ class _StoriesPageState extends State<StoriesPage> {
     });
   }
 
-  Future<void> refreshStoriesList() async {
-    if (!_isMounted) return;
-    setState(() {
-      _isRefreshing = true;
-    });
+  // Future<void> refreshStoriesList() async {
+  //   if (!_isMounted) return;
+  //   setState(() {
+  //     _isRefreshing = true;
+  //   });
 
-    await Future.delayed(const Duration(seconds: 10)); //
-    if (!_isMounted) return;
-    _updateCombinedStoriesStream();
+  //   await Future.delayed(const Duration(seconds: 10)); //
+  //   if (!_isMounted) return;
+  //   _updateCombinedStoriesStream();
 
-    if (!_isMounted) return;
-    setState(() {
-      _isRefreshing = false;
-    });
-  }
+  //   if (!_isMounted) return;
+  //   setState(() {
+  //     _isRefreshing = false;
+  //   });
+  // }
 
   @override
   void dispose() {
     _storiesStreamController.close();
-    _isMounted = false;
+    //_isMounted = false;
     super.dispose();
   }
 
@@ -183,12 +181,13 @@ class _StoriesPageState extends State<StoriesPage> {
                   ),
                 ),
                 Expanded(
-                  child: IconButton(
+                  child: 
+                  IconButton(
                     icon: const Icon(
                       Icons.arrow_downward,
                     ),
                     onPressed: () =>
-                        downloadAndSaveFile(pdfUrl, title, context),
+                        downloadAndSaveFile(pdfUrl, title,context,)
                   ),
                 ),
               ],

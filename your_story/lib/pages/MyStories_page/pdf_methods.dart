@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 
 
 void deleteStory(String docId,BuildContext context) {
@@ -99,33 +99,56 @@ void deleteStory(String docId,BuildContext context) {
     }
   }
 
-Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
-  final dio = Dio();
-  final response = await dio.get(
-    url,
-    options: Options(responseType: ResponseType.bytes),
-  );
-  final bytes = response.data;
+// Future<void> downloadAndSaveFile(String url, String fileName, BuildContext context) async {
+//   final dio = Dio();
+//   final response = await dio.get(
+//     url,
+//     options: Options(responseType: ResponseType.bytes),
+//   );
+//   final bytes = response.data;
 
-  final downloadsDirectory = await getDownloadsDirectory();
-  final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
+//   final downloadsDirectory = await getDownloadsDirectory();
+//   final filePath = '${downloadsDirectory!.path}/$fileName.pdf';
 
-  File file = File(filePath);
-  await file.writeAsBytes(bytes);
+//   File file = File(filePath);
+//   await file.writeAsBytes(bytes);
 
-  if (file.existsSync()) {
-    ScaffoldMessenger.of(context).showSnackBar(
+//   if (file.existsSync()) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       CustomSnackBar(
+//         content: 'تم تحميل القصة بنجاح',
+//         icon: Icons.check_circle,
+//       ),
+//     );
+//   } else {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       CustomSnackBar(
+//         content: 'فشل تحميل القصة',
+//         icon: Icons.error,
+//       ),
+//     );
+//   }
+// }
+
+
+void downloadAndSaveFile(String url, String fileName, BuildContext context) {
+                    FileDownloader.downloadFile(
+    url: url,
+    name: fileName,//(optional) 
+    onDownloadCompleted: (String path) {
+      ScaffoldMessenger.of(context).showSnackBar(
       CustomSnackBar(
         content: 'تم تحميل القصة بنجاح',
         icon: Icons.check_circle,
       ),
     );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
+    },
+    onDownloadError: (String error) {
+         ScaffoldMessenger.of(context).showSnackBar(
       CustomSnackBar(
-        content: 'فشل تحميل القصة',
+        content: "فشل تحميل القصة، حاول لاحقا",
         icon: Icons.error,
       ),
     );
-  }
+    });
 }

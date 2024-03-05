@@ -63,6 +63,7 @@ dependencies:
     url: https://github.com/HessahAlsubaie/languagetool_textfield
   dio: ^5.4.0
   shimmer: ^3.0.0
+  flutter_file_downloader: ^1.2.1
 
     
 

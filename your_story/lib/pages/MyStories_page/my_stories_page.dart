@@ -5,10 +5,9 @@ import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MyStories_page/searchBox.dart';
 import 'package:your_story/pages/MyStories_page/typeBar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
-import 'package:your_story/pages/pdf_pages/pdf_view.dart';
+//import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -109,7 +108,7 @@ class _MyStoriesState extends State<MyStories> {
                   title: const Text('تحميل القصة'),
                   onTap: () {
                     Navigator.of(context).pop(); // Close the bottom sheet
-                    downloadAndSaveFile(pdfUrl, title, context);
+                    downloadAndSaveFile(pdfUrl, title,context,);
                   }),
                   ListTile(
                   leading: const Icon(Icons.public),
