@@ -10,8 +10,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
-String? firstImg;
 
+String? firstImg;
 
 class PdfGenerationPage extends StatefulWidget {
   const PdfGenerationPage({
@@ -59,11 +59,11 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         try {
           final Uint8List imageData = await downloadImageData(imageUrl);
           preloadedImages.add(imageData);
-        // If it's the first image, save it to Firebase Storage
+          // If it's the first image, save it to Firebase Storage
           if (isFirstImage) {
-          isFirstImage = false; // Ensure we only do this once per pair
-          firstImg = await uploadImageToFirebaseStorage(imageData);
-         }
+            isFirstImage = false; // Ensure we only do this once per pair
+            firstImg = await uploadImageToFirebaseStorage(imageData);
+          }
         } catch (e) {
           print("Error downloading image: $e");
           // Optionally handle the error, e.g., by adding a placeholder image
@@ -74,24 +74,26 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  Future<String> uploadImageToFirebaseStorage(Uint8List imageFile,) async {
-  // Create a reference to the Firebase Storage bucket with a path that includes the story title and user ID
-  final imageRef = FirebaseStorage.instance.ref().child("images/${globalTitle}.png");
+  Future<String> uploadImageToFirebaseStorage(
+    Uint8List imageFile,
+  ) async {
+    // Create a reference to the Firebase Storage bucket with a path that includes the story title and user ID
+    final imageRef =
+        FirebaseStorage.instance.ref().child("images/${globalTitle}.png");
 
-  // Upload the file
-  await imageRef.putData(imageFile);
+    // Upload the file
+    await imageRef.putData(imageFile);
 
-  // Get the download URL
-  String downloadUrl = await imageRef.getDownloadURL();
-  return downloadUrl;
-}
+    // Get the download URL
+    String downloadUrl = await imageRef.getDownloadURL();
+    return downloadUrl;
+  }
 
   Future<Uint8List> generatePdf(String title) async {
-    final pdf = pw.Document();
     final Uint8List backgroundImageData =
         await _loadImage('assets/pdfback.png');
     final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
-
+    final pdf = pw.Document();
     await _loadCustomFont();
 
     pdf.addPage(
@@ -104,7 +106,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
             child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
           ),
         ),
-        build: (context) => [
+        build: (pw.Context context) => [
           pw.Padding(
             padding: const pw.EdgeInsets.only(bottom: 8.0),
             child: pw.Directionality(
@@ -114,38 +116,40 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                 child: pw.Text(
                   title,
                   style: pw.TextStyle(font: customFont, fontSize: 20),
+                  textAlign: pw.TextAlign.center,
                 ),
               ),
             ),
           ),
-          ...sentenceImagePairs.map((pair) {
-            return pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                if (pair['images'].isNotEmpty)
-                  pw.Column(
-                    children:
-                        (pair['images'] as List<Uint8List>).map((imageData) {
-                      return pw.Padding(
-                        padding: const pw.EdgeInsets.symmetric(vertical: 10),
-                        child: pw.Image(pw.MemoryImage(imageData),
-                            width: 150, height: 150),
-                      );
-                    }).toList(),
-                  ),
-                pw.Expanded(
-                  child: pw.Padding(
-                    padding: const pw.EdgeInsets.symmetric(vertical: 10),
-                    child: pw.Text(
-                      pair['sentence'],
-                      style: pw.TextStyle(font: customFont, fontSize: 14),
-                      textDirection: pw.TextDirection.rtl,
+          for (var pair in sentenceImagePairs) ...[
+            pw.Padding(
+              padding: const pw.EdgeInsets.symmetric(vertical: 10),
+              child: pw.Directionality(
+                textDirection: pw.TextDirection.rtl,
+                child: pw.Text(
+                  pair['sentence'],
+                  style: pw.TextStyle(font: customFont, fontSize: 14),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+            ),
+            if (pair['images'] != null && pair['images'].isNotEmpty)
+              for (var imageData in pair['images']) ...[
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(top: 10, bottom: 10),
+                  child: pw.Align(
+                    alignment: pw.Alignment
+                        .center, // This will center the image horizontally
+                    child: pw.Image(
+                      pw.MemoryImage(imageData),
+                      // (842 pdf size  - 200 Vertical margins - 20 padding between two images ) / 2 = 311
+                      //  => 300 giving some room for rounding and ensuring a clear separation between images
+                      height: 300.0,
                     ),
                   ),
                 ),
               ],
-            );
-          }).toList(),
+          ],
         ],
       ),
     );
@@ -153,12 +157,11 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return pdf.save();
   }
 
-
   Future<void> generateAndUploadPdf() async {
     try {
       final pdfBytes = await generatePdf(globalTitle);
 
-      await addPdfToCurrentUser(globalTitle, pdfBytes,firstImg!);
+      await addPdfToCurrentUser(globalTitle, pdfBytes, firstImg!);
       // After successful generation and upload, clear global variables
       clearGlobalVariables();
       // After successful generation and upload, navigate to the "My Stories" page.
@@ -176,7 +179,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globaltopClausesToIllustrate = [];
     globalImagesUrls = [];
     sentenceImagePairs = [];
-    firstImg='';
+    firstImg = '';
   }
 
   void _navigateToMyStoriesPage() {
