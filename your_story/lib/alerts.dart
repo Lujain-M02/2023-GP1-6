@@ -257,7 +257,7 @@ class ImageStylePickerDialog {
           builder: (context, setState) {
             return AlertDialog(
               title: Text(
-                'اختر نمط الصورة',
+                'اختر نمط الصور',
                 textAlign: TextAlign.center,
               ),
               content: SingleChildScrollView(
@@ -317,7 +317,7 @@ class ImageStylePickerDialog {
                         // If no style is selected, show a SnackBar instead of closing the dialog
                         ScaffoldMessenger.of(context).showSnackBar(
                           CustomSnackBar(
-                            content: 'يرجى اختيار نمط الصورة قبل الاستمرار',
+                            content: 'يرجى اختيار نمط الصور قبل الاستمرار',
                             icon: Icons.info_outline,
                           ),
                         );
