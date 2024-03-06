@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MyStories_page/searchBox.dart';
@@ -145,15 +146,15 @@ class _MyStoriesState extends State<MyStories> {
         ),
         
         IconButton(
-          icon: Icon(Icons.add, color: Colors.white),
+          icon: const Icon(Icons.add, color: Colors.white),
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CreateStory()),
             );
           },
-          color: Color.fromARGB(255, 15, 26, 107),
-          padding: EdgeInsets.only(left:24), 
+          color: const Color.fromARGB(255, 15, 26, 107),
+          padding: const EdgeInsets.only(left:24), 
         ),
       ],
     ),
@@ -178,6 +179,7 @@ class _MyStoriesState extends State<MyStories> {
                 final pdfData = stories[index].data() as Map<String, dynamic>?;
                 final String title = pdfData?['title'] ?? 'Untitled';
                 final String pdfUrl = pdfData?['url'] ?? '#';
+                final String fimg = pdfData?['imageUrl']?? '#';
                 final bool status = pdfData?['published'] ?? false;
                 final String docId = stories[index].id;
                 return Container(
@@ -195,7 +197,7 @@ class _MyStoriesState extends State<MyStories> {
                         decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(22),
                         color: index.isEven ? kBlueColor : kSecondaryColor,
-                        boxShadow: [kDefaultShadow],
+                        boxShadow: const [kDefaultShadow],
                          ),
               child: Container(
                 margin: const EdgeInsets.only(right: 10),
@@ -222,17 +224,35 @@ class _MyStoriesState extends State<MyStories> {
       fit: BoxFit.cover,
     ),
     Positioned(
-      top: 15,
+      top: 22,
       left: 40,
-      child: Image.asset(
-      "assets/applicationIcon.png",
-              width: 45,
-              height: 45,
-              fit: BoxFit.cover,
-            ),
+      // Use a ternary operator to check if fimg is not "#", if so load from network, else load asset
+      child: fimg != "#" 
+        ? Image.network(
+            fimg,
+            width: 55,
+            height: 40,
+            fit: BoxFit.cover,
+            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+              print("network image fails to load");
+              return Image.asset(
+                "assets/errorimg.png", //  an error placeholder image 
+                width: 45,
+                height: 45,
+                fit: BoxFit.cover,
+              );
+            },
+          )
+        : Image.asset(
+            "assets/pdfcover.png", // The asset image to show if fimg is null
+            width: 45,
+            height: 45,
+            fit: BoxFit.cover,
+          ),
     ),
   ],
 )
+
                   // child: Image.asset(
                   //   "assets/pdfimg.png",
                   //   fit: BoxFit.cover,

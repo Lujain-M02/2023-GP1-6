@@ -1,15 +1,17 @@
+import 'dart:math';
 import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart' as pw;
 // import 'package:pdf/pdf.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
+String? firstImg;
+
 
 class PdfGenerationPage extends StatefulWidget {
   const PdfGenerationPage({
@@ -52,10 +54,16 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   Future<void> preloadImagesForPdf() async {
     for (var pair in sentenceImagePairs) {
       List<Uint8List> preloadedImages = [];
+      bool isFirstImage = true;
       for (String imageUrl in pair['images']) {
         try {
           final Uint8List imageData = await downloadImageData(imageUrl);
           preloadedImages.add(imageData);
+        // If it's the first image, save it to Firebase Storage
+          if (isFirstImage) {
+          isFirstImage = false; // Ensure we only do this once per pair
+          firstImg = await uploadImageToFirebaseStorage(imageData);
+         }
         } catch (e) {
           print("Error downloading image: $e");
           // Optionally handle the error, e.g., by adding a placeholder image
@@ -66,67 +74,17 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
-  /*Future<Uint8List> generatePdf(
-    String title,
-    String content,
-  ) async {
-    final Uint8List backgroundImageData =
-        await _loadImage('assets/pdfback.png');
-    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
+  Future<String> uploadImageToFirebaseStorage(Uint8List imageFile,) async {
+  // Create a reference to the Firebase Storage bucket with a path that includes the story title and user ID
+  final imageRef = FirebaseStorage.instance.ref().child("images/${globalTitle}.png");
 
-    final pdf = pw.Document();
+  // Upload the file
+  await imageRef.putData(imageFile);
 
-    // Download images from globalImagesUrls
-    final List<pw.MemoryImage> images = [];
-    for (String url in globalImagesUrls) {
-      final imageBytes = await downloadImageData(url);
-      images.add(pw.MemoryImage(imageBytes));
-    }
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageTheme: pw.PageTheme(
-          margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
-          theme: pw.ThemeData.withFont(
-            base: customFont,
-          ),
-          buildBackground: (pw.Context context) => pw.FullPage(
-            ignoreMargins: true,
-            child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
-          ),
-        ),
-        build: (pw.Context context) => [
-          pw.Padding(
-            padding: const pw.EdgeInsets.only(bottom: 8.0),
-            child: pw.Directionality(
-              textDirection: pw.TextDirection.rtl,
-              child: pw.Align(
-                alignment: pw.Alignment.center,
-                child: pw.Text(
-                  title,
-                  style: pw.TextStyle(font: customFont, fontSize: 20),
-                  textAlign: pw.TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          pw.Directionality(
-            textDirection: pw.TextDirection.rtl,
-            child: pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 10),
-              child: pw.Text(content,
-                  style: pw.TextStyle(font: customFont, fontSize: 12)),
-            ),
-          ),
-          ...images.map((image) => pw.Padding(
-                padding: const pw.EdgeInsets.symmetric(vertical: 10),
-                child: pw.Image(image, width: 200, height: 200),
-              )),
-        ],
-      ),
-    );
-    return pdf.save();
-  }*/
+  // Get the download URL
+  String downloadUrl = await imageRef.getDownloadURL();
+  return downloadUrl;
+}
 
   Future<Uint8List> generatePdf(String title) async {
     final pdf = pw.Document();
@@ -195,10 +153,12 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return pdf.save();
   }
 
+
   Future<void> generateAndUploadPdf() async {
     try {
       final pdfBytes = await generatePdf(globalTitle);
-      await addPdfToCurrentUser(globalTitle, pdfBytes);
+
+      await addPdfToCurrentUser(globalTitle, pdfBytes,firstImg!);
       // After successful generation and upload, clear global variables
       clearGlobalVariables();
       // After successful generation and upload, navigate to the "My Stories" page.
@@ -216,6 +176,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globaltopClausesToIllustrate = [];
     globalImagesUrls = [];
     sentenceImagePairs = [];
+    firstImg='';
   }
 
   void _navigateToMyStoriesPage() {
@@ -240,6 +201,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   Future<void> addPdfToCurrentUser(
     String title,
     Uint8List pdfFile,
+    String firstImageFile,
   ) async {
     try {
       final User? user = FirebaseAuth.instance.currentUser;
@@ -258,6 +220,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
           'type': 'illustrated',
           'published': false, // Use a boolean for published status
           'url': pdfUrl, // Store the URL
+          'imageUrl': firstImageFile, // Store the image URL
         });
 
         print("Story added successfully!");
@@ -303,3 +266,66 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     );
   }
 }
+
+
+  /*Future<Uint8List> generatePdf(
+    String title,
+    String content,
+  ) async {
+    final Uint8List backgroundImageData =
+        await _loadImage('assets/pdfback.png');
+    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
+
+    final pdf = pw.Document();
+
+    // Download images from globalImagesUrls
+    final List<pw.MemoryImage> images = [];
+    for (String url in globalImagesUrls) {
+      final imageBytes = await downloadImageData(url);
+      images.add(pw.MemoryImage(imageBytes));
+    }
+
+    pdf.addPage(
+      pw.MultiPage(
+        pageTheme: pw.PageTheme(
+          margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+          theme: pw.ThemeData.withFont(
+            base: customFont,
+          ),
+          buildBackground: (pw.Context context) => pw.FullPage(
+            ignoreMargins: true,
+            child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+          ),
+        ),
+        build: (pw.Context context) => [
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 8.0),
+            child: pw.Directionality(
+              textDirection: pw.TextDirection.rtl,
+              child: pw.Align(
+                alignment: pw.Alignment.center,
+                child: pw.Text(
+                  title,
+                  style: pw.TextStyle(font: customFont, fontSize: 20),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          pw.Directionality(
+            textDirection: pw.TextDirection.rtl,
+            child: pw.Padding(
+              padding: const pw.EdgeInsets.symmetric(vertical: 10),
+              child: pw.Text(content,
+                  style: pw.TextStyle(font: customFont, fontSize: 12)),
+            ),
+          ),
+          ...images.map((image) => pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                child: pw.Image(image, width: 200, height: 200),
+              )),
+        ],
+      ),
+    );
+    return pdf.save();
+  }*/
