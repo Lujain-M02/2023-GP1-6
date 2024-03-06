@@ -274,7 +274,7 @@ Future<String> generateImage(String sentence, String prompt) async {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
       //prompt: "from this sentence:'$sentence' generate:'$prompt'",
       prompt:
-          "from this story:'$sentence' generate:'$prompt' and the image to be in $selectedImageStyle style",
+          "Generate a $selectedImageStyle image for '$prompt' from this story:'$sentence'",
       model: "dall-e-3", // Explicitly specifying the model
       n: 1,
       size: OpenAIImageSize.size1024,
