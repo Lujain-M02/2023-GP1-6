@@ -174,11 +174,9 @@ class _SystemRecom extends State<SystemRecom> {
                                     ),
                                   )),
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Illustration(),
-                                  ),
-                                );
+                                Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Illustration()),
+        (Route<dynamic> route) => false);
                               },
                               child: const Text(
                                 "الاستمرار مع مقترحات النظام",

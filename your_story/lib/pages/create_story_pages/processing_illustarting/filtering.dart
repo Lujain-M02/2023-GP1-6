@@ -194,11 +194,9 @@ class _Filtering extends State<Filtering> {
                         print("content: $globalContent");
                         print(
                             "Selected clauses: $globaltopClausesToIllustrate");
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => Illustration(),
-                          ),
-                        );
+                        Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Illustration()),
+        (Route<dynamic> route) => false);
                       }
                     : () {
                         ScaffoldMessenger.of(context).showSnackBar(

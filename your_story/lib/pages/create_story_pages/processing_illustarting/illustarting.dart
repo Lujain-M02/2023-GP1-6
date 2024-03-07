@@ -4,7 +4,7 @@ import 'package:dart_openai/dart_openai.dart';
 // import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
+//import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import 'global_story.dart';
@@ -168,11 +168,9 @@ class _IllustrationState extends State<Illustration> {
 
     // You might want to navigate or update UI here to reflect that the process is complete
     print("Completed image generation for sentences.");
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => PdfGenerationPage(),
-      ),
-    );
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const PdfGenerationPage()),
+        (Route<dynamic> route) => false);
   }
 
 // Function to find and return the sentence that contains the clause
