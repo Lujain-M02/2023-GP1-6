@@ -164,71 +164,74 @@ class NumberPickerAlertDialog {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              backgroundColor: const Color.fromARGB(201, 232, 242, 255),
-              title: Text(title),
-              content: DropdownButton<int>(
-                value: selectedNumber,
-                items: List.generate(
-                  size,
-                  (index) => DropdownMenuItem(
-                    value: index + 1,
-                    child: Text('${index + 1}'),
-                  ),
+        return PopScope(
+          canPop: false,
+          child: StatefulBuilder(builder: (context, setState) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                onChanged: (int? newValue) {
-                  setState(() {
-                    selectedNumber = newValue;
-                  });
-                },
-              ),
-              actions: [
-                Center(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      if (selectedNumber != null) {
-                        onConfirm(selectedNumber);
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: YourStoryStyle.primarycolor,
-                      foregroundColor: Colors.white,
-                      side: BorderSide(
-                        color: YourStoryStyle.primarycolor,
-                        width: 2,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
+                backgroundColor: const Color.fromARGB(201, 232, 242, 255),
+                title: Text(title),
+                content: DropdownButton<int>(
+                  value: selectedNumber,
+                  items: List.generate(
+                    size,
+                    (index) => DropdownMenuItem(
+                      value: index + 1,
+                      child: Text('${index + 1}'),
                     ),
-                    child: const Text("متأكد", style: TextStyle(fontSize: 20)),
                   ),
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      selectedNumber = newValue;
+                    });
+                  },
                 ),
-                // OutlinedButton(
-                //   onPressed: () => Navigator.of(context).pop(),
-                //   style: OutlinedButton.styleFrom(
-                //     foregroundColor: Colors.black,
-                //     side: BorderSide(
-                //       color: YourStoryStyle.primarycolor,
-                //       width: 2,
-                //     ),
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(15.0),
-                //     ),
-                //   ),
-                //   child: const Text("الغاء", style: TextStyle(fontSize: 20)),
-                // ),
-              ],
-            ),
-          );
-        });
+                actions: [
+                  Center(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        if (selectedNumber != null) {
+                          onConfirm(selectedNumber);
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: YourStoryStyle.primarycolor,
+                        foregroundColor: Colors.white,
+                        side: BorderSide(
+                          color: YourStoryStyle.primarycolor,
+                          width: 2,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+                  // OutlinedButton(
+                  //   onPressed: () => Navigator.of(context).pop(),
+                  //   style: OutlinedButton.styleFrom(
+                  //     foregroundColor: Colors.black,
+                  //     side: BorderSide(
+                  //       color: YourStoryStyle.primarycolor,
+                  //       width: 2,
+                  //     ),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(15.0),
+                  //     ),
+                  //   ),
+                  //   child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+                  // ),
+                ],
+              ),
+            );
+          }),
+        );
       },
     );
   }
@@ -253,92 +256,95 @@ class ImageStylePickerDialog {
       context: context,
       barrierDismissible: false, // Prevent closing dialog by tapping outside
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text(
-                'اختر نمط الصور',
-                textAlign: TextAlign.center,
-              ),
-              content: SingleChildScrollView(
-                child: Wrap(
-                  alignment: WrapAlignment.spaceEvenly,
-                  spacing: 20, // Horizontal space between buttons
-                  runSpacing: 20, // Vertical space between buttons
-                  children: imageStyles.map((imageStyle) {
-                    bool isSelected = imageStyle.style == selectedStyle;
-                    return InkWell(
-                      onTap: () =>
-                          setState(() => selectedStyle = imageStyle.style),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color:
-                                      isSelected ? Colors.green : Colors.grey,
-                                  width: 2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset(
-                                  imageStyle.imagePath,
-                                  width: 80,
-                                  height: 80,
-                                ),
-                                if (isSelected)
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Icon(Icons.check_circle,
-                                        color: Colors.green),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(imageStyle.title),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+        return PopScope(
+          canPop: false,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Text(
+                  'اختر نمط الصور',
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              actions: <Widget>[
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (selectedStyle == null) {
-                        // If no style is selected, show a SnackBar instead of closing the dialog
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          CustomSnackBar(
-                            content: 'يرجى اختيار نمط الصور قبل الاستمرار',
-                            icon: Icons.info_outline,
-                          ),
-                        );
-                      } else {
-                        // If a style is selected, close the dialog and return the selected style
-                        Navigator.of(context).pop(selectedStyle);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: YourStoryStyle.primarycolor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                    ),
-                    child: const Text("الاستمرار",
-                        style: TextStyle(color: Colors.white)),
+                content: SingleChildScrollView(
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    spacing: 20, // Horizontal space between buttons
+                    runSpacing: 20, // Vertical space between buttons
+                    children: imageStyles.map((imageStyle) {
+                      bool isSelected = imageStyle.style == selectedStyle;
+                      return InkWell(
+                        onTap: () =>
+                            setState(() => selectedStyle = imageStyle.style),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color:
+                                        isSelected ? Colors.green : Colors.grey,
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                                    imageStyle.imagePath,
+                                    width: 80,
+                                    height: 80,
+                                  ),
+                                  if (isSelected)
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Icon(Icons.check_circle,
+                                          color: Colors.green),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(imageStyle.title),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
-              ],
-            );
-          },
+                actions: <Widget>[
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (selectedStyle == null) {
+                          // If no style is selected, show a SnackBar instead of closing the dialog
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            CustomSnackBar(
+                              content: 'يرجى اختيار نمط الصور قبل الاستمرار',
+                              icon: Icons.info_outline,
+                            ),
+                          );
+                        } else {
+                          // If a style is selected, close the dialog and return the selected style
+                          Navigator.of(context).pop(selectedStyle);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: YourStoryStyle.primarycolor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                      child: const Text("الاستمرار",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );
