@@ -194,9 +194,13 @@ class _Filtering extends State<Filtering> {
                         print("content: $globalContent");
                         print(
                             "Selected clauses: $globaltopClausesToIllustrate");
-                        Navigator.of(context).pushAndRemoveUntil(
+ConfirmationDialog.show(
+                      context, "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟", () {
+                    Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => Illustration()),
         (Route<dynamic> route) => false);
+                  });
+        
                       }
                     : () {
                         ScaffoldMessenger.of(context).showSnackBar(
