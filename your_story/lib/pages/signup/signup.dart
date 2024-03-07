@@ -382,7 +382,7 @@ class _SignUpState extends State<SignUp> {
                                     //         builder: (context) =>
                                     //             const MainPage()));
                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    const MainPage()), (Route<dynamic> route) => false);
+     MainPage()), (Route<dynamic> route) => false);
                                   } on FirebaseAuthException catch (e) {
                                     isSigning = false;
                                     setState(() {});

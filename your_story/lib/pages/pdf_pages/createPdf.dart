@@ -8,6 +8,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 
@@ -166,8 +167,20 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       clearGlobalVariables();
       // After successful generation and upload, navigate to the "My Stories" page.
       _navigateToMyStoriesPage();
+      ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'تم صناعة القصة بنجاح',
+              icon: Icons.check_circle,
+            ),
+          );
     } catch (e) {
       print("Error generating or uploading PDF: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar(
+              content: 'حصل خطأ حاول مرة أخرى',
+              icon: Icons.error,
+            ),
+          );
     }
   }
 
@@ -184,7 +197,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
 
   void _navigateToMyStoriesPage() {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const MainPage()),
+        MaterialPageRoute(builder: (context) => MainPage(initialIndex: 1)),
         (Route<dynamic> route) => false);
   }
 

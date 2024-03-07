@@ -80,7 +80,7 @@ class _CreateStory extends State<CreateStory> {
               completer.complete(true);
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
+                MaterialPageRoute(builder: (context) => MainPage()),
                 (Route<dynamic> route) => false,
               );
             }
@@ -104,7 +104,7 @@ class _CreateStory extends State<CreateStory> {
                       context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const MainPage()),
+                      MaterialPageRoute(builder: (context) => MainPage()),
                       (Route<dynamic> route) =>
                           false, // this removes all routes below MainPage
                     );
