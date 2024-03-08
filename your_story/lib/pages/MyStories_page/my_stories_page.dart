@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
@@ -216,40 +217,49 @@ class _MyStoriesState extends State<MyStories> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   height: 140,//140
-                  width: 180,//180
+                  width: 250,//180
                   child: Stack(
   children: <Widget>[
     Image.asset(
-      "assets/pdfimg.png",
+      "assets/under.png",
       fit: BoxFit.cover,
     ),
     Positioned(
-      top: 22,
-      left: 40,
-      // Use a ternary operator to check if fimg is not "#", if so load from network, else load asset
+      top: 20,
+      left: 82,
       child: fimg != "#" 
-        ? Image.network(
-            fimg,
-            width: 55,
-            height: 40,
-            fit: BoxFit.cover,
-            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-              print("network image fails to load");
-              return Image.asset(
-                "assets/errorimg.png", //  an error placeholder image 
-                width: 45,
-                height: 45,
-                fit: BoxFit.cover,
-              );
-            },
-          )
-        : Image.asset(
-            "assets/pdfcover.png", // The asset image to show if fimg is null
+        ? ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: CachedNetworkImage(
+          imageUrl: fimg,
+          width: 90,
+          height: 80,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => const CircularProgressIndicator(), 
+          errorWidget: (context, url, error) => Image.asset(
+            "assets/errorimg.png", // An error placeholder image
             width: 45,
             height: 45,
             fit: BoxFit.cover,
           ),
+                ),
+        )
+        : Image.asset(
+            "assets/pdfcover.png", // The asset image to show if fimg is null
+            width: 80,
+            height: 80,
+            fit: BoxFit.cover,
+          ),
     ),
+    Positioned(
+      top:80,
+      left: 150,    
+      child: Image.asset(
+      "assets/pdfupper.png",
+      width: 60,
+            height: 60,
+      fit: BoxFit.cover,
+    ),)
   ],
 )
 
@@ -334,7 +344,17 @@ class _MyStoriesState extends State<MyStories> {
           );
   }
   ),
-                );
+                 floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateStory()),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 15, 26, 107),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
               }}
 
 
