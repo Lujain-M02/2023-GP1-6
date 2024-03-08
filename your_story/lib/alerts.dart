@@ -332,7 +332,7 @@ class ImageStylePickerDialog {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: YourStoryStyle.primarycolor,
+                        backgroundColor: YourStoryStyle.primarycolor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
