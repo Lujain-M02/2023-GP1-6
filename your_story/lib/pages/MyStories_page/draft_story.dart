@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/style.dart';
 
 import '../../alerts.dart'; // Ensure you have this if it contains your app's style data
@@ -56,8 +57,11 @@ class _DraftStoryPageState extends State<DraftStoryPage> {
         CustomSnackBar(content: 'تم حفظ المسودة بنجاح', icon: Icons.check),
       );
 
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      Navigator.of(context).pushReplacementNamed('/myStories');
+      // Navigator.of(context).popUntil((route) => route.isFirst);
+      // Navigator.of(context).pushReplacementNamed('/myStories');
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => MainPage(initialIndex: 1)),
+        (Route<dynamic> route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(content: 'حدث خطأ أثناء حفظ المسودة', icon: Icons.error),
