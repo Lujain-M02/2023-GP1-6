@@ -78,7 +78,7 @@ class _Filtering extends State<Filtering> {
       case 'متوسطة الأهمية':
         return Colors.orange;
       case 'منخفضة الأهمية':
-        return const Color.fromRGBO(255, 241, 147, 1.0);
+        return const Color.fromARGB(255, 222, 193, 1);
       default:
         return Colors.black; // Default color
     }
