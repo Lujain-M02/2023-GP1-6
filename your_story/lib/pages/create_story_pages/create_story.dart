@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
+import 'package:your_story/pages/MyStories_page/draft_story.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/process_story.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
@@ -11,7 +12,12 @@ import 'error_message_holder.dart';
 import 'package:your_story/style.dart';
 
 class CreateStory extends StatefulWidget {
-  const CreateStory({Key? key}) : super(key: key);
+  final String? initialTitle;
+  final String? initialContent;
+  final String? draftID;
+  const CreateStory(
+      {Key? key, this.initialTitle, this.initialContent, this.draftID})
+      : super(key: key);
 
   @override
   State<CreateStory> createState() => _CreateStory();
@@ -22,7 +28,7 @@ class _CreateStory extends State<CreateStory> {
   final ErrorMessageHolder errorMessageHolder = ErrorMessageHolder();
   LanguageToolController storyTitel = LanguageToolController();
   LanguageToolController storyContent = LanguageToolController();
-  
+
 //this method to keep track the user steps
   stepState(int step) {
     if (_activeStepIndex > step) {
@@ -39,6 +45,7 @@ class _CreateStory extends State<CreateStory> {
           content: CreateStoryTitle(
             titleController: storyTitel,
             errorMessageHolder: errorMessageHolder,
+            initialTitle: widget.initialTitle,
           ), //this is a method from another file
           state: stepState(0),
           isActive: _activeStepIndex >= 0,
@@ -49,6 +56,7 @@ class _CreateStory extends State<CreateStory> {
             contentController: storyContent,
             title: storyTitel.text.trim(),
             errorMessageHolder: errorMessageHolder,
+            initialContent: widget.initialContent,
           ),
           state: stepState(1),
           isActive: _activeStepIndex >= 1,
@@ -67,15 +75,13 @@ class _CreateStory extends State<CreateStory> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: WillPopScope(
-      onWillPop: () async {
-        Completer<bool> completer = Completer<bool>();
+        onWillPop: () async {
+          Completer<bool> completer = Completer<bool>();
 
-        // Function to show the confirmation dialog
-        void showConfirmationDialog() {
-          ConfirmationDialog.show(
-            context, 
-            "هل أنت متأكد؟ لن يتم حفظ انجازك",
-            () {
+          // Function to show the confirmation dialog
+          void showConfirmationDialog() {
+            ConfirmationDialog.show(context, "هل أنت متأكد؟ لن يتم حفظ انجازك",
+                () {
               // User confirmed
               completer.complete(true);
               Navigator.pushAndRemoveUntil(
@@ -83,16 +89,15 @@ class _CreateStory extends State<CreateStory> {
                 MaterialPageRoute(builder: (context) => MainPage()),
                 (Route<dynamic> route) => false,
               );
-            }
-          );
-        }
+            });
+          }
 
-        // Show the dialog
-        showConfirmationDialog();
+          // Show the dialog
+          showConfirmationDialog();
 
-        // Wait for the user's response
-        return completer.future;
-      },
+          // Wait for the user's response
+          return completer.future;
+        },
         child: Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -178,33 +183,120 @@ class _CreateStory extends State<CreateStory> {
                 ),
                 //if it's the last step a new button will apear instead of the arrow
                 if (_activeStepIndex == stepList().length - 1)
-                  Container(
-                    margin: const EdgeInsets.all(3),
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                  // Container(
+                  //   margin: const EdgeInsets.all(3),
+                  //   child: OutlinedButton(
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => ProcessStory(
+                  //             title: storyTitel.text.trim(),
+                  //             content: storyContent.text.trim(),
+                  //           ),
+                  //         ),
+                  //       );
+                  //     },
+                  //     style: OutlinedButton.styleFrom(
+                  //       backgroundColor: YourStoryStyle.primarycolor,
+                  //       foregroundColor: Colors.white,
+                  //       side: BorderSide(
+                  //         color: YourStoryStyle.primarycolor,
+                  //         width: 2,
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(30.0),
+                  //       ),
+                  //     ),
+                  //     child: const Text("الاستمرار لمعالجة القصة"),
+                  //   ),
+                  // )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // OutlinedButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => DraftStoryPage(
+                      //           title: storyTitel.text.trim(),
+                      //           content: storyContent.text.trim(),
+                      //           draftID: widget.draftID,
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      //   style: OutlinedButton.styleFrom(
+                      //     backgroundColor: YourStoryStyle.primarycolor,
+                      //     foregroundColor: Colors.white,
+                      //     side: BorderSide(
+                      //       color: YourStoryStyle.primarycolor,
+                      //       width: 2,
+                      //     ),
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(30.0),
+                      //     ),
+                      //   ),
+                      //   child: const Text("حفظ كمسودة"),
+                      // ),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Show confirmation dialog
+                          ConfirmationDialog.show(
+                            context,
+                            "هل ترغب في حفظ القصة كمسودة؟",
+                            () {
+                              // Navigate to DraftStoryPage with necessary data
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DraftStoryPage(
+                                  title: storyTitel.text.trim(),
+                                  content: storyContent.text.trim(),
+                                  draftID: widget.draftID,
+                                ),
+                              ));
+                            },
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: YourStoryStyle.primarycolor,
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: YourStoryStyle.primarycolor,
+                            width: 2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        child: const Text("حفظ كمسودة"),
+                      ),
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
                               builder: (context) => ProcessStory(
                                 title: storyTitel.text.trim(),
                                 content: storyContent.text.trim(),
+                              ),
                             ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: YourStoryStyle.primarycolor,
+                          foregroundColor: Colors.white,
+                          side: BorderSide(
+                            color: YourStoryStyle.primarycolor,
+                            width: 2,
                           ),
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: YourStoryStyle.primarycolor,
-                        foregroundColor: Colors.white,
-                        side: BorderSide(
-                          color: YourStoryStyle.primarycolor,
-                          width: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                        child: const Text("الاستمرار لمعالجة القصة"),
                       ),
-                      child: const Text("الاستمرار لمعالجة القصة"),
-                    ),
+                    ],
                   )
                 else
                   IconButton(
@@ -219,17 +311,17 @@ class _CreateStory extends State<CreateStory> {
                                   if (storyTitel.text == "") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: "الرجاء إدخال العنوان",icon: Icons.warning
-                                      ),
+                                          content: "الرجاء إدخال العنوان",
+                                          icon: Icons.warning),
                                     );
                                   } else if (errorMessageHolder
                                           .titleErrorMessage !=
                                       null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content:
-                                            errorMessageHolder.titleErrorMessage!,icon: Icons.warning
-                                      ),
+                                          content: errorMessageHolder
+                                              .titleErrorMessage!,
+                                          icon: Icons.warning),
                                     );
                                   } else {
                                     // Check if it isn't the last step
@@ -246,17 +338,17 @@ class _CreateStory extends State<CreateStory> {
                                   if (storyContent.text == "") {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: "الرجاء إدخال القصة",icon: Icons.warning
-                                      ),
+                                          content: "الرجاء إدخال القصة",
+                                          icon: Icons.warning),
                                     );
                                   } else if (errorMessageHolder
                                           .contentErrorMessage !=
                                       null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CustomSnackBar(
-                                        content: errorMessageHolder
-                                            .contentErrorMessage!,icon: Icons.warning
-                                      ),
+                                          content: errorMessageHolder
+                                              .contentErrorMessage!,
+                                          icon: Icons.warning),
                                     );
                                   } else {
                                     // Check if it isn't the last step

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
 
 class CreateStoryTitle extends StatefulWidget {
@@ -8,11 +9,12 @@ class CreateStoryTitle extends StatefulWidget {
     Key? key,
     required this.titleController,
     required this.errorMessageHolder,
+    this.initialTitle,
   }) : super(key: key);
 
   final LanguageToolController titleController;
   final ErrorMessageHolder errorMessageHolder;
-
+  final String? initialTitle;
   @override
   _CreateStoryTitleState createState() => _CreateStoryTitleState();
 }
@@ -23,6 +25,10 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
   @override
   void initState() {
     super.initState();
+    // Check if globalTitle is not empty, then set it to the controller's text
+    if (widget.initialTitle != null) {
+      widget.titleController.text = widget.initialTitle!;
+    }
     widget.titleController.addListener(_validateTitle);
     widget.errorMessageHolder.titleErrorMessage = null;
   }
@@ -44,7 +50,8 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
   String? validateTitle(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "الرجاء إدخال العنوان";
-    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$').hasMatch(value)) {
+    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
+        .hasMatch(value)) {
       return "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
     } else {
       return null;
@@ -81,20 +88,20 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
           onChanged: () {
             _formKey.currentState?.validate();
           },
-        onWillPop: () async {
-          final form = _formKey.currentState;
-          if (form != null && form.validate()) {
-            // Form is valid, allow the user to leave the screen
-            return true;
-          } else {
-            // Form is invalid, show error messages and prevent leaving
-            setState(() {
-              widget.errorMessageHolder.titleErrorMessage =
-                  validateTitle(widget.titleController.text);
-            });
-            return false;
-          }
-        },
+          onWillPop: () async {
+            final form = _formKey.currentState;
+            if (form != null && form.validate()) {
+              // Form is valid, allow the user to leave the screen
+              return true;
+            } else {
+              // Form is invalid, show error messages and prevent leaving
+              setState(() {
+                widget.errorMessageHolder.titleErrorMessage =
+                    validateTitle(widget.titleController.text);
+              });
+              return false;
+            }
+          },
           child: Container(
             child: Column(
               children: [
@@ -125,4 +132,3 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
     );
   }
 }
-

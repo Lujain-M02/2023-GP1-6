@@ -1,8 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:your_story/style.dart';
 
 class storyType extends StatefulWidget {
+  final Function(String) onCategorySelected;
+
+  const storyType({Key? key, required this.onCategorySelected})
+      : super(key: key);
+
   @override
   _storyTypeState createState() => _storyTypeState();
 }
@@ -23,12 +27,13 @@ class _storyTypeState extends State<storyType> {
             setState(() {
               selectedIndex = index;
             });
+            widget.onCategorySelected(categories[index]);
           },
           child: Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(
               left: kDefaultPadding,
-              right:kDefaultPadding ,
+              right: kDefaultPadding,
             ),
             padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
             decoration: BoxDecoration(
@@ -45,4 +50,5 @@ class _storyTypeState extends State<storyType> {
         ),
       ),
     );
-  }}
+  }
+}
