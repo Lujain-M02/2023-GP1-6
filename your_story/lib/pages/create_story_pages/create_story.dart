@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/MyStories_page/draft_story.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/process_story.dart';
 import 'package:your_story/pages/mainpage.dart';
 import 'package:your_story/pages/create_story_pages/create_story_title.dart';
@@ -105,6 +106,7 @@ class _CreateStory extends State<CreateStory> {
                 iconSize: 27,
                 icon: const Icon(Icons.close),
                 onPressed: () {
+                  globalDraftID = null;
                   ConfirmationDialog.show(
                       context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
                     Navigator.pushAndRemoveUntil(
@@ -273,6 +275,7 @@ class _CreateStory extends State<CreateStory> {
                       ),
                       OutlinedButton(
                         onPressed: () {
+                          globalDraftID = widget.draftID;
                           Navigator.push(
                             context,
                             MaterialPageRoute(

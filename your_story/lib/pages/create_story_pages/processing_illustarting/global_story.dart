@@ -5,3 +5,4 @@ List<Map<String, dynamic>> globaltopsisScoresList = [];
 List<String> globaltopClausesToIllustrate = [];
 List<String> globalImagesUrls = [];
 List<Map<String, dynamic>> sentenceImagePairs = [];
+String? globalDraftID = null;

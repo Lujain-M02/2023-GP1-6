@@ -168,19 +168,19 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       // After successful generation and upload, navigate to the "My Stories" page.
       _navigateToMyStoriesPage();
       ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'تم صناعة القصة بنجاح',
-              icon: Icons.check_circle,
-            ),
-          );
+        CustomSnackBar(
+          content: 'تم صناعة القصة بنجاح',
+          icon: Icons.check_circle,
+        ),
+      );
     } catch (e) {
       print("Error generating or uploading PDF: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-            CustomSnackBar(
-              content: 'حصل خطأ حاول مرة أخرى',
-              icon: Icons.error,
-            ),
-          );
+        CustomSnackBar(
+          content: 'حصل خطأ حاول مرة أخرى',
+          icon: Icons.error,
+        ),
+      );
     }
   }
 
@@ -193,6 +193,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globalImagesUrls = [];
     sentenceImagePairs = [];
     firstImg = '';
+    globalDraftID = null;
   }
 
   void _navigateToMyStoriesPage() {
@@ -231,13 +232,32 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         // Add PDF reference to Firestore
         CollectionReference storiesCollection = userRef.collection("Story");
 
-        await storiesCollection.add({
-          'title': title,
-          'type': 'illustrated',
-          'published': false, // Use a boolean for published status
-          'url': pdfUrl, // Store the URL
-          'imageUrl': firstImageFile, // Store the image URL
-        });
+        // await storiesCollection.add({
+        // 'title': title,
+        // 'type': 'illustrated',
+        // 'published': false, // Use a boolean for published status
+        // 'url': pdfUrl, // Store the URL
+        // 'imageUrl': firstImageFile, // Store the image URL
+        // });
+
+        if (globalDraftID != null) {
+          // Draft ID exists, so update it to be illustrated
+          await storiesCollection.doc(globalDraftID).update({
+            'title': title,
+            'type': 'illustrated',
+            'published': false, // Use a boolean for published status
+            'url': pdfUrl, // Store the URL
+            'imageUrl': firstImageFile, // Store the image URL
+          });
+        } else {
+          await storiesCollection.add({
+            'title': title,
+            'type': 'illustrated',
+            'published': false, // Use a boolean for published status
+            'url': pdfUrl, // Store the URL
+            'imageUrl': firstImageFile, // Store the image URL
+          });
+        }
 
         print("Story added successfully!");
       }
