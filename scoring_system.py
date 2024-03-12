@@ -387,8 +387,6 @@ def calculate_topsis():
     # Tokenize the story into sentences
     sentences = stanza_sentence_tokenize(story)
 
-    # Sort clauses based on their scores in descending order
-    sorted_clauses = sorted(topsis_scores.items(), key=lambda x: x[1], reverse=True)
 
     sentences_with_topsis = []
 
@@ -399,7 +397,7 @@ def calculate_topsis():
             'clauses': []
         }
 
-        for (clause, score) in sorted_clauses:
+        for (clause, score) in topsis_scores.items():
             if clause in clauses:
                 sentence_with_clauses['clauses'].append({
                     'clause': clause,
