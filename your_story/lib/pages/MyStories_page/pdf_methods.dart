@@ -9,6 +9,12 @@ import 'package:your_story/alerts.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 
 void deleteStory(String docId, BuildContext context, String storyType) {
+  if (storyType == "illustrated") {
+    storyType = "قصة";
+  } else if (storyType == "drafted") {
+    storyType = "مسودة";
+  }
+
   ConfirmationDialog.show(
     context,
     "هل أنت متأكد من أنك تريد حذف هذه ال$storyType؟ لا يمكنك التراجع بعد ذلك.",
