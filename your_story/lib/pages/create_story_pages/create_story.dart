@@ -249,14 +249,12 @@ class _CreateStory extends State<CreateStory> {
                             context,
                             "هل ترغب في حفظ القصة كمسودة؟",
                             () {
-                              // Navigate to DraftStoryPage with necessary data
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DraftStoryPage(
-                                  title: storyTitel.text.trim(),
-                                  content: storyContent.text.trim(),
-                                  draftID: widget.draftID,
-                                ),
-                              ));
+                              saveORupdateDraft(
+                                context,
+                                storyTitel.text.trim(),
+                                storyContent.text.trim(),
+                                widget.draftID,
+                              );
                             },
                           );
                         },
