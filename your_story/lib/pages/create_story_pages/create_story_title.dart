@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
+import 'dart:async';
 
 class CreateStoryTitle extends StatefulWidget {
   const CreateStoryTitle({
@@ -15,54 +16,109 @@ class CreateStoryTitle extends StatefulWidget {
   final LanguageToolController titleController;
   final ErrorMessageHolder errorMessageHolder;
   final String? initialTitle;
+
   @override
   _CreateStoryTitleState createState() => _CreateStoryTitleState();
 }
 
 class _CreateStoryTitleState extends State<CreateStoryTitle> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final StreamController<String?> _errorStreamController = StreamController<String?>();
+  bool _isCheckingTitle = false;
+  Timer? _titleValidationTimer;
+
+  List<String> allTitles = [];
+
+  Future<void> loadTitles() async {
+    allTitles.clear();
+
+    QuerySnapshot<Map<String, dynamic>> usersSnapshot =
+        await FirebaseFirestore.instance.collection('User').get();
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> userDoc in usersSnapshot.docs) {
+      QuerySnapshot<Map<String, dynamic>> storiesSnapshot =
+          await userDoc.reference.collection('Story').get();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> storyDoc in storiesSnapshot.docs) {
+        String title = storyDoc['title'];
+        allTitles.add(title);
+      }
+    }
+  }
+
+  Future<bool> isTitleAvailable(String title) async {
+    title = title.trim();
+    return !allTitles.contains(title);
+  }
+
+  Future<void> _validateTitle() async {
+    if (_titleValidationTimer != null && _titleValidationTimer!.isActive) {
+      _titleValidationTimer!.cancel();
+    }
+
+    _titleValidationTimer = Timer(const Duration(milliseconds: 500), () async {
+      final value = widget.titleController.text;
+      setState(() {
+        _isCheckingTitle = true;
+      });
+
+      bool isAvailable = await isTitleAvailable(value);
+      final errorMessage = isAvailable ? null : "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
+
+      _errorStreamController.add(errorMessage);
+      setState(() {
+        widget.errorMessageHolder.titleErrorMessage = errorMessage;
+        _isCheckingTitle = false;
+      });
+    });
+  }
+
+    Future<String?> validateTitle(String? value) async {
+    if (value == null || value.trim().isEmpty) {
+      return "الرجاء إدخال العنوان";
+    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$').hasMatch(value)) {
+      return "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
+    } else {
+        bool isAvailable = await isTitleAvailable(value);
+
+      if (!isAvailable) {
+        return "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
+      }
+
+      // Clear error
+      return null;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // Check if globalTitle is not empty, then set it to the controller's text
+
     if (widget.initialTitle != null) {
       widget.titleController.text = widget.initialTitle!;
     }
     widget.titleController.addListener(_validateTitle);
     widget.errorMessageHolder.titleErrorMessage = null;
+
+    loadTitles().then((_) {
+      // Titles are loaded, trigger the UI rebuild
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
   void dispose() {
     widget.titleController.removeListener(_validateTitle);
+    _errorStreamController.close();
     super.dispose();
-  }
-
-  void _validateTitle() {
-    final value = widget.titleController.text;
-    final errorMessage = validateTitle(value);
-    setState(() {
-      widget.errorMessageHolder.titleErrorMessage = errorMessage;
-    });
-  }
-
-  String? validateTitle(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "الرجاء إدخال العنوان";
-    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$')
-        .hasMatch(value)) {
-      return "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
-    } else {
-      return null;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Hint Card
         const Card(
           color: Colors.transparent,
           elevation: 0,
@@ -80,8 +136,6 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
             ),
           ),
         ),
-
-        // Form with onChanged and onWillPop callbacks
         Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -91,13 +145,13 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
           onWillPop: () async {
             final form = _formKey.currentState;
             if (form != null && form.validate()) {
-              // Form is valid, allow the user to leave the screen
               return true;
+            } else if (_isCheckingTitle) {
+              return false;
             } else {
-              // Form is invalid, show error messages and prevent leaving
-              setState(() {
+              setState(() async {
                 widget.errorMessageHolder.titleErrorMessage =
-                    validateTitle(widget.titleController.text);
+                    await validateTitle(widget.titleController.text);
               });
               return false;
             }
@@ -105,6 +159,20 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
           child: Container(
             child: Column(
               children: [
+                StreamBuilder<String?>(
+                  stream: _errorStreamController.stream,
+                  initialData: null,
+                  builder: (context, snapshot) {
+                    final errorMessage = snapshot.data;
+                    if (errorMessage != null) {
+                      return Text(
+                        errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                ),
                 CustomLanguageToolTextField(
                   controller: widget.titleController,
                   maxLines: 1,
@@ -115,15 +183,8 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
                     contentPadding: EdgeInsets.all(10),
                   ),
                   style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                  //applyNewLineFilter: true
+                  onChanged: (_) => _validateTitle(),
                 ),
-
-                // Error message widget
-                // if (widget.errorMessageHolder.titleErrorMessage != null)
-                //   Text(
-                //     widget.errorMessageHolder.titleErrorMessage!,
-                //     style: TextStyle(color: Colors.red),
-                //   ),
               ],
             ),
           ),
