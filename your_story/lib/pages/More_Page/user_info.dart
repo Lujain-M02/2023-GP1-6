@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
@@ -118,31 +119,33 @@ class _ProfileInformationState extends State<ProfileInformation> {
                                     backgroundColor: Color.fromARGB(255, 255, 255, 255), 
                                   ),
                                   const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'الاسم: ${userInfo?['name'] ?? 'N/A'}',
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'الاسم: ${userInfo?['name'] ?? 'N/A'}',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.edit, color: Colors.white),
-                                        onPressed: () async {
-                                          final result = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => EditUsernamePage()),
-                                          );
-                                          if (result == true) {
-                                            fetchUserInfo();
-                                          }
-                                        },
-                                      ),
-                                    ],
+                                        IconButton(
+                                          icon: const Icon(Icons.edit, color: Colors.white),
+                                          onPressed: () async {
+                                            final result = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => EditUsernamePage()),
+                                            );
+                                            if (result == true) {
+                                              fetchUserInfo();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(height: 10),
                                   Text(

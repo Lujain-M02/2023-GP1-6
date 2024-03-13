@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
+import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
@@ -27,10 +28,18 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
   final StreamController<String?> _errorStreamController = StreamController<String?>();
   bool _isCheckingTitle = false;
   Timer? _titleValidationTimer;
+  bool _isLoading = false;
+
 
   List<String> allTitles = [];
 
   Future<void> loadTitles() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
     allTitles.clear();
 
     QuerySnapshot<Map<String, dynamic>> usersSnapshot =
@@ -45,8 +54,17 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
         allTitles.add(title);
       }
     }
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
     print(widget.initialTitle);
   }
+
+
 
   Future<bool> isTitleAvailable(String title) async {
     title = title.trim();
@@ -58,27 +76,34 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
     }
   }
 
-  Future<void> _validateTitle() async {
-    if (_titleValidationTimer != null && _titleValidationTimer!.isActive) {
-      _titleValidationTimer!.cancel();
+Future<void> _validateTitle() async {
+  if (_titleValidationTimer != null && _titleValidationTimer!.isActive) {
+    _titleValidationTimer!.cancel();
+  }
+
+  _titleValidationTimer = Timer(const Duration(milliseconds: 500), () async {
+    final value = widget.titleController.text;
+    setState(() {
+      _isCheckingTitle = true;
+    });
+
+    bool isAvailable = await isTitleAvailable(value);
+    String? errorMessage;
+
+    if (!isAvailable) {
+      errorMessage = "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
+    } else {
+      errorMessage = await validateTitle(value);
     }
 
-    _titleValidationTimer = Timer(const Duration(milliseconds: 500), () async {
-      final value = widget.titleController.text;
-      setState(() {
-        _isCheckingTitle = true;
-      });
-
-      bool isAvailable = await isTitleAvailable(value);
-      final errorMessage = isAvailable ? null : "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
-
-      _errorStreamController.add(errorMessage);
-      setState(() {
-        widget.errorMessageHolder.titleErrorMessage = errorMessage;
-        _isCheckingTitle = false;
-      });
+    _errorStreamController.add(errorMessage);
+    setState(() {
+      widget.errorMessageHolder.titleErrorMessage = errorMessage;
+      _isCheckingTitle = false;
     });
-  }
+  });
+}
+
 
     Future<String?> validateTitle(String? value) async {
     if (value == null || value.trim().isEmpty) {
@@ -119,10 +144,11 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
   void dispose() {
     widget.titleController.removeListener(_validateTitle);
     _errorStreamController.close();
+    _titleValidationTimer?.cancel();
     super.dispose();
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -166,32 +192,28 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
           child: Container(
             child: Column(
               children: [
-                StreamBuilder<String?>(
-                  stream: _errorStreamController.stream,
-                  initialData: null,
-                  builder: (context, snapshot) {
-                    final errorMessage = snapshot.data;
-                    if (errorMessage != null) {
-                      return Text(
-                        errorMessage,
-                        style: TextStyle(color: Colors.red),
-                      );
-                    }
-                    return SizedBox.shrink();
-                  },
-                ),
-                CustomLanguageToolTextField(
-                  controller: widget.titleController,
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromARGB(132, 187, 222, 251),
-                    hintText: "أدخل العنوان هنا",
-                    contentPadding: EdgeInsets.all(10),
-                  ),
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                  onChanged: (_) => _validateTitle(),
-                ),
+                // Display either the text field or the progress indicator based on the loading state
+                _isLoading
+                    // ? Center( child: Lottie.asset('assets/loading2.json'))
+                    ? CircularProgressIndicator()
+                    : CustomLanguageToolTextField(
+                        controller: widget.titleController,
+                        maxLines: 1,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(132, 187, 222, 251),
+                          hintText: "أدخل العنوان هنا",
+                          contentPadding: EdgeInsets.all(10),
+                        ),
+                        style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                        onChanged: (_) => _validateTitle(),
+                      ),
+                // Error message widget
+                // if (widget.errorMessageHolder.titleErrorMessage != null)
+                //   Text(
+                //     widget.errorMessageHolder.titleErrorMessage!,
+                //     style: TextStyle(color: Colors.red),
+                //   ),
               ],
             ),
           ),
@@ -199,4 +221,4 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
       ],
     );
   }
-}
+  }
