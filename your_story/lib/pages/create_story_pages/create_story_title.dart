@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
 import 'dart:async';
 
@@ -44,11 +45,17 @@ class _CreateStoryTitleState extends State<CreateStoryTitle> {
         allTitles.add(title);
       }
     }
+    print(widget.initialTitle);
   }
 
   Future<bool> isTitleAvailable(String title) async {
     title = title.trim();
+    if (title==widget.initialTitle){
+    return true;
+    }
+    else {
     return !allTitles.contains(title);
+    }
   }
 
   Future<void> _validateTitle() async {
