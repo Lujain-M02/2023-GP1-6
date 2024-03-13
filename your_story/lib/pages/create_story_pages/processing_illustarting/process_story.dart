@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/system_recom.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/recommendation.dart';
 import '../../../style.dart';
 import 'global_story.dart';
-import 'package:lottie/lottie.dart';
+
 
 class ProcessStory extends StatefulWidget {
   ProcessStory({required this.title, required this.content});
@@ -211,7 +212,7 @@ class _ProcessStoryState extends State<ProcessStory> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const SystemRecom(),
+                                      builder: (context) => const IllustRecom(),
                                     ),
                                   );
                                 },
