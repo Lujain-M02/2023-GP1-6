@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
-import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
@@ -94,6 +93,9 @@ Future<void> _validateTitle() async {
       errorMessage = "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
     } else {
       errorMessage = await validateTitle(value);
+      if (!_isLoading) {
+        errorMessage = null; // Set error message to null when loading is done
+      }
     }
 
     _errorStreamController.add(errorMessage);
@@ -105,22 +107,26 @@ Future<void> _validateTitle() async {
 }
 
 
-    Future<String?> validateTitle(String? value) async {
-    if (value == null || value.trim().isEmpty) {
-      return "الرجاء إدخال العنوان";
-    } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$').hasMatch(value)) {
-      return "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
-    } else {
-        bool isAvailable = await isTitleAvailable(value);
 
+Future<String?> validateTitle(String? value) async {
+  if (value == null || value.trim().isEmpty) {
+    return "الرجاء إدخال العنوان";
+  } else if (!RegExp(r'^[ء-ي٠-٩،؛."!ﻻ؟\s)():\-\[\]\{\}ًٌٍَُِّْ]+$').hasMatch(value)) {
+    return "يجب أن يكون عنوان قصتك باللغة العربية فقط\n (حروف، أرقام، علامات ترقيم)";
+  } else {
+    if (_isLoading) {
+      return "الرجاء الانتظار، جاري التحقق من العنوان...";
+    } else {
+      bool isAvailable = await isTitleAvailable(value);
       if (!isAvailable) {
         return "العنوان مستخدم بالفعل، يرجى اختيار عنوان آخر";
       }
-
-      // Clear error
-      return null;
     }
+    // Clear error
+    return null;
   }
+}
+
 
   @override
   void initState() {
@@ -136,6 +142,7 @@ Future<void> _validateTitle() async {
       // Titles are loaded, trigger the UI rebuild
       if (mounted) {
         setState(() {});
+        _validateTitle();
       }
     });
   }
@@ -148,7 +155,7 @@ Future<void> _validateTitle() async {
     super.dispose();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -192,23 +199,20 @@ Future<void> _validateTitle() async {
           child: Container(
             child: Column(
               children: [
-                // Display either the text field or the progress indicator based on the loading state
-                _isLoading
-                    // ? Center( child: Lottie.asset('assets/loading2.json'))
-                    ? Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200,),)
-                    : CustomLanguageToolTextField(
-                        controller: widget.titleController,
-                        maxLines: 1,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromARGB(132, 187, 222, 251),
-                          hintText: "أدخل العنوان هنا",
-                          contentPadding: EdgeInsets.all(10),
-                        ),
-                        style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                        onChanged: (_) => _validateTitle(),
-                      ),
-                // Error message widget
+                // Display the text field for the title input
+                CustomLanguageToolTextField(
+                  controller: widget.titleController,
+                  maxLines: 1,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromARGB(132, 187, 222, 251),
+                    hintText: "أدخل العنوان هنا",
+                    contentPadding: EdgeInsets.all(10),
+                  ),
+                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  onChanged: (_) => _validateTitle(),
+                ),
+                //Display the error message if available
                 // if (widget.errorMessageHolder.titleErrorMessage != null)
                 //   Text(
                 //     widget.errorMessageHolder.titleErrorMessage!,
@@ -221,4 +225,4 @@ Future<void> _validateTitle() async {
       ],
     );
   }
-  }
+}
