@@ -13,12 +13,13 @@ class storyType extends StatefulWidget {
 
 class _storyTypeState extends State<storyType> {
   int selectedIndex = 0;
-  List categories = ['الجميع', 'مصورة', 'غير مصورة'];
+  List categories = [' جميع القصص', 'مصورة', 'غير مصورة'];
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
       height: 30,
+      alignment: Alignment.center,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,

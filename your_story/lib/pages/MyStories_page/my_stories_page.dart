@@ -22,58 +22,6 @@ class MyStories extends StatefulWidget {
   State<MyStories> createState() => _MyStoriesState();
 }
 
-// class _MyStoriesState extends State<MyStories> {
-//   late final String userId;
-//   late final Stream<List<QueryDocumentSnapshot>> storiesList;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     userId = FirebaseAuth.instance.currentUser!.uid;
-//     updateStoriesList('الجميع'); // Initially show all stories
-//     // storiesList = FirebaseFirestore.instance
-//     //     .collection("User")
-//     //     .doc(userId)
-//     //     .collection("Story")
-//     //     .where('type', isEqualTo: 'illustrated') // Filter by type
-//     //     .snapshots()
-//     //     .map((snapshot) => snapshot.docs);
-//   }
-
-//   void updateStoriesList(String category) {
-//     print("Updating stories list for category: $category");
-//     String filter = '';
-//     switch (category) {
-//       case 'مصورة':
-//         filter = 'illustrated';
-//         break;
-//       case 'غير مصورة':
-//         filter = 'drafted';
-//         break;
-//       case 'الجميع':
-//         filter = ''; // Fetch all stories without filtering
-//         break;
-//     }
-
-//     setState(() {
-//       if (filter.isEmpty) {
-//         storiesList = FirebaseFirestore.instance
-//             .collection("User")
-//             .doc(userId)
-//             .collection("Story")
-//             .snapshots()
-//             .map((snapshot) => snapshot.docs);
-//       } else {
-//         storiesList = FirebaseFirestore.instance
-//             .collection("User")
-//             .doc(userId)
-//             .collection("Story")
-//             .where('type', isEqualTo: filter) // Apply filter based on type
-//             .snapshots()
-//             .map((snapshot) => snapshot.docs);
-//       }
-//     });
-//   }
 class _MyStoriesState extends State<MyStories> {
   final StreamController<List<QueryDocumentSnapshot>> _storiesStreamController =
       StreamController.broadcast();
@@ -85,7 +33,7 @@ class _MyStoriesState extends State<MyStories> {
     super.initState();
     userId = FirebaseAuth.instance.currentUser!.uid;
     storiesList = _storiesStreamController.stream;
-    updateStoriesList('الجميع');
+    updateStoriesList('جميع القصص');
   }
 
   void updateStoriesList(String category) {
@@ -97,7 +45,7 @@ class _MyStoriesState extends State<MyStories> {
       case 'غير مصورة':
         filter = 'drafted';
         break;
-      case 'الجميع':
+      case 'جميع القصص':
       default:
         filter = '';
         break;
@@ -131,33 +79,44 @@ class _MyStoriesState extends State<MyStories> {
         automaticallyImplyLeading: false,
       ),
       backgroundColor: YourStoryStyle.s2Color,
-      body: StreamBuilder<List<QueryDocumentSnapshot>>(
+      body: Column(children:[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: SearchBox(onChanged: (value) {}),
+                  ),
+                ],
+              ),
+              storyType(onCategorySelected: updateStoriesList),
+              const SizedBox(height: kDefaultPadding / 2),
+      
+      
+      StreamBuilder<List<QueryDocumentSnapshot>>(
           stream: storiesList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Lottie.asset('assets/loading2.json',
+                child: Lottie.asset('assets/loading_white.json',
                     width: 200, height: 200),
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Container(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  top: 30,
-                  right: 20,
-                ),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 244, 247, 252),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
+                height: size.height*0.639,
+                  margin: const EdgeInsets.only(top: 20),
+                  decoration: const BoxDecoration(
+                    color: kBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
                   ),
-                ),
                 child: const Center(
                   child: Text(
                     "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24),
                   ),
                 ),
               );
@@ -261,29 +220,7 @@ class _MyStoriesState extends State<MyStories> {
             }
 
             final stories = snapshot.data!;
-            return Column(children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: SearchBox(onChanged: (value) {}),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateStory()),
-                      );
-                    },
-                    color: const Color.fromARGB(255, 15, 26, 107),
-                    padding: const EdgeInsets.only(left: 24),
-                  ),
-                ],
-              ),
-              storyType(onCategorySelected: updateStoriesList),
-              const SizedBox(height: kDefaultPadding / 2),
+            return 
               Expanded(
                   child: Stack(children: <Widget>[
                 Container(
@@ -367,7 +304,7 @@ class _MyStoriesState extends State<MyStories> {
                                                       fit: BoxFit.cover,
                                                       placeholder: (context,
                                                               url) =>
-                                                          const CircularProgressIndicator(),
+                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           Image.asset(
@@ -487,10 +424,12 @@ class _MyStoriesState extends State<MyStories> {
                         ),
                       );
                     })
-              ]))
-            ]);
+              ])            
+            );
           }),
-      floatingActionButton: FloatingActionButton(
+        ]
+    ),
+  floatingActionButton:    FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -510,6 +449,58 @@ class _MyStoriesState extends State<MyStories> {
 
 
 
+// class _MyStoriesState extends State<MyStories> {
+//   late final String userId;
+//   late final Stream<List<QueryDocumentSnapshot>> storiesList;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     userId = FirebaseAuth.instance.currentUser!.uid;
+//     updateStoriesList('الجميع'); // Initially show all stories
+//     // storiesList = FirebaseFirestore.instance
+//     //     .collection("User")
+//     //     .doc(userId)
+//     //     .collection("Story")
+//     //     .where('type', isEqualTo: 'illustrated') // Filter by type
+//     //     .snapshots()
+//     //     .map((snapshot) => snapshot.docs);
+//   }
+
+//   void updateStoriesList(String category) {
+//     print("Updating stories list for category: $category");
+//     String filter = '';
+//     switch (category) {
+//       case 'مصورة':
+//         filter = 'illustrated';
+//         break;
+//       case 'غير مصورة':
+//         filter = 'drafted';
+//         break;
+//       case 'الجميع':
+//         filter = ''; // Fetch all stories without filtering
+//         break;
+//     }
+
+//     setState(() {
+//       if (filter.isEmpty) {
+//         storiesList = FirebaseFirestore.instance
+//             .collection("User")
+//             .doc(userId)
+//             .collection("Story")
+//             .snapshots()
+//             .map((snapshot) => snapshot.docs);
+//       } else {
+//         storiesList = FirebaseFirestore.instance
+//             .collection("User")
+//             .doc(userId)
+//             .collection("Story")
+//             .where('type', isEqualTo: filter) // Apply filter based on type
+//             .snapshots()
+//             .map((snapshot) => snapshot.docs);
+//       }
+//     });
+//   }
 
     //         padding: const EdgeInsets.only(
     //           left: 20,

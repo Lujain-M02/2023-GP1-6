@@ -15,9 +15,7 @@ class SearchBox extends StatelessWidget {
       margin: const EdgeInsets.only(left: kDefaultPadding,
               right: 5,),
       padding: const EdgeInsets.symmetric(
-        // left:0,
-        // horizontal: kDefaultPadding,
-        vertical: kDefaultPadding / 4, // 5 top and bottom
+        vertical: kDefaultPadding / 4, 
       ),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.4),
@@ -29,7 +27,8 @@ class SearchBox extends StatelessWidget {
         decoration: const InputDecoration(
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          prefixIcon: const Icon(Icons.search, color: Colors.white),          hintText: 'البحث عن قصة',
+          prefixIcon: const Icon(Icons.search, color: Colors.white),
+          hintText: 'البحث عن قصة',
           hintStyle: TextStyle(color: Colors.white),
         ),
       ),
