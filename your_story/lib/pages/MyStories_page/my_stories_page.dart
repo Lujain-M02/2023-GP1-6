@@ -252,6 +252,14 @@ class _MyStoriesState extends State<MyStories> {
                         ),
                         height: 140, //140
                         child: InkWell(
+                          onTap:(){     
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                               builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
+                               )
+                             );
+                          } ,
                           child: Stack(
                             alignment: Alignment.bottomCenter,
                             children: <Widget>[
