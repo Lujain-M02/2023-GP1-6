@@ -13,7 +13,7 @@ class storyType extends StatefulWidget {
 
 class _storyTypeState extends State<storyType> {
   int selectedIndex = 0;
-  List categories = [' جميع القصص', 'مصورة', 'غير مصورة'];
+  List categories = [' جميع القصص', 'مصورة', 'مسودة'];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +36,7 @@ class _storyTypeState extends State<storyType> {
               left: kDefaultPadding,
               right: kDefaultPadding,
             ),
-            padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+            padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/1.5),
             decoration: BoxDecoration(
               color: index == selectedIndex
                   ? Colors.white.withOpacity(0.4)
