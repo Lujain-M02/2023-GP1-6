@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/style.dart';
+// import 'package:your_story/style.dart';
 import '../../alerts.dart';
 
 void saveORupdateDraft(context, title, content, draftID) async {

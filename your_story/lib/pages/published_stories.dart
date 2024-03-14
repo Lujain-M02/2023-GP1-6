@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/MyStories_Page/pdf_methods.dart';
+import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 import 'package:your_story/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -130,10 +131,12 @@ class _StoriesPageState extends State<StoriesPage> {
       BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => Pdfviewerpage(pdfUrl:pdfUrl,storyTitle:title)),
-        //     );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+           builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
+          )
+        );
       },
       child: Container(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
