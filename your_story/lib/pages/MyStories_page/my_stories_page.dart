@@ -148,7 +148,8 @@ class _MyStoriesState extends State<MyStories> {
                 String title,
                 String content,
                 bool status,
-                String storyType) {
+                String storyType,
+                String fimg) {
               showModalBottomSheet(
                 context: context,
                 builder: (BuildContext bc) {
@@ -229,14 +230,78 @@ class _MyStoriesState extends State<MyStories> {
                                             pdfUrl: pdfUrl, storyTitle: title)),
                                   );
                                 }),
-                          ],
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
+                                ListTile(
+                                leading: const Icon(Icons.details_rounded),
+                                title: const Text('تفاصيل'),
+                                onTap: () {
+                                  showModalBottomSheet(context: context,
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                             height: size.height*0.4, 
+                                             padding: const EdgeInsets.all(20),
+                                             child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: <Widget>[
+                                              Center(
+                                                child: Text(
+                                                   title, 
+                                                   style: const TextStyle(
+                                                   fontSize: 20,
+                                                   fontWeight: FontWeight.bold,                                             
+                                                  ),
+                                                ),
+                                              ),
+                                         const SizedBox(height: 20),
+                                           Expanded(
+                                           child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: fimg,
+                                                      width: double.infinity,                                                      height: 80,
+                                                      fit: BoxFit.cover,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Image.asset(
+                                                        "assets/errorimg.png", // An error placeholder image
+                                                        width: 45,
+                                                        height: 45,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ),
+                                                Center(
+                                                  child: Text(
+                                                    status
+                                                      ? 'منشوره'
+                                                      : 'غير منشوره',
+                                                   style: const TextStyle(
+                                                   fontSize: 16,
+                                                   fontWeight: FontWeight.bold,                                             
+                                                  ),
+
+                                                  ),
+                                                )
+                                              ],
+                                           ),
+                                          );      
+                                        }
+                                      );
+                                    }
+                                  )
+                                ],
+                              ],
+                            ),
+                          ),
+                        );
+                     },
+                   );
+                 }
 
             final stories = snapshot.data!;
             return 
@@ -288,7 +353,8 @@ class _MyStoriesState extends State<MyStories> {
                                        title,
                                        content,
                                        status,
-                                       storyType);
+                                       storyType,
+                                       fimg);
                             }                
                           } ,
                           child: Stack(
@@ -460,7 +526,8 @@ class _MyStoriesState extends State<MyStories> {
                                                           title,
                                                           content,
                                                           status,
-                                                          storyType),
+                                                          storyType,
+                                                          fimg),
                                                 ),
                                               ],
                                             ),
