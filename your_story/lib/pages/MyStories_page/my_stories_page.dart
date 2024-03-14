@@ -110,10 +110,8 @@ class _MyStoriesState extends State<MyStories> {
                 ],
               ),
               storyType(onCategorySelected: updateStoriesList),
-              const SizedBox(height: kDefaultPadding / 2),
-      
-      
-      StreamBuilder<List<QueryDocumentSnapshot>>(
+              const SizedBox(height: kDefaultPadding / 2),   
+          StreamBuilder<List<QueryDocumentSnapshot>>(
           stream: storiesList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -273,13 +271,25 @@ class _MyStoriesState extends State<MyStories> {
                         ),
                         height: 140, //140
                         child: InkWell(
-                          onTap:(){     
+                          onTap:(){
+                            if(storyType=="illustrated"){     
                             Navigator.push(
                             context,
                             MaterialPageRoute(
                                builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
                                )
                              );
+                            }
+                             else {
+                              showMoreOptionsBottomSheet(
+                                       context,
+                                       docId,
+                                       pdfUrl,
+                                       title,
+                                       content,
+                                       status,
+                                       storyType);
+                            }                
                           } ,
                           child: Stack(
                             alignment: Alignment.bottomCenter,
