@@ -170,19 +170,21 @@ class _CreateStory extends State<CreateStory> {
             bottomNavigationBar: OverflowBar(
               alignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  iconSize: 40,
-                  color: YourStoryStyle.primarycolor,
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: _activeStepIndex > 0
-                      ? () {
-                          //this line to disable the button in the first step and if not return back
-                          setState(() {
-                            _activeStepIndex -= 1;
-                          });
-                        }
-                      : null,
-                ),
+                //if it's not in the last step
+                if (_activeStepIndex != stepList().length - 1)
+                  IconButton(
+                    iconSize: 40,
+                    color: YourStoryStyle.primarycolor,
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: _activeStepIndex > 0
+                        ? () {
+                            //this line to disable the button in the first step and if not return back
+                            setState(() {
+                              _activeStepIndex -= 1;
+                            });
+                          }
+                        : null,
+                  ),
                 //if it's the last step a new button will apear instead of the arrow
                 if (_activeStepIndex == stepList().length - 1)
                   // Container(
@@ -242,6 +244,19 @@ class _CreateStory extends State<CreateStory> {
                       //   ),
                       //   child: const Text("حفظ كمسودة"),
                       // ),
+                      IconButton(
+                        iconSize: 40,
+                        color: YourStoryStyle.primarycolor,
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: _activeStepIndex > 0
+                            ? () {
+                                //this line to disable the button in the first step and if not return back
+                                setState(() {
+                                  _activeStepIndex -= 1;
+                                });
+                              }
+                            : null,
+                      ),
                       OutlinedButton(
                         onPressed: () {
                           // Show confirmation dialog
