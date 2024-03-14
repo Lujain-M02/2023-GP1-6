@@ -12,8 +12,7 @@ import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
 import 'package:your_story/pages/pdf_pages/pdf_view.dart';
-
-import '../create_story_pages/processing_illustarting/global_story.dart';
+// import '../create_story_pages/processing_illustarting/global_story.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -244,7 +243,7 @@ class _MyStoriesState extends State<MyStories> {
                       final String fimg = pdfData?['imageUrl'] ?? '#';
                       final bool status = pdfData?['published'] ?? false;
                       final String docId = stories[index].id;
-                      final String storyType = pdfData?['type'];
+                      final String storyType = pdfData?['type'];                      
                       return Container(
                         margin: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding,
@@ -324,16 +323,23 @@ class _MyStoriesState extends State<MyStories> {
                                                     ),
                                                   )
                                                 : Image.asset(
-                                                    "assets/pdfcover.png", // The asset image to show if fimg is null
-                                                    width: 80,
+                                                    "assets/draft_under.png", // The asset image to show draft image
+                                                    width: 90,
                                                     height: 80,
                                                     fit: BoxFit.cover,
                                                   ),
-                                          ),
+                                          ),                                          
                                           Positioned(
                                             top: 80,
-                                            left: 150,
-                                            child: Image.asset(
+                                            left: 140,
+                                            child: storyType=="drafted"
+                                            ? Image.asset(
+                                              "assets/draft_upper.png",
+                                              width: 60,
+                                              height: 60,
+                                              fit: BoxFit.cover,
+                                            )
+                                            : Image.asset(
                                               "assets/pdfupper.png",
                                               width: 60,
                                               height: 60,
@@ -396,14 +402,20 @@ class _MyStoriesState extends State<MyStories> {
                                             ),
                                             child: Row(
                                               children: [
-                                                Text(
+                                                if(storyType=="illustrated")
+                                                 Text(
                                                   status
                                                       ? 'منشوره'
                                                       : 'غير منشوره',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .labelLarge,
-                                                ),
+                                                  )
+                                                else
+                                                 Text(
+                                                   "الخيارات",
+                                                   style: Theme.of(context).textTheme.labelLarge,
+                                                  ),
                                                 IconButton(
                                                   icon: const Icon(
                                                       Icons.more_vert,
