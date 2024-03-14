@@ -74,7 +74,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
           centerTitle: true,
         ),
         body: userInfo == null
-            ? Center( child: Lottie.asset('assets/loading2.json',width: 200,height: 200))
+            ? Center( child: Lottie.asset('assets/loading_white.json',width: 200,height: 200))
             : Directionality(
                 textDirection: TextDirection.rtl,
                 child: SingleChildScrollView(
@@ -114,7 +114,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   const CircleAvatar(
-                                    backgroundImage: AssetImage('assets/sss.png'),
+                                    backgroundImage: AssetImage('assets/profile.png'),
                                     radius: 50,
                                     backgroundColor: Color.fromARGB(255, 255, 255, 255), 
                                   ),

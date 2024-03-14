@@ -195,7 +195,7 @@ Future<void> _validateTitle() async {
                 // Display either the text field or the progress indicator based on the loading state
                 _isLoading
                     // ? Center( child: Lottie.asset('assets/loading2.json'))
-                    ? CircularProgressIndicator()
+                    ? Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200,),)
                     : CustomLanguageToolTextField(
                         controller: widget.titleController,
                         maxLines: 1,

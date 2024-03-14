@@ -113,7 +113,7 @@ class MorePage extends StatelessWidget {
                         //                     builder: (context) =>
                         //                         WelcomePage()));
                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    WelcomePage()), (Route<dynamic> route) => false);
+                          WelcomePage()), (Route<dynamic> route) => false);
                         // The user has been successfully signed out
                       } catch (e) {
                         // Handle sign-out errors, if any
