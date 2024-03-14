@@ -45,7 +45,7 @@ class _MyStoriesState extends State<MyStories> {
       case 'مصورة':
         filter = 'illustrated';
         break;
-      case 'غير مصورة':
+      case 'مسودة':
         filter = 'drafted';
         break;
       case 'جميع القصص':
