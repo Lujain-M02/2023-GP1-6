@@ -26,6 +26,7 @@ class _MyStoriesState extends State<MyStories> {
       StreamController.broadcast();
   late Stream<List<QueryDocumentSnapshot>> storiesList;
   late final String userId;
+  List<QueryDocumentSnapshot> _allStories = [];
 
   @override
   void initState() {
@@ -33,6 +34,9 @@ class _MyStoriesState extends State<MyStories> {
     userId = FirebaseAuth.instance.currentUser!.uid;
     storiesList = _storiesStreamController.stream;
     updateStoriesList('جميع القصص');
+    storiesList.listen((list) {
+      _allStories = list;
+    });
   }
 
   void updateStoriesList(String category) {
@@ -63,6 +67,20 @@ class _MyStoriesState extends State<MyStories> {
     });
   }
 
+  void filterStories(String searchTerm) {
+    if (searchTerm.isEmpty) {
+      _storiesStreamController.add(_allStories); // Show all stories if search term is empty
+      return;
+    }
+    final filteredStories = _allStories.where((doc) {
+    final data = doc.data() as Map<String, dynamic>?;
+    final title = data?['title']?.toString().toLowerCase() ?? '';
+    return title.contains(searchTerm.toLowerCase());
+    }).toList();
+    _storiesStreamController.add(filteredStories);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -83,7 +101,11 @@ class _MyStoriesState extends State<MyStories> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: SearchBox(onChanged: (value) {}),
+                    child: SearchBox(onChanged: (value) {
+                  setState(() {
+                    filterStories(value);
+                  });
+                },),
                   ),
                 ],
               ),
@@ -102,7 +124,7 @@ class _MyStoriesState extends State<MyStories> {
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Container(
-                height: size.height*0.639,
+                height: size.height*0.6291,
                   margin: const EdgeInsets.only(top: 20),
                   decoration: const BoxDecoration(
                     color: kBackgroundColor,
