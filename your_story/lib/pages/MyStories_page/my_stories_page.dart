@@ -69,7 +69,7 @@ class _MyStoriesState extends State<MyStories> {
 
   void filterStories(String searchTerm) {
     if (searchTerm.isEmpty) {
-      _storiesStreamController.add(_allStories); // Show all stories if search term is empty
+      updateStoriesList(''); // Show all stories if search term is empty
       return;
     }
     final filteredStories = _allStories.where((doc) {
@@ -97,18 +97,12 @@ class _MyStoriesState extends State<MyStories> {
       ),
       backgroundColor: YourStoryStyle.s2Color,
       body: Column(children:[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: SearchBox(onChanged: (value) {
+               SearchBox(onChanged: (value) {
                   setState(() {
                     filterStories(value);
                   });
                 },),
-                  ),
-                ],
-              ),
+                  
               storyType(onCategorySelected: updateStoriesList),
               const SizedBox(height: kDefaultPadding / 2),   
           StreamBuilder<List<QueryDocumentSnapshot>>(
@@ -121,26 +115,27 @@ class _MyStoriesState extends State<MyStories> {
               );
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Container(
-                height: size.height*0.6291,
-                  margin: const EdgeInsets.only(top: 20),
-                  decoration: const BoxDecoration(
-                    color: kBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
+              return Expanded(
+                child: Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    decoration: const BoxDecoration(
+                      color: kBackgroundColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
                     ),
-                  ),
-                child: const Center(
-                  child: Text(
-                    "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24),
+                  child: const Center(
+                    child: Text(
+                      "يبدو أنه لا يوجد لديك قصص\nاضغط زر الاضافة وابدأ صناعة قصتك الآن",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24),
+                    ),
                   ),
                 ),
               );
             }
-
+          
             void showMoreOptionsBottomSheet(
                 BuildContext context,
                 String docId,
@@ -273,7 +268,7 @@ class _MyStoriesState extends State<MyStories> {
                                                    fontSize: 16,
                                                    fontWeight: FontWeight.bold,                                             
                                                   ),
-
+          
                                                   ),
                                                 )
                                               ],
@@ -291,7 +286,7 @@ class _MyStoriesState extends State<MyStories> {
                      },
                    );
                  }
-
+          
             final stories = snapshot.data!;
             return 
               Expanded(
@@ -435,7 +430,7 @@ class _MyStoriesState extends State<MyStories> {
                                           )
                                         ],
                                       )
-
+          
                                       // child: Image.asset(
                                       //   "assets/pdfimg.png",
                                       //   fit: BoxFit.cover,
