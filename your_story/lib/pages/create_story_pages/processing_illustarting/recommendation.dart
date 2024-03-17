@@ -25,7 +25,6 @@ class _SystemRecom extends State<IllustRecom> {
   }
 
   List<String> getTopClauses(List<Map<String, dynamic>> data) {
-
     List<Map<String, dynamic>> allClausesWithScores = [];
 
     for (var item in data) {
@@ -43,38 +42,36 @@ class _SystemRecom extends State<IllustRecom> {
         .take(numberOfImages)
         .map((item) => item['clause'].toString())
         .toList();
-
   }
 
+//this method for showing the place of the clause inside the story and make the clause green color
+  Widget clausesContainer(String matchingClause) {
+    List<TextSpan> textSpans = [];
 
-//this method for showing the place of the clause inside the story and make the clause green color 
-Widget clausesContainer(String matchingClause) {
-  List<TextSpan> textSpans = [];
-
-  for (var item in globaltopsisScoresList) {
-    for (var clause in item['clauses']) {
-      var textStyle = const TextStyle(color: Colors.black);
-      if (clause['clause'] == matchingClause) {
-        textStyle = const TextStyle(color: Colors.green);
+    for (var item in globaltopsisScoresList) {
+      for (var clause in item['clauses']) {
+        var textStyle = const TextStyle(color: Colors.black);
+        if (clause['clause'] == matchingClause) {
+          textStyle = const TextStyle(color: Colors.green);
+        }
+        textSpans.add(TextSpan(text: clause['clause'] + " ", style: textStyle));
       }
-      textSpans.add(TextSpan(text: clause['clause'] + " ", style: textStyle));
+      textSpans.add(const TextSpan(text: "\n\n"));
     }
-    textSpans.add(const TextSpan(text: "\n\n"));
-  }
 
-  return Directionality(
-    textDirection: TextDirection.rtl,
-    child: Container(
-      padding: const EdgeInsets.all(8.0),
-      child: RichText(
-        text: TextSpan(
-          children: textSpans,
-          style: const TextStyle(color: Colors.black, fontSize: 16),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: RichText(
+          text: TextSpan(
+            children: textSpans,
+            style: const TextStyle(color: Colors.black, fontSize: 16),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   @override
   @override
@@ -187,7 +184,7 @@ Widget clausesContainer(String matchingClause) {
                 const SizedBox(
                   height: 8,
                 ),
-                 Card(
+                Card(
                   color: Colors.transparent,
                   elevation: 0,
                   child: ListTile(
@@ -195,12 +192,13 @@ Widget clausesContainer(String matchingClause) {
                     contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
                     leading: const Icon(
                       Icons.lightbulb,
-                      color:Colors.amber,
+                      color: Colors.amber,
                       size: 20,
                     ),
                     title: Text(
                       "اضغط على العبارة لمعرفة أين تقع بداخل القصة",
-                      style: TextStyle(fontSize: 14,color:YourStoryStyle.s2Color),
+                      style: TextStyle(
+                          fontSize: 14, color: YourStoryStyle.s2Color),
                     ),
                   ),
                 ),
@@ -215,18 +213,19 @@ Widget clausesContainer(String matchingClause) {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
                               width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(
-                                  bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               child: Padding(
-                                padding: const EdgeInsets.all(
-                                    8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: TextButton(
                                   onPressed: () {
-                                    showCustomModalBottomSheet(context,clausesContainer(clause));
+                                    showCustomModalBottomSheet(
+                                        context, clausesContainer(clause));
                                   },
                                   child: Text(
                                     "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                                    style: TextStyle(fontSize: 14, color: YourStoryStyle.s2Color),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: YourStoryStyle.s2Color),
                                   ),
                                 ),
                               ),
@@ -251,11 +250,14 @@ Widget clausesContainer(String matchingClause) {
                               ),
                             )),
                         onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => Illustration(),
-                            ),
-                          );
+                          ConfirmationDialog.show(context,
+                              "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
+                              () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => Illustration()),
+                                (Route<dynamic> route) => false);
+                          });
                         },
                         child: const Text(
                           "الاستمرار مع مقترحات النظام",
