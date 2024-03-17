@@ -117,10 +117,11 @@ class _SystemRecom extends State<IllustRecom> {
                   direction: Axis.horizontal,
                   children: [
                     const Text(
-                        "يمكنك تغيير عدد الصور كما تريد، قم باختيار عدد الصور الذي ترغب به:"),
+                        "هذا الرقم يمثل عدد الصور الذي سيتم انتاجه ويمكنك تغييره كما تريد، قم باختيار عدد الصور الذي ترغب به:"),
                     Align(
                       alignment: Alignment.center,
                       child: Container(
+                        margin: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(201, 187, 222,
                               251), // Background color for the button area
@@ -158,9 +159,6 @@ class _SystemRecom extends State<IllustRecom> {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(
-                  height: 8,
                 ),
                 Card(
                   color: Colors.transparent,
