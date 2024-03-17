@@ -38,39 +38,11 @@ class _SystemRecom extends State<IllustRecom> {
         });
       }
     }
+    print("the array: $allClausesWithScores");
     return allClausesWithScores
         .take(numberOfImages)
         .map((item) => item['clause'].toString())
         .toList();
-  }
-
-//this method for showing the place of the clause inside the story and make the clause green color
-  Widget clausesContainer(String matchingClause) {
-    List<TextSpan> textSpans = [];
-
-    for (var item in globaltopsisScoresList) {
-      for (var clause in item['clauses']) {
-        var textStyle = const TextStyle(color: Colors.black);
-        if (clause['clause'] == matchingClause) {
-          textStyle = const TextStyle(color: Colors.green);
-        }
-        textSpans.add(TextSpan(text: clause['clause'] + " ", style: textStyle));
-      }
-      textSpans.add(const TextSpan(text: "\n\n"));
-    }
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: RichText(
-          text: TextSpan(
-            children: textSpans,
-            style: const TextStyle(color: Colors.black, fontSize: 16),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -91,7 +63,7 @@ class _SystemRecom extends State<IllustRecom> {
             },
           ),
           title: const Text(
-            'معالجة القصة',
+            'تحليل القصة',
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -101,7 +73,7 @@ class _SystemRecom extends State<IllustRecom> {
             child: Column(
               children: [
                 const Text(
-                  'نتائج المعالجة :',
+                  'نتائج التحليل :',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -112,8 +84,14 @@ class _SystemRecom extends State<IllustRecom> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Text(
-                      "قام النظام باقتراح الـ $numberOfImages عبارات التاليه ليقوم بتصويرها حيث كل عباره تمثل فقرة في القصه"),
+                  child: numberOfImages == 1
+                      ? const Text(
+                          "قام النظام باقتراح العبارة التالية ليقوم بتصويرها وهي تعتبر العبارة الأهم في القصة:")
+                      : numberOfImages == 2
+                          ? const Text(
+                              "قام النظام باقتراح العبارتين التاليتين ليقوم بتصويرهما وهما تعتبران العبارتين الأكثر أهمية في القصة:")
+                          : const Text(
+                              "قام النظام باقتراح العبارات التالية ليقوم بتصويرها وهم يعتبرون العبارات الأكثر أهمية في القصة:"),
                 ),
                 const SizedBox(
                   height: 8,
@@ -294,6 +272,35 @@ class _SystemRecom extends State<IllustRecom> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //this method for showing the place of the clause inside the story and make the clause green color
+  Widget clausesContainer(String matchingClause) {
+    List<TextSpan> textSpans = [];
+
+    for (var item in globaltopsisScoresList) {
+      for (var clause in item['clauses']) {
+        var textStyle = const TextStyle(color: Colors.black);
+        if (clause['clause'] == matchingClause) {
+          textStyle = const TextStyle(color: Colors.green);
+        }
+        textSpans.add(TextSpan(text: clause['clause'] + " ", style: textStyle));
+      }
+      textSpans.add(const TextSpan(text: "\n\n"));
+    }
+
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: RichText(
+          text: TextSpan(
+            children: textSpans,
+            style: const TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
       ),

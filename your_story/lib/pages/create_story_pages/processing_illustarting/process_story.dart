@@ -57,7 +57,7 @@ class _ProcessStoryState extends State<ProcessStory> {
       if (hasInvalidScore) {
         setState(() {
           isLoading = false;
-          responseMessage = 'تعذر معالجة القصة. يرجى المحاولة مرة أخرى.';
+          responseMessage = 'تعذر تحليل القصة. يرجى المحاولة مرة أخرى.';
         });
         return; // Exit the function early
       } else {
@@ -75,7 +75,7 @@ class _ProcessStoryState extends State<ProcessStory> {
     } else {
       setState(() {
         topsisScoresList = [];
-        responseMessage = 'حدث خطأ أثناء الاستجابة';
+        responseMessage = 'حدث خطأ أثناء الاستجابة حاول لاحقا';
       });
     }
 
@@ -110,7 +110,7 @@ class _ProcessStoryState extends State<ProcessStory> {
             },
           ),
           title: const Text(
-            'معالجة القصة',
+            'تحليل القصة',
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -140,27 +140,27 @@ class _ProcessStoryState extends State<ProcessStory> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        const Card(
-                          color: Colors.transparent,
-                          elevation: 0,
-                          child: ListTile(
-                            horizontalTitleGap: -5,
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 0.0),
-                            leading: Icon(
-                              Icons.lightbulb,
-                              color: Colors.amber,
-                              size: 20,
-                            ),
-                            title: Text(
-                              "تبدو قصتك رائعة !",
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ),
-                        ),
+                        // const Card(
+                        //   color: Colors.transparent,
+                        //   elevation: 0,
+                        //   child: ListTile(
+                        //     horizontalTitleGap: -5,
+                        //     contentPadding:
+                        //         EdgeInsets.symmetric(horizontal: 0.0),
+                        //     leading: Icon(
+                        //       Icons.lightbulb,
+                        //       color: Colors.amber,
+                        //       size: 20,
+                        //     ),
+                        //     title: Text(
+                        //       "تبدو قصتك رائعة !",
+                        //       style: TextStyle(fontSize: 14),
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Text('نتائج المعالجة لقصة ${globalTitle}:',
+                          child: Text('نتائج التحليل لقصة ${globalTitle}:',
                               style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold)),
