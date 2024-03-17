@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
+//import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
 import 'dart:async';
 

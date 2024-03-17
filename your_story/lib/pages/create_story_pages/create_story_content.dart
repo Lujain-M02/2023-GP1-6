@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
+//import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
