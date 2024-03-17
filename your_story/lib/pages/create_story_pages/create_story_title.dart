@@ -94,7 +94,7 @@ Future<void> _validateTitle() async {
     } else {
       errorMessage = await validateTitle(value);
       if (!_isLoading) {
-        errorMessage = null; // Set error message to null when loading is done
+        errorMessage ??= null; // Set error message to null when loading is done
       }
     }
 
