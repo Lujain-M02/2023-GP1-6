@@ -120,12 +120,12 @@ class _StoriesPageState extends State<StoriesPage> {
   //   });
   // }
 
-  @override
-  void dispose() {
-    _storiesStreamController.close();
-    //_isMounted = false;
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _storiesStreamController.close();
+  //   //_isMounted = false;
+  //   super.dispose();
+  // }
 
   Widget _buildPdfCard(String title, String pdfUrl, String docId, int index,
       BuildContext context) {
