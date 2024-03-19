@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MyStories_page/searchBox.dart';
 import 'package:your_story/pages/MyStories_page/typeBar.dart';
@@ -152,8 +154,8 @@ class _MyStoriesState extends State<MyStories> {
                     child: Directionality(
                       textDirection: TextDirection.rtl,
                       child: Wrap(
-                        children: <Widget>[
-                          if (storyType == "drafted")
+                        children: <Widget>[                         
+                          if (storyType == "drafted")...[
                             ListTile(
                               leading: const Icon(Icons.edit),
                               title: const Text('تعديل'),
@@ -176,6 +178,43 @@ class _MyStoriesState extends State<MyStories> {
                                 );
                               },
                             ),
+                           ListTile(
+                              leading: const Icon(Icons.delete),
+                              title: const Text('حذف القصة'),
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pop(); // Close the bottom sheet
+                                deleteStory(docId, context, storyType);
+                              }),],
+                           if (storyType == "illustrated") ...[
+                             Padding(padding: const EdgeInsets.all(10),
+                            child: Row(
+                             mainAxisAlignment: MainAxisAlignment.start, 
+                             crossAxisAlignment: CrossAxisAlignment.center, 
+                              children: <Widget>[                          
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: CachedNetworkImage(          
+                                    imageUrl: fimg,          
+                                    width: 180,           
+                                    height: 180,           
+                                    fit: BoxFit.cover,
+                                      placeholder: (context, url) =>  Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    ),
+                                  ),const SizedBox(width: 8.0),
+                                     Expanded(
+                                          child: Text(
+                                                   title, 
+                                                   style: const TextStyle(
+                                                   fontSize: 20,
+                                                   fontWeight: FontWeight.bold,                                             
+                                                  ),
+                                                ),      
+                                              ),  
+                                  ]
+                                ),
+                          ),
                           ListTile(
                               leading: const Icon(Icons.delete),
                               title: const Text('حذف القصة'),
@@ -184,7 +223,6 @@ class _MyStoriesState extends State<MyStories> {
                                     .pop(); // Close the bottom sheet
                                 deleteStory(docId, context, storyType);
                               }),
-                          if (storyType == "illustrated") ...[
                             ListTile(
                                 leading: const Icon(Icons.share),
                                 title: const Text('مشاركة القصة'),
@@ -214,70 +252,7 @@ class _MyStoriesState extends State<MyStories> {
                                       .pop(); // Close the bottom sheet
                                   publishStory(docId, status, context);
                                 }),
-                                ListTile(
-                                leading: const Icon(Icons.details_rounded),
-                                title: const Text('تفاصيل'),
-                                onTap: () {
-                                  showModalBottomSheet(context: context,
-                                        builder: (BuildContext context) {
-                                          return Container(
-                                             height: size.height*0.4, 
-                                             padding: const EdgeInsets.all(20),
-                                             child: Column(
-                                             crossAxisAlignment: CrossAxisAlignment.start,
-                                             children: <Widget>[
-                                              Center(
-                                                child: Text(
-                                                   title, 
-                                                   style: const TextStyle(
-                                                   fontSize: 20,
-                                                   fontWeight: FontWeight.bold,                                             
-                                                  ),
-                                                ),
-                                              ),
-                                         const SizedBox(height: 20),
-                                           Expanded(
-                                           child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: fimg,
-                                                      width: double.infinity,                                                      height: 80,
-                                                      fit: BoxFit.cover,
-                                                      placeholder: (context,
-                                                              url) =>
-                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.asset(
-                                                        "assets/errorimg.png", // An error placeholder image
-                                                        width: 45,
-                                                        height: 45,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  )
-                                                ),
-                                                Center(
-                                                  child: Text(
-                                                    status
-                                                      ? 'منشوره'
-                                                      : 'غير منشوره',
-                                                   style: const TextStyle(
-                                                   fontSize: 16,
-                                                   fontWeight: FontWeight.bold,                                             
-                                                  ),
-          
-                                                  ),
-                                                )
-                                              ],
-                                           ),
-                                          );      
-                                        }
-                                      );
-                                    }
-                                  )
+                                              
                                 ],
                               ],
                             ),
