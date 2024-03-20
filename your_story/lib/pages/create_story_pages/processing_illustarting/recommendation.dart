@@ -14,35 +14,46 @@ class IllustRecom extends StatefulWidget {
 
 class _SystemRecom extends State<IllustRecom> {
   int numberOfImages = globaltopsisScoresList.length;
-  List<String> topClausesToIllustrate = [];
+  List<Map<String, dynamic>> recommendedClauses = [];
 
   @override
   void initState() {
     super.initState();
-    topClausesToIllustrate =
-        getTopClauses(globaltopsisScoresList); // Update topClausesToIllustrate
-    globaltopClausesToIllustrate = topClausesToIllustrate;
+    recommendedClauses = getSelectedClauses(
+        globaltopsisScoresList); // Update topClausesToIllustrate
   }
 
-  List<String> getTopClauses(List<Map<String, dynamic>> data) {
-    List<Map<String, dynamic>> allClausesWithScores = [];
+  List<Map<String, dynamic>> getSelectedClauses(
+      List<Map<String, dynamic>> scoresList) {
+    // First, find the highest scoring clause for each sentence
+    List<Map<String, dynamic>> withHighestClauses = scoresList.map((map) {
+      var highestScoringClause = (map['clauses'] as List<dynamic>)
+          .map((item) => Map<String, dynamic>.from(item))
+          .reduce((curr, next) => curr['score'] > next['score'] ? curr : next);
 
-    for (var item in data) {
-      List<dynamic> clauses = List.from(item['clauses']);
-      clauses.sort((a, b) => b['score'].compareTo(a['score']));
-      if (clauses.isNotEmpty) {
-        var clause = clauses.first;
-        allClausesWithScores.add({
-          'clause': clause['clause'],
-          'score': clause['score'],
-        });
+      return {
+        "sentence": map['sentence'],
+        "clause": highestScoringClause,
+      };
+    }).toList();
+
+    // Find the top X scoring clauses without altering the original order
+    List<dynamic> scores =
+        withHighestClauses.map((e) => e['clause']['score']).toList();
+    scores.sort((a, b) => b.compareTo(a));
+    double cutoffScore = scores.length > numberOfImages
+        ? scores[numberOfImages - 1]
+        : scores.last;
+
+    // Clear clauses that are not in the top X scores
+    withHighestClauses = withHighestClauses.map((e) {
+      if (e['clause']['score'] < cutoffScore) {
+        return {"sentence": e['sentence'], "clause": {}};
       }
-    }
-    print("the array: $allClausesWithScores");
-    return allClausesWithScores
-        .take(numberOfImages)
-        .map((item) => item['clause'].toString())
-        .toList();
+      return e;
+    }).toList();
+
+    return withHighestClauses;
   }
 
   @override
@@ -148,10 +159,10 @@ class _SystemRecom extends State<IllustRecom> {
                             onChanged: (int? newValue) {
                               setState(() {
                                 numberOfImages = newValue!;
-                                topClausesToIllustrate =
-                                    getTopClauses(globaltopsisScoresList);
-                                globaltopClausesToIllustrate =
-                                    topClausesToIllustrate;
+                                recommendedClauses =
+                                    getSelectedClauses(globaltopsisScoresList);
+                                // globaltopClausesToIllustrate =
+                                //     topClausesToIllustrate;
                               });
                             },
                           ),
@@ -179,36 +190,80 @@ class _SystemRecom extends State<IllustRecom> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: topClausesToIllustrate
-                        .map((clause) => Container(
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(123, 187, 222, 251),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    showCustomModalBottomSheet(
-                                        context, clausesContainer(clause));
-                                  },
-                                  child: Text(
-                                    "عبارة: ${clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')}",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: YourStoryStyle.s2Color),
-                                  ),
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: recommendedClauses.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        Map<String, dynamic> sentenceData = entry.value;
+
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: YourStoryStyle.primarycolor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'فقرة -${index + 1}', // Display 'Sentence -X'
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ))
-                        .toList(),
-                  ),
-                ),
+                              if (sentenceData['clause'] != null &&
+                                  sentenceData['clause'].isNotEmpty)
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 4),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: const BoxDecoration(
+                                        color:
+                                            Color.fromARGB(255, 187, 222, 251),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        showCustomModalBottomSheet(
+                                            context,
+                                            clausesContainer(
+                                                sentenceData['clause']
+                                                    ['clause']));
+                                      },
+                                      child: Text(
+                                        sentenceData['clause'][
+                                            'clause'], // Display the clause text
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color:
+                                              Colors.blue, // Change as needed
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              else
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "يبدو أنه لم يتم ترشيح أي عبارة من هذه الفقرة",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    )
+                    ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(
@@ -229,6 +284,13 @@ class _SystemRecom extends State<IllustRecom> {
                           ConfirmationDialog.show(context,
                               "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
                               () {
+                            recommendedClauses.forEach((sentenceData) {
+                              if (sentenceData['clause'] != null &&
+                                  sentenceData['clause'].isNotEmpty) {
+                                globaltopClausesToIllustrate
+                                    .add(sentenceData['clause']['clause']);
+                              }
+                            });
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => Illustration()),
