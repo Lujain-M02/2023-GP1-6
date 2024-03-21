@@ -76,9 +76,9 @@ class _Filtering extends State<Filtering> {
       case 'عالية الأهمية':
         return Colors.green;
       case 'متوسطة الأهمية':
-        return Colors.orange;
+        return const Color.fromARGB(255, 159, 138, 0);
       case 'منخفضة الأهمية':
-        return const Color.fromARGB(255, 222, 193, 1);
+        return Colors.orange;
       default:
         return Colors.black; // Default color
     }
@@ -104,7 +104,7 @@ class _Filtering extends State<Filtering> {
             // subtitle: Text(
             //     'الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
             subtitle: Text(
-              'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
+              'التصنيف: $scoreCategory ',
               style: TextStyle(
                 color: getColorForCategory(scoreCategory),
               ),
@@ -119,7 +119,7 @@ class _Filtering extends State<Filtering> {
         sentenceWidgets.add(Padding(
           padding: const EdgeInsets.all(8.0),
           child: ExpansionTile(
-            title: Text(sentence),
+            title: Text(sentence, style: TextStyle(fontWeight: FontWeight.bold,),),
             backgroundColor: const Color.fromARGB(255, 187, 222, 251),
             collapsedBackgroundColor: const Color.fromARGB(160, 187, 222, 251),
             shape: const RoundedRectangleBorder(
