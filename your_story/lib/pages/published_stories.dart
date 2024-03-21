@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/pages/MyStories_Page/pdf_methods.dart';
@@ -158,9 +160,26 @@ class _StoriesPageState extends State<StoriesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Image.asset(
-                      "assets/6.png", 
-                          ),
+              child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: fimg,                                                      
+                                                      fit: BoxFit.cover,
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Image.asset(
+                                                        "assets/errorimg.png", // An error placeholder image
+                                                        width: 45,
+                                                        height: 45,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  )
                   ),                                                 
             Center(
               child: Text(
