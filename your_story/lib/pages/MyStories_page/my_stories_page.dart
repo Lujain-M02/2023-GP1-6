@@ -292,7 +292,7 @@ class _MyStoriesState extends State<MyStories> {
                         margin: const EdgeInsets.symmetric(
                           horizontal: kDefaultPadding,
                           vertical: kDefaultPadding / 2,
-                        ),
+                         ),
                         height: 140, //140
                         child: InkWell(
                           onTap:(){
@@ -404,12 +404,7 @@ class _MyStoriesState extends State<MyStories> {
                                             ),
                                           )
                                         ],
-                                      )
-          
-                                      // child: Image.asset(
-                                      //   "assets/pdfimg.png",
-                                      //   fit: BoxFit.cover,
-                                      // ),
+                                      )          
                                       ),
                                 ),
                               ),
@@ -501,7 +496,8 @@ class _MyStoriesState extends State<MyStories> {
                           ),
                         ),
                       );
-                    })
+                    },padding: const EdgeInsets.only(bottom: 80),
+                    )
               ])            
             );
           }),
