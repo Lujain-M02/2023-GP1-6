@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_story/alerts.dart';
-import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
+import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 String? firstImg;
 
@@ -158,31 +158,35 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return pdf.save();
   }
 
-  Future<void> generateAndUploadPdf() async {
-    try {
-      final pdfBytes = await generatePdf(globalTitle);
+Future<void> generateAndUploadPdf() async {
+  try {
+    final pdfBytes = await generatePdf(globalTitle);
 
-      await addPdfToCurrentUser(globalTitle, pdfBytes, firstImg!);
-      // After successful generation and upload, clear global variables
-      clearGlobalVariables();
-      // After successful generation and upload, navigate to the "My Stories" page.
-      _navigateToMyStoriesPage();
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: 'تم صناعة القصة بنجاح',
-          icon: Icons.check_circle,
-        ),
-      );
-    } catch (e) {
-      print("Error generating or uploading PDF: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-          content: 'حصل خطأ حاول مرة أخرى',
-          icon: Icons.error,
-        ),
-      );
-    }
+    final String pdfUrl = await addPdfToCurrentUser(globalTitle, pdfBytes, firstImg!);
+    
+    // Navigate to the ViewPDFPage with the generated PDF URL
+    _navigateToViewPage(pdfUrl, globalTitle);
+
+    // After successful generation and upload, clear global variables
+    clearGlobalVariables();
+    // After successful generation and upload, navigate to the "My Stories" page.
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        content: 'تم صناعة القصة بنجاح',
+        icon: Icons.check_circle,
+      ),
+    );
+  } catch (e) {
+    print("Error generating or uploading PDF: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar(
+        content: 'حصل خطأ حاول مرة أخرى',
+        icon: Icons.error,
+      ),
+    );
   }
+}
+
 
   void clearGlobalVariables() {
     globalTitle = "";
@@ -196,10 +200,13 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globalDraftID = null;
   }
 
-  void _navigateToMyStoriesPage() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainPage(initialIndex: 1)),
-        (Route<dynamic> route) => false);
+  void _navigateToViewPage(String pdfUrl, String title) {
+       Navigator.push(
+         context,
+         MaterialPageRoute(
+          builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
+     )
+   );
   }
 
   Future<String> uploadPdfToFirebaseStorage(
@@ -215,56 +222,105 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return downloadUrl;
   }
 
-  Future<void> addPdfToCurrentUser(
-    String title,
-    Uint8List pdfFile,
-    String firstImageFile,
-  ) async {
-    try {
-      final User? user = FirebaseAuth.instance.currentUser;
+  // Future<void> addPdfToCurrentUser(
+  //   String title,
+  //   Uint8List pdfFile,
+  //   String firstImageFile,
+  // ) async {
+  //   try {
+  //     final User? user = FirebaseAuth.instance.currentUser;
 
-      if (user != null) {
-        DocumentReference userRef =
-            FirebaseFirestore.instance.collection("User").doc(user.uid);
-        // Upload PDF to Firebase Storage and get the download URL
-        String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
+  //     if (user != null) {
+  //       DocumentReference userRef =
+  //           FirebaseFirestore.instance.collection("User").doc(user.uid);
+  //       // Upload PDF to Firebase Storage and get the download URL
+  //       String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
 
-        // Add PDF reference to Firestore
-        CollectionReference storiesCollection = userRef.collection("Story");
+  //       // Add PDF reference to Firestore
+  //       CollectionReference storiesCollection = userRef.collection("Story");
 
-        // await storiesCollection.add({
-        // 'title': title,
-        // 'type': 'illustrated',
-        // 'published': false, // Use a boolean for published status
-        // 'url': pdfUrl, // Store the URL
-        // 'imageUrl': firstImageFile, // Store the image URL
-        // });
+  //       // await storiesCollection.add({
+  //       // 'title': title,
+  //       // 'type': 'illustrated',
+  //       // 'published': false, // Use a boolean for published status
+  //       // 'url': pdfUrl, // Store the URL
+  //       // 'imageUrl': firstImageFile, // Store the image URL
+  //       // });
 
-        if (globalDraftID != null) {
-          // Draft ID exists, so update it to be illustrated
-          await storiesCollection.doc(globalDraftID).update({
-            'title': title,
-            'type': 'illustrated',
-            'published': false, // Use a boolean for published status
-            'url': pdfUrl, // Store the URL
-            'imageUrl': firstImageFile, // Store the image URL
-          });
-        } else {
-          await storiesCollection.add({
-            'title': title,
-            'type': 'illustrated',
-            'published': false, // Use a boolean for published status
-            'url': pdfUrl, // Store the URL
-            'imageUrl': firstImageFile, // Store the image URL
-          });
-        }
+  //       if (globalDraftID != null) {
+  //         // Draft ID exists, so update it to be illustrated
+  //         await storiesCollection.doc(globalDraftID).update({
+  //           'title': title,
+  //           'type': 'illustrated',
+  //           'published': false, // Use a boolean for published status
+  //           'url': pdfUrl, // Store the URL
+  //           'imageUrl': firstImageFile, // Store the image URL
+  //         });
+  //       } else {
+  //         await storiesCollection.add({
+  //           'title': title,
+  //           'type': 'illustrated',
+  //           'published': false, // Use a boolean for published status
+  //           'url': pdfUrl, // Store the URL
+  //           'imageUrl': firstImageFile, // Store the image URL
+  //         });
+  //       }
 
-        print("Story added successfully!");
+  //       print("Story added successfully!");
+  //     }
+  //   } catch (e) {
+  //     print("Error adding PDF: $e");
+  //   }
+  // }
+
+  Future<String> addPdfToCurrentUser(
+  String title,
+  Uint8List pdfFile,
+  String firstImageFile,
+) async {
+  try {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection("User").doc(user.uid);
+      // Upload PDF to Firebase Storage and get the download URL
+      String pdfUrl = await uploadPdfToFirebaseStorage(pdfFile, title);
+
+      // Add PDF reference to Firestore
+      CollectionReference storiesCollection = userRef.collection("Story");
+
+      if (globalDraftID != null) {
+        // Draft ID exists, so update it to be illustrated
+        await storiesCollection.doc(globalDraftID).update({
+          'title': title,
+          'type': 'illustrated',
+          'published': false, // Use a boolean for published status
+          'url': pdfUrl, // Store the URL
+          'imageUrl': firstImageFile, // Store the image URL
+        });
+      } else {
+        await storiesCollection.add({
+          'title': title,
+          'type': 'illustrated',
+          'published': false, // Use a boolean for published status
+          'url': pdfUrl, // Store the URL
+          'imageUrl': firstImageFile, // Store the image URL
+        });
       }
-    } catch (e) {
-      print("Error adding PDF: $e");
+
+      print("Story added successfully!");
+      return pdfUrl; // Return the PDF URL after successful addition
     }
+  } catch (e) {
+    print("Error adding PDF: $e");
+    throw e; // Re-throw the exception to handle it in the calling function if needed
   }
+  return ''; // Return an empty string if there's an issue
+}
+
+
+
 
   Future<Uint8List> _loadImage(String path) async {
     final data = await rootBundle.load(path);

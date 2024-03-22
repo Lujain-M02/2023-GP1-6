@@ -51,6 +51,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:your_story/pages/MainPage.dart';
 
 class ViewPDFPage extends StatelessWidget {
   final String pdfUrl;
@@ -68,8 +69,18 @@ Widget build(BuildContext context) {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(storyTitle),
-        ),
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      },
+    ),
+    title: Text(storyTitle),
+    automaticallyImplyLeading: false,
+      ),
         body: const PDF().cachedFromUrl(
           pdfUrl,
           placeholder: (progress) => Center(child: Text('جاري التحميل: $progress %')),
