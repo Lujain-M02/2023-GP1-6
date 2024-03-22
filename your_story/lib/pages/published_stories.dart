@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
@@ -143,7 +144,7 @@ class _StoriesPageState extends State<StoriesPage> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: const Color(0xFFFF5F9FD),
@@ -156,68 +157,87 @@ class _StoriesPageState extends State<StoriesPage> {
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: fimg,                                                      
-                                                      fit: BoxFit.cover,
-                                                      placeholder: (context,
-                                                              url) =>
-                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Image.asset(
-                                                        "assets/errorimg.png", // An error placeholder image
-                                                        width: 45,
-                                                        height: 45,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  )
-                  ),                                                 
-            Center(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF475269),
+        child:Stack(children: <Widget>[
+          Positioned(right: 0,
+          left: 3,
+          child: Hero(tag: index,
+          child: Container(
+            height: 130,
+            child: Stack(
+              children: <Widget>[
+                Image.asset(
+                  width: 150,
+                  height: 150,
+                  "assets/under2.png",
+                  fit: BoxFit.cover,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: IconButton(
-                    icon: const Icon(Icons.share,
-                        color: Color.fromARGB(255, 5, 0, 58)),
-                    onPressed: () => sharePdf(pdfUrl, title, context),
-                  ),
-                ),
-                Expanded(
-                  child: 
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_downward,
+                Positioned(
+                  top: 19.5,
+                  left: 36,
+                  child:ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: fimg,
+                      width: 80.5,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      placeholder: 
+                      (context,url)=>Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),                           
+                      errorWidget: (context,url, error) =>                                                          
+                      Image.asset(                                                        
+                        "assets/errorimg.png", // An error placeholder image                                                        
+                        width: 45,                                                        
+                        height: 45,                                                        
+                        fit: BoxFit.cover,
+                     ),
                     ),
-                    onPressed: () =>
-                        downloadAndSaveFile(pdfUrl, title,context,)
-                  ),
+                  ) ,
                 ),
+                Positioned(top: 83,
+                child: Image.asset(
+                  "assets/pdfupper.png",
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                ),
+                )
               ],
             ),
-          ],
-        ),
+          )
+          ,)
+          ),
+          const SizedBox(height: 10,),
+          Padding(padding: const EdgeInsets.only(top: 130),
+          child: Column(children: [Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color:const Color(0xFF475269),
+              ),
+             maxLines: 1,
+             overflow: TextOverflow.ellipsis,                                                             
+            ),
+          ),
+          Row(
+            children: [Expanded(
+              child: 
+              IconButton(
+              icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),),
+              onPressed: () => sharePdf(pdfUrl, title, context),)
+              ),
+              Expanded(
+              child:                     
+              IconButton(  
+                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),),   
+                onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
+                )                                                             
+              )
+              ],
+          )
+          ],),)
+        ],) 
       ),
     );
   }
@@ -399,6 +419,7 @@ class _StoriesPageState extends State<StoriesPage> {
               child: const Center(
                 child: Text(
                   'يبدو أنه لا يوجد أي قصص منشوره',
+                  style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -427,7 +448,7 @@ class _StoriesPageState extends State<StoriesPage> {
           width: double.infinity, 
     alignment: Alignment.centerRight,
     child: const Text(
-            "القصص المنشورة حديثا",
+            "القصص المنشورة حديثًا",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),),
@@ -441,6 +462,7 @@ class _StoriesPageState extends State<StoriesPage> {
                         stories[index].data() as Map<String, dynamic>?;
                     final String title = pdfData?['title'] ?? 'Untitled';
                     final String pdfUrl = pdfData?['url'] ?? '#';
+                    final String fimg = pdfData?['imageUrl'] ?? '#';                
                   return  GestureDetector(
         onTap: () {
           Navigator.push(
@@ -451,9 +473,9 @@ class _StoriesPageState extends State<StoriesPage> {
                           );
         },
         child:  Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(2),
                     child: SizedBox(
-                      width: 150,
+                      width: 205,
                       child: AspectRatio(
                         aspectRatio: 0.83,
                         child: Stack(
@@ -462,52 +484,89 @@ class _StoriesPageState extends State<StoriesPage> {
                             ClipPath(
                               clipper: CategoryCustomShape(),
                               child: AspectRatio(
-                                aspectRatio: 1.025,
+                                aspectRatio: 1,
                                 child: Container(
                                   color: kSecondaryColor, 
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[    
-                                      Text(title, style: const TextStyle(fontSize: 15)),
-                                      Row(             
-                children: [
-                  Padding(padding: const EdgeInsets.only(bottom: 0,right: 25,),
-                    child: IconButton(
-                      icon: const Icon(Icons.share,
-                          color: Color.fromARGB(255, 5, 0, 58)),
-                      onPressed: () => sharePdf(pdfUrl, title, context),
-                    ),
-                  ),
-             Padding(padding: const EdgeInsets.only(bottom: 0,),             
-                  child: 
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_downward,
-                      ),
-                      onPressed: () =>
-                          downloadAndSaveFile(pdfUrl, title,context,)
-                    ),
-                  ),
-                ],
-              ),
-            
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[                                                                                
+                                      Padding(padding: EdgeInsets.only(top: 100),),
+                                      Text(title, style: const TextStyle(fontSize: 20)),
+                                      Row(     
+                                        mainAxisAlignment: MainAxisAlignment.center,    
+                                        children: [                  
+                                          IconButton(                      
+                                            icon: const Icon(FontAwesomeIcons.shareFromSquare,size: 19,                          
+                                            color: Color.fromARGB(255, 5, 0, 58)),                      
+                                            onPressed: () => sharePdf(pdfUrl, title, context),                    
+                                            ),             
+                                          IconButton(                      
+                                            icon: const Icon(                        
+                                              FontAwesomeIcons.download,size: 19,color: Color.fromARGB(255, 5, 0, 58)                      
+                                              ),                      
+                                              onPressed: () =>                          
+                                              downloadAndSaveFile(pdfUrl, title,context,)                    
+                                              ),                
+                                        ],              
+                                      ),            
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              child: AspectRatio(
-                                aspectRatio: 1.34,
-                                child: Image.asset(
-                                  "assets/6.png", 
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                            Container(color: Color.fromARGB(0, 104, 58, 183),        
+                            padding: const EdgeInsets.only(left:2, top: 1),        
+                            margin: const EdgeInsets.all(1),    
+                            child:  Stack(              
+                              children: <Widget>[                               
+                                Positioned(top: -9,                                 
+                                left: 20,                                
+                                child:Container(                                      
+                                  height: 130,                                      
+                                  child: Stack(                                        
+                                    children: <Widget>[                                                        
+                                      Image.asset(                                           
+                                      width: 150,                                             
+                                      height: 130,                                            
+                                      "assets/under1.png",                                            
+                                      fit: BoxFit.cover,                                          
+                                      ),                                          
+                                      Positioned(                                             
+                                        top: 37,                                             
+                                        left: 26,                                            
+                                        child: ClipRRect(                                                    
+                                          borderRadius:                                                        
+                                          BorderRadius.circular(8.0),                                     
+                                          child: CachedNetworkImage(                                       
+                                            imageUrl: fimg,                                                      
+                                            width: 101,                                                      
+                                            height: 67,                                                      
+                                            fit: BoxFit.cover,                                                      
+                                            placeholder: (context,url) =>
+                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
+                                                      errorWidget: (context,url, error) =>
+                                                          Image.asset(                                     
+                                                            "assets/errorimg.png", // An error placeholder image                
+                                                            width: 45,                                                        
+                                                            height: 45,                                                        
+                                                            fit: BoxFit.cover,                                                     
+                                                          ),
+                                                    ),
+                                                  )),                                          
+                                          Positioned(
+                                            top: 69,
+                                            right: -3,
+                                           child:  Image.asset(
+                                              "assets/pdfupper.png",
+                                              width: 60,
+                                              height: 60,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),                                                    
+                                        ]        
+                                      )        
+                                    ),
+                                )]))
                           ],
                         ),
                       ),
@@ -516,7 +575,9 @@ class _StoriesPageState extends State<StoriesPage> {
                 },
               ),
             ),
-              Padding(
+            SizedBox(height: 5,),
+            Divider(height: 5),
+            Padding(
           padding: const EdgeInsets.all(5),
           child: Container(
     width: double.infinity, 
@@ -561,43 +622,6 @@ class _StoriesPageState extends State<StoriesPage> {
         },
       ),
 
-      //     return SingleChildScrollView(
-      //       child: Container(
-      //         padding: const EdgeInsets.only(
-      //           left: 20,
-      //           top: 30,
-      //           right: 20,
-      //           //bottom: 700,
-      //         ),
-      //         decoration: const BoxDecoration(
-      //           color: Color.fromARGB(255, 255, 255, 255),
-      //           borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-      //         ),
-      //         child: GridView.builder(
-      //           shrinkWrap: true,
-      //           physics: const NeverScrollableScrollPhysics(),
-      //           padding: const EdgeInsets.all(20),
-      //           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //             crossAxisCount: 2,
-      //             crossAxisSpacing: 10,
-      //             mainAxisSpacing: 10,
-      //             childAspectRatio: 0.75,
-      //           ),
-      //           itemCount: stories.length,
-      //           itemBuilder: (context, index) {
-      //             final pdfData =
-      //                 stories[index].data() as Map<String, dynamic>?;
-      //             final String title = pdfData?['title'] ?? 'Untitled';
-      //             final String pdfUrl = pdfData?['url'] ?? '#';
-      //             final String docId = stories[index].id;
-            
-      //             return _buildPdfCard(title, pdfUrl, docId, index, context);
-      //           },
-      //         ),
-      //       ),
-      //     );
-      //   },
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
