@@ -64,27 +64,35 @@ class ViewPDFPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MainPage()),
-        );
-      },
-    ),
-    title: Text(storyTitle),
-    automaticallyImplyLeading: false,
-      ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              if (Navigator.of(context).canPop()) {
+                // If there are routes in the stack, pop the current route
+                Navigator.of(context).pop();
+              } else {
+                // If the stack is empty, navigate to the MainPage without allowing back navigation
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                  (Route<dynamic> route) => false,
+                );
+              }
+            },
+          ),
+          title: Text(storyTitle),
+          automaticallyImplyLeading: false,
+        ),
         body: const PDF().cachedFromUrl(
           pdfUrl,
-          placeholder: (progress) => Center(child: Text('جاري التحميل: $progress %')),
-          errorWidget: (error) => Center(child: Text("حصل خطأ: ${error.toString()}")),
+          placeholder: (progress) =>
+              Center(child: Text('جاري التحميل: $progress %')),
+          errorWidget: (error) =>
+              Center(child: Text("حصل خطأ: ${error.toString()}")),
         ),
       ),
     );
