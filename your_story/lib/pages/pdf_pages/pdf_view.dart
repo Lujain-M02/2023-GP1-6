@@ -185,6 +185,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../MyStories_page/pdf_methods.dart';
 
 class ViewPDFPage extends StatefulWidget {
@@ -216,7 +217,17 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
             icon: Icon(Icons.arrow_back),
             color: Colors.white,
             onPressed: () {
-              if (Navigator.of(context).canPop()) {
+              if (ModalRoute.of(context)?.settings.name ==
+                  'PdfGenerationPage') {
+                // Navigate to MyStoriesPage if coming from PdfGenerationPage
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MyStories()), // Correct the destination page as per your project structure
+                  (Route<dynamic> route) => false,
+                );
+                // If he comes from other pages
+              } else if (Navigator.of(context).canPop()) {
                 // If there are routes in the stack, pop the current route
                 Navigator.of(context).pop();
               } else {
