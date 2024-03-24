@@ -14,11 +14,13 @@ class Filtering extends StatefulWidget {
 class _Filtering extends State<Filtering> {
   Map<String, bool> selections = {};
   double maxScore = 0;
+  double minScore = 0;
 
   @override
   void initState() {
     super.initState();
     maxScore = getMaxScore();
+    minScore=getMinScore();
 
     // Initialize all selections to false based on the clauses in globaltopsisScoresList.
     for (var sentenceMap in globaltopsisScoresList) {
@@ -38,20 +40,36 @@ class _Filtering extends State<Filtering> {
     });
   }
 
-  // Function to categorize scores into high, medium, or low dynamically based on the range
+  // // Function to categorize scores into high, medium, or low dynamically based on the range
+  // String getCategoryFromScore(double score) {
+  //   // Calculate thresholds based on the maximum score
+  //   double highThreshold = maxScore * 0.75;
+  //   double mediumThreshold = maxScore * 0.5;
+  //   // Categorize the score
+  //   if (score >= highThreshold) {
+  //     return 'عالية الأهمية';
+  //   } else if (score >= mediumThreshold) {
+  //     return 'متوسطة الأهمية';
+  //   } else {
+  //     return 'منخفضة الأهمية';
+  //   }
+  // }
+
   String getCategoryFromScore(double score) {
-    // Calculate thresholds based on the maximum score
-    double highThreshold = maxScore * 0.75;
-    double mediumThreshold = maxScore * 0.5;
-    // Categorize the score
-    if (score >= highThreshold) {
-      return 'عالية الأهمية';
-    } else if (score >= mediumThreshold) {
-      return 'متوسطة الأهمية';
+    // Calculate the range and divide it into thirds
+    double rangeThird = (maxScore - minScore) / 3.0;
+    double firstThreshold = minScore + rangeThird;
+    double secondThreshold = minScore + rangeThird * 2;
+
+    // Categorize the score based on the thresholds
+    if (score >= secondThreshold) {
+        return "عالية الأهمية"; // High importance
+    } else if (score >= firstThreshold) {
+        return "متوسطة الأهمية"; // Medium importance
     } else {
-      return 'منخفضة الأهمية';
+        return "منخفضة الأهمية"; // Low importance
     }
-  }
+}
 
   double getMaxScore() {
     double maxScore =
@@ -69,6 +87,23 @@ class _Filtering extends State<Filtering> {
     }
 
     return maxScore;
+  }
+
+    double getMinScore() {
+    double minScore =100;
+
+    // Iterate through each item in the list
+    for (var item in globaltopsisScoresList) {
+      // Iterate through each clause in the item
+      for (var clauseMap in item['clauses']) {
+        double score = clauseMap['score']; // Extract the score
+        if (score < minScore) {
+          minScore = score; // Update minScore if a higher score is found
+        }
+      }
+    }
+
+    return minScore;
   }
 
   Color getColorForCategory(String category) {
@@ -102,9 +137,10 @@ class _Filtering extends State<Filtering> {
           return CheckboxListTile(
             title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
             // subtitle: Text(
-            //     'الدرجة: ${score.toStringAsFixed(2)}'), // Display the score as a subtitle
+            //     'الدرجة: ${score.toStringAsFixed(2)}'), // only the score as a subtitle
             subtitle: Text(
-              'التصنيف: $scoreCategory ',
+              //'التصنيف: $scoreCategory', // without score
+              'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
               style: TextStyle(
                 color: getColorForCategory(scoreCategory),
               ),
