@@ -25,35 +25,54 @@ class _SystemRecom extends State<IllustRecom> {
 
   List<Map<String, dynamic>> getSelectedClauses(
       List<Map<String, dynamic>> scoresList) {
-    // First, find the highest scoring clause for each sentence
-    List<Map<String, dynamic>> withHighestClauses = scoresList.map((map) {
-      var highestScoringClause = (map['clauses'] as List<dynamic>)
-          .map((item) => Map<String, dynamic>.from(item))
-          .reduce((curr, next) => curr['score'] > next['score'] ? curr : next);
+    List<Map<String, dynamic>> selectedClauses = [];
 
-      return {
-        "sentence": map['sentence'],
-        "clause": highestScoringClause,
-      };
-    }).toList();
+    if (numberOfImages <= scoresList.length) {
+      List<Map<String, dynamic>> withHighestClauses = scoresList.map((map) {
+        // Find the highest scoring clause for each sentence
+        var highestScoringClause = (map['clauses'] as List<dynamic>)
+            .map((item) => Map<String, dynamic>.from(item))
+            .reduce(
+                (curr, next) => curr['score'] > next['score'] ? curr : next);
 
-    // Find the top X scoring clauses without altering the original order
-    List<dynamic> scores =
-        withHighestClauses.map((e) => e['clause']['score']).toList();
-    scores.sort((a, b) => b.compareTo(a));
-    double cutoffScore = scores.length > numberOfImages
-        ? scores[numberOfImages - 1]
-        : scores.last;
+        // Initially add only the highest scoring clause
+        return {
+          "sentence": map['sentence'],
+          "clauses": [
+            highestScoringClause
+          ], // Store clause in a list to accommodate multiple items
+        };
+      }).toList();
 
-    // Clear clauses that are not in the top X scores
-    withHighestClauses = withHighestClauses.map((e) {
-      if (e['clause']['score'] < cutoffScore) {
-        return {"sentence": e['sentence'], "clause": {}};
-      }
-      return e;
-    }).toList();
+      // Find the top X scoring clauses without altering the original order
+      List<dynamic> scores = withHighestClauses
+          .expand((e) => e['clauses'].map((clause) => clause['score']))
+          .toList();
+      scores.sort((a, b) => b.compareTo(a));
 
-    return withHighestClauses;
+      double cutoffScore = scores.length > numberOfImages
+          ? scores[numberOfImages - 1]
+          : scores.last;
+
+      // Clear clauses that are not in the top X scores
+      withHighestClauses = withHighestClauses.map((e) {
+        var clauses = e['clauses'] as List;
+        var topClauses =
+            clauses.where((clause) => clause['score'] >= cutoffScore).toList();
+        return {
+          "sentence": e['sentence'],
+          "clauses": topClauses.isEmpty
+              ? []
+              : topClauses, // Ensure clause key is always a list
+        };
+      }).toList();
+      return withHighestClauses;
+    } else {
+      // Handle the case where numberOfImages is greater than the length of scoresList
+      // For example, you could add additional logic here to handle other clauses or different scenarios
+    }
+
+    return globaltopsisScoresList;
   }
 
   @override
@@ -209,44 +228,45 @@ class _SystemRecom extends State<IllustRecom> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'فقرة -${index + 1}', // Display 'Sentence -X'
+                                'فقرة -${index + 1}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
                                 ),
                               ),
-                              if (sentenceData['clause'] != null &&
-                                  sentenceData['clause'].isNotEmpty)
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 4),
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: const BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 187, 222, 251),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        showCustomModalBottomSheet(
-                                            context,
-                                            clausesContainer(
-                                                sentenceData['clause']
-                                                    ['clause']));
-                                      },
-                                      child: Text(
-                                        sentenceData['clause'][
-                                            'clause'], // Display the clause text
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color:
-                                              Colors.blue, // Change as needed
+                              // Check if clause data exists and is a list
+                              if (sentenceData['clauses'] != null &&
+                                  sentenceData['clauses'] is List &&
+                                  sentenceData['clauses'].isNotEmpty)
+                                ...sentenceData['clauses'].map((clause) {
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(top: 4),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(
+                                              255, 187, 222, 251),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          showCustomModalBottomSheet(
+                                              context,
+                                              clausesContainer(
+                                                  clause['clause']));
+                                        },
+                                        child: Text(
+                                          clause['clause'],
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blue,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
+                                  );
+                                }).toList()
                               else
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
@@ -262,8 +282,7 @@ class _SystemRecom extends State<IllustRecom> {
                           ),
                         );
                       }).toList(),
-                    )
-                    ),
+                    )),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(
@@ -284,13 +303,13 @@ class _SystemRecom extends State<IllustRecom> {
                           ConfirmationDialog.show(context,
                               "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
                               () {
-                            recommendedClauses.forEach((sentenceData) {
-                              if (sentenceData['clause'] != null &&
-                                  sentenceData['clause'].isNotEmpty) {
+                            globaltopClausesToIllustrate = [];
+                            for (var sentence in recommendedClauses) {
+                              for (var clause in sentence['clauses']) {
                                 globaltopClausesToIllustrate
-                                    .add(sentenceData['clause']['clause']);
+                                    .add(clause['clause']);
                               }
-                            });
+                            }
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => Illustration()),
@@ -367,3 +386,115 @@ class _SystemRecom extends State<IllustRecom> {
     );
   }
 }
+
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: recommendedClauses.asMap().entries.map((entry) {
+                    //     int index = entry.key;
+                    //     Map<String, dynamic> sentenceData = entry.value;
+
+                    //     return Container(
+                    //       width: MediaQuery.of(context).size.width,
+                    //       margin: const EdgeInsets.only(bottom: 10),
+                    //       padding: const EdgeInsets.all(8),
+                    //       decoration: BoxDecoration(
+                    //           color: YourStoryStyle.primarycolor,
+                    //           borderRadius:
+                    //               const BorderRadius.all(Radius.circular(10))),
+                    //       child: Column(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text(
+                    //             'فقرة -${index + 1}', // Display 'Sentence -X'
+                    //             style: const TextStyle(
+                    //               fontSize: 16,
+                    //               color: Colors.white,
+                    //             ),
+                    //           ),
+                    //           if (sentenceData['clause'] != null &&
+                    //               sentenceData['clause'].isNotEmpty)
+                    //             Align(
+                    //               alignment: Alignment.center,
+                    //               child: Container(
+                    //                 margin: const EdgeInsets.only(top: 4),
+                    //                 padding: const EdgeInsets.all(8),
+                    //                 decoration: const BoxDecoration(
+                    //                     color:
+                    //                         Color.fromARGB(255, 187, 222, 251),
+                    //                     borderRadius: BorderRadius.all(
+                    //                         Radius.circular(10))),
+                    //                 child: TextButton(
+                    //                   onPressed: () {
+                    //                     showCustomModalBottomSheet(
+                    //                         context,
+                    //                         clausesContainer(
+                    //                             sentenceData['clause']
+                    //                                 ['clause']));
+                    //                   },
+                    //                   child: Text(
+                    //                     sentenceData['clause'][
+                    //                         'clause'], // Display the clause text
+                    //                     style: const TextStyle(
+                    //                       fontSize: 14,
+                    //                       color:
+                    //                           Colors.blue, // Change as needed
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             )
+                    //           else
+                    //             const Padding(
+                    //               padding: EdgeInsets.all(8.0),
+                    //               child: Text(
+                    //                 "يبدو أنه لم يتم ترشيح أي عبارة من هذه الفقرة",
+                    //                 style: TextStyle(
+                    //                   fontSize: 16,
+                    //                   color: Colors.white,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //         ],
+                    //       ),
+                    //     );
+                    //   }).toList(),
+                    // )
+
+                    //   List<Map<String, dynamic>> getSelectedClauses(
+//       List<Map<String, dynamic>> scoresList) {
+//         List<Map<String, dynamic>> selectedClauses = [];
+//     // First, find the highest scoring clause for each sentence
+
+//     if (numberOfImages<=scoresList.length){
+//     List<Map<String, dynamic>> withHighestClauses = scoresList.map((map) {
+//       var highestScoringClause = (map['clauses'] as List<dynamic>)
+//           .map((item) => Map<String, dynamic>.from(item))
+//           .reduce((curr, next) => curr['score'] > next['score'] ? curr : next);
+// print("with highest: $highestScoringClause");
+//       return {
+//         "sentence": map['sentence'],
+//         "clause": highestScoringClause,
+//       };
+//     }).toList();
+
+//     // Find the top X scoring clauses without altering the original order
+//     List<dynamic> scores =
+//         withHighestClauses.map((e) => e['clause']['score']).toList();
+//     scores.sort((a, b) => b.compareTo(a));
+//     double cutoffScore = scores.length > numberOfImages
+//         ? scores[numberOfImages - 1]
+//         : scores.last;
+
+//     // Clear clauses that are not in the top X scores
+//     withHighestClauses = withHighestClauses.map((e) {
+//       if (e['clause']['score'] < cutoffScore) {
+//         return {"sentence": e['sentence'], "clause": {}};
+//       }
+//       return e;
+//     }).toList();
+// print(withHighestClauses);
+//     return withHighestClauses;}
+// else {
+// }
+// return selectedClauses;
+//   }
