@@ -25,8 +25,6 @@ class _SystemRecom extends State<IllustRecom> {
 
   List<Map<String, dynamic>> getSelectedClauses(
       List<Map<String, dynamic>> scoresList) {
-    List<Map<String, dynamic>> selectedClauses = [];
-
     if (numberOfImages <= scoresList.length) {
       List<Map<String, dynamic>> withHighestClauses = scoresList.map((map) {
         // Find the highest scoring clause for each sentence
@@ -68,11 +66,59 @@ class _SystemRecom extends State<IllustRecom> {
       }).toList();
       return withHighestClauses;
     } else {
-      // Handle the case where numberOfImages is greater than the length of scoresList
-      // For example, you could add additional logic here to handle other clauses or different scenarios
-    }
+      List<Map<String, dynamic>> sentencesWithHighestClauses = [];
+      List<Map<String, dynamic>> remainingClauses = [];
 
-    return globaltopsisScoresList;
+      int index =
+          0; // Initialize a counter to track the original order of clauses to reorder them later
+      for (var sentenceData in scoresList) {
+        List<Map<String, dynamic>> clauses =
+            List<Map<String, dynamic>>.from(sentenceData['clauses']);
+        for (var clause in clauses) {
+          // Add an order index to each clause
+          clause['order'] = index++;
+        }
+
+        clauses.sort((a, b) => b['score'].compareTo(a['score']));
+
+        sentencesWithHighestClauses.add({
+          'sentence': sentenceData['sentence'],
+          'clauses': [clauses.first],
+        });
+
+        for (var clause in clauses.skip(1)) {
+          var clauseWithReference = Map<String, dynamic>.from(clause);
+          clauseWithReference['originalSentence'] = sentenceData['sentence'];
+          remainingClauses.add(clauseWithReference);
+        }
+      }
+
+      remainingClauses.sort((a, b) => b['score'].compareTo(a['score']));
+      List<Map<String, dynamic>> topRemainingClauses =
+          remainingClauses.take(numberOfImages - scoresList.length).toList();
+
+      for (var topClause in topRemainingClauses) {
+        var matchingSentence = sentencesWithHighestClauses.firstWhere(
+            (sentenceMap) =>
+                sentenceMap['sentence'] == topClause['originalSentence'],
+            orElse: () => {'sentence': '', 'clauses': []});
+
+        if (matchingSentence.isNotEmpty) {
+          matchingSentence['clauses'].add(topClause);
+        }
+      }
+
+// Before returning, sort the clauses within each sentence by their original order in the story
+      for (var sentenceMap in sentencesWithHighestClauses) {
+        sentenceMap['clauses'].sort((a, b) {
+          int orderA = a['order'];
+          int orderB = b['order'];
+          return orderA.compareTo(orderB);
+        });
+      }
+
+      return sentencesWithHighestClauses;
+    }
   }
 
   @override
