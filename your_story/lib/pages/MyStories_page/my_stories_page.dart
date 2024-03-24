@@ -1,12 +1,11 @@
 import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:your_story/pages/MyStories_page/searchBox.dart';
 import 'package:your_story/pages/MyStories_page/typeBar.dart';
@@ -14,7 +13,6 @@ import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
 import 'package:your_story/pages/MyStories_page/pdf_methods.dart';
 import 'package:your_story/pages/pdf_pages/pdf_view.dart';
-// import '../create_story_pages/processing_illustarting/global_story.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -123,7 +121,7 @@ class _MyStoriesState extends State<MyStories> {
                       child: Container(
                         margin: const EdgeInsets.only(top: 20),
                         decoration: const BoxDecoration(
-                          color: kBackgroundColor,
+                          color:  Color.fromARGB(255, 244, 247, 252),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(40),
                             topRight: Radius.circular(40),
@@ -159,7 +157,7 @@ class _MyStoriesState extends State<MyStories> {
                               children: <Widget>[
                                 if (storyType == "drafted") ...[
                                   ListTile(
-                                    leading: const Icon(Icons.edit),
+                                    leading: const Icon(FontAwesomeIcons.pen),
                                     title: const Text('تعديل'),
                                     onTap: () {
                                       // globalTitle = title;
@@ -181,7 +179,7 @@ class _MyStoriesState extends State<MyStories> {
                                     },
                                   ),
                                   ListTile(
-                                      leading: const Icon(Icons.delete),
+                                      leading: const Icon(FontAwesomeIcons.trash),
                                       title: const Text('حذف القصة'),
                                       onTap: () {
                                         Navigator.of(context)
@@ -230,7 +228,7 @@ class _MyStoriesState extends State<MyStories> {
                                         ]),
                                   ),
                                   ListTile(
-                                      leading: const Icon(Icons.delete),
+                                      leading: const Icon(FontAwesomeIcons.trash),
                                       title: const Text('حذف القصة'),
                                       onTap: () {
                                         Navigator.of(context)
@@ -238,7 +236,7 @@ class _MyStoriesState extends State<MyStories> {
                                         deleteStory(docId, context, storyType);
                                       }),
                                   ListTile(
-                                      leading: const Icon(Icons.share),
+                                      leading: const Icon(FontAwesomeIcons.shareFromSquare),
                                       title: const Text('مشاركة القصة'),
                                       onTap: () {
                                         Navigator.of(context)
@@ -246,7 +244,7 @@ class _MyStoriesState extends State<MyStories> {
                                         sharePdf(pdfUrl, title, context);
                                       }),
                                   ListTile(
-                                      leading: const Icon(Icons.download),
+                                      leading: const Icon(FontAwesomeIcons.download),
                                       title: const Text('تحميل القصة'),
                                       onTap: () {
                                         Navigator.of(context)
@@ -258,7 +256,7 @@ class _MyStoriesState extends State<MyStories> {
                                         );
                                       }),
                                   ListTile(
-                                      leading: const Icon(Icons.public),
+                                      leading: const Icon(FontAwesomeIcons.globe),
                                       title: Text(status
                                           ? 'ايقاف نشر القصة'
                                           : 'نشر القصة'),

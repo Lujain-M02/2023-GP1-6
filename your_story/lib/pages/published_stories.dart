@@ -60,6 +60,7 @@ class StoriesPage extends StatefulWidget {
    }*/
 
 class _StoriesPageState extends State<StoriesPage> {
+  
   late final StreamController<List<QueryDocumentSnapshot>>
       _storiesStreamController;
 
@@ -134,6 +135,7 @@ class _StoriesPageState extends State<StoriesPage> {
 
   Widget _buildPdfCard(String title, String pdfUrl, String docId,String fimg, int index,
       BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -145,9 +147,9 @@ class _StoriesPageState extends State<StoriesPage> {
       },
       child: Container(
         padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: const Color(0xFFFF5F9FD),
+          color:  const Color.fromARGB(255, 244, 247, 252),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -172,14 +174,14 @@ class _StoriesPageState extends State<StoriesPage> {
                   fit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 19.5,
-                  left: 36,
+                  top: 20,
+                  left: 39,
                   child:ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
                       imageUrl: fimg,
-                      width: 80.5,
-                      height: 100,
+                      width: 81,
+                      height: 100.5,
                       fit: BoxFit.cover,
                       placeholder: 
                       (context,url)=>Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),                           
@@ -206,8 +208,7 @@ class _StoriesPageState extends State<StoriesPage> {
           )
           ,)
           ),
-          const SizedBox(height: 10,),
-          Padding(padding: const EdgeInsets.only(top: 130),
+          Padding(padding:  EdgeInsets.only(top: height*0.15),
           child: Column(children: [Center(
             child: Text(
               title,
@@ -355,7 +356,7 @@ class _StoriesPageState extends State<StoriesPage> {
                         const EdgeInsets.only(left: 15, right: 15, top: 10),
                     margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF5F9FD),
+                      color:const Color.fromARGB(255, 244, 247, 252),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Shimmer.fromColors(
