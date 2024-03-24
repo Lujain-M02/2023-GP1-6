@@ -55,16 +55,18 @@ class _IllustrationState extends State<Illustration> {
       List<ImageStyle> imageStyles = [
         ImageStyle(
             title: "واقعية",
-            style: "Photorealistic",
+            style: "واقعية",
             imagePath: "assets/Photorealistic.png"),
         ImageStyle(
-            title: "فنية", style: "Artistic", imagePath: "assets/Artistic.png"),
+            title: "فنية", style: "فنية", imagePath: "assets/Artistic.png"),
         ImageStyle(
             title: "سريالية",
-            style: "Surreal",
+            style: "سريالية",
             imagePath: "assets/Surreal.png"),
         ImageStyle(
-            title: "كرتون", style: "Cartoon", imagePath: "assets/Cartoon.png"),
+            title: "كرتونية",
+            style: "كرتونية",
+            imagePath: "assets/Cartoon.png"),
       ];
       selectedImageStyle =
           await ImageStylePickerDialog.show(context, imageStyles);
@@ -272,7 +274,9 @@ Future<String> generateImage(String sentence, String prompt) async {
     final OpenAIImageModel image = await OpenAI.instance.image.create(
       //prompt: "from this sentence:'$sentence' generate:'$prompt'",
       prompt:
-          "Generate a $selectedImageStyle image for '$prompt' from this story:'$sentence'",
+          "أنشئ صورة  $selectedImageStyle لهذه العبارة: '$prompt' من هذة الجملة: '$sentence'",
+
+      //"Generate a $selectedImageStyle image for '$prompt' from this story:'$sentence'",
       model: "dall-e-3", // Explicitly specifying the model
       n: 1,
       size: OpenAIImageSize.size1024,
@@ -291,30 +295,30 @@ Future<String> generateImage(String sentence, String prompt) async {
   }
 }
 
-Future<String> translateClause(String clause) async {
-  var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
+// Future<String> translateClause(String clause) async {
+//   var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
 
-  //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
-  //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
-  const to = 'en'; //Destination language
+//   //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
+//   //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
+//   const to = 'en'; //Destination language
 
-  final url = Uri.parse(
-      'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
+//   final url = Uri.parse(
+//       'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
 
-  final response = await http.post(url);
+//   final response = await http.post(url);
 
-  if (response.statusCode == 200) {
-    final body = json.decode(response.body);
-    final translations = body['data']['translations'] as List<dynamic>;
-    final translation = translations.first['translatedText'];
+//   if (response.statusCode == 200) {
+//     final body = json.decode(response.body);
+//     final translations = body['data']['translations'] as List<dynamic>;
+//     final translation = translations.first['translatedText'];
 
-    // Print the translated text to the console
-    //print('Original: $clause');
-    //print('Translated: $translation');
+//     // Print the translated text to the console
+//     //print('Original: $clause');
+//     //print('Translated: $translation');
 
-    return translation;
-  } else {
-    print('Translation Error: ${response.statusCode}');
-    return 'Translation Error: ${response.statusCode}';
-  }
-}
+//     return translation;
+//   } else {
+//     print('Translation Error: ${response.statusCode}');
+//     return 'Translation Error: ${response.statusCode}';
+//   }
+// }
