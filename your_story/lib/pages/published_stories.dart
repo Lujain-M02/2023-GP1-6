@@ -232,7 +232,7 @@ class _StoriesPageState extends State<StoriesPage> {
           )
           ,)
           ),
-          Padding(padding:  const EdgeInsets.only(top: 124),
+          Padding(padding:  const EdgeInsets.only(top: 130),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -248,10 +248,10 @@ class _StoriesPageState extends State<StoriesPage> {
             ),
           Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [IconButton(
-            icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),size: 19,),
+            icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),),
             onPressed: () => sharePdf(pdfUrl, title, context),),
               IconButton(  
-                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),size: 19,),   
+                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),),   
                 onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
                 )
               ],
