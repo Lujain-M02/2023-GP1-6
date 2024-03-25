@@ -169,7 +169,7 @@ class _StoriesPageState extends State<StoriesPage> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 5, right: 5, ),
+        padding: const EdgeInsets.only(left: 5, right: 5,top: 10),
         margin: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           color:  const Color.fromARGB(255, 244, 247, 252),
@@ -184,7 +184,6 @@ class _StoriesPageState extends State<StoriesPage> {
         ),
         child:Stack(children: <Widget>[
           Positioned(
-            top: 3,
           right: 0,
           left: 3,
           child: Hero(tag: index,
@@ -193,20 +192,20 @@ class _StoriesPageState extends State<StoriesPage> {
             child: Stack(
               children: <Widget>[
                 Image.asset(
-                  width: 130,
-                  height: 120,
+                  width: 150,
+                  height: 150,
                   "assets/under2.png",
                   fit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 18,
-                  left: 35,
+                  top: 20,
+                  left: 37,
                   child:ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
                       imageUrl: fimg,
-                      width: 75,
-                      height: 94,
+                      width: 81,
+                      height: 100,
                       fit: BoxFit.cover,
                       placeholder: 
                       (context,url)=>Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),                           
