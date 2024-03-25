@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,10 @@ class _StoriesPageState extends State<StoriesPage> {
   
   late final StreamController<List<QueryDocumentSnapshot>>
       _storiesStreamController;
+  late TextEditingController _searchController;
+  bool _isSearching = false;
+  String _searchQuery = '';
+
 
   // bool _isRefreshing = false;
   // bool _isMounted = false;
@@ -72,7 +77,7 @@ class _StoriesPageState extends State<StoriesPage> {
     super.initState();
 
     _storiesStreamController = StreamController<List<QueryDocumentSnapshot>>();
-
+    _searchController = TextEditingController();
     _updateCombinedStoriesStream();
 
     //_isMounted = true;
@@ -106,7 +111,25 @@ class _StoriesPageState extends State<StoriesPage> {
   // Function to update stories stream
   void _updateCombinedStoriesStream() {
     _createCombinedStoriesStream().listen((data) {
-      _storiesStreamController.add(data);
+      if (_searchQuery.isEmpty) {
+        _storiesStreamController.add(data);
+      } else {
+        final filteredData = data.where((doc) => (doc.data() as Map<String, dynamic>)['title'].toString().toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+        _storiesStreamController.add(filteredData);
+      }
+    });
+  }
+  
+ void _toggleSearch() {
+    setState(() {
+      _isSearching = !_isSearching;
+    });
+  }
+
+  void _handleSearchChange(String query) {
+    setState(() {
+      _searchQuery = query;
+      _updateCombinedStoriesStream();
     });
   }
 
@@ -135,7 +158,7 @@ class _StoriesPageState extends State<StoriesPage> {
 
   Widget _buildPdfCard(String title, String pdfUrl, String docId,String fimg, int index,
       BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    // final height = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -146,8 +169,8 @@ class _StoriesPageState extends State<StoriesPage> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-        margin: const EdgeInsets.all(5),
+        padding: const EdgeInsets.only(left: 5, right: 5, ),
+        margin: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           color:  const Color.fromARGB(255, 244, 247, 252),
           borderRadius: BorderRadius.circular(10),
@@ -160,7 +183,9 @@ class _StoriesPageState extends State<StoriesPage> {
           ],
         ),
         child:Stack(children: <Widget>[
-          Positioned(right: 0,
+          Positioned(
+            top: 3,
+          right: 0,
           left: 3,
           child: Hero(tag: index,
           child: Container(
@@ -168,20 +193,20 @@ class _StoriesPageState extends State<StoriesPage> {
             child: Stack(
               children: <Widget>[
                 Image.asset(
-                  width: 150,
-                  height: 150,
+                  width: 130,
+                  height: 120,
                   "assets/under2.png",
                   fit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 20,
-                  left: 39,
+                  top: 18,
+                  left: 35,
                   child:ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
                       imageUrl: fimg,
-                      width: 81,
-                      height: 100.5,
+                      width: 75,
+                      height: 94,
                       fit: BoxFit.cover,
                       placeholder: 
                       (context,url)=>Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),                           
@@ -195,7 +220,7 @@ class _StoriesPageState extends State<StoriesPage> {
                     ),
                   ) ,
                 ),
-                Positioned(top: 83,
+                Positioned(top: 81,
                 child: Image.asset(
                   "assets/pdfupper.png",
                   width: 60,
@@ -208,9 +233,11 @@ class _StoriesPageState extends State<StoriesPage> {
           )
           ,)
           ),
-          Padding(padding:  EdgeInsets.only(top: height*0.15),
-          child: Column(children: [Center(
-            child: Text(
+          Padding(padding:  const EdgeInsets.only(top: 124),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+            Text(
               title,
               style: const TextStyle(
                 fontSize: 15,
@@ -220,21 +247,14 @@ class _StoriesPageState extends State<StoriesPage> {
              maxLines: 1,
              overflow: TextOverflow.ellipsis,                                                             
             ),
-          ),
-          Row(
-            children: [Expanded(
-              child: 
-              IconButton(
-              icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),),
-              onPressed: () => sharePdf(pdfUrl, title, context),)
-              ),
-              Expanded(
-              child:                     
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [IconButton(
+            icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),size: 19,),
+            onPressed: () => sharePdf(pdfUrl, title, context),),
               IconButton(  
-                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),),   
+                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),size: 19,),   
                 onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
-                )                                                             
-              )
+                )
               ],
           )
           ],),)
@@ -248,382 +268,440 @@ class _StoriesPageState extends State<StoriesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "القصص المنشورة",
+          "القصص المنشورة ",
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
+         actions: [
+          IconButton(
+            icon: const Icon(Icons.search ,color: Colors.white,),
+            onPressed: _toggleSearch,
+          ),
+        ],
         centerTitle: true,
         backgroundColor: YourStoryStyle.s2Color,
         automaticallyImplyLeading: false,
       ),
       backgroundColor: YourStoryStyle.s2Color,
-      body: StreamBuilder<List<QueryDocumentSnapshot>>(
-        stream: _storiesStreamController.stream,
-        builder: (context, snapshot) {
-
-            /*   if (_isRefreshing) {
-           return Center(
-             child: CircularProgressIndicator(),
-           );
-            Container(
-             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-             decoration: const BoxDecoration(
-               color: Color.fromARGB(255, 255, 255, 255),
-               borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-             ),
-             child: GridView.builder(
-               itemCount: 8,
-               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                 crossAxisCount: 2,
-                 crossAxisSpacing: 10,
-                 mainAxisSpacing: 10,
-                 childAspectRatio: 0.75,
-             ),
-               itemBuilder: (context, index) {
-                 return Container(
-                   height: 200,
-                   width: 220,
-                   padding:
-                       const EdgeInsets.only(left: 15, right: 15, top: 10),
-                   margin: const EdgeInsets.all(8),
-                   decoration: BoxDecoration(
-                     color: const Color(0xFFFF5F9FD),
-                     borderRadius: BorderRadius.circular(10),
-                   ),
-                   child: Shimmer.fromColors(
-                     baseColor: Colors.grey.shade700.withOpacity(0.9),
-                     highlightColor: Colors.grey.withOpacity(0.4),
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Container(
-                           height: 140,
-                         width: 160,
-                           decoration: BoxDecoration(
-                             borderRadius: BorderRadius.circular(30),
-                             color: Colors.grey.shade600.withOpacity(0.6),
-                           ),
-                         ),
-                         Row(
+      body: Stack(
+        children: [
+          
+          StreamBuilder<List<QueryDocumentSnapshot>>(
+            stream: _storiesStreamController.stream,
+            builder: (context, snapshot) {
+          
+                /*   if (_isRefreshing) {
+               return Center(
+                 child: CircularProgressIndicator(),
+               );
+                Container(
+                 padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                 decoration: const BoxDecoration(
+                   color: Color.fromARGB(255, 255, 255, 255),
+                   borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+                 ),
+                 child: GridView.builder(
+                   itemCount: 8,
+                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                     crossAxisCount: 2,
+                     crossAxisSpacing: 10,
+                     mainAxisSpacing: 10,
+                     childAspectRatio: 0.75,
+                 ),
+                   itemBuilder: (context, index) {
+                     return Container(
+                       height: 200,
+                       width: 220,
+                       padding:
+                           const EdgeInsets.only(left: 15, right: 15, top: 10),
+                       margin: const EdgeInsets.all(8),
+                       decoration: BoxDecoration(
+                         color: const Color(0xFFFF5F9FD),
+                         borderRadius: BorderRadius.circular(10),
+                       ),
+                       child: Shimmer.fromColors(
+                         baseColor: Colors.grey.shade700.withOpacity(0.9),
+                         highlightColor: Colors.grey.withOpacity(0.4),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                            children: [
                              Container(
-                               height: 40,
-                               width: 80,
+                               height: 140,
+                             width: 160,
                                decoration: BoxDecoration(
                                  borderRadius: BorderRadius.circular(30),
                                  color: Colors.grey.shade600.withOpacity(0.6),
                                ),
                              ),
-                             Container(
-                               height: 40,
-                               width: 40,
-                               decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(30),
-                                 color: Colors.grey.shade600.withOpacity(0.6),
-                               ),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                               children: [
+                                 Container(
+                                   height: 40,
+                                   width: 80,
+                                   decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(30),
+                                     color: Colors.grey.shade600.withOpacity(0.6),
+                                   ),
+                                 ),
+                                 Container(
+                                   height: 40,
+                                   width: 40,
+                                   decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(30),
+                                     color: Colors.grey.shade600.withOpacity(0.6),
+                                   ),
+                                 ),
+                               ],
                              ),
                            ],
                          ),
-                       ],
-                     ),
-                   ),
-                 );
-               },
-             ),
-           );
-           }*/
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
-              ),
-              child: GridView.builder(
-                itemCount: 8,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.75,
-                ),
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 200,
-                    width: 220,
-                    padding:
-                        const EdgeInsets.only(left: 15, right: 15, top: 10),
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color:const Color.fromARGB(255, 244, 247, 252),
-                      borderRadius: BorderRadius.circular(10),
+                       ),
+                     );
+                   },
+                 ),
+               );
+               }*/
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(60)),
+                  ),
+                  child: GridView.builder(
+                    itemCount: 8,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.75,
                     ),
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey.shade700.withOpacity(0.9),
-                      highlightColor: Colors.grey.withOpacity(0.4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 140,
-                            width: 160,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.grey.shade600.withOpacity(0.6),
-                            ),
-                          ),
-                          Row(
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: 200,
+                        width: 220,
+                        padding:
+                            const EdgeInsets.only(left: 15, right: 15, top: 10),
+                        margin: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color:const Color.fromARGB(255, 244, 247, 252),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700.withOpacity(0.9),
+                          highlightColor: Colors.grey.withOpacity(0.4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                height: 40,
-                                width: 80,
+                                height: 140,
+                                width: 160,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   color: Colors.grey.shade600.withOpacity(0.6),
                                 ),
                               ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.grey.shade600.withOpacity(0.6),
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: Colors.grey.shade600.withOpacity(0.6),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: Colors.grey.shade600.withOpacity(0.6),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Container(
-              padding: const EdgeInsets.only(
-                left: 20,
-                top: 30,
-                right: 20,
-              ),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 244, 247, 252),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                ),
-              ),
-              child: const Center(
-                child: Text(
-                  'يبدو أنه لا يوجد أي قصص منشوره',
-                  style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          }
-
-          final stories = snapshot.data!;
-          return  SingleChildScrollView(
-            child: Container(
-                padding: const EdgeInsets.only(
-                  left: 20,                  
-                  right: 20,
-                ),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 244, 247, 252),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                  ),
-                ),
-      child: Column(
-      children: [
-         Padding(
-          padding: const EdgeInsets.only(top: 20,),
-          child: Container(
-          width: double.infinity, 
-    alignment: Alignment.centerRight,
-    child: const Text(
-            "القصص المنشورة حديثًا",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),),
-            Container(
-              height: 200, 
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: stories.length, 
-                itemBuilder: (context, index) {
-                  final pdfData =
-                        stories[index].data() as Map<String, dynamic>?;
-                    final String title = pdfData?['title'] ?? 'Untitled';
-                    final String pdfUrl = pdfData?['url'] ?? '#';
-                    final String fimg = pdfData?['imageUrl'] ?? '#';                
-                  return  GestureDetector(
-        onTap: () {
-          Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                     builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
-                            )
-                          );
-        },
-        child:  Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: SizedBox(
-                      width: 205,
-                      child: AspectRatio(
-                        aspectRatio: 0.83,
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: <Widget>[
-                            ClipPath(
-                              clipper: CategoryCustomShape(),
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  color: kSecondaryColor, 
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[                                                                                
-                                      Padding(padding: EdgeInsets.only(top: 100),),
-                                      Text(title, style: const TextStyle(fontSize: 20)),
-                                      Row(     
-                                        mainAxisAlignment: MainAxisAlignment.center,    
-                                        children: [                  
-                                          IconButton(                      
-                                            icon: const Icon(FontAwesomeIcons.shareFromSquare,size: 19,                          
-                                            color: Color.fromARGB(255, 5, 0, 58)),                      
-                                            onPressed: () => sharePdf(pdfUrl, title, context),                    
-                                            ),             
-                                          IconButton(                      
-                                            icon: const Icon(                        
-                                              FontAwesomeIcons.download,size: 19,color: Color.fromARGB(255, 5, 0, 58)                      
-                                              ),                      
-                                              onPressed: () =>                          
-                                              downloadAndSaveFile(pdfUrl, title,context,)                    
-                                              ),                
-                                        ],              
-                                      ),            
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(color: Color.fromARGB(0, 104, 58, 183),        
-                            padding: const EdgeInsets.only(left:2, top: 1),        
-                            margin: const EdgeInsets.all(1),    
-                            child:  Stack(              
-                              children: <Widget>[                               
-                                Positioned(top: -9,                                 
-                                left: 20,                                
-                                child:Container(                                      
-                                  height: 130,                                      
-                                  child: Stack(                                        
-                                    children: <Widget>[                                                        
-                                      Image.asset(                                           
-                                      width: 150,                                             
-                                      height: 130,                                            
-                                      "assets/under1.png",                                            
-                                      fit: BoxFit.cover,                                          
-                                      ),                                          
-                                      Positioned(                                             
-                                        top: 37,                                             
-                                        left: 26,                                            
-                                        child: ClipRRect(                                                    
-                                          borderRadius:                                                        
-                                          BorderRadius.circular(8.0),                                     
-                                          child: CachedNetworkImage(                                       
-                                            imageUrl: fimg,                                                      
-                                            width: 101,                                                      
-                                            height: 67,                                                      
-                                            fit: BoxFit.cover,                                                      
-                                            placeholder: (context,url) =>
-                                                          Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
-                                                      errorWidget: (context,url, error) =>
-                                                          Image.asset(                                     
-                                                            "assets/errorimg.png", // An error placeholder image                
-                                                            width: 45,                                                        
-                                                            height: 45,                                                        
-                                                            fit: BoxFit.cover,                                                     
-                                                          ),
-                                                    ),
-                                                  )),                                          
-                                          Positioned(
-                                            top: 69,
-                                            right: -3,
-                                           child:  Image.asset(
-                                              "assets/pdfupper.png",
-                                              width: 60,
-                                              height: 60,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),                                                    
-                                        ]        
-                                      )        
-                                    ),
-                                )]))
-                          ],
                         ),
+                      );
+                    },
+                  ),
+                );
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Container(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    top: 30,
+                    right: 20,
+                  ),
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 244, 247, 252),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'يبدو أنه لا يوجد أي قصص منشوره',
+                      style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+          
+              final stories = snapshot.data!;
+              return  SingleChildScrollView(
+                child: Container(
+                    padding: const EdgeInsets.only(
+                      left: 20,                  
+                      right: 20,
+                    ),
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 244, 247, 252),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
                       ),
                     ),
-                  ));
-                },
+          child: Column(
+          children: [
+            // const SizedBox(  
+            // height: 120,                                  
+            // width: double.infinity,
+            // child: Row(mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       'حيث نحول خيالك\n                       لواقع ',
+            //       style: TextStyle(fontSize: 30,),
+            //       // textAlign: TextAlign.justify,
+            //     ),
+            //   ],
+            // ),
+            //     ),
+             Padding(
+              padding: const EdgeInsets.only(top: 20,),
+              child: Container(
+              width: double.infinity, 
+              alignment: Alignment.centerRight,
+              child: const Text(
+                "القصص المنشورة حديثًا",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 5,),
-            Divider(height: 5),
-            Padding(
-          padding: const EdgeInsets.all(5),
-          child: Container(
-    width: double.infinity, 
-    alignment: Alignment.centerRight,
-    child: const Text(
-      "جميع القصص", 
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-          ),
-        ),         
-                 GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(10),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: stories.length,
-                      itemBuilder: (context, index) {
-                        final pdfData =
+            ),),
+                Container(
+                  height: 200, 
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stories.length ,
+                    itemBuilder: (context, index) {
+                      final pdfData =
                             stories[index].data() as Map<String, dynamic>?;
                         final String title = pdfData?['title'] ?? 'Untitled';
                         final String pdfUrl = pdfData?['url'] ?? '#';
-                        final String docId = stories[index].id;
-                        final String fimg = pdfData?['imageUrl'] ?? '#';
-
+                        final String fimg = pdfData?['imageUrl'] ?? '#';                
+                      return  GestureDetector(
+            onTap: () {
+              Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                         builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
+                                )
+                              );
+            },
+            child:  Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: SizedBox(
+                          width: 205,
+                          child: AspectRatio(
+                            aspectRatio: 0.83,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: <Widget>[
+                                ClipPath(
+                                  clipper: CategoryCustomShape(),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      color: kSecondaryColor, 
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[                                                                                
+                                          Padding(padding: EdgeInsets.only(top: 100),),
+                                          Text(title, style: const TextStyle(fontSize: 20)),
+                                          Row(     
+                                            mainAxisAlignment: MainAxisAlignment.center,    
+                                            children: [                  
+                                              IconButton(                      
+                                                icon: const Icon(FontAwesomeIcons.shareFromSquare,size: 19,                          
+                                                color: Color.fromARGB(255, 5, 0, 58)),                      
+                                                onPressed: () => sharePdf(pdfUrl, title, context),                    
+                                                ),             
+                                              IconButton(                      
+                                                icon: const Icon(                        
+                                                  FontAwesomeIcons.download,size: 19,color: Color.fromARGB(255, 5, 0, 58)                      
+                                                  ),                      
+                                                  onPressed: () =>                          
+                                                  downloadAndSaveFile(pdfUrl, title,context,)                    
+                                                  ),                
+                                            ],              
+                                          ),            
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(color: Color.fromARGB(0, 104, 58, 183),        
+                                padding: const EdgeInsets.only(left:2, top: 1),        
+                                margin: const EdgeInsets.all(1),    
+                                child:  Stack(              
+                                  children: <Widget>[                               
+                                    Positioned(top: -9,                                 
+                                    left: 20,                                
+                                    child:Container(                                      
+                                      height: 130,                                      
+                                      child: Stack(                                        
+                                        children: <Widget>[                                                        
+                                          Image.asset(                                           
+                                          width: 150,                                             
+                                          height: 130,                                            
+                                          "assets/under1.png",                                            
+                                          fit: BoxFit.cover,                                          
+                                          ),                                          
+                                          Positioned(                                             
+                                            top: 37,                                             
+                                            left: 26,                                            
+                                            child: ClipRRect(                                                    
+                                              borderRadius:                                                        
+                                              BorderRadius.circular(8.0),                                     
+                                              child: CachedNetworkImage(                                       
+                                                imageUrl: fimg,                                                      
+                                                width: 101,                                                      
+                                                height: 67,                                                      
+                                                fit: BoxFit.cover,                                                      
+                                                placeholder: (context,url) =>
+                                                              Center(child: Lottie.asset('assets/loading.json',width: 200,height: 200)),
+                                                          errorWidget: (context,url, error) =>
+                                                              Image.asset(                                     
+                                                                "assets/errorimg.png", // An error placeholder image                
+                                                                width: 45,                                                        
+                                                                height: 45,                                                        
+                                                                fit: BoxFit.cover,                                                     
+                                                              ),
+                                                        ),
+                                                      )),                                          
+                                              Positioned(
+                                                top: 69,
+                                                right: -3,
+                                               child:  Image.asset(
+                                                  "assets/pdfupper.png",
+                                                  width: 60,
+                                                  height: 60,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),                                                    
+                                            ]        
+                                          )        
+                                        ),
+                                    )]))
+                              ],
+                            ),
+                          ),
+                        ),
+                      ));
+                    },
+                  ),
+                ),
+                SizedBox(height: 5,),
+                Divider(height: 5),
+                Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+              width: double.infinity, 
+              alignment: Alignment.centerRight,
+              child: const Text(
+          "جميع القصص", 
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+              ),
+              ),
+            ),         
+                     GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(10),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.75,
+                          ),
+                          itemCount: stories.length,
+                          itemBuilder: (context, index) {
+                            final pdfData =
+                                stories[index].data() as Map<String, dynamic>?;
+                            final String title = pdfData?['title'] ?? 'Untitled';
+                            final String pdfUrl = pdfData?['url'] ?? '#';
+                            final String docId = stories[index].id;
+                            final String fimg = pdfData?['imageUrl'] ?? '#';
+          
+                      
+                            return _buildPdfCard(title, pdfUrl, docId,fimg, index, context);
+                          },
+                        ),
                   
-                        return _buildPdfCard(title, pdfUrl, docId,fimg, index, context);
+                
+                  ]),
+                ),
+              );
+            },
+          ),
+        if (_isSearching) ...[
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  autofocus: true,
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: '...ابحث عن قصة',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        _searchController.clear();
+                        _handleSearchChange('');
+                        _toggleSearch();
                       },
                     ),
-              
-            
-              ]),
+                  ),
+                  onChanged: _handleSearchChange,
+                  onSubmitted: (value) {
+                    _toggleSearch();
+                  },
+                ),
+              ),
             ),
-          );
-        },
+          ],
+        ],
+       
       ),
-
-      floatingActionButton: FloatingActionButton(
+floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
@@ -633,6 +711,7 @@ class _StoriesPageState extends State<StoriesPage> {
         backgroundColor: const Color.fromARGB(255, 15, 26, 107),
         child: const Icon(Icons.add, color: Colors.white),
       ),
+     
     );
   }
 }
