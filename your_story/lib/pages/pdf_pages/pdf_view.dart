@@ -187,6 +187,7 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:your_story/pages/MainPage.dart';
 import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../MyStories_page/pdf_methods.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ViewPDFPage extends StatefulWidget {
   final String pdfUrl;
@@ -245,14 +246,14 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.share),
+              icon: const Icon(FontAwesomeIcons.shareFromSquare,color: Colors.white),
               color: Colors.white,
               onPressed: () {
                 sharePdf(widget.pdfUrl, widget.storyTitle, context);
               },
             ),
             IconButton(
-              icon: Icon(Icons.download),
+              icon: const Icon(FontAwesomeIcons.download,color: Colors.white),
               color: Colors.white,
               onPressed: () {
                 downloadAndSaveFile(widget.pdfUrl, widget.storyTitle, context);
