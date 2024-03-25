@@ -100,11 +100,12 @@ class _ProfileInformationState extends State<ProfileInformation> {
                         // ignore: sized_box_for_whitespace
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height*0.9,
                           child: Card(
                             elevation: 5,
                             shadowColor: const Color.fromARGB(255, 6, 14, 21),
                             color: const Color.fromARGB(175, 17, 68, 120),
-                            margin: const EdgeInsets.all(20),
+                            margin: const EdgeInsets.all(5),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
