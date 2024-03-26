@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/illustarting.dart';
 import 'package:your_story/style.dart';
@@ -123,6 +124,7 @@ class _Filtering extends State<Filtering> {
   Widget build(BuildContext context) {
 //with score
     List<Widget> buildSentenceWidgets() {
+      int index=1;
       List<Widget> sentenceWidgets = [];
       for (var sentenceMap in globaltopsisScoresList) {
         String sentence = sentenceMap['sentence'];
@@ -139,8 +141,8 @@ class _Filtering extends State<Filtering> {
             // subtitle: Text(
             //     'الدرجة: ${score.toStringAsFixed(2)}'), // only the score as a subtitle
             subtitle: Text(
-              //'التصنيف: $scoreCategory', // without score
-              'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
+              'التصنيف: $scoreCategory', // without score
+              //'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
               style: TextStyle(
                 color: getColorForCategory(scoreCategory),
               ),
@@ -154,17 +156,33 @@ class _Filtering extends State<Filtering> {
 
         sentenceWidgets.add(Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ExpansionTile(
-            title: Text(sentence, style: TextStyle(fontWeight: FontWeight.bold,),),
-            backgroundColor: const Color.fromARGB(255, 187, 222, 251),
-            collapsedBackgroundColor: const Color.fromARGB(160, 187, 222, 251),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            collapsedShape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            children: clauseWidgets,
+          child: Container(
+            decoration: BoxDecoration(
+              color: YourStoryStyle.primarycolor,
+              borderRadius:const BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("فقرة-$index",style: TextStyle(color: Colors.white,fontSize: 16,),),
+                  ExpansionTile(
+                    title: Text(sentence, style: TextStyle(fontWeight: FontWeight.bold,),),
+                    backgroundColor: const Color.fromARGB(255, 187, 222, 251),
+                    collapsedBackgroundColor: const Color.fromARGB(255, 187, 222, 251),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    collapsedShape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    children: clauseWidgets,
+                  ),
+                ],
+              ),
+            ),
           ),
         ));
+        index++;
       }
       return sentenceWidgets;
     }

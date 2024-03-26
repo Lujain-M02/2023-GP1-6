@@ -303,7 +303,7 @@ class _SystemRecom extends State<IllustRecom> {
                                                   clause['clause']));
                                         },
                                         child: Text(
-                                          clause['clause'],
+                                          clause['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), ''),
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.blue,
