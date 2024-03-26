@@ -13,6 +13,8 @@ import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 import 'package:your_story/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
+// import 'dart:math' as math;
+
 //import 'package:your_story/pages/pdf_pages/pdf_view.dart';
 
 class StoriesPage extends StatefulWidget {
@@ -119,6 +121,7 @@ class _StoriesPageState extends State<StoriesPage> {
       }
     });
   }
+  
   
  void _toggleSearch() {
     setState(() {
@@ -248,10 +251,10 @@ class _StoriesPageState extends State<StoriesPage> {
             ),
           Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [IconButton(
-            icon:Icon(FontAwesomeIcons.shareFromSquare,color: const Color.fromARGB(255, 0, 0, 0),),
+            icon:const Icon(FontAwesomeIcons.shareFromSquare,color: Color.fromARGB(255, 0, 0, 0),),
             onPressed: () => sharePdf(pdfUrl, title, context),),
               IconButton(  
-                icon: Icon(FontAwesomeIcons.download,color: const Color.fromARGB(255, 0, 0, 0),),   
+                icon: const Icon(FontAwesomeIcons.download,color: Color.fromARGB(255, 0, 0, 0),),   
                 onPressed: () => downloadAndSaveFile(pdfUrl, title, context),
                 )
               ],
@@ -445,9 +448,17 @@ class _StoriesPageState extends State<StoriesPage> {
                       topLeft: Radius.circular(60),
                     ),
                   ),
-                  child: const Center(
-                    child: Text(
+                  child:_isSearching ?
+                   Center(
+                    child: const Text(
                       'يبدو أنه لا يوجد أي قصص منشوره',
+                      style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                  :Center(
+                    child: Text(
+                      'يبدو أنه لا يوجد أي قصص منشوره بعنوان \"$_searchQuery\"',
                       style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
@@ -496,9 +507,9 @@ class _StoriesPageState extends State<StoriesPage> {
             ),),
                 Container(
                   height: 200, 
-                  child: ListView.builder(
+                  child:ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: stories.length ,
+                    itemCount: stories.length,  
                     itemBuilder: (context, index) {
                       final pdfData =
                             stories[index].data() as Map<String, dynamic>?;
@@ -532,7 +543,7 @@ class _StoriesPageState extends State<StoriesPage> {
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[                                                                                
-                                          Padding(padding: EdgeInsets.only(top: 100),),
+                                          const Padding(padding: EdgeInsets.only(top: 100),),
                                           Text(title, style: const TextStyle(fontSize: 20)),
                                           Row(     
                                             mainAxisAlignment: MainAxisAlignment.center,    
@@ -556,7 +567,7 @@ class _StoriesPageState extends State<StoriesPage> {
                                     ),
                                   ),
                                 ),
-                                Container(color: Color.fromARGB(0, 104, 58, 183),        
+                                Container(color: const Color.fromARGB(0, 104, 58, 183),        
                                 padding: const EdgeInsets.only(left:2, top: 1),        
                                 margin: const EdgeInsets.all(1),    
                                 child:  Stack(              
@@ -617,8 +628,8 @@ class _StoriesPageState extends State<StoriesPage> {
                     },
                   ),
                 ),
-                SizedBox(height: 5,),
-                Divider(height: 5),
+                const SizedBox(height: 5,),
+                const Divider(height: 5),
                 Padding(
               padding: const EdgeInsets.all(5),
               child: Container(
@@ -633,29 +644,35 @@ class _StoriesPageState extends State<StoriesPage> {
               ),
               ),
             ),         
-                     GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(10),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.75,
-                          ),
-                          itemCount: stories.length,
-                          itemBuilder: (context, index) {
-                            final pdfData =
-                                stories[index].data() as Map<String, dynamic>?;
-                            final String title = pdfData?['title'] ?? 'Untitled';
-                            final String pdfUrl = pdfData?['url'] ?? '#';
-                            final String docId = stories[index].id;
-                            final String fimg = pdfData?['imageUrl'] ?? '#';
-          
-                      
-                            return _buildPdfCard(title, pdfUrl, docId,fimg, index, context);
-                          },
-                        ),
+                     Column(
+                       children: [
+                         GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.all(10),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: stories.length,
+                              itemBuilder: (context, index) {
+                                final pdfData =
+                                    stories[index].data() as Map<String, dynamic>?;
+                                final String title = pdfData?['title'] ?? 'Untitled';
+                                final String pdfUrl = pdfData?['url'] ?? '#';
+                                final String docId = stories[index].id;
+                                final String fimg = pdfData?['imageUrl'] ?? '#';
+                                   
+                          
+                                return _buildPdfCard(title, pdfUrl, docId,fimg, index, context);
+                              },
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.height*0.2,)
+                       ],
+
+                     ),
                   
                 
                   ]),
@@ -681,7 +698,7 @@ class _StoriesPageState extends State<StoriesPage> {
                     fillColor: Colors.white,
                     hintText: '...ابحث عن قصة',
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.close),
+                      icon: const Icon(Icons.close),
                       onPressed: () {
                         _searchController.clear();
                         _handleSearchChange('');
@@ -700,7 +717,8 @@ class _StoriesPageState extends State<StoriesPage> {
         ],
        
       ),
-floatingActionButton: FloatingActionButton(
+      
+floatingActionButton:_isSearching?null: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
