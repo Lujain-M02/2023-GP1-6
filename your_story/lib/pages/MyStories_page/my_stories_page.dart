@@ -23,7 +23,7 @@ class _MyStoriesState extends State<MyStories> {
       StreamController.broadcast();
   late Stream<List<QueryDocumentSnapshot>> storiesList;
   late final String userId;
-  List<QueryDocumentSnapshot> _allStories = [];
+  // List<QueryDocumentSnapshot> _allStories = [];
   late TextEditingController _searchController;
   String _searchQuery = '';
   bool _isSearching = false;
@@ -37,9 +37,6 @@ class _MyStoriesState extends State<MyStories> {
     updateStoriesList(
       'جميع القصص',
     );
-    storiesList.listen((list) {
-      _allStories = list;
-    });
   }
 
   void updateStoriesList(String category) {

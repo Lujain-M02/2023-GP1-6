@@ -2,8 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/More_Page/more_page.dart';
 import 'package:your_story/pages/MyStories_Page/my_stories_page.dart';
+import 'package:your_story/pages/published_stories/published_stories.dart';
 import 'package:your_story/style.dart';
-import 'package:your_story/pages/published_stories.dart';
 
 class MainPage extends StatefulWidget {
   final int initialIndex;
