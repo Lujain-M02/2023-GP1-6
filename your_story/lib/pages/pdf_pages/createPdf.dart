@@ -1,4 +1,5 @@
 // import 'dart:math';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -52,25 +53,44 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     }
   }
 
+  // Future<void> preloadImagesForPdf() async {
+  //   for (var pair in sentenceImagePairs) {
+  //     List<Uint8List> preloadedImages = [];
+  //     bool isFirstImage = true;
+  //     for (String imageUrl in pair['images']) {
+  //       try {
+  //         final Uint8List imageData = await downloadImageData(imageUrl);
+  //         preloadedImages.add(imageData);
+  //         // If it's the first image, save it to Firebase Storage
+  //         if (isFirstImage) {
+  //           isFirstImage = false; // Ensure we only do this once per pair
+  //           firstImg = await uploadImageToFirebaseStorage(imageData);
+  //         }
+  //       } catch (e) {
+  //         print("Error downloading image: $e");
+  //         // Optionally handle the error, e.g., by adding a placeholder image
+  //       }
+  //     }
+  //     // Replace image URLs with their corresponding Uint8List data
+  //     pair['images'] = preloadedImages;
+  //   }
+  // }
   Future<void> preloadImagesForPdf() async {
     for (var pair in sentenceImagePairs) {
       List<Uint8List> preloadedImages = [];
       bool isFirstImage = true;
-      for (String imageUrl in pair['images']) {
+      for (File imageFile in pair['images']) {
         try {
-          final Uint8List imageData = await downloadImageData(imageUrl);
+          final Uint8List imageData = await imageFile.readAsBytes();
           preloadedImages.add(imageData);
-          // If it's the first image, save it to Firebase Storage
           if (isFirstImage) {
-            isFirstImage = false; // Ensure we only do this once per pair
+            isFirstImage = false;
             firstImg = await uploadImageToFirebaseStorage(imageData);
           }
         } catch (e) {
-          print("Error downloading image: $e");
-          // Optionally handle the error, e.g., by adding a placeholder image
+          print("Error reading image file: $e");
         }
       }
-      // Replace image URLs with their corresponding Uint8List data
       pair['images'] = preloadedImages;
     }
   }

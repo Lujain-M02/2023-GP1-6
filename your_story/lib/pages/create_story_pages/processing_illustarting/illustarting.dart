@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
 // import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
-import 'package:your_story/pages/pdf_pages/createPdf.dart';
+import '../../pdf_pages/edit_beforePdf.dart';
 import 'global_story.dart';
 
 String? selectedImageStyle;
@@ -23,23 +25,6 @@ class Illustration extends StatefulWidget {
   State<Illustration> createState() => _IllustrationState();
 }
 
-/*class _IllustrationState extends State<Illustration> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('صفحه الامج جنريشن'),
-      ),
-      body: Container(
-        color: Colors.blue, 
-        alignment: Alignment.center,
-        child: Text(widget.clausesToIllujstrate[0]),
-
-      ),
-    );
-  }
-}*/
-
 class _IllustrationState extends State<Illustration> {
   List<String> imageUrls = [];
   bool isLoading = false;
@@ -55,17 +40,17 @@ class _IllustrationState extends State<Illustration> {
       List<ImageStyle> imageStyles = [
         ImageStyle(
             title: "واقعية",
-            style: "واقعية",
+            style: "Photorealistic",
             imagePath: "assets/Photorealistic.png"),
         ImageStyle(
-            title: "فنية", style: "فنية", imagePath: "assets/Artistic.png"),
+            title: "فنية", style: "Artistic", imagePath: "assets/Artistic.png"),
         ImageStyle(
             title: "سريالية",
-            style: "سريالية",
+            style: "Surreal",
             imagePath: "assets/Surreal.png"),
         ImageStyle(
             title: "كرتونية",
-            style: "كرتونية",
+            style: "Cartoon",
             imagePath: "assets/Cartoon.png"),
       ];
       selectedImageStyle =
@@ -75,6 +60,66 @@ class _IllustrationState extends State<Illustration> {
         generateAllImages(); // Call generateAllImages here
       }
     });
+  }
+
+  // Future<File> generateImage(String sentence, String prompt) async {
+  //   String apiKey = dotenv.env['API_KEY']!;
+  //   String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
+  //   String Tsentence = translateClause(sentence) as String;
+  //   String Tprompt = translateClause(prompt) as String;
+  //   try {
+  //     var request = http.MultipartRequest('POST', Uri.parse(url))
+  //       ..fields['prompt'] =
+  //           "Draw this clause: '$Tprompt' based on this context: '$Tsentence' in anime style"
+  //       ..fields['output_format'] = 'jpeg'
+  //       ..fields['seed'] = '12345'
+  //       ..headers['Authorization'] = 'Bearer $apiKey';
+
+  //     var streamedResponse = await request.send();
+  //     var response = await http.Response.fromStream(streamedResponse);
+
+  //     if (response.statusCode == 200) {
+  //       Directory appDocDir = await getApplicationDocumentsDirectory();
+  //       String appDocPath = appDocDir.path;
+  //       File imageFile = File('$appDocPath/generated_image.jpeg');
+  //       await imageFile.writeAsBytes(response.bodyBytes);
+  //       return imageFile; // Return the image file
+  //     } else {
+  //       throw Exception('Failed to load image: ${response.body}');
+  //     }
+  //   } catch (e) {
+  //     print("Failed to generate image: $e");
+  //     rethrow;
+  //   }
+  // }
+  Future<File> generateImage(String sentence, String prompt) async {
+    String apiKey = dotenv.env['API_KEY']!;
+
+    String translatedSentence = await translation(sentence);
+    String translatedPrompt = await translation(prompt);
+
+    String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
+    var request = http.MultipartRequest('POST', Uri.parse(url))
+      ..fields['prompt'] =
+          "Draw this clause: '$translatedSentence' based on this context: '$translatedPrompt' in $selectedImageStyle style"
+      ..fields['output_format'] = 'jpeg'
+      ..fields['seed'] = '12345'
+      ..fields['negative_prompt'] = 'no text'
+      ..headers['Authorization'] = 'Bearer $apiKey';
+
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+      File imageFile = File(
+          '$appDocPath/generated_image_${DateTime.now().millisecondsSinceEpoch}.jpeg');
+      await imageFile.writeAsBytes(response.bodyBytes);
+      return imageFile;
+    } else {
+      throw Exception('Failed to load image: ${response.body}');
+    }
   }
 
   /*void translateStory() async {
@@ -133,15 +178,15 @@ class _IllustrationState extends State<Illustration> {
       for (var sentenceMap in globaltopsisScoresList) {
         String sentence = sentenceMap['sentence'];
         //print("sentence: $sentence");
-        List<String> imagesForSentence = [];
+        List<File> imagesForSentence = [];
         print("sentence: $sentence");
         for (var clause in globaltopClausesToIllustrate) {
           if (sentence.contains(clause)) {
             clauses.add(clause);
             try {
               // Generate an image for the sentence containing the clause
-              String imageUrl = await generateImage(sentence, clause);
-              imagesForSentence.add(imageUrl);
+              File imageFile = await generateImage(sentence, clause);
+              imagesForSentence.add(imageFile);
               setState(() {
                 generatedImagesCount++;
               });
@@ -171,7 +216,7 @@ class _IllustrationState extends State<Illustration> {
     // You might want to navigate or update UI here to reflect that the process is complete
     print("Completed image generation for sentences.");
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const PdfGenerationPage()),
+        MaterialPageRoute(builder: (context) => const EditBeforePdf()),
         (Route<dynamic> route) => false);
   }
 
@@ -192,37 +237,6 @@ class _IllustrationState extends State<Illustration> {
     return clause;
   }
 
-  /*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('صفحه الامج جنريشن'),
-      ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Container(
-              color: Colors.blue,
-              child: ListView.builder(
-                itemCount: globalImagesUrls.length,
-                itemBuilder: (context, index) {
-                  return globalImagesUrls[index].isNotEmpty
-                      ? Image.network(globalImagesUrls[index])
-                      : Text("No image available");
-                },
-              ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => PdfGenerationPage(),
-            ),
-          );
-        },
-        child: Icon(Icons.picture_as_pdf),
-      ),
-    );
-  }*/
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -264,7 +278,7 @@ class _IllustrationState extends State<Illustration> {
   }
 }
 
-Future<String> generateImage(String sentence, String prompt) async {
+Future<String> OLDgenerateImage(String sentence, String prompt) async {
   OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
   //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
   // String imageStylePrompt =
@@ -295,30 +309,30 @@ Future<String> generateImage(String sentence, String prompt) async {
   }
 }
 
-// Future<String> translateClause(String clause) async {
-//   var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
+Future<String> translation(String clause) async {
+  var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
 
-//   //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
-//   //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
-//   const to = 'en'; //Destination language
+  //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
+  //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
+  const to = 'en'; //Destination language
 
-//   final url = Uri.parse(
-//       'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
+  final url = Uri.parse(
+      'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
 
-//   final response = await http.post(url);
+  final response = await http.post(url);
 
-//   if (response.statusCode == 200) {
-//     final body = json.decode(response.body);
-//     final translations = body['data']['translations'] as List<dynamic>;
-//     final translation = translations.first['translatedText'];
+  if (response.statusCode == 200) {
+    final body = json.decode(response.body);
+    final translations = body['data']['translations'] as List<dynamic>;
+    final translation = translations.first['translatedText'];
 
-//     // Print the translated text to the console
-//     //print('Original: $clause');
-//     //print('Translated: $translation');
+    // Print the translated text to the console
+    //print('Original: $clause');
+    //print('Translated: $translation');
 
-//     return translation;
-//   } else {
-//     print('Translation Error: ${response.statusCode}');
-//     return 'Translation Error: ${response.statusCode}';
-//   }
-// }
+    return translation;
+  } else {
+    print('Translation Error: ${response.statusCode}');
+    return 'Translation Error: ${response.statusCode}';
+  }
+}
