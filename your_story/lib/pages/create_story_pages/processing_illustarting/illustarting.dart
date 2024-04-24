@@ -101,10 +101,11 @@ class _IllustrationState extends State<Illustration> {
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..fields['prompt'] =
-          "Draw this clause: '$translatedSentence' based on this context: '$translatedPrompt' in $selectedImageStyle style"
+          "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style"
       ..fields['output_format'] = 'jpeg'
       ..fields['seed'] = '12345'
-      ..fields['negative_prompt'] = 'no text'
+      ..fields['module'] = 'sd3'
+      ..fields['negative_prompt'] = 'no text in the image'
       ..headers['Authorization'] = 'Bearer $apiKey';
 
     var streamedResponse = await request.send();
