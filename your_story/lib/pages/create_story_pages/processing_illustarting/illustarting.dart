@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
 // import 'package:flutter_config/flutter_config.dart';
@@ -22,15 +23,18 @@ class Illustration extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Illustration> createState() => _IllustrationState();
+  State<Illustration> createState() => IllustrationState();
 }
 
-class _IllustrationState extends State<Illustration> {
+class IllustrationState extends State<Illustration> {
   List<String> imageUrls = [];
   bool isLoading = false;
   //String translatedStory = "";
   int generatedImagesCount = 0;
   int numberOfImages = globaltopClausesToIllustrate.length;
+  int seed = Random().nextInt(100000);
+  bool isRegenerated = false;
+
   @override
   void initState() {
     super.initState();
@@ -92,19 +96,29 @@ class _IllustrationState extends State<Illustration> {
   //     rethrow;
   //   }
   // }
-  Future<File> generateImage(String sentence, String prompt) async {
+  static Future<File> generateImage(String sentence, String prompt, int seedNumber, bool isRegenerated) async {
     String apiKey = dotenv.env['API_KEY']!;
+    String seed = seedNumber.toString();
 
     String translatedSentence = await translation(sentence);
     String translatedPrompt = await translation(prompt);
+    String text="";
+
+    if(isRegenerated)
+    {
+      text = "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
+    } else
+    {
+      text = "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style";
+    }
 
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
     var request = http.MultipartRequest('POST', Uri.parse(url))
-      ..fields['prompt'] =
-          "Draw this clause: '$translatedSentence' based on this context: '$translatedPrompt' in $selectedImageStyle style"
+      ..fields['prompt'] = text
       ..fields['output_format'] = 'jpeg'
-      ..fields['seed'] = '12345'
-      ..fields['negative_prompt'] = 'no text'
+      ..fields['seed'] = seed
+      ..fields['model'] = "sd3-turbo"
+      // ..fields['negative_prompt'] = 'text in the image, Blurry, distorted '
       ..headers['Authorization'] = 'Bearer $apiKey';
 
     var streamedResponse = await request.send();
@@ -185,7 +199,7 @@ class _IllustrationState extends State<Illustration> {
             clauses.add(clause);
             try {
               // Generate an image for the sentence containing the clause
-              File imageFile = await generateImage(sentence, clause);
+              File imageFile = await generateImage(sentence, clause, seed, isRegenerated);
               imagesForSentence.add(imageFile);
               setState(() {
                 generatedImagesCount++;
