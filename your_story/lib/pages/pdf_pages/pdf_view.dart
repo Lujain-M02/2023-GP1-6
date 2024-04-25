@@ -224,7 +224,7 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                       builder: (context) =>
-                          MyStories()), // Correct the destination page as per your project structure
+                          MainPage(initialIndex: 1,)), // Correct the destination page as per your project structure
                   (Route<dynamic> route) => false,
                 );
                 // If he comes from other pages
