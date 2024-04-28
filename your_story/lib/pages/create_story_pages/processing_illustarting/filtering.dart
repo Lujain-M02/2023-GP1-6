@@ -6,7 +6,9 @@ import 'package:your_story/style.dart';
 import 'global_story.dart';
 
 class Filtering extends StatefulWidget {
-  const Filtering({Key? key}) : super(key: key);
+  final bool shouldPopulate;
+
+  const Filtering({Key? key, required this.shouldPopulate}) : super(key: key);
 
   @override
   State<Filtering> createState() => _Filtering();
@@ -21,13 +23,22 @@ class _Filtering extends State<Filtering> {
   void initState() {
     super.initState();
     maxScore = getMaxScore();
-    minScore=getMinScore();
-
-    // Initialize all selections to false based on the clauses in globaltopsisScoresList.
-    for (var sentenceMap in globaltopsisScoresList) {
-      for (var clauseMap in sentenceMap['clauses']) {
-        String clause = clauseMap['clause'];
-        selections[clause] = false;
+    minScore = getMinScore();
+    if (widget.shouldPopulate) {
+      for (var sentenceMap in globaltopsisScoresList) {
+        for (var clauseMap in sentenceMap['clauses']) {
+          String clause = clauseMap['clause'];
+          // Check if the clause is one of the illustrated ones
+          selections[clause] = globaltopClausesToIllustrate.contains(clause);
+        }
+      }
+    } else {
+      // Initialize all selections to false based on the clauses in globaltopsisScoresList
+      for (var sentenceMap in globaltopsisScoresList) {
+        for (var clauseMap in sentenceMap['clauses']) {
+          String clause = clauseMap['clause'];
+          selections[clause] = false;
+        }
       }
     }
   }
@@ -64,13 +75,13 @@ class _Filtering extends State<Filtering> {
 
     // Categorize the score based on the thresholds
     if (score >= secondThreshold) {
-        return "عالية الأهمية"; // High importance
+      return "عالية الأهمية"; // High importance
     } else if (score >= firstThreshold) {
-        return "متوسطة الأهمية"; // Medium importance
+      return "متوسطة الأهمية"; // Medium importance
     } else {
-        return "منخفضة الأهمية"; // Low importance
+      return "منخفضة الأهمية"; // Low importance
     }
-}
+  }
 
   double getMaxScore() {
     double maxScore =
@@ -90,8 +101,8 @@ class _Filtering extends State<Filtering> {
     return maxScore;
   }
 
-    double getMinScore() {
-    double minScore =100;
+  double getMinScore() {
+    double minScore = 100;
 
     // Iterate through each item in the list
     for (var item in globaltopsisScoresList) {
@@ -124,7 +135,7 @@ class _Filtering extends State<Filtering> {
   Widget build(BuildContext context) {
 //with score
     List<Widget> buildSentenceWidgets() {
-      int index=1;
+      int index = 1;
       List<Widget> sentenceWidgets = [];
       for (var sentenceMap in globaltopsisScoresList) {
         String sentence = sentenceMap['sentence'];
@@ -135,7 +146,7 @@ class _Filtering extends State<Filtering> {
               clauseMap['score']; // Extract the score for each clause
           String scoreCategory =
               getCategoryFromScore(score); // Get category based on score
-
+          bool isPreChecked = globaltopClausesToIllustrate.contains(clause);
           return CheckboxListTile(
             title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
             // subtitle: Text(
@@ -148,9 +159,11 @@ class _Filtering extends State<Filtering> {
               ),
             ), // Display the score category as a subtitle
             value: selections[clause],
-            onChanged: (bool? value) {
-              toggleSelection(clause);
-            },
+            onChanged: isPreChecked
+                ? null
+                : (bool? value) {
+                    toggleSelection(clause);
+                  },
           );
         }).toList();
 
@@ -159,18 +172,30 @@ class _Filtering extends State<Filtering> {
           child: Container(
             decoration: BoxDecoration(
               color: YourStoryStyle.primarycolor,
-              borderRadius:const BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("فقرة-$index",style: TextStyle(color: Colors.white,fontSize: 16,),),
+                  Text(
+                    "فقرة-$index",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
                   ExpansionTile(
-                    title: Text(sentence, style: TextStyle(fontWeight: FontWeight.bold,),),
+                    title: Text(
+                      sentence,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     backgroundColor: const Color.fromARGB(255, 187, 222, 251),
-                    collapsedBackgroundColor: const Color.fromARGB(255, 187, 222, 251),
+                    collapsedBackgroundColor:
+                        const Color.fromARGB(255, 187, 222, 251),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     collapsedShape: const RoundedRectangleBorder(
@@ -206,7 +231,7 @@ class _Filtering extends State<Filtering> {
                   TextButton.icon(
                     onPressed: () {
                       Alert.show(context,
-  'في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.\n يتم تصنيف كل جملة بناءً على أدائها في كل معيار إلى فئات عالية، متوسطة، ومنخفضة، ونوصي بتصوير الجمل ذات التصنيف العالي.');
+                          'في قصتك نقوم بتقييم أجزاء القصة بمعايير مختلفة مثل: المشاعر، أهمية الأسماء في الجملة، مدى اختلاف الجملة، والمزيد.\n يتم تصنيف كل جملة بناءً على أدائها في كل معيار إلى فئات عالية، متوسطة، ومنخفضة، ونوصي بتصوير الجمل ذات التصنيف العالي.');
                     },
                     label: Text(
                       "معرفة معايير التصنيف",
@@ -248,13 +273,14 @@ class _Filtering extends State<Filtering> {
                         print("content: $globalContent");
                         print(
                             "Selected clauses: $globaltopClausesToIllustrate");
-ConfirmationDialog.show(
-                      context, "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟", () {
-                    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Illustration()),
-        (Route<dynamic> route) => false);
-                  });
-        
+                        ConfirmationDialog.show(context,
+                            "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
+                            () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => Illustration()),
+                              (Route<dynamic> route) => false);
+                        });
                       }
                     : () {
                         ScaffoldMessenger.of(context).showSnackBar(

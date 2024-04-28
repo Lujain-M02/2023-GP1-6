@@ -96,20 +96,21 @@ class IllustrationState extends State<Illustration> {
   //     rethrow;
   //   }
   // }
-  static Future<File> generateImage(String sentence, String prompt, int seedNumber, bool isRegenerated) async {
+  static Future<File> generateImage(String sentence, String prompt,
+      int seedNumber, bool isRegenerated) async {
     String apiKey = dotenv.env['API_KEY']!;
     String seed = seedNumber.toString();
 
     String translatedSentence = await translation(sentence);
     String translatedPrompt = await translation(prompt);
-    String text="";
+    String text = "";
 
-    if(isRegenerated)
-    {
-      text = "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
-    } else
-    {
-      text = "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style";
+    if (isRegenerated) {
+      text =
+          "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
+    } else {
+      text =
+          "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style";
     }
 
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
@@ -180,55 +181,93 @@ class IllustrationState extends State<Illustration> {
       isLoading = false;
     });
   }*/
+  // Future<void> generateAllImages() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   List<Map<String, dynamic>> tempSentenceImagePairs = [];
+  //   List<String> clauses = [];
+
+  //   if (selectedImageStyle != null) {
+  //     for (var sentenceMap in globaltopsisScoresList) {
+  //       String sentence = sentenceMap['sentence'];
+  //       //print("sentence: $sentence");
+  //       List<File> imagesForSentence = [];
+  //       print("sentence: $sentence");
+  //       for (var clause in globaltopClausesToIllustrate) {
+  //         if (sentence.contains(clause)) {
+  //           clauses.add(clause);
+  //           try {
+  //             // Generate an image for the sentence containing the clause
+  //             File imageFile = await generateImage(sentence, clause, seed, isRegenerated);
+  //             imagesForSentence.add(imageFile);
+  //             setState(() {
+  //               generatedImagesCount++;
+  //             });
+  //           } catch (error) {
+  //             print("Error generating image for sentence '$sentence': $error");
+  //           }
+  //         }
+  //       }
+
+  //       // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
+  //       tempSentenceImagePairs.add({
+  //         "sentence": sentence.trim(),
+  //         "images":
+  //             imagesForSentence, // This could be an empty list if no images were generated
+  //       });
+  //       print("tempSentenceImagePairs: $tempSentenceImagePairs");
+  //       print("clauses: $clauses");
+  //     }
+  //   }
+  //   // Update the global sentenceImagePairs with the generated data
+  //   setState(() {
+  //     sentenceImagePairs = tempSentenceImagePairs;
+  //     //print(sentenceImagePairs);
+  //     isLoading = false;
+  //   });
+
+  //   // You might want to navigate or update UI here to reflect that the process is complete
+  //   print("Completed image generation for sentences.");
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //       MaterialPageRoute(builder: (context) => const EditBeforePdf()),
+  //       (Route<dynamic> route) => false);
+  // }
+
   Future<void> generateAllImages() async {
     setState(() {
       isLoading = true;
     });
 
-    List<Map<String, dynamic>> tempSentenceImagePairs = [];
-    List<String> clauses = [];
-
-    if (selectedImageStyle != null) {
-      for (var sentenceMap in globaltopsisScoresList) {
-        String sentence = sentenceMap['sentence'];
-        //print("sentence: $sentence");
-        List<File> imagesForSentence = [];
-        print("sentence: $sentence");
-        for (var clause in globaltopClausesToIllustrate) {
-          if (sentence.contains(clause)) {
-            clauses.add(clause);
-            try {
-              // Generate an image for the sentence containing the clause
-              File imageFile = await generateImage(sentence, clause, seed, isRegenerated);
-              imagesForSentence.add(imageFile);
-              setState(() {
-                generatedImagesCount++;
-              });
-            } catch (error) {
-              print("Error generating image for sentence '$sentence': $error");
-            }
+    for (var sentencePair in sentenceImagePairs) {
+      for (var clause in sentencePair.clauses) {
+        if (globaltopClausesToIllustrate.contains(clause.text) &&
+            clause.image == null) {
+          // Only generate if there's no image
+          try {
+            File newImage = await generateImage(
+                sentencePair.sentence, clause.text, seed, isRegenerated);
+            clause.image = newImage;
+            setState(() {
+              generatedImagesCount++;
+            });
+          } catch (error) {
+            print("Error generating image for clause '${clause.text}': $error");
           }
         }
-
-        // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
-        tempSentenceImagePairs.add({
-          "sentence": sentence.trim(),
-          "images":
-              imagesForSentence, // This could be an empty list if no images were generated
-        });
-        print("tempSentenceImagePairs: $tempSentenceImagePairs");
-        print("clauses: $clauses");
       }
     }
-    // Update the global sentenceImagePairs with the generated data
+
     setState(() {
-      sentenceImagePairs = tempSentenceImagePairs;
-      //print(sentenceImagePairs);
       isLoading = false;
     });
 
-    // You might want to navigate or update UI here to reflect that the process is complete
-    print("Completed image generation for sentences.");
+    // Navigate to the next page or update UI
+    print("Completed image generation for all clauses.");
+    print(
+        "Navigating to EditBeforePdf with pairs: ${sentenceImagePairs.length}");
+
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const EditBeforePdf()),
         (Route<dynamic> route) => false);

@@ -19,8 +19,26 @@ class _SystemRecom extends State<IllustRecom> {
   @override
   void initState() {
     super.initState();
+    populateSentenceImagePairs();
+
     recommendedClauses = getSelectedClauses(
         globaltopsisScoresList); // Update topClausesToIllustrate
+  }
+
+  void populateSentenceImagePairs() {
+    // Assuming globaltopsisScoresList is your global list with all the details
+    for (var item in globaltopsisScoresList) {
+      String sentence = item['sentence'];
+      List<Clause> clauses = [];
+
+      for (var clauseMap in item['clauses']) {
+        String clauseText = clauseMap['clause'];
+        clauses.add(Clause(text: clauseText)); // Create a Clause instance
+      }
+
+      sentenceImagePairs
+          .add(SentencePair(sentence: sentence, clauses: clauses));
+    }
   }
 
   List<Map<String, dynamic>> getSelectedClauses(
@@ -303,7 +321,8 @@ class _SystemRecom extends State<IllustRecom> {
                                                   clause['clause']));
                                         },
                                         child: Text(
-                                          clause['clause'].replaceAll(RegExp(r'[،ـ:\.\s]+$'), ''),
+                                          clause['clause'].replaceAll(
+                                              RegExp(r'[،ـ:\.\s]+$'), ''),
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.blue,
@@ -383,7 +402,8 @@ class _SystemRecom extends State<IllustRecom> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => Filtering(),
+                              builder: (context) =>
+                                  Filtering(shouldPopulate: true),
                             ),
                           );
                         },

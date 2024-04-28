@@ -75,23 +75,41 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
   //     pair['images'] = preloadedImages;
   //   }
   // }
+  // Future<void> preloadImagesForPdf() async {
+  //   for (var pair in sentenceImagePairs) {
+  //     List<Uint8List> preloadedImages = [];
+  //     bool isFirstImage = true;
+  //     for (File imageFile in pair['images']) {
+  //       try {
+  //         final Uint8List imageData = await imageFile.readAsBytes();
+  //         preloadedImages.add(imageData);
+  //         if (isFirstImage) {
+  //           isFirstImage = false;
+  //           firstImg = await uploadImageToFirebaseStorage(imageData);
+  //         }
+  //       } catch (e) {
+  //         print("Error reading image file: $e");
+  //       }
+  //     }
+  //     pair['images'] = preloadedImages;
+  //   }
+  // }
   Future<void> preloadImagesForPdf() async {
-    for (var pair in sentenceImagePairs) {
-      List<Uint8List> preloadedImages = [];
-      bool isFirstImage = true;
-      for (File imageFile in pair['images']) {
-        try {
-          final Uint8List imageData = await imageFile.readAsBytes();
-          preloadedImages.add(imageData);
-          if (isFirstImage) {
-            isFirstImage = false;
-            firstImg = await uploadImageToFirebaseStorage(imageData);
+    bool isFirstImage = true;
+    for (var sentencePair in sentenceImagePairs) {
+      for (var clause in sentencePair.clauses) {
+        if (clause.image != null && clause.imageData == null) {
+          try {
+            clause.imageData = await clause.image!.readAsBytes();
+            if (isFirstImage) {
+              isFirstImage = false;
+              firstImg = await uploadImageToFirebaseStorage(clause.imageData!);
+            }
+          } catch (e) {
+            print("Error reading image file: $e");
           }
-        } catch (e) {
-          print("Error reading image file: $e");
         }
       }
-      pair['images'] = preloadedImages;
     }
   }
 
@@ -110,12 +128,125 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return downloadUrl;
   }
 
+  // Future<Uint8List> generatePdf(String title) async {
+  //   final Uint8List backgroundImageData =
+  //       await _loadImage('assets/pdfback.png');
+  //   final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
+  //   final pdf = pw.Document();
+  //   await _loadCustomFont();
+
+  //   pdf.addPage(
+  //     pw.MultiPage(
+  //       pageTheme: pw.PageTheme(
+  //         margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+  //         theme: pw.ThemeData.withFont(base: customFont),
+  //         buildBackground: (pw.Context context) => pw.FullPage(
+  //           ignoreMargins: true,
+  //           child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+  //         ),
+  //       ),
+  //       build: (pw.Context context) => [
+  //         pw.Padding(
+  //           padding: const pw.EdgeInsets.only(bottom: 8.0),
+  //           child: pw.Directionality(
+  //             textDirection: pw.TextDirection.rtl,
+  //             child: pw.Align(
+  //               alignment: pw.Alignment.center,
+  //               child: pw.Text(
+  //                 title,
+  //                 style: pw.TextStyle(font: customFont, fontSize: 20),
+  //                 textAlign: pw.TextAlign.center,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         for (var pair in sentenceImagePairs) ...[
+  //           pw.Padding(
+  //             padding: const pw.EdgeInsets.symmetric(vertical: 10),
+  //             child: pw.Directionality(
+  //               textDirection: pw.TextDirection.rtl,
+  //               child: pw.Text(
+  //                 pair['sentence'],
+  //                 style: pw.TextStyle(font: customFont, fontSize: 14),
+  //                 textAlign: pw.TextAlign.center,
+  //               ),
+  //             ),
+  //           ),
+  //           if (pair['images'] != null && pair['images'].isNotEmpty)
+  //             for (var imageData in pair['images']) ...[
+  //               pw.Padding(
+  //                 padding: const pw.EdgeInsets.only(top: 10, bottom: 10),
+  //                 child: pw.Align(
+  //                   alignment: pw.Alignment
+  //                       .center, // This will center the image horizontally
+  //                   child: pw.Image(
+  //                     pw.MemoryImage(imageData),
+  //                     // (842 pdf size  - 200 Vertical margins - 20 padding between two images ) / 2 = 311
+  //                     //  => 300 giving some room for rounding and ensuring a clear separation between images
+  //                     height: 300.0,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //         ],
+  //       ],
+  //     ),
+  //   );
+
+  //   return pdf.save();
+  // }
+
+  // Future<Uint8List> generatePdf(String title) async {
+  //   final pdf = pw.Document();
+  //   await _loadCustomFont();
+  //   final pw.MemoryImage backgroundImage =
+  //       pw.MemoryImage(await _loadImage('assets/pdfback.png'));
+
+  //   pdf.addPage(
+  //     pw.MultiPage(
+  //       pageTheme: pw.PageTheme(
+  //         margin: const pw.EdgeInsets.symmetric(vertical: 100, horizontal: 40),
+  //         theme: pw.ThemeData.withFont(base: customFont),
+  //         buildBackground: (pw.Context context) => pw.FullPage(
+  //           ignoreMargins: true,
+  //           child: pw.Image(backgroundImage, fit: pw.BoxFit.cover),
+  //         ),
+  //       ),
+  //       build: (pw.Context context) => [
+  //         pw.Padding(
+  //           padding: const pw.EdgeInsets.only(bottom: 8.0),
+  //           child: pw.Text(title,
+  //               style: pw.TextStyle(font: customFont, fontSize: 20),
+  //               textAlign: pw.TextAlign.center),
+  //         ),
+  //         for (var sentencePair in sentenceImagePairs) ...[
+  //           pw.Padding(
+  //             padding: const pw.EdgeInsets.symmetric(vertical: 10),
+  //             child: pw.Text(sentencePair.sentence,
+  //                 style: pw.TextStyle(font: customFont, fontSize: 14),
+  //                 textAlign: pw.TextAlign.center),
+  //           ),
+  //           for (var clause in sentencePair.clauses)
+  //             if (clause.imageData != null) ...[
+  //               pw.Padding(
+  //                 padding: const pw.EdgeInsets.only(top: 10, bottom: 10),
+  //                 child: pw.Image(pw.MemoryImage(clause.imageData!),
+  //                     height: 300.0),
+  //               ),
+  //             ],
+  //         ],
+  //       ],
+  //     ),
+  //   );
+
+  //   return pdf.save();
+  // }
+
   Future<Uint8List> generatePdf(String title) async {
-    final Uint8List backgroundImageData =
-        await _loadImage('assets/pdfback.png');
-    final pw.MemoryImage backgroundImage = pw.MemoryImage(backgroundImageData);
-    final pdf = pw.Document();
     await _loadCustomFont();
+    final pdf = pw.Document();
+    final pw.MemoryImage backgroundImage =
+        pw.MemoryImage(await _loadImage('assets/pdfback.png'));
 
     pdf.addPage(
       pw.MultiPage(
@@ -130,46 +261,38 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
         build: (pw.Context context) => [
           pw.Padding(
             padding: const pw.EdgeInsets.only(bottom: 8.0),
-            child: pw.Directionality(
-              textDirection: pw.TextDirection.rtl,
-              child: pw.Align(
-                alignment: pw.Alignment.center,
-                child: pw.Text(
-                  title,
-                  style: pw.TextStyle(font: customFont, fontSize: 20),
-                  textAlign: pw.TextAlign.center,
-                ),
+            child: pw.Align(
+              alignment: pw.Alignment.center,
+              child: pw.Text(
+                title,
+                style: pw.TextStyle(font: customFont, fontSize: 20),
+                textAlign: pw.TextAlign.center,
+                textDirection: pw.TextDirection.rtl,
               ),
             ),
           ),
-          for (var pair in sentenceImagePairs) ...[
+          for (var sentencePair in sentenceImagePairs) ...[
             pw.Padding(
               padding: const pw.EdgeInsets.symmetric(vertical: 10),
-              child: pw.Directionality(
+              child: pw.Text(
+                sentencePair.sentence,
+                style: pw.TextStyle(font: customFont, fontSize: 14),
+                textAlign: pw.TextAlign.center,
                 textDirection: pw.TextDirection.rtl,
-                child: pw.Text(
-                  pair['sentence'],
-                  style: pw.TextStyle(font: customFont, fontSize: 14),
-                  textAlign: pw.TextAlign.center,
-                ),
               ),
             ),
-            if (pair['images'] != null && pair['images'].isNotEmpty)
-              for (var imageData in pair['images']) ...[
+            for (var clause in sentencePair.clauses)
+              if (clause.imageData != null)
                 pw.Padding(
                   padding: const pw.EdgeInsets.only(top: 10, bottom: 10),
                   child: pw.Align(
-                    alignment: pw.Alignment
-                        .center, // This will center the image horizontally
+                    alignment: pw.Alignment.center,
                     child: pw.Image(
-                      pw.MemoryImage(imageData),
-                      // (842 pdf size  - 200 Vertical margins - 20 padding between two images ) / 2 = 311
-                      //  => 300 giving some room for rounding and ensuring a clear separation between images
+                      pw.MemoryImage(clause.imageData!),
                       height: 300.0,
                     ),
                   ),
                 ),
-              ],
           ],
         ],
       ),
@@ -216,7 +339,6 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globaltopClausesToIllustrate = [];
     globalImagesUrls = [];
     sentenceImagePairs = [];
-    firstImg = '';
     globalDraftID = null;
   }
 

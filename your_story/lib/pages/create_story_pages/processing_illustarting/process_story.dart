@@ -6,7 +6,6 @@ import 'package:your_story/pages/create_story_pages/processing_illustarting/reco
 import '../../../style.dart';
 import 'global_story.dart';
 
-
 class ProcessStory extends StatefulWidget {
   ProcessStory({required this.title, required this.content});
   final String title;
@@ -38,7 +37,7 @@ class _ProcessStoryState extends State<ProcessStory> {
     };
 
     final response = await http.post(
-      Uri.parse("http://192.168.100.4:5000/calculate_topsis"),
+      Uri.parse("http://192.168.100.244:5000/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -93,7 +92,7 @@ class _ProcessStoryState extends State<ProcessStory> {
         0,
         (previousValue, element) =>
             previousValue + (element['clauses'] as List).length);
-    globalTotalNumberOfClauses=totalClauses;        
+    globalTotalNumberOfClauses = totalClauses;
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -162,37 +161,35 @@ class _ProcessStoryState extends State<ProcessStory> {
                           padding: const EdgeInsets.all(10.0),
                           child: Text('نتائج التحليل لقصة ${globalTitle}:',
                               style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold)),
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
                               'عدد الفقرات في القصة: ${globaltopsisScoresList.length}',
                               style: const TextStyle(
-                                  fontSize: 16,
-                                  )),
+                                fontSize: 16,
+                              )),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                              'عدد العبارات في القصة: $totalClauses',
+                          child: Text('عدد العبارات في القصة: $totalClauses',
                               style: const TextStyle(
-                                  fontSize: 16,
-                                  )),
+                                fontSize: 16,
+                              )),
                         ),
                         Expanded(
-                              child: ListView.builder(
-                                itemCount: globaltopsisScoresList.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text('الفقرة ${index + 1}'),
-                                    subtitle: Text(
-                                        'عدد العبارات: ${globaltopsisScoresList[index]['clauses'].length}'),
-                                  );
-                                },
-                              ),
-                            ),
+                          child: ListView.builder(
+                            itemCount: globaltopsisScoresList.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text('الفقرة ${index + 1}'),
+                                subtitle: Text(
+                                    'عدد العبارات: ${globaltopsisScoresList[index]['clauses'].length}'),
+                              );
+                            },
+                          ),
+                        ),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(

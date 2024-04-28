@@ -223,8 +223,9 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
                 // Navigate to MyStoriesPage if coming from PdfGenerationPage
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (context) =>
-                          MainPage(initialIndex: 1,)), // Correct the destination page as per your project structure
+                      builder: (context) => MainPage(
+                            initialIndex: 1,
+                          )), // Correct the destination page as per your project structure
                   (Route<dynamic> route) => false,
                 );
                 // If he comes from other pages
@@ -246,14 +247,15 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(FontAwesomeIcons.shareFromSquare,color: Colors.white),
+              icon: const Icon(FontAwesomeIcons.shareFromSquare,
+                  color: Colors.white),
               color: Colors.white,
               onPressed: () {
                 sharePdf(widget.pdfUrl, widget.storyTitle, context);
               },
             ),
             IconButton(
-              icon: const Icon(FontAwesomeIcons.download,color: Colors.white),
+              icon: const Icon(FontAwesomeIcons.download, color: Colors.white),
               color: Colors.white,
               onPressed: () {
                 downloadAndSaveFile(widget.pdfUrl, widget.storyTitle, context);
