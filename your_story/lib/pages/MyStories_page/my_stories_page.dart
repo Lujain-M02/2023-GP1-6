@@ -182,6 +182,7 @@ class _MyStoriesState extends State<MyStories> {
                         final bool status = pdfData?['published'] ?? false;
                         final String docId = stories[index].id;
                         final String storyType = pdfData?['type'];
+                        final String userId = pdfData?['userId'] ?? 'Unknown'; 
                         return pdfCard_myStories(
                             storyType: storyType,
                             pdfUrl: pdfUrl,
@@ -191,7 +192,8 @@ class _MyStoriesState extends State<MyStories> {
                             status: status,
                             fimg: fimg,
                             size: size,
-                            index: index);
+                            index: index,
+                            userId:userId);
                       },
                       padding: const EdgeInsets.only(bottom: 80),
                     )

@@ -192,11 +192,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ViewPDFPage extends StatefulWidget {
   final String pdfUrl;
   final String storyTitle;
+  final String userId;
 
   const ViewPDFPage({
     Key? key,
     required this.pdfUrl,
     required this.storyTitle,
+    required this.userId,
   }) : super(key: key);
 
   @override

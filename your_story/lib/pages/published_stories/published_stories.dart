@@ -196,7 +196,7 @@ class _StoriesPageState extends State<StoriesPage> {
                                   width: double.infinity,
                                   alignment: Alignment.centerRight,
                                   child: const Text(
-                                    "القصص المنشورة حديثًا",
+                                    "القصص الاعلى مشاهدة",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
@@ -218,7 +218,8 @@ class _StoriesPageState extends State<StoriesPage> {
                                         pdfData?['url'] ?? '#';
                                     final String fimg =
                                         pdfData?['imageUrl'] ?? '#';
-                                    return resentCard(pdfUrl: pdfUrl, title: title, fimg: fimg);
+                                    final String userId = pdfData?['userId'] ?? 'Unknown'; 
+                                    return resentCard(pdfUrl: pdfUrl, title: title, fimg: fimg , userId:userId);
                                   },
                                 ),
                               ),
@@ -268,13 +269,14 @@ class _StoriesPageState extends State<StoriesPage> {
                             final String pdfUrl = pdfData?['url'] ?? '#';
                             final String docId = stories[index].id;
                             final String fimg = pdfData?['imageUrl'] ?? '#';
-
+                            final String userId = pdfData?['userId'] ?? 'Unknown'; 
                             return PdfCard_published(
                               title: title,
                               pdfUrl: pdfUrl,
                               docId: docId,
                               fimg: fimg,
                               index: index,
+                              userId:userId,
                             );
                           },
                         ),

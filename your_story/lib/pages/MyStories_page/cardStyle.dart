@@ -20,6 +20,7 @@ class pdfCard_myStories extends StatelessWidget {
     required this.fimg,
     required this.size,
     required this.index,
+    required this.userId,
   });
 
   final String storyType;
@@ -31,6 +32,7 @@ class pdfCard_myStories extends StatelessWidget {
   final String fimg;
   final Size size;
   final int index;
+  final String userId;
 
   void showMoreOptionsBottomSheet(
       BuildContext context,
@@ -114,21 +116,21 @@ class pdfCard_myStories extends StatelessWidget {
                   ),
                   ListTile(
                       leading: const Icon(FontAwesomeIcons.trash),
-                      title: const Text('حذف القصة'),
+                      title: const Text('حذف '),
                       onTap: () {
                         Navigator.of(context).pop(); // Close the bottom sheet
                         deleteStory(docId, context, storyType);
                       }),
                   ListTile(
                       leading: const Icon(FontAwesomeIcons.shareFromSquare),
-                      title: const Text('مشاركة القصة'),
+                      title: const Text('مشاركة '),
                       onTap: () {
                         Navigator.of(context).pop(); // Close the bottom sheet
                         sharePdf(pdfUrl, title, context);
                       }),
                   ListTile(
                       leading: const Icon(FontAwesomeIcons.download),
-                      title: const Text('تحميل القصة'),
+                      title: const Text('تحميل '),
                       onTap: () {
                         Navigator.of(context).pop(); // Close the bottom sheet
                         downloadAndSaveFile(
@@ -170,6 +172,7 @@ class pdfCard_myStories extends StatelessWidget {
                   builder: (context) => ViewPDFPage(
                     pdfUrl: pdfUrl,
                     storyTitle: title,
+                    userId: userId,
                   ),
                 ));
           } else {
@@ -358,6 +361,7 @@ class PdfCard_published extends StatelessWidget {
     final String docId;
     final String fimg;
     final int index;
+    final String userId;
 
 const PdfCard_published({
     Key? key,
@@ -366,6 +370,7 @@ const PdfCard_published({
     required this.docId, 
     required this.fimg,
     required this.index, 
+    required this.userId
   }) : super(key: key);
 
   @override
@@ -376,7 +381,7 @@ const PdfCard_published({
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title),
+                  ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title,userId:userId),
             ));
       },
       child: Container(
@@ -497,11 +502,14 @@ class resentCard extends StatelessWidget {
     required this.pdfUrl,
     required this.title,
     required this.fimg,
+    required this.userId,
   });
 
   final String pdfUrl;
   final String title;
   final String fimg;
+  final String userId;
+
 
   @override
   Widget build(BuildContext context) {
@@ -513,7 +521,8 @@ class resentCard extends StatelessWidget {
                 builder: (context) =>
                     ViewPDFPage(
                         pdfUrl: pdfUrl,
-                        storyTitle: title),
+                        storyTitle: title,
+                        userId:userId),
               ));
         },
         child: Padding(
