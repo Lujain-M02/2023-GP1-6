@@ -173,6 +173,7 @@ class pdfCard_myStories extends StatelessWidget {
                     pdfUrl: pdfUrl,
                     storyTitle: title,
                     userId: userId,
+                    docId: docId,
                   ),
                 ));
           } else {
@@ -381,7 +382,7 @@ const PdfCard_published({
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title,userId:userId),
+                  ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title,userId:userId,docId: docId,),
             ));
       },
       child: Container(
@@ -503,12 +504,14 @@ class resentCard extends StatelessWidget {
     required this.title,
     required this.fimg,
     required this.userId,
+    required this.docId,
   });
 
   final String pdfUrl;
   final String title;
   final String fimg;
   final String userId;
+  final String docId;
 
 
   @override
@@ -522,7 +525,8 @@ class resentCard extends StatelessWidget {
                     ViewPDFPage(
                         pdfUrl: pdfUrl,
                         storyTitle: title,
-                        userId:userId),
+                        userId:userId,
+                        docId: docId,),
               ));
         },
         child: Padding(

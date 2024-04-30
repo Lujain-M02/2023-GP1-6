@@ -218,8 +218,9 @@ class _StoriesPageState extends State<StoriesPage> {
                                         pdfData?['url'] ?? '#';
                                     final String fimg =
                                         pdfData?['imageUrl'] ?? '#';
-                                    final String userId = pdfData?['userId'] ?? 'Unknown'; 
-                                    return resentCard(pdfUrl: pdfUrl, title: title, fimg: fimg , userId:userId);
+                                    final String userId = pdfData?['userId'] ?? 'Unknown';
+                                    final String docId = stories[index].id; 
+                                    return resentCard(pdfUrl: pdfUrl, title: title, fimg: fimg , userId:userId, docId: docId,);
                                   },
                                 ),
                               ),

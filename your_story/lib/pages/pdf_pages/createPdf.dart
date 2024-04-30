@@ -233,7 +233,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title, userId:"none" ,),
+          builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title, userId:'',docId:'',),
           settings: RouteSettings(name: 'PdfGenerationPage'),
         ));
   }
