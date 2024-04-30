@@ -215,52 +215,41 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
 
    @override
   void initState() {
-    super.initState();
-    // You can call updateViewsInFirestore here if you want to update views when the page is loaded
-    // For example:
+    super.initState();    
      updateViewsInFirestore(widget.docId, widget.userId);
   }
 
   Future<void> updateViewsInFirestore(String docId, String userId) async {
   try {  
-     if (userId != null) {
-      if(docId!= null){
+     if (userId != '') {
+      if(docId!= ''){
       DocumentReference userRef = FirebaseFirestore.instance.collection("User").doc(userId);
       CollectionReference storiesCollection = userRef.collection("Story");
 
       // Get the document snapshot to check if 'views' attribute exists
-      DocumentSnapshot docSnapshot = await storiesCollection.doc(docId).get();
-       Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+      // DocumentSnapshot docSnapshot = await storiesCollection.doc(docId).get();
+    //    Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
 
       
-      if (docSnapshot.exists) {
-        // Document exists, check if 'views' attribute is present
-        if (data != null &&data.containsKey('views')) {
-          // 'views' attribute exists, update it
-          await storiesCollection.doc(docId).update({
-            'views':FieldValue.increment(1) ,
-          });
-          print("Views updated successfully for document: $docId");
-        } else {
-          // 'views' attribute does not exist, add it
-          await storiesCollection.doc(docId).update({
-            'views':1,
-          });
-          print("'views' attribute added and set to 1 for document: $docId");
-        }
-      }}} else {
-        // Document does not exist
-        print("Document does not exist: $docId");
-      }
-    }
+    //   if (docSnapshot.exists) {
+    //     // Document exists, check if 'views' attribute is present
+    //     if (data != null &&data.containsKey('views')) {
+    //       // 'views' attribute exists, update it
+    //       await storiesCollection.doc(docId).update({
+    //         'views':FieldValue.increment(1) ,
+    //       });
+    //       print("Views updated successfully for document: $docId");
+    //     } 
+    //   }}} 
+    // }
 
-    //
-    //   await storiesCollection.doc(documentID).update({
-    //     'views':FieldValue.increment(1),
-    //   });
+    
+      await storiesCollection.doc(docId).update({
+        'views':FieldValue.increment(1),
+      });
 
-    //   print("Views updated successfully for document: $documentID");
-    //   }}
+      print("Views updated successfully for document: $docId");
+      }}}
   catch (e) {
     print("Error updating views in Firestore: $e");
     throw e; // Re-throw the exception to handle it in the calling function if needed

@@ -158,6 +158,7 @@ class _StoriesPageState extends State<StoriesPage> {
               }
 
               final stories = snapshot.data!;
+stories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort stories
               return SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.only(
