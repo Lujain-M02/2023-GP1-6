@@ -10,6 +10,8 @@ List<String> globalImagesUrls = [];
 //List<Map<String, dynamic>> sentenceImagePairs = [];
 String? globalDraftID = null;
 List<SentencePair> sentenceImagePairs = [];
+String searchQuery1 = '';
+
 
 class SentencePair {
   String sentence;

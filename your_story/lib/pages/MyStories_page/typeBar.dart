@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/style.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
+
 
 class storyType extends StatefulWidget {
   final Function(String) onCategorySelected;
 
-  const storyType({Key? key, required this.onCategorySelected})
+   storyType({Key? key, required this.onCategorySelected})
       : super(key: key);
 
   @override
@@ -38,7 +40,7 @@ class _storyTypeState extends State<storyType> {
             ),
             padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/1.5),
             decoration: BoxDecoration(
-              color: index == selectedIndex
+                 color: index == (searchQuery1!.isEmpty ? 0 : selectedIndex)
                   ? Colors.white.withOpacity(0.4)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6),
@@ -49,7 +51,7 @@ class _storyTypeState extends State<storyType> {
             ),
           ),
         ),
-      ),
+      ),    
     );
   }
 }

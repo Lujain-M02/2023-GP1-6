@@ -10,6 +10,7 @@ import 'package:your_story/pages/MyStories_page/searchBox.dart';
 import 'package:your_story/pages/MyStories_page/typeBar.dart';
 import 'package:your_story/pages/create_story_pages/create_story.dart';
 import 'package:your_story/style.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 
 class MyStories extends StatefulWidget {
   const MyStories({super.key});
@@ -17,7 +18,7 @@ class MyStories extends StatefulWidget {
   @override
   State<MyStories> createState() => _MyStoriesState();
 }
-
+  
 class _MyStoriesState extends State<MyStories> {
   final StreamController<List<QueryDocumentSnapshot>> _storiesStreamController =
       StreamController.broadcast();
@@ -25,7 +26,7 @@ class _MyStoriesState extends State<MyStories> {
   late final String userId;
   // List<QueryDocumentSnapshot> _allStories = [];
   late TextEditingController _searchController;
-  String _searchQuery = '';
+
 
   @override
   void initState() {
@@ -62,14 +63,14 @@ class _MyStoriesState extends State<MyStories> {
         : collection;
 
     query.snapshots().listen((snapshot) {
-      if (_searchQuery.isEmpty) {
+      if (searchQuery1.isEmpty) {
         _storiesStreamController.add(snapshot.docs);
       } else {
         final filteredData = snapshot.docs
             .where((doc) => (doc.data())['title']
                 .toString()
                 .toLowerCase()
-                .contains(_searchQuery.toLowerCase()))
+                .contains(searchQuery1.toLowerCase()))
             .toList();
         _storiesStreamController.add(filteredData);
       }
@@ -78,7 +79,7 @@ class _MyStoriesState extends State<MyStories> {
 
   void _handleSearchChange(String query) {
     setState(() {
-      _searchQuery = query;
+      searchQuery1 = query;
       updateStoriesList('جميع القصص');
     });
   }
@@ -133,7 +134,7 @@ class _MyStoriesState extends State<MyStories> {
                             topRight: Radius.circular(40),
                           ),
                         ),
-                        child: _searchQuery.isEmpty
+                        child: searchQuery1.isEmpty
                             ? const Center(
                                 child: Text(
                                   'يبدو أنه لا يوجد أي قصص منشوره',
@@ -145,7 +146,7 @@ class _MyStoriesState extends State<MyStories> {
                               )
                             : Center(
                                 child: Text(
-                                  'يبدو أنه لا يوجد أي قصص بعنوان \"$_searchQuery\"',
+                                  'يبدو أنه لا يوجد أي قصص بعنوان \"$searchQuery1\"',
                                   style: const TextStyle(
                                     fontSize: 25,
                                   ),
