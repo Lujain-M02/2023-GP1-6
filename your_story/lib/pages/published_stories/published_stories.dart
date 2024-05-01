@@ -172,20 +172,18 @@ stories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort st
                       topLeft: Radius.circular(60),
                     ),
                   ),
-                  child: Column(children: [
-                    // const SizedBox(
-                    // height: 120,
-                    // width: double.infinity,
-                    // child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [
-                    //     Text(
-                    //       'حيث نحول خيالك\n                       لواقع ',
-                    //       style: TextStyle(fontSize: 30,),
-                    //       // textAlign: TextAlign.justify,
-                    //     ),
-                    //   ],
-                    // ),
-                    //     ),
+                  child: Column(children: [SizedBox(height: 5,),
+                    const SizedBox(
+                    height: 80,
+                    width: double.infinity,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image(image: AssetImage("assets/pub1.png"),),
+                        Image(image: AssetImage("assets/pub2.png"),)
+
+                      ],
+                    ),
+                        ),
                     _searchQuery == ''
                         ? Column(
                             children: [
