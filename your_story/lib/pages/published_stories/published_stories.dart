@@ -173,8 +173,8 @@ stories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort st
                     ),
                   ),
                   child: Column(children: [SizedBox(height: 5,),
-                    const SizedBox(
-                    height: 80,
+                     SizedBox(
+                    height:  MediaQuery.of(context).size.height * 0.09,
                     width: double.infinity,
                     child: Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: [
