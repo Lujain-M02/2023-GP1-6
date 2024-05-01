@@ -252,7 +252,6 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
       }}}
   catch (e) {
     print("Error updating views in Firestore: $e");
-    throw e; // Re-throw the exception to handle it in the calling function if needed
   }
 }
 

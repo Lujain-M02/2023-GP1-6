@@ -28,7 +28,7 @@ class SearchBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextField(
-        autofocus: true,
+        autofocus: false,
         onChanged: onChanged,
         controller: controller,
         style: const TextStyle(color: Colors.white),
