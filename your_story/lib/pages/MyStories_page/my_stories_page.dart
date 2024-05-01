@@ -26,7 +26,6 @@ class _MyStoriesState extends State<MyStories> {
   // List<QueryDocumentSnapshot> _allStories = [];
   late TextEditingController _searchController;
   String _searchQuery = '';
-  bool _isSearching = false;
 
   @override
   void initState() {
@@ -134,7 +133,7 @@ class _MyStoriesState extends State<MyStories> {
                             topRight: Radius.circular(40),
                           ),
                         ),
-                        child: _isSearching
+                        child: _searchQuery.isEmpty
                             ? const Center(
                                 child: Text(
                                   'يبدو أنه لا يوجد أي قصص منشوره',
