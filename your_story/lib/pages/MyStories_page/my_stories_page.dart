@@ -137,7 +137,7 @@ class _MyStoriesState extends State<MyStories> {
                         child: searchQuery1.isEmpty
                             ? const Center(
                                 child: Text(
-                                  'يبدو أنه لا يوجد أي قصص منشوره',
+                                  'يبدو أنه لا يوجد أي قصص ',
                                   style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold),
