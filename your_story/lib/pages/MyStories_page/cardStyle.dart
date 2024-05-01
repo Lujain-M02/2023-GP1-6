@@ -418,7 +418,7 @@ const PdfCard_published({
                           ),
                           Positioned(
                             top: 20,
-                            left: 37,
+                            left:  MediaQuery.of(context).size.width * 0.14,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: CachedNetworkImage(
