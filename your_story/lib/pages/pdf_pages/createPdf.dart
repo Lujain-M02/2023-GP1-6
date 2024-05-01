@@ -286,7 +286,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
             'url': pdfUrl, // Store the URL
             'imageUrl': firstImageFile, // Store the image URL
             'userId':user.uid,
-            'views':1,
+            'views':0,
             'timestamp': FieldValue.serverTimestamp(),
           });
         }

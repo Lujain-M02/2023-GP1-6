@@ -40,7 +40,7 @@ class _storyTypeState extends State<storyType> {
             ),
             padding: EdgeInsets.symmetric(horizontal: kDefaultPadding/1.5),
             decoration: BoxDecoration(
-                 color: index == (searchQuery1!.isEmpty ? 0 : selectedIndex)
+                 color: index == (searchQuery1.isEmpty ?  selectedIndex : 0)
                   ? Colors.white.withOpacity(0.4)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6),

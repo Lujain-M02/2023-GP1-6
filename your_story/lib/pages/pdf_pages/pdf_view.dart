@@ -184,10 +184,11 @@
 // }
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:your_story/pages/MainPage.dart';
-import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
+// import 'package:your_story/pages/MyStories_page/my_stories_page.dart';
 import '../MyStories_page/pdf_methods.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -221,27 +222,12 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
 
   Future<void> updateViewsInFirestore(String docId, String userId) async {
   try {  
+    String user = FirebaseAuth.instance.currentUser!.uid;
+    if(user!=userId){
      if (userId != '') {
       if(docId!= ''){
       DocumentReference userRef = FirebaseFirestore.instance.collection("User").doc(userId);
       CollectionReference storiesCollection = userRef.collection("Story");
-
-      // Get the document snapshot to check if 'views' attribute exists
-      // DocumentSnapshot docSnapshot = await storiesCollection.doc(docId).get();
-    //    Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-
-      
-    //   if (docSnapshot.exists) {
-    //     // Document exists, check if 'views' attribute is present
-    //     if (data != null &&data.containsKey('views')) {
-    //       // 'views' attribute exists, update it
-    //       await storiesCollection.doc(docId).update({
-    //         'views':FieldValue.increment(1) ,
-    //       });
-    //       print("Views updated successfully for document: $docId");
-    //     } 
-    //   }}} 
-    // }
 
     
       await storiesCollection.doc(docId).update({
@@ -249,7 +235,7 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
       });
 
       print("Views updated successfully for document: $docId");
-      }}}
+      }}}}
   catch (e) {
     print("Error updating views in Firestore: $e");
   }
