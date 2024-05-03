@@ -75,7 +75,7 @@ class pdfCard_myStories extends StatelessWidget {
                   ),
                   ListTile(
                       leading: const Icon(FontAwesomeIcons.trash),
-                      title: const Text('حذف القصة'),
+                      title: const Text('حذف'),
                       onTap: () {
                         Navigator.of(context).pop(); // Close the bottom sheet
                         deleteStory(docId, context, storyType);
