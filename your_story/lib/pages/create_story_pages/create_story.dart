@@ -106,7 +106,15 @@ class _CreateStory extends State<CreateStory> {
                 iconSize: 27,
                 icon: const Icon(Icons.close),
                 onPressed: () {
+                  globalTitle = "";
+                  globalContent = "";
+                  globalTotalNumberOfClauses = 0;
+                  globaltopsisScoresList = [];
+                  globaltopClausesToIllustrate = [];
+                  globalImagesUrls = [];
+                  sentenceImagePairs = [];
                   globalDraftID = null;
+                  selectedImageStyle = null;
                   ConfirmationDialog.show(
                       context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
                     Navigator.pushAndRemoveUntil(

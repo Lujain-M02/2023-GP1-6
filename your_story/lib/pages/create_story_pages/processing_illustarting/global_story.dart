@@ -11,13 +11,17 @@ List<String> globalImagesUrls = [];
 String? globalDraftID = null;
 List<SentencePair> sentenceImagePairs = [];
 String searchQuery1 = '';
-
+String? selectedImageStyle;
 
 class SentencePair {
   String sentence;
   List<Clause> clauses;
 
   SentencePair({required this.sentence, required this.clauses});
+
+  Object? get text => null;
+
+  get image => null;
 }
 
 class Clause {

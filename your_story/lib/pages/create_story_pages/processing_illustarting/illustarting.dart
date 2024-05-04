@@ -12,8 +12,6 @@ import 'package:your_story/alerts.dart';
 import '../../pdf_pages/edit_beforePdf.dart';
 import 'global_story.dart';
 
-String? selectedImageStyle;
-
 class Illustration extends StatefulWidget {
   //final List<dynamic> clausesToIllujstrate;
 
@@ -31,7 +29,7 @@ class IllustrationState extends State<Illustration> {
   bool isLoading = false;
   //String translatedStory = "";
   int generatedImagesCount = 0;
-  int numberOfImages = globaltopClausesToIllustrate.length;
+  int numberOfImages = 0; //globaltopClausesToIllustrate.length;
   int seed = Random().nextInt(100000);
   bool isRegenerated = false;
 
@@ -39,6 +37,8 @@ class IllustrationState extends State<Illustration> {
   void initState() {
     super.initState();
     //translateStory();
+    calculateUnillustratedClauses();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //selectedImageStyle = await ImageStylePickerDialog.show(context);
       List<ImageStyle> imageStyles = [
@@ -57,12 +57,31 @@ class IllustrationState extends State<Illustration> {
             style: "Cartoon",
             imagePath: "assets/Cartoon.png"),
       ];
-      selectedImageStyle =
+      print(selectedImageStyle);
+      selectedImageStyle ??=
           await ImageStylePickerDialog.show(context, imageStyles);
-
+      print(selectedImageStyle);
       if (selectedImageStyle != null) {
-        generateAllImages(); // Call generateAllImages here
+        generateAllImages();
       }
+    });
+  }
+
+  void calculateUnillustratedClauses() {
+    int count = 0;
+    for (var sentencePair in sentenceImagePairs) {
+      // Assuming sentenceImagePairs holds all sentences and their clauses
+      for (var clause in sentencePair.clauses) {
+        // Assuming each sentence has multiple clauses
+        if (globaltopClausesToIllustrate.contains(clause.text) &&
+            clause.image == null) {
+          count++; // Increment count if clause is in the list to be illustrated but has no image
+        }
+      }
+    }
+    setState(() {
+      numberOfImages =
+          count; // Update state with the counted number of unillustrated clauses
     });
   }
 

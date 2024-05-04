@@ -128,7 +128,6 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     return downloadUrl;
   }
 
-
   Future<Uint8List> generatePdf(String title) async {
     await _loadCustomFont();
     final pdf = pw.Document();
@@ -227,13 +226,19 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     globalImagesUrls = [];
     sentenceImagePairs = [];
     globalDraftID = null;
+    selectedImageStyle = null;
   }
 
   void _navigateToViewPage(String pdfUrl, String title) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ViewPDFPage(pdfUrl: pdfUrl, storyTitle: title, userId:'',docId:'',),
+          builder: (context) => ViewPDFPage(
+            pdfUrl: pdfUrl,
+            storyTitle: title,
+            userId: '',
+            docId: '',
+          ),
           settings: RouteSettings(name: 'PdfGenerationPage'),
         ));
   }
@@ -250,7 +255,6 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
     String downloadUrl = await pdfRef.getDownloadURL();
     return downloadUrl;
   }
-
 
   Future<String> addPdfToCurrentUser(
     String title,
@@ -285,8 +289,8 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
             'published': false, // Use a boolean for published status
             'url': pdfUrl, // Store the URL
             'imageUrl': firstImageFile, // Store the image URL
-            'userId':user.uid,
-            'views':0,
+            'userId': user.uid,
+            'views': 0,
             'timestamp': FieldValue.serverTimestamp(),
           });
         }

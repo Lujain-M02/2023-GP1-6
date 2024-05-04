@@ -17,340 +17,435 @@ class EditBeforePdf extends StatefulWidget {
 
 class _EditBeforePdfState extends State<EditBeforePdf> {
   bool isLoading = false;
-
-  void _removeImage(int sentenceIndex, int imageIndex) {
-    var clauseText = sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-    ConfirmationDialog.show(context, "هل أنت متأكد من أنك تريد حذف هذه الصورة؟",
-        () {
-      setState(() {
-        sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
-        globaltopClausesToIllustrate.remove(clauseText);
-      });
-      Navigator.of(context)
-          .pop(); // Close the confirmation dialog after deletion
+  bool isSelectionMode = false;
+  Set<String> selectedIndices = {};
+  void toggleSelectionMode() {
+    setState(() {
+      isSelectionMode = !isSelectionMode;
+      if (!isSelectionMode)
+        selectedIndices.clear(); // Clear selection when exiting
     });
   }
 
-  // void _regenerateImage(int sentenceIndex, int imageIndex) async {
-  //   String paragraph = sentenceImagePairs[sentenceIndex]['sentence'];
-  //   String prompt = '';
-  //   bool isRegenerated = true;
+  void toggleSelection(String key) {
+    if (selectedIndices.contains(key)) {
+      selectedIndices.remove(key);
+    } else {
+      selectedIndices.add(key);
+    }
+    setState(() {});
+  }
 
-  //   for (var clause in globaltopClausesToIllustrate) {
-  //     if (paragraph.contains(clause)) {
-  //       prompt = clause + " With a different POV";
-  //     }
+  void executeAction(String choice) {
+    switch (choice) {
+      case 'Select All':
+        sentenceImagePairs.asMap().forEach((index, sentencePair) {
+          sentencePair.clauses.asMap().forEach((clauseIndex, clause) {
+            if (clause.image != null) {
+              selectedIndices.add("$index" + "_" + "$clauseIndex");
+            }
+          });
+        });
+        showSnackBar('تم تحديد جميع الصور');
+        break;
+      case 'Deselect All':
+        selectedIndices.clear();
+        showSnackBar('تم إلغاء تحديد جميع الصور');
+        break;
+      case 'Delete':
+      case 'Regenerate':
+        if (selectedIndices.isEmpty) {
+          showSnackBar('يجب اختيار صورة على الأقل');
+        } else {
+          String confirmationMessage = choice == 'Delete'
+              ? "هل أنت متأكد من أنك تريد حذف جميع الصور المختارة؟"
+              : "هل أنت متأكد أنك تريد إعادة إنشاء جميع الصور المختارة؟";
+          ConfirmationDialog.show(context, confirmationMessage, () {
+            processBulkActions(choice);
+            Navigator.of(context).pop(); // Close the dialog after action
+          });
+        }
+        break;
+    }
+    setState(() {});
+  }
+
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(content: message, icon: Icons.info_outline));
+  }
+
+  void processBulkActions(String choice) {
+    if (choice == 'Delete') {
+      selectedIndices.forEach((key) {
+        var parts = key.split('_');
+        var index = int.parse(parts[0]);
+        var clauseIndex = int.parse(parts[1]);
+        _removeImage(index, clauseIndex, bulkAction: true);
+      });
+    } else if (choice == 'Regenerate') {
+      selectedIndices.forEach((key) {
+        var parts = key.split('_');
+        var index = int.parse(parts[0]);
+        var clauseIndex = int.parse(parts[1]);
+        _regenerateImage(index, clauseIndex, bulkAction: true);
+      });
+    }
+
+    selectedIndices.clear();
+    if (choice != 'Select All') toggleSelectionMode();
+    setState(() {});
+  }
+
+  // void _removeImage(int sentenceIndex, int imageIndex,
+  //     {bool bulkAction = false}) {
+  //   void remove() {
+  //     setState(() {
+  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
+  //       globaltopClausesToIllustrate
+  //           .remove(sentenceImagePairs[sentenceIndex].clauses[imageIndex].text);
+  //       if (!bulkAction) {
+  //         Navigator.of(context)
+  //             .pop(); // Close the confirmation dialog after deletion
+  //       }
+  //     });
   //   }
 
-  //   // Show the confirmation dialog
-  //   ConfirmationDialog.show(
-  //     context,
-  //     "هل أنت متأكد أنك تريد إعادة إنشاء الصورة؟",
-  //     () async {
-  //       Navigator.of(context).pop(); // Close the confirmation dialog
-  //       try {
-  //         IllustrationState illustrationState = IllustrationState();
-  //         // int seed = illustrationState.seed + 1; // Increment the seed value by one
-  //         int seed = illustrationState.seed;
-  //         setState(() {
-  //           isLoading = true; // Set loading state to true
-  //         });
-  //         File newImage = await IllustrationState.generateImage(
-  //             prompt, paragraph, seed, isRegenerated);
-  //         setState(() {
-  //           sentenceImagePairs[sentenceIndex]['images'][imageIndex] = newImage;
-  //           print(prompt + "---" + paragraph);
-  //           isLoading =
-  //               false; // Set loading state to false after image is regenerated
-  //         });
-  //       } catch (error) {
-  //         // Handle error
-  //         print("Error regenerating image: $error");
-  //       }
-  //     },
-  //   );
+  //   if (!bulkAction) {
+  //     ConfirmationDialog.show(
+  //         context, "هل أنت متأكد من أنك تريد حذف هذه الصورة؟", () {
+  //       Navigator.of(context).pop();
+  //       remove();
+  //       showSnackBar('تم حذف الصورة بنجاح');
+  //     });
+  //   } else {
+  //     remove();
+  //     showSnackBar('تم حذف جميع الصور المختارة بنجاح');
+  //   }
   // }
-  void _regenerateImage(int sentenceIndex, int imageIndex) async {
+
+  void _removeImage(int sentenceIndex, int imageIndex,
+      {bool bulkAction = false}) {
+    // Define the removal function
+    void remove() {
+      setState(() {
+        if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
+          var clauseText =
+              sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
+          sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
+          globaltopClausesToIllustrate.remove(clauseText);
+        }
+      });
+      // Show success message
+      // String successMessage = bulkAction
+      //     ? 'تم حذف جميع الصور المختارة بنجاح'
+      //     : 'تم حذف هذه الصورة بنجاح';
+      // showSnackBar(successMessage);
+      showSnackBar("تم حذف صورة / صور بنجاح");
+    }
+
+    if (!bulkAction) {
+      // Individual deletion confirmation dialog
+      ConfirmationDialog.show(
+          context, "هل أنت متأكد من أنك تريد حذف هذه الصورة؟", () {
+        remove();
+        Navigator.of(context).pop(); // Close the dialog after action
+      });
+
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext dialogContext) {
+      //     return AlertDialog(
+      //       title: Text("تأكيد الحذف"),
+      //       content: Text("هل أنت متأكد من أنك تريد حذف هذه الصورة؟"),
+      //       actions: <Widget>[
+      //         TextButton(
+      //           child: Text("إلغاء"),
+      //           onPressed: () => Navigator.of(dialogContext).pop(), // Dismiss dialog
+      //         ),
+      //         TextButton(
+      //           child: Text("حذف"),
+      //           onPressed: () {
+      //             Navigator.of(dialogContext).pop(); // Dismiss dialog
+      //             remove(); // Perform deletion
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+    } else {
+      // For bulk deletion, directly remove since confirmation dialog should be shown externally
+      remove();
+    }
+  }
+
+  void performDeletion(int sentenceIndex, int imageIndex) {
+    setState(() {
+      if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
+        var clauseText =
+            sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
+        sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
+        globaltopClausesToIllustrate.remove(clauseText);
+        showSnackBar('تم حذف الصورة بنجاح');
+      } else {
+        showSnackBar('حدث خطأ: المؤشر خارج النطاق');
+      }
+    });
+  }
+
+  void _regenerateImage(int index, int clauseIndex,
+      {bool bulkAction = false}) async {
+    setState(() {
+      isLoading = true; // Indicate loading state
+    });
+
+    try {
+      Future<void> regenerate() async {
+        IllustrationState illustrationState = IllustrationState();
+        File newImage = await IllustrationState.generateImage(
+            sentenceImagePairs[index].sentence,
+            sentenceImagePairs[index].clauses[clauseIndex].text,
+            illustrationState.seed,
+            true);
+
+        setState(() {
+          sentenceImagePairs[index].clauses[clauseIndex].image = newImage;
+        });
+        // String successMessage = bulkAction
+        //     ? 'تم إعادة إنشاء جميع الصور المختارة بنجاج'
+        //     : 'تم إعادة إنشاء هذه الصورة بنجاح';
+        // showSnackBar(successMessage);
+        showSnackBar("تم إعادة إنشاء صور بنجاح");
+      }
+
+      if (!bulkAction) {
+        ConfirmationDialog.show(
+            context, "هل أنت متأكد من أنك تريد إعادة إنشاء هذه الصورة؟", () {
+          Navigator.of(context).pop();
+          regenerate();
+        });
+      } else {
+        regenerate();
+      } // Show success message
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        CustomSnackBar(
+            content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
+            icon: Icons.error_outline),
+      );
+    } finally {
+      setState(() {
+        isLoading = false; // Reset loading state
+      });
+    }
+  }
+
+  // void performDeletion(int sentenceIndex, int imageIndex) {
+  //   setState(() {
+  //     sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
+  //     globaltopClausesToIllustrate
+  //         .remove(sentenceImagePairs[sentenceIndex].clauses[imageIndex].text);
+  //     Navigator.of(context)
+  //         .pop(); // Close the confirmation dialog after deletion
+  //   });
+  // }
+
+  void performRegeneration(int sentenceIndex, int imageIndex) {
     String sentence = sentenceImagePairs[sentenceIndex].sentence;
     String prompt = sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-    bool isRegenerated = true;
+    IllustrationState illustrationState = IllustrationState();
+    int seed = illustrationState.seed;
+    setState(() {
+      isLoading = true;
+    });
+    IllustrationState.generateImage(sentence, prompt, seed, true)
+        .then((newImage) {
+      setState(() {
+        sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = newImage;
+        isLoading = false;
+      });
+    }).catchError((error) {
+      print("Error regenerating image: $error");
+    });
+  }
 
-    // Show the confirmation dialog
-    ConfirmationDialog.show(
-      context,
-      "هل أنت متأكد أنك تريد إعادة إنشاء الصورة؟",
-      () async {
-        Navigator.of(context).pop(); // Close the confirmation dialog
-        try {
-          IllustrationState illustrationState = IllustrationState();
-          int seed = illustrationState.seed;
-          setState(() {
-            isLoading = true; // Set loading state to true
-          });
-          File newImage = await IllustrationState.generateImage(
-              sentence, prompt, seed, isRegenerated);
-          setState(() {
-            sentenceImagePairs[sentenceIndex].clauses[imageIndex].image =
-                newImage;
-            isLoading =
-                false; // Set loading state to false after image is regenerated
-          });
-        } catch (error) {
-          print("Error regenerating image: $error");
-        }
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: YourStoryStyle.primarycolor,
+          leading: IconButton(
+            color: Colors.black,
+            iconSize: 27,
+            icon: const Icon(Icons.home, color: Colors.white),
+            onPressed: () {
+              globalTitle = "";
+              globalContent = "";
+              globalTotalNumberOfClauses = 0;
+              globaltopsisScoresList = [];
+              globaltopClausesToIllustrate = [];
+              globalImagesUrls = [];
+              sentenceImagePairs = [];
+              globalDraftID = null;
+              selectedImageStyle = null;
+              ConfirmationDialog.show(context, "هل أنت متأكد؟ لن يتم حفظ قصتك",
+                  () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                  (Route<dynamic> route) =>
+                      false, // this removes all routes below MainPage
+                );
+              });
+            },
+          ),
+          title: Text(
+              isSelectionMode ? 'اختر صورة أو أكثر' : 'التعديل قبل إنشاء القصة',
+              style: TextStyle(color: Colors.white)),
+          actions: [
+            if (isSelectionMode)
+              IconButton(
+                icon: Icon(Icons.done, color: Colors.white),
+                onPressed: toggleSelectionMode,
+              )
+            else
+              IconButton(
+                icon: Icon(Icons.more_vert, color: Colors.white),
+                onPressed: toggleSelectionMode,
+              ),
+          ],
+        ),
+        body: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : buildListView(),
+        bottomNavigationBar:
+            isSelectionMode ? buildBottomAppBar() : buildContinueButton(),
+      ),
+    );
+  }
+
+  Widget buildListView() {
+    return ListView.builder(
+      itemCount: sentenceImagePairs.length,
+      itemBuilder: (context, index) {
+        var sentencePair = sentenceImagePairs[index];
+        return ListTile(
+          title: Text(sentencePair.sentence, textAlign: TextAlign.right),
+          subtitle: buildImageRow(sentencePair, index),
+        );
       },
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl, // Sets the direction to right-to-left
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 0, 48, 96),
-          title: Text('التعديل قبل إنشاء القصة',
-              style: TextStyle(color: Colors.white)),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.edit),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.push(
+  Widget buildBottomAppBar() {
+    bool anySelected = selectedIndices.isNotEmpty;
+
+    return BottomAppBar(
+      color: YourStoryStyle.primarycolor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: Icon(anySelected ? Icons.deselect : Icons.select_all,
+                color: Colors.white),
+            onPressed: () =>
+                executeAction(anySelected ? 'Deselect All' : 'Select All'),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.white),
+            onPressed: () => executeAction('Delete'),
+          ),
+          IconButton(
+            icon: Icon(Icons.refresh, color: Colors.white),
+            onPressed: () => executeAction('Regenerate'),
+          ),
+          IconButton(
+              icon: Icon(Icons.add_photo_alternate, color: Colors.white),
+              onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Filtering(shouldPopulate: true)),
-                );
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.close),
-              color: Colors.white,
-              onPressed: () {
-                globalDraftID = null;
-                ConfirmationDialog.show(
-                    context, "هل أنت متأكد؟ لن يتم حفظ انجازك", () {
-                  globalTitle = "";
-                  globalContent = "";
-                  globalTotalNumberOfClauses = 0;
-                  globaltopsisScoresList = [];
-                  globaltopClausesToIllustrate = [];
-                  globalImagesUrls = [];
-                  sentenceImagePairs = [];
-                  firstImg = '';
-                  globalDraftID = null;
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => MainPage()),
-                    (Route<dynamic> route) => false,
-                  );
-                });
-              },
-            ),
-          ],
-        ),
-        // body: isLoading
-        //     ? Center(child: CircularProgressIndicator())
-        //     : ListView.builder(
-        //         itemCount: sentenceImagePairs.length,
-        //         itemBuilder: (context, index) {
-        //           var pair = sentenceImagePairs[index];
-        //           // return ListTile(
-        //           //   title: Text(pair['sentence'], textAlign: TextAlign.right),
-        //           //   subtitle: Column(
-        //           //     children: List.generate(
-        //           //       pair['images'].length,
-        //           //       (imgIndex) {
-        //           //         File imageFile = pair['images'][imgIndex];
-        //           //         return Column(
-        //           //           mainAxisSize: MainAxisSize.min,
-        //           //           children: [
-        //           //             Image.file(
-        //           //               imageFile,
-        //           //               fit: BoxFit.scaleDown,
-        //           //               width: MediaQuery.of(context).size.width - 40,
-        //           //             ),return ListTile(
-        //           var sentencePair = sentenceImagePairs[index];
-        //           return ListTile(
-        //             title:
-        //                 Text(sentencePair.sentence, textAlign: TextAlign.right),
-        //             subtitle: Column(
-        //               children: List.generate(
-        //                 sentencePair.clauses.length,
-        //                 (clauseIndex) {
-        //                   File? imageFile =
-        //                       sentencePair.clauses[clauseIndex].image;
-        //                   return Column(
-        //                     mainAxisSize: MainAxisSize.min,
-        //                     children: [
-        //                       imageFile != null
-        //                           ? Image.file(
-        //                               imageFile,
-        //                               fit: BoxFit.scaleDown,
-        //                               width:
-        //                                   MediaQuery.of(context).size.width - 40,
-        //                             )
-        //                           : Container(),
-        //                       IconButton(
-        //                         icon: Icon(Icons.delete,
-        //                             color:
-        //                                 const Color.fromARGB(255, 179, 36, 25)),
-        //                         onPressed: () => _removeImage(index, imgIndex),
-        //                       ),
-        //                       IconButton(
-        //                         icon: Icon(Icons.refresh, color: Colors.blue),
-        //                         onPressed: () =>
-        //                             _regenerateImage(index, imgIndex),
-        //                       )
-        //                     ],
-        //                   );
-        //                 },
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        // body: isLoading
-        //     ? Center(child: CircularProgressIndicator())
-        //     : ListView.builder(
-        //         itemCount: sentenceImagePairs.length,
-        //         itemBuilder: (context, index) {
-        //           var sentencePair = sentenceImagePairs[index];
-        //           print("Building item for: ${sentencePair}");
+                      builder: (context) => Filtering(shouldPopulate: true)))),
+        ],
+      ),
+    );
+  }
 
-        //           return ListTile(
-        //             title:
-        //                 Text(sentencePair.sentence, textAlign: TextAlign.right),
-        //             subtitle: Column(
-        //               children: List.generate(
-        //                 sentencePair.clauses.length,
-        //                 (clauseIndex) {
-        //                   File? imageFile =
-        //                       sentencePair.clauses[clauseIndex].image;
-        //                   return Column(
-        //                     mainAxisSize: MainAxisSize.min,
-        //                     children: [
-        //                       imageFile != null
-        //                           ? Image.file(
-        //                               imageFile,
-        //                               fit: BoxFit.scaleDown,
-        //                               width:
-        //                                   MediaQuery.of(context).size.width - 40,
-        //                             )
-        //                           : Container(),
-        //                       IconButton(
-        //                         icon: Icon(Icons.delete,
-        //                             color:
-        //                                 const Color.fromARGB(255, 179, 36, 25)),
-        //                         onPressed: () => _removeImage(index, clauseIndex),
-        //                       ),
-        //                       IconButton(
-        //                         icon: Icon(Icons.refresh, color: Colors.blue),
-        //                         onPressed: () =>
-        //                             _regenerateImage(index, clauseIndex),
-        //                       )
-        //                     ],
-        //                   );
-        //                 },
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => PdfGenerationPage()),
-        //     );
-        //   },
-        //   child: Icon(Icons.picture_as_pdf),
-        //   backgroundColor: Colors.blue,
-        // ),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: sentenceImagePairs.length,
-                itemBuilder: (context, index) {
-                  var sentencePair = sentenceImagePairs[index];
-                  return ListTile(
-                    title:
-                        Text(sentencePair.sentence, textAlign: TextAlign.right),
-                    subtitle: Column(
-                      children: List.generate(
-                        sentencePair.clauses.length,
-                        (clauseIndex) {
-                          File? imageFile =
-                              sentencePair.clauses[clauseIndex].image;
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Display the image if it exists
-                              imageFile != null
-                                  ? Image.file(
-                                      imageFile,
-                                      fit: BoxFit.scaleDown,
-                                      width: MediaQuery.of(context).size.width -
-                                          40,
-                                    )
-                                  : Container(
-                                      height:
-                                          0), // No image, so no space allocated
-                              // Show buttons only if there is an image
-                              imageFile != null
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.delete,
-                                              color: Color.fromARGB(
-                                                  255, 179, 36, 25)),
-                                          onPressed: () =>
-                                              _removeImage(index, clauseIndex),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.refresh,
-                                              color: Color.fromARGB(
-                                                  255, 0, 48, 96)),
-                                          onPressed: () => _regenerateImage(
-                                              index, clauseIndex),
-                                        ),
-                                      ],
-                                    )
-                                  : Container(
-                                      height: 0), // No buttons if no image
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            style: ButtonStyle(
+  Widget buildContinueButton() {
+    return isLoading
+        ? SizedBox.shrink()
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all(YourStoryStyle.primarycolor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                )),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PdfGenerationPage()),
-              );
-            },
-            child: Text("الاستمرار لإنشاء ملف القصة",
-                style: TextStyle(color: Colors.white)),
-          ),
-        ),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50))),
+              ),
+              onPressed: confirmAndContinue,
+              child: Text("الاستمرار لإنشاء ملف القصة",
+                  style: TextStyle(color: Colors.white)),
+            ),
+          );
+  }
+
+  void confirmAndContinue() {
+    ConfirmationDialog.show(context,
+        "هل أنت متأكد من أنك تريد إنشاء ملف القصة، لن يمكنك التعديل بعد ذلك",
+        () async {
+      Navigator.of(context).pop(); // Close the confirmation dialog
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => PdfGenerationPage()));
+    });
+  }
+
+  Widget buildImageRow(SentencePair sentencePair, int index) {
+    return Column(
+      children: List.generate(
+        sentencePair.clauses.length,
+        (clauseIndex) {
+          var clause = sentencePair.clauses[clauseIndex];
+          File? imageFile = clause.image;
+          String key = "$index" + "_" + "$clauseIndex";
+          return imageFile != null
+              ? buildImageWidget(imageFile, key, index, clauseIndex)
+              : Container();
+        },
       ),
+    );
+  }
+
+  Widget buildImageWidget(
+      File? imageFile, String key, int index, int clauseIndex) {
+    return Row(
+      children: [
+        Expanded(
+          child: imageFile != null ? Image.file(imageFile) : Container(),
+        ),
+        if (isSelectionMode)
+          Checkbox(
+            value: selectedIndices.contains(key),
+            onChanged: (bool? value) {
+              toggleSelection(key);
+            },
+          ),
+        if (!isSelectionMode)
+          Column(
+            children: [
+              IconButton(
+                icon:
+                    Icon(Icons.delete, color: Color.fromARGB(255, 179, 36, 25)),
+                onPressed: () => _removeImage(index, clauseIndex),
+              ),
+              IconButton(
+                icon: Icon(Icons.refresh, color: YourStoryStyle.primarycolor),
+                onPressed: () => _regenerateImage(index, clauseIndex),
+              ),
+            ],
+          ),
+      ],
     );
   }
 }

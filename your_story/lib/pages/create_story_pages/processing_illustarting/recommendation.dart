@@ -366,7 +366,7 @@ class _SystemRecom extends State<IllustRecom> {
                             )),
                         onPressed: () {
                           ConfirmationDialog.show(context,
-                              "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
+                              "لن يمكنك التعديل على نص القصة لاحقا، هل أنت متاكد أنك ترغب بالاستمرار؟",
                               () {
                             globaltopClausesToIllustrate = [];
                             for (var sentence in recommendedClauses) {
@@ -408,7 +408,7 @@ class _SystemRecom extends State<IllustRecom> {
                           );
                         },
                         child: Text(
-                          "الاختيار يدويا",
+                          "الاختيار يدويًّا",
                           style: TextStyle(color: YourStoryStyle.primarycolor),
                         ),
                       ),

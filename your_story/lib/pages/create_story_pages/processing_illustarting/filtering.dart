@@ -18,37 +18,58 @@ class _Filtering extends State<Filtering> {
   Map<String, bool> selections = {};
   double maxScore = 0;
   double minScore = 0;
-
+  int totalSelected = 0;
   @override
   void initState() {
     super.initState();
     maxScore = getMaxScore();
     minScore = getMinScore();
-    if (widget.shouldPopulate) {
-      for (var sentenceMap in globaltopsisScoresList) {
-        for (var clauseMap in sentenceMap['clauses']) {
-          String clause = clauseMap['clause'];
-          // Check if the clause is one of the illustrated ones
-          selections[clause] = globaltopClausesToIllustrate.contains(clause);
-        }
-      }
-    } else {
-      // Initialize all selections to false based on the clauses in globaltopsisScoresList
-      for (var sentenceMap in globaltopsisScoresList) {
-        for (var clauseMap in sentenceMap['clauses']) {
-          String clause = clauseMap['clause'];
-          selections[clause] = false;
+    //   if (widget.shouldPopulate) {
+    //     // Populate initial selections
+    //     for (var sentenceMap in globaltopsisScoresList) {
+    //       for (var clauseMap in sentenceMap['clauses']) {
+    //         String clause = clauseMap['clause'];
+    //         // Check if the clause is one of the illustrated ones
+    //         selections[clause] = globaltopClausesToIllustrate.contains(clause);
+    //       }
+    //     }
+    //   } else {
+    //     // Initialize all selections to false based on the clauses in globaltopsisScoresList
+    //     for (var sentenceMap in globaltopsisScoresList) {
+    //       for (var clauseMap in sentenceMap['clauses']) {
+    //         String clause = clauseMap['clause'];
+    //         selections[clause] = false;
+    //       }
+    //     }
+    //   }
+    // }
+
+    for (var sentenceMap in globaltopsisScoresList) {
+      for (var clauseMap in sentenceMap['clauses']) {
+        String clause = clauseMap['clause'];
+        // if (widget.shouldPopulate) {
+        //   selections[clause] = globaltopClausesToIllustrate.contains(clause);
+        // } else {
+        //   selections[clause] = false;
+        // }
+        bool isIllustrated = globaltopClausesToIllustrate.contains(clause);
+        selections[clause] = widget.shouldPopulate && isIllustrated;
+
+        // If coming from the PDF edit screen, do not count pre-selected clauses
+        if (!widget.shouldPopulate || !isIllustrated) {
+          totalSelected += selections[clause]! ? 1 : 0;
         }
       }
     }
   }
 
-  int get totalSelected =>
-      selections.values.where((selected) => selected).length;
+  // int get totalSelected =>
+  //     selections.values.where((selected) => selected).length;
 
   void toggleSelection(String clause) {
     setState(() {
       selections[clause] = !selections[clause]!;
+      totalSelected += selections[clause]! ? 1 : -1;
     });
   }
 
@@ -216,7 +237,7 @@ class _Filtering extends State<Filtering> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('التصوير يدويا'),
+          title: const Text('التصوير يدويًّا'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +295,7 @@ class _Filtering extends State<Filtering> {
                         print(
                             "Selected clauses: $globaltopClausesToIllustrate");
                         ConfirmationDialog.show(context,
-                            "لن يمكنك التعديل على القصه لاحقا هل أنت متاكد أنك ترغب بالاستمرار؟",
+                            "لن يمكنك التعديل على نص القصة لاحقا، هل أنت متاكد أنك ترغب بالاستمرار؟",
                             () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
