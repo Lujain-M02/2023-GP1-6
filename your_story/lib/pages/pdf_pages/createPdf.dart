@@ -151,7 +151,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
               alignment: pw.Alignment.center,
               child: pw.Text(
                 title,
-                style: pw.TextStyle(font: customFont, fontSize: 20),
+                style: pw.TextStyle(font: customFont, fontSize: 24),
                 textAlign: pw.TextAlign.center,
                 textDirection: pw.TextDirection.rtl,
               ),
@@ -162,7 +162,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
               padding: const pw.EdgeInsets.symmetric(vertical: 10),
               child: pw.Text(
                 sentencePair.sentence,
-                style: pw.TextStyle(font: customFont, fontSize: 14),
+                style: pw.TextStyle(font: customFont, fontSize: 18),
                 textAlign: pw.TextAlign.center,
                 textDirection: pw.TextDirection.rtl,
               ),
