@@ -137,8 +137,8 @@ class IllustrationState extends State<Illustration> {
       ..fields['prompt'] = text
       ..fields['output_format'] = 'jpeg'
       ..fields['seed'] = seed
-      ..fields['model'] = "sd3-turbo"
-      // ..fields['negative_prompt'] = 'text in the image, Blurry, distorted '
+      ..fields['model'] = "sd3"
+      ..fields['negative_prompt'] = 'text in the image, Blurry, distorted '
       ..headers['Authorization'] = 'Bearer $apiKey';
 
     var streamedResponse = await request.send();
