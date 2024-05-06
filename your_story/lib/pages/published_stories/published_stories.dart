@@ -158,7 +158,8 @@ class _StoriesPageState extends State<StoriesPage> {
               }
 
               final stories = snapshot.data!;
-stories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort stories
+              final sortedStories = List.from(stories);
+sortedStories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort stories
               return SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.only(
@@ -209,7 +210,7 @@ stories.sort((a, b) => (b['views'] ?? 0).compareTo(a['views'] ?? 0)); // Sort st
                                   itemCount: math.min(
                                       stories.length, 5), //stories.length,
                                   itemBuilder: (context, index) {
-                                    final pdfData = stories[index].data()
+                                    final pdfData = sortedStories[index].data()
                                         as Map<String, dynamic>?;
                                     final String title =
                                         pdfData?['title'] ?? 'Untitled';
