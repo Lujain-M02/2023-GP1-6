@@ -104,7 +104,7 @@ class _CreateStory extends State<CreateStory> {
               leading: IconButton(
                 color: Colors.black,
                 iconSize: 27,
-                icon: const Icon(Icons.close),
+                icon: const Icon(Icons.home),
                 onPressed: () {
                   globalTitle = "";
                   globalContent = "";
@@ -180,10 +180,20 @@ class _CreateStory extends State<CreateStory> {
               children: [
                 //if it's not in the last step
                 if (_activeStepIndex != stepList().length - 1)
-                  IconButton(
-                    iconSize: 40,
+                  OutlinedButton(
+                    //iconSize: 40,
+                    //color: YourStoryStyle.primarycolor,
+                    //icon: const Icon(Icons.arrow_back),
+                    style: OutlinedButton.styleFrom(
+                  //backgroundColor: YourStoryStyle.primarycolor,
+                  foregroundColor: YourStoryStyle.primarycolor,
+                  side: BorderSide(
                     color: YourStoryStyle.primarycolor,
-                    icon: const Icon(Icons.arrow_back),
+                    width: 2,
+                  ),
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                    ),
                     onPressed: _activeStepIndex > 0
                         ? () {
                             //this line to disable the button in the first step and if not return back
@@ -192,6 +202,10 @@ class _CreateStory extends State<CreateStory> {
                             });
                           }
                         : null,
+                    //iconSize: 40,
+                    //color: YourStoryStyle.primarycolor,
+                    //icon: const Icon(Icons.arrow_back),
+                    child: const Text("السابق"),
                   ),
                 //if it's the last step a new button will apear instead of the arrow
                 if (_activeStepIndex == stepList().length - 1)
@@ -252,10 +266,20 @@ class _CreateStory extends State<CreateStory> {
                       //   ),
                       //   child: const Text("حفظ كمسودة"),
                       // ),
-                      IconButton(
-                        iconSize: 40,
-                        color: YourStoryStyle.primarycolor,
-                        icon: const Icon(Icons.arrow_back),
+                      OutlinedButton(
+                        //iconSize: 40,
+                        //color: YourStoryStyle.primarycolor,
+                        //icon: const Icon(Icons.arrow_back),
+                        style: OutlinedButton.styleFrom(
+                  //backgroundColor: YourStoryStyle.primarycolor,
+                  foregroundColor: YourStoryStyle.primarycolor,
+                  side: BorderSide(
+                    color: YourStoryStyle.primarycolor,
+                    width: 2,
+                  ),
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                    ),
                         onPressed: _activeStepIndex > 0
                             ? () {
                                 //this line to disable the button in the first step and if not return back
@@ -264,6 +288,10 @@ class _CreateStory extends State<CreateStory> {
                                 });
                               }
                             : null,
+                        //iconSize: 40,
+                        //color: YourStoryStyle.primarycolor,
+                        //icon: const Icon(Icons.arrow_back),
+                        child: const Text("السابق"),
                       ),
                       OutlinedButton(
                         onPressed: () {
@@ -318,15 +346,25 @@ class _CreateStory extends State<CreateStory> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        child: const Text("الاستمرار لمعالجة القصة"),
+                        child: const Text("استمرار لمعالجة القصة"),
                       ),
                     ],
                   )
                 else
-                  IconButton(
-                    iconSize: 40,
+                  OutlinedButton(
+                    //iconSize: 40,
+                    //color: YourStoryStyle.primarycolor,
+                    //icon: const Icon(Icons.arrow_forward),
+                    style: OutlinedButton.styleFrom(
+                  //backgroundColor: YourStoryStyle.primarycolor,
+                  foregroundColor: YourStoryStyle.primarycolor,
+                  side: BorderSide(
                     color: YourStoryStyle.primarycolor,
-                    icon: const Icon(Icons.arrow_forward),
+                    width: 2,
+                  ),
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                    ),
                     onPressed: _activeStepIndex != 2
                         ? () {
                             setState(
@@ -390,6 +428,7 @@ class _CreateStory extends State<CreateStory> {
                             );
                           }
                         : null,
+                    child: const Text("التالي",),
                   ),
               ],
             )),
