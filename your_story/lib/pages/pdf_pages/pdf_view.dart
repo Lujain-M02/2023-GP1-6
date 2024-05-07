@@ -247,6 +247,7 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 0, 48, 96),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

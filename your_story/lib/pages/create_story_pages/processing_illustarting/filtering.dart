@@ -237,6 +237,7 @@ class _Filtering extends State<Filtering> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('التصوير يدويًّا'),
         ),
         body: Column(

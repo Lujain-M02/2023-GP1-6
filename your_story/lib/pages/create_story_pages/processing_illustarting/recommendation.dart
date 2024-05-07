@@ -146,6 +146,7 @@ class _SystemRecom extends State<IllustRecom> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(

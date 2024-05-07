@@ -316,6 +316,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(globalTitle),
           automaticallyImplyLeading: false,
         ),

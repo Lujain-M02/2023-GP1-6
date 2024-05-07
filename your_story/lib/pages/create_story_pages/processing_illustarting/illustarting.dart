@@ -313,6 +313,7 @@ class IllustrationState extends State<Illustration> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(globalTitle),
           automaticallyImplyLeading: false,
         ),
