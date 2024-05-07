@@ -98,8 +98,9 @@ class _ProcessStoryState extends State<ProcessStory> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.white,
-          leading: IconButton(
+           leading:isLoading? Container() :IconButton(
             icon: const Icon(
               Icons.arrow_back,
               color: Colors.black,
@@ -108,7 +109,8 @@ class _ProcessStoryState extends State<ProcessStory> {
               Navigator.pop(context);
             },
           ),
-          title: const Text(
+          title: 
+          const Text(
             'تحليل القصة',
             style: TextStyle(color: Colors.black),
           ),
