@@ -60,9 +60,10 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
           String confirmationMessage = choice == 'Delete'
               ? "هل أنت متأكد من أنك تريد حذف جميع الصور المختارة؟"
               : "هل أنت متأكد أنك تريد إعادة إنشاء جميع الصور المختارة؟";
+
           ConfirmationDialog.show(context, confirmationMessage, () {
             processBulkActions(choice);
-            Navigator.of(context).pop(); // Close the dialog after action
+            //Navigator.of(context).pop();
           });
         }
         break;
@@ -75,58 +76,59 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         CustomSnackBar(content: message, icon: Icons.info_outline));
   }
 
-  void processBulkActions(String choice) {
-    if (choice == 'Delete') {
-      selectedIndices.forEach((key) {
-        var parts = key.split('_');
-        var index = int.parse(parts[0]);
-        var clauseIndex = int.parse(parts[1]);
-        _removeImage(index, clauseIndex, bulkAction: true);
-      });
-    } else if (choice == 'Regenerate') {
-      selectedIndices.forEach((key) {
-        var parts = key.split('_');
-        var index = int.parse(parts[0]);
-        var clauseIndex = int.parse(parts[1]);
-        _regenerateImage(index, clauseIndex, bulkAction: true);
-      });
+  void processBulkActions(String choice) async {
+    if (selectedIndices.isEmpty) {
+      showSnackBar('يجب اختيار صورة على الأقل');
+      return;
     }
 
-    selectedIndices.clear();
-    if (choice != 'Select All') toggleSelectionMode();
-    setState(() {});
+    Navigator.pop(context); // To close the confirmationMessage
+    // Show the loading dialog once before starting the bulk operations
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Prevents closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return const LoadingScreen(
+            loadingMessage: "يتم إعادة إنشاء جميع الصور المحددة");
+      },
+    );
+
+    try {
+      List<Future> tasks = [];
+      // Iterate over each selected item and prepare the tasks
+      for (var key in selectedIndices.toList()) {
+        var parts = key.split('_');
+        var index = int.parse(parts[0]);
+        var clauseIndex = int.parse(parts[1]);
+
+        if (choice == 'Delete') {
+          _removeImage(index, clauseIndex, bulkAction: true);
+        } else if (choice == 'Regenerate') {
+          tasks.add(_regenerateImage(index, clauseIndex, bulkAction: true));
+        }
+      }
+
+      // Wait for all regeneration tasks to complete
+      await Future.wait(tasks);
+
+      // showSnackBar(choice == 'Delete'
+      //     ? 'تم حذف الصور المختارة بنجاح'
+      //     : 'تم إعادة إنشاء الصور المختارة بنجاح');
+      if (choice == 'Delete') showSnackBar('تم حذف جميع الصور المختارة بنجاح');
+    } catch (e) {
+      showSnackBar('حدث خطأ أثناء العملية');
+    } finally {
+      Navigator.of(context).pop();
+      selectedIndices.clear();
+      if (isSelectionMode) toggleSelectionMode();
+
+      setState(() {});
+    }
   }
-
-  // void _removeImage(int sentenceIndex, int imageIndex,
-  //     {bool bulkAction = false}) {
-  //   void remove() {
-  //     setState(() {
-  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
-  //       globaltopClausesToIllustrate
-  //           .remove(sentenceImagePairs[sentenceIndex].clauses[imageIndex].text);
-  //       if (!bulkAction) {
-  //         Navigator.of(context)
-  //             .pop(); // Close the confirmation dialog after deletion
-  //       }
-  //     });
-  //   }
-
-  //   if (!bulkAction) {
-  //     ConfirmationDialog.show(
-  //         context, "هل أنت متأكد من أنك تريد حذف هذه الصورة؟", () {
-  //       Navigator.of(context).pop();
-  //       remove();
-  //       showSnackBar('تم حذف الصورة بنجاح');
-  //     });
-  //   } else {
-  //     remove();
-  //     showSnackBar('تم حذف جميع الصور المختارة بنجاح');
-  //   }
-  // }
 
   void _removeImage(int sentenceIndex, int imageIndex,
       {bool bulkAction = false}) {
-    // Define the removal function
     void remove() {
       setState(() {
         if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
@@ -134,14 +136,13 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
               sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
           sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
           globaltopClausesToIllustrate.remove(clauseText);
+        } else {
+          showSnackBar('حدث خطأ أثناء حذف الصورة');
         }
       });
-      // Show success message
-      // String successMessage = bulkAction
-      //     ? 'تم حذف جميع الصور المختارة بنجاح'
-      //     : 'تم حذف هذه الصورة بنجاح';
-      // showSnackBar(successMessage);
-      showSnackBar("تم حذف صورة / صور بنجاح");
+      if (!bulkAction) {
+        showSnackBar('تم حذف الصورة بنجاح');
+      }
     }
 
     if (!bulkAction) {
@@ -149,74 +150,66 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
       ConfirmationDialog.show(
           context, "هل أنت متأكد من أنك تريد حذف هذه الصورة؟", () {
         remove();
-        Navigator.of(context).pop(); // Close the dialog after action
+        Navigator.of(context).pop();
       });
-
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext dialogContext) {
-      //     return AlertDialog(
-      //       title: Text("تأكيد الحذف"),
-      //       content: Text("هل أنت متأكد من أنك تريد حذف هذه الصورة؟"),
-      //       actions: <Widget>[
-      //         TextButton(
-      //           child: Text("إلغاء"),
-      //           onPressed: () => Navigator.of(dialogContext).pop(), // Dismiss dialog
-      //         ),
-      //         TextButton(
-      //           child: Text("حذف"),
-      //           onPressed: () {
-      //             Navigator.of(dialogContext).pop(); // Dismiss dialog
-      //             remove(); // Perform deletion
-      //           },
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
     } else {
-      // For bulk deletion, directly remove since confirmation dialog should be shown externally
+      // Bulk deletion
       remove();
     }
   }
 
-  void performDeletion(int sentenceIndex, int imageIndex) {
-    setState(() {
-      if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
-        var clauseText =
-            sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-        sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
-        globaltopClausesToIllustrate.remove(clauseText);
-        showSnackBar('تم حذف الصورة بنجاح');
-      } else {
-        showSnackBar('حدث خطأ: المؤشر خارج النطاق');
-      }
-    });
-  }
+  // void performDeletion(int sentenceIndex, int imageIndex) {
+  //   setState(() {
+  //     if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
+  //       var clauseText =
+  //           sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
+  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
+  //       globaltopClausesToIllustrate.remove(clauseText);
+  //       showSnackBar('تم حذف الصورة بنجاح');
+  //     } else {
+  //       showSnackBar('حدث خطأ أثناء حذف الصورة');
+  //     }
+  //   });
+  // }
 
-  void _regenerateImage(int index, int clauseIndex,
+  Future<void> _regenerateImage(int index, int clauseIndex,
       {bool bulkAction = false}) async {
-    setState(() {
-      isLoading = true; // Indicate loading state
-    });
-
     try {
       Future<void> regenerate() async {
-        IllustrationState illustrationState = IllustrationState();
+        if (!bulkAction) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return LoadingScreen(loadingMessage: "يتم إعادة إنشاء الصورة");
+            },
+          );
+        } else if (bulkAction) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return LoadingScreen(
+                  loadingMessage: "يتم إعادة إنشاء جميع الصور المحددة");
+            },
+          );
+        }
+
         File newImage = await IllustrationState.generateImage(
             sentenceImagePairs[index].sentence,
             sentenceImagePairs[index].clauses[clauseIndex].text,
-            illustrationState.seed,
+            IllustrationState().seed,
             true);
 
         setState(() {
           sentenceImagePairs[index].clauses[clauseIndex].image = newImage;
         });
-        // String successMessage = bulkAction
-        //     ? 'تم إعادة إنشاء جميع الصور المختارة بنجاج'
-        //     : 'تم إعادة إنشاء هذه الصورة بنجاح';
-        // showSnackBar(successMessage);
-        showSnackBar("تم إعادة إنشاء صور بنجاح");
+
+        // if (!bulkAction) {
+        //   showSnackBar("تم إعادة إنشاء الصورة بنجاح");
+        //   //Navigator.of(context).pop();
+        // }
+        Navigator.of(context).pop();
       }
 
       if (!bulkAction) {
@@ -227,29 +220,14 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         });
       } else {
         regenerate();
-      } // Show success message
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackBar(
-            content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
-            icon: Icons.error_outline),
-      );
-    } finally {
-      setState(() {
-        isLoading = false; // Reset loading state
-      });
+      Navigator.of(context).pop(); // Ensure loading screen is closed on error
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
+          content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
+          icon: Icons.error_outline));
     }
   }
-
-  // void performDeletion(int sentenceIndex, int imageIndex) {
-  //   setState(() {
-  //     sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
-  //     globaltopClausesToIllustrate
-  //         .remove(sentenceImagePairs[sentenceIndex].clauses[imageIndex].text);
-  //     Navigator.of(context)
-  //         .pop(); // Close the confirmation dialog after deletion
-  //   });
-  // }
 
   void performRegeneration(int sentenceIndex, int imageIndex) {
     String sentence = sentenceImagePairs[sentenceIndex].sentence;
@@ -446,6 +424,33 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
             ],
           ),
       ],
+    );
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  final String loadingMessage;
+
+  const LoadingScreen({
+    Key? key,
+    this.loadingMessage = "معالجة ...",
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black45,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 20),
+            Text(loadingMessage,
+                style: TextStyle(color: Colors.white, fontSize: 16)),
+          ],
+        ),
+      ),
     );
   }
 }
