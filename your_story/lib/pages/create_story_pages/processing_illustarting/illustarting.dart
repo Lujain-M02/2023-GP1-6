@@ -70,9 +70,7 @@ class IllustrationState extends State<Illustration> {
   void calculateUnillustratedClauses() {
     int count = 0;
     for (var sentencePair in sentenceImagePairs) {
-      // Assuming sentenceImagePairs holds all sentences and their clauses
       for (var clause in sentencePair.clauses) {
-        // Assuming each sentence has multiple clauses
         if (globaltopClausesToIllustrate.contains(clause.text) &&
             clause.image == null) {
           count++; // Increment count if clause is in the list to be illustrated but has no image
@@ -381,7 +379,7 @@ Future<String> OLDgenerateImage(String sentence, String prompt) async {
   }
 }
 
-Future<String> translation(String clause) async {
+Future<String> translation(String text) async {
   var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
 
   //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
@@ -389,7 +387,7 @@ Future<String> translation(String clause) async {
   const to = 'en'; //Destination language
 
   final url = Uri.parse(
-      'https://translation.googleapis.com/language/translate/v2?q=$clause&target=$to&key=$API_key');
+      'https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$API_key');
 
   final response = await http.post(url);
 

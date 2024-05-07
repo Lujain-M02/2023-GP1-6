@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/style.dart';
 
-//this class shows a message with two buttons متأكد و الغاء
+//this class shows a message with two buttons متأكد و إلغاء
 class ConfirmationDialog {
   static void show(
       BuildContext context, String alertMessage, Function onConfirm) {
@@ -49,7 +49,7 @@ class ConfirmationDialog {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
-                child: const Text("الغاء", style: TextStyle(fontSize: 20)),
+                child: const Text("إلغاء", style: TextStyle(fontSize: 20)),
               ),
             ],
           ),
@@ -210,7 +210,8 @@ class NumberPickerAlertDialog {
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
-                      child: const Text("متأكد", style: TextStyle(fontSize: 20)),
+                      child:
+                          const Text("متأكد", style: TextStyle(fontSize: 20)),
                     ),
                   ),
                   // OutlinedButton(
