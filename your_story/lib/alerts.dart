@@ -338,7 +338,7 @@ class ImageStylePickerDialog {
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
-                      child: const Text("الاستمرار",
+                      child: const Text("استمرار",
                           style: TextStyle(color: Colors.white)),
                     ),
                   ),

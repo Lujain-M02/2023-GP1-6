@@ -113,21 +113,21 @@ class IllustrationState extends State<Illustration> {
   //     rethrow;
   //   }
   // }
-  static Future<File> generateImage(String sentence, String prompt,
+  static Future<File> generateImage(String sentence, String clause,
       int seedNumber, bool isRegenerated) async {
     String apiKey = dotenv.env['API_KEY']!;
     String seed = seedNumber.toString();
 
     String translatedSentence = await translation(sentence);
-    String translatedPrompt = await translation(prompt);
+    String translatedClause = await translation(clause);
     String text = "";
 
     if (isRegenerated) {
       text =
-          "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
+          "Generate an image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
     } else {
       text =
-          "Generate an image of '$translatedPrompt' based on this context '$translatedSentence' in $selectedImageStyle style";
+          "Generate an image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style";
     }
 
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';

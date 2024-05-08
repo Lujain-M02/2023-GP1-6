@@ -17,13 +17,14 @@ class EditBeforePdf extends StatefulWidget {
 
 class _EditBeforePdfState extends State<EditBeforePdf> {
   bool isLoading = false;
-  bool isSelectionMode = false;
+  //bool isSelectionMode = false;
   Set<String> selectedIndices = {};
   void toggleSelectionMode() {
     setState(() {
-      isSelectionMode = !isSelectionMode;
-      if (!isSelectionMode)
-        selectedIndices.clear(); // Clear selection when exiting
+      // isSelectionMode = !isSelectionMode;
+      // if (!isSelectionMode)
+      //   selectedIndices.clear(); // Clear selection when exiting
+      super.initState();
     });
   }
 
@@ -58,8 +59,8 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
           showSnackBar('يجب اختيار صورة على الأقل');
         } else {
           String confirmationMessage = choice == 'Delete'
-              ? "هل أنت متأكد من أنك تريد حذف جميع الصور المختارة؟"
-              : "هل أنت متأكد أنك تريد إعادة إنشاء جميع الصور المختارة؟";
+              ? "هل أنت متأكد من أنك تريد حذف الصورة / الصور المختارة؟"
+              : "هل أنت متأكد أنك تريد إعادة إنشاء الصورة / الصور المختارة؟";
 
           ConfirmationDialog.show(context, confirmationMessage, () {
             processBulkActions(choice);
@@ -121,7 +122,8 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     } finally {
       Navigator.of(context).pop();
       selectedIndices.clear();
-      if (isSelectionMode) toggleSelectionMode();
+      //if (isSelectionMode)
+      toggleSelectionMode();
 
       setState(() {});
     }
@@ -248,6 +250,7 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -280,27 +283,18 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
               });
             },
           ),
-          title: Text(
-              isSelectionMode ? 'اختر صورة أو أكثر' : 'التعديل قبل إنشاء القصة',
+          title: const Text('التعديل قبل إنشاء القصة',
               style: TextStyle(color: Colors.white)),
-          actions: [
-            if (isSelectionMode)
-              IconButton(
-                icon: Icon(Icons.done, color: Colors.white),
-                onPressed: toggleSelectionMode,
-              )
-            else
-              IconButton(
-                icon: Icon(Icons.more_vert, color: Colors.white),
-                onPressed: toggleSelectionMode,
-              ),
-          ],
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             : buildListView(),
-        bottomNavigationBar:
-            isSelectionMode ? buildBottomAppBar() : buildContinueButton(),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildBottomAppBar(),
+          ],
+        ),
       ),
     );
   }
@@ -318,57 +312,102 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     );
   }
 
+  // Widget buildBottomAppBar() {
+  //   bool anySelected = selectedIndices.isNotEmpty;
+
+  //   return BottomAppBar(
+  //     color: YourStoryStyle.primarycolor,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         IconButton(
+  //           icon: Icon(anySelected ? Icons.deselect : Icons.select_all,
+  //               color: Colors.white),
+  //           onPressed: () =>
+  //               executeAction(anySelected ? 'Deselect All' : 'Select All'),
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.delete, color: Colors.white),
+  //           onPressed: () => executeAction('Delete'),
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.refresh, color: Colors.white),
+  //           onPressed: () => executeAction('Regenerate'),
+  //         ),
+  //         IconButton(
+  //             icon: Icon(Icons.add_photo_alternate, color: Colors.white),
+  //             onPressed: () => Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                     builder: (context) => Filtering(shouldPopulate: true)))),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget buildBottomAppBar() {
     bool anySelected = selectedIndices.isNotEmpty;
 
     return BottomAppBar(
-      color: YourStoryStyle.primarycolor,
+      color: Colors.white,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
             icon: Icon(anySelected ? Icons.deselect : Icons.select_all,
-                color: Colors.white),
+                color: YourStoryStyle.primarycolor),
             onPressed: () =>
                 executeAction(anySelected ? 'Deselect All' : 'Select All'),
           ),
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.white),
+            icon: Icon(Icons.delete, color: YourStoryStyle.primarycolor),
             onPressed: () => executeAction('Delete'),
           ),
           IconButton(
-            icon: Icon(Icons.refresh, color: Colors.white),
+            icon: Icon(Icons.refresh, color: YourStoryStyle.primarycolor),
             onPressed: () => executeAction('Regenerate'),
           ),
           IconButton(
-              icon: Icon(Icons.add_photo_alternate, color: Colors.white),
+              icon: Icon(Icons.add_photo_alternate,
+                  color: YourStoryStyle.primarycolor),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Filtering(shouldPopulate: true)))),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(YourStoryStyle.primarycolor),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+            ),
+            onPressed: confirmAndContinue,
+            child:
+                Text("إنشاء ملف القصة", style: TextStyle(color: Colors.white)),
+          ),
         ],
       ),
     );
   }
 
-  Widget buildContinueButton() {
-    return isLoading
-        ? SizedBox.shrink()
-        : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(YourStoryStyle.primarycolor),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50))),
-              ),
-              onPressed: confirmAndContinue,
-              child: Text("الاستمرار لإنشاء ملف القصة",
-                  style: TextStyle(color: Colors.white)),
-            ),
-          );
-  }
+  // Widget buildContinueButton() {
+  //   return isLoading
+  //       ? SizedBox.shrink()
+  //       : Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: ElevatedButton(
+  //             style: ButtonStyle(
+  //               backgroundColor:
+  //                   MaterialStateProperty.all(YourStoryStyle.primarycolor),
+  //               shape: MaterialStateProperty.all(RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(50))),
+  //             ),
+  //             onPressed: confirmAndContinue,
+  //             child: Text("الاستمرار لإنشاء ملف القصة",
+  //                 style: TextStyle(color: Colors.white)),
+  //           ),
+  //         );
+  // }
 
   void confirmAndContinue() {
     ConfirmationDialog.show(context,
@@ -403,27 +442,32 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         Expanded(
           child: imageFile != null ? Image.file(imageFile) : Container(),
         ),
-        if (isSelectionMode)
-          Checkbox(
-            value: selectedIndices.contains(key),
-            onChanged: (bool? value) {
-              toggleSelection(key);
-            },
-          ),
-        if (!isSelectionMode)
-          Column(
-            children: [
-              IconButton(
-                icon:
-                    Icon(Icons.delete, color: Color.fromARGB(255, 179, 36, 25)),
-                onPressed: () => _removeImage(index, clauseIndex),
-              ),
-              IconButton(
-                icon: Icon(Icons.refresh, color: YourStoryStyle.primarycolor),
-                onPressed: () => _regenerateImage(index, clauseIndex),
-              ),
-            ],
-          ),
+        //if (isSelectionMode)
+        // Checkbox(
+        //   value: selectedIndices.contains(key),
+        //   onChanged: (bool? value) {
+        //     toggleSelection(key);
+        //   },
+        // ),
+        //if (!isSelectionMode)
+        //Column(
+        //children: [
+        // IconButton(
+        //   icon: Icon(Icons.delete, color: Color.fromARGB(255, 179, 36, 25)),
+        //   onPressed: () => _removeImage(index, clauseIndex),
+        // ),
+        // IconButton(
+        //   icon: Icon(Icons.refresh, color: YourStoryStyle.primarycolor),
+        //   onPressed: () => _regenerateImage(index, clauseIndex),
+        // ),
+        Checkbox(
+          value: selectedIndices.contains(key),
+          onChanged: (bool? value) {
+            toggleSelection(key);
+          },
+        ),
+        //],
+        //),
       ],
     );
   }
