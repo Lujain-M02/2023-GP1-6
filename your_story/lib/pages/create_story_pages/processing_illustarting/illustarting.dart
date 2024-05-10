@@ -124,10 +124,10 @@ class IllustrationState extends State<Illustration> {
 
     if (isRegenerated) {
       text =
-          "Generate an image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
+          "Generate a descriptive image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style, with different POV ";
     } else {
       text =
-          "Generate an image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style";
+          "Generate a descriptive image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style";
     }
 
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
@@ -383,8 +383,6 @@ Future<String> OLDgenerateImage(String sentence, String prompt) async {
 Future<String> translation(String text) async {
   var API_key = dotenv.env['GOOGLE_TRANSLATE_KEY']!;
 
-  //var API_key = FlutterConfig.get('GOOGLE_TRANSLATE_KEY'); // Accessing the Google Translate API Key
-  //const API_key = 'AIzaSyBPai8q0ugOh1-wowQBpa2k0Gae1N5e-_k';
   const to = 'en'; //Destination language
 
   final url = Uri.parse(
@@ -396,10 +394,6 @@ Future<String> translation(String text) async {
     final body = json.decode(response.body);
     final translations = body['data']['translations'] as List<dynamic>;
     final translation = translations.first['translatedText'];
-
-    // Print the translated text to the console
-    //print('Original: $clause');
-    //print('Translated: $translation');
 
     return translation;
   } else {

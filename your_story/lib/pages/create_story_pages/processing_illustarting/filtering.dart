@@ -312,7 +312,7 @@ class _Filtering extends State<Filtering> {
                         );
                       },
                 child: const Text(
-                  'البدأ بالتصوير',
+                  'البدء بالتصوير',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
