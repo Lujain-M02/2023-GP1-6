@@ -475,24 +475,30 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromARGB(255, 255, 255, 255),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset("assets/loadingLogo.gif"),
-            const SizedBox(height: 20),
-            Text(
-              'من فضلك انتظر قليلا لإعادة إنشاء جميع الصور المختارة',
-              style: TextStyle(
-                color: YourStoryStyle.primarycolor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(globalTitle),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset("assets/loadingLogo.gif"),
+              const SizedBox(height: 20),
+              const Text(
+                'من فضلك انتظر قليلا لإعادة إنشاء جميع الصور المختارة',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
