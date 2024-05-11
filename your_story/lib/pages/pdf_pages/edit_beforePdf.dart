@@ -19,14 +19,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
   bool isLoading = false;
   //bool isSelectionMode = false;
   Set<String> selectedIndices = {};
-  void toggleSelectionMode() {
-    setState(() {
-      // isSelectionMode = !isSelectionMode;
-      // if (!isSelectionMode)
-      //   selectedIndices.clear(); // Clear selection when exiting
-      super.initState();
-    });
-  }
 
   void toggleSelection(String key) {
     if (selectedIndices.contains(key)) {
@@ -122,8 +114,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     } finally {
       Navigator.of(context).pop();
       selectedIndices.clear();
-      //if (isSelectionMode)
-      toggleSelectionMode();
 
       setState(() {});
     }
@@ -373,7 +363,9 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Filtering(shouldPopulate: true)))),
+                      builder: (context) => Filtering(
+                          shouldPopulate: true,
+                          comingFromEditBeforePdf: true)))),
           ElevatedButton(
             style: ButtonStyle(
               backgroundColor:

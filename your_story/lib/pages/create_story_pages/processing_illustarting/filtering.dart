@@ -7,8 +7,12 @@ import 'global_story.dart';
 
 class Filtering extends StatefulWidget {
   final bool shouldPopulate;
-
-  const Filtering({Key? key, required this.shouldPopulate}) : super(key: key);
+  final bool comingFromEditBeforePdf;
+  const Filtering(
+      {Key? key,
+      required this.shouldPopulate,
+      required this.comingFromEditBeforePdf})
+      : super(key: key);
 
   @override
   State<Filtering> createState() => _Filtering();
@@ -295,8 +299,11 @@ class _Filtering extends State<Filtering> {
                         print("content: $globalContent");
                         print(
                             "Selected clauses: $globaltopClausesToIllustrate");
-                        ConfirmationDialog.show(context,
-                            "لن يمكنك التعديل على نص القصة لاحقا، هل أنت متاكد أنك ترغب بالاستمرار؟",
+                        String confirmationMessage = widget
+                                .comingFromEditBeforePdf
+                            ? "هل أنت متأكد من أنك تريد تصوير حميع العبارات المختارة؟"
+                            : "لن يمكنك التعديل على نص القصة لاحقًا، هل أنت متأكد أنك ترغب بالاستمرار؟";
+                        ConfirmationDialog.show(context, confirmationMessage,
                             () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(

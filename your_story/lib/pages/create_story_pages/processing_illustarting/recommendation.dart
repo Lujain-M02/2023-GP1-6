@@ -403,8 +403,9 @@ class _SystemRecom extends State<IllustRecom> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  Filtering(shouldPopulate: true),
+                              builder: (context) => Filtering(
+                                  shouldPopulate: true,
+                                  comingFromEditBeforePdf: false),
                             ),
                           );
                         },
