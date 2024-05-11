@@ -301,7 +301,7 @@ class _Filtering extends State<Filtering> {
                             "Selected clauses: $globaltopClausesToIllustrate");
                         String confirmationMessage = widget
                                 .comingFromEditBeforePdf
-                            ? "هل أنت متأكد من أنك تريد تصوير حميع العبارات المختارة؟"
+                            ? "هل أنت متأكد من أنك تريد تصوير جميع العبارات المختارة؟"
                             : "لن يمكنك التعديل على نص القصة لاحقًا، هل أنت متأكد أنك ترغب بالاستمرار؟";
                         ConfirmationDialog.show(context, confirmationMessage,
                             () {

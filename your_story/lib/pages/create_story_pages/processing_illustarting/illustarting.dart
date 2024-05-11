@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 //import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/error.dart';
 import '../../pdf_pages/edit_beforePdf.dart';
 import 'global_story.dart';
 
@@ -129,7 +130,6 @@ class IllustrationState extends State<Illustration> {
       text =
           "Generate a descriptive image of '$translatedClause' based on this context '$translatedSentence' in $selectedImageStyle style";
     }
-
     String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..fields['prompt'] = text
@@ -256,26 +256,29 @@ class IllustrationState extends State<Illustration> {
     setState(() {
       isLoading = true;
     });
+    try {
+      for (var sentencePair in sentenceImagePairs) {
+        for (var clause in sentencePair.clauses) {
+          if (globaltopClausesToIllustrate.contains(clause.text) &&
+              clause.image == null) {
+            // Only generate if there's no image
 
-    for (var sentencePair in sentenceImagePairs) {
-      for (var clause in sentencePair.clauses) {
-        if (globaltopClausesToIllustrate.contains(clause.text) &&
-            clause.image == null) {
-          // Only generate if there's no image
-          try {
             File newImage = await generateImage(
                 sentencePair.sentence, clause.text, seed, isRegenerated);
             clause.image = newImage;
             setState(() {
               generatedImagesCount++;
             });
-          } catch (error) {
-            print("Error generating image for clause '${clause.text}': $error");
           }
         }
       }
+    } catch (e) {
+      isLoading = false;
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ErrorPage(
+              errorMessage:
+                  "حدث خطأ أثناء إنتاج الصورة، يرجى إعادة المحاولة لاحقًا")));
     }
-
     setState(() {
       isLoading = false;
     });

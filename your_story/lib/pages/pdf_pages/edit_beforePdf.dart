@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/MainPage.dart';
+import 'package:your_story/pages/create_story_pages/processing_illustarting/error.dart';
 import 'package:your_story/pages/pdf_pages/createPdf.dart';
 import '../../style.dart';
 import '../create_story_pages/processing_illustarting/filtering.dart';
@@ -166,8 +167,8 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
 
   Future<void> _regenerateImage(int index, int clauseIndex,
       {bool bulkAction = false}) async {
-    try {
-      Future<void> regenerate() async {
+    Future<void> regenerate() async {
+      try {
         if (!bulkAction) {
           showDialog(
             context: context,
@@ -192,7 +193,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
             sentenceImagePairs[index].clauses[clauseIndex].text,
             IllustrationState().seed,
             true);
-
         setState(() {
           sentenceImagePairs[index].clauses[clauseIndex].image = newImage;
         });
@@ -202,43 +202,47 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         //   //Navigator.of(context).pop();
         // }
         Navigator.of(context).pop();
+      } catch (e) {
+        // Navigator.of(context).pop(); // Ensure loading screen is closed on error
+        // ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
+        //     content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
+        //     icon: Icons.error_outline));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const ErrorPage(
+                errorMessage:
+                    "حدث خطأ أثناء إعادة إنتاج الصورة، يرجى إعادة المحاولة لاحقًا")));
       }
+    }
 
-      if (!bulkAction) {
-        ConfirmationDialog.show(
-            context, "هل أنت متأكد من أنك تريد إعادة إنشاء هذه الصورة؟", () {
-          Navigator.of(context).pop();
-          regenerate();
-        });
-      } else {
+    if (!bulkAction) {
+      ConfirmationDialog.show(
+          context, "هل أنت متأكد من أنك تريد إعادة إنشاء هذه الصورة؟", () {
+        Navigator.of(context).pop();
         regenerate();
-      }
-    } catch (e) {
-      Navigator.of(context).pop(); // Ensure loading screen is closed on error
-      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
-          content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
-          icon: Icons.error_outline));
+      });
+    } else {
+      regenerate();
     }
   }
 
-  void performRegeneration(int sentenceIndex, int imageIndex) {
-    String sentence = sentenceImagePairs[sentenceIndex].sentence;
-    String prompt = sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-    IllustrationState illustrationState = IllustrationState();
-    int seed = illustrationState.seed;
-    setState(() {
-      isLoading = true;
-    });
-    IllustrationState.generateImage(sentence, prompt, seed, true)
-        .then((newImage) {
-      setState(() {
-        sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = newImage;
-        isLoading = false;
-      });
-    }).catchError((error) {
-      print("Error regenerating image: $error");
-    });
-  }
+  // void performRegeneration(int sentenceIndex, int imageIndex) {
+  //   String sentence = sentenceImagePairs[sentenceIndex].sentence;
+  //   String prompt = sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
+  //   IllustrationState illustrationState = IllustrationState();
+  //   int seed = illustrationState.seed;
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   IllustrationState.generateImage(sentence, prompt, seed, true)
+  //       .then((newImage) {
+  //     setState(() {
+  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = newImage;
+  //       isLoading = false;
+  //     });
+  //   }).catchError((error) {
+  //     print("Error regenerating image: $error");
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
