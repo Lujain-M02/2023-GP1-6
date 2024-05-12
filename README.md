@@ -5,9 +5,9 @@
 
 
 # About Techقصـ
-هو تطبيق عربي يتيح لمستخدميه حرية كتابة القصص باللغة العربية وتوليد صور مدعِّمة للقصة باستخدام الذكاء الاصطناعي، كما يتيح التطبيق لمستخدميه امكانية حفظ ومشاركة القصص بصيغة PDF  ويسمح بتنزيل القصص المنشورة لقرائتها على جهازك المحمول.
+هو تطبيق عربي يتيح للمستخدمين كتابة القصص باللغة العربية وتوليد صور تدعم القصة باستخدام الذكاء الاصطناعي وتقنيات معالجة اللغة العربية. كما يمكن التطبيق المستخدمين من حفظ القصص ومشاركتها بصيغة PDF، ويسمح بتحميل القصص المنشورة لقراءتها على الأجهزة المحمولة.
 
-It is an Arabic application that allows the users to write stories in Arabic language and generate images that support the story using artificial intelligence. The application also allows its users the freedom to save and share stories in PDF format. It also allows downloading published stories to read on your mobile device.
+It is an Arabic application that allows users to write stories in Arabic and generate supporting images using artificial intelligence and Arabic natural language processing techniques. Additionally, the application enables users to save and share their stories in PDF format and download published stories for reading on their mobile devices.
 
 
 # Technology
