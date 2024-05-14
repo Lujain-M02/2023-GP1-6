@@ -198,13 +198,13 @@ class ViewPDFPage extends StatefulWidget {
   final String userId;
   final String docId;
 
-  const ViewPDFPage({
-    Key? key,
-    required this.pdfUrl,
-    required this.storyTitle,
-    required this.userId,
-    required this.docId
-  }) : super(key: key);
+  const ViewPDFPage(
+      {Key? key,
+      required this.pdfUrl,
+      required this.storyTitle,
+      required this.userId,
+      required this.docId})
+      : super(key: key);
 
   @override
   _ViewPDFPageState createState() => _ViewPDFPageState();
@@ -214,32 +214,34 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
   int currentPage = 0;
   int totalPages = 0;
 
-   @override
+  @override
   void initState() {
-    super.initState();    
-     updateViewsInFirestore(widget.docId, widget.userId);
+    super.initState();
+    updateViewsInFirestore(widget.docId, widget.userId);
   }
 
   Future<void> updateViewsInFirestore(String docId, String userId) async {
-  try {  
-    String user = FirebaseAuth.instance.currentUser!.uid;
-    if(user!=userId){
-     if (userId != '') {
-      if(docId!= ''){
-      DocumentReference userRef = FirebaseFirestore.instance.collection("User").doc(userId);
-      CollectionReference storiesCollection = userRef.collection("Story");
+    try {
+      String user = FirebaseAuth.instance.currentUser!.uid;
+      if (user != userId) {
+        if (userId != '') {
+          if (docId != '') {
+            DocumentReference userRef =
+                FirebaseFirestore.instance.collection("User").doc(userId);
+            CollectionReference storiesCollection = userRef.collection("Story");
 
-    
-      await storiesCollection.doc(docId).update({
-        'views':FieldValue.increment(1),
-      });
+            await storiesCollection.doc(docId).update({
+              'views': FieldValue.increment(1),
+            });
 
-      print("Views updated successfully for document: $docId");
-      }}}}
-  catch (e) {
-    print("Error updating views in Firestore: $e");
+            print("Views updated successfully for document: $docId");
+          }
+        }
+      }
+    } catch (e) {
+      print("Error updating views in Firestore: $e");
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +252,7 @@ class _ViewPDFPageState extends State<ViewPDFPage> {
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 0, 48, 96),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.home),
             color: Colors.white,
             onPressed: () {
               if (ModalRoute.of(context)?.settings.name ==

@@ -26,18 +26,19 @@ class _SystemRecom extends State<IllustRecom> {
   }
 
   void populateSentenceImagePairs() {
-    // Assuming globaltopsisScoresList is your global list with all the details
-    for (var item in globaltopsisScoresList) {
-      String sentence = item['sentence'];
-      List<Clause> clauses = [];
+    if (sentenceImagePairs.isEmpty) {
+      for (var item in globaltopsisScoresList) {
+        String sentence = item['sentence'];
+        List<Clause> clauses = [];
 
-      for (var clauseMap in item['clauses']) {
-        String clauseText = clauseMap['clause'];
-        clauses.add(Clause(text: clauseText)); // Create a Clause instance
+        for (var clauseMap in item['clauses']) {
+          String clauseText = clauseMap['clause'];
+          clauses.add(Clause(text: clauseText)); // Create a Clause instance
+        }
+
+        sentenceImagePairs
+            .add(SentencePair(sentence: sentence, clauses: clauses));
       }
-
-      sentenceImagePairs
-          .add(SentencePair(sentence: sentence, clauses: clauses));
     }
   }
 
