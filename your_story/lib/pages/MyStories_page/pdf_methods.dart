@@ -17,7 +17,7 @@ void deleteStory(String docId, BuildContext context, String storyType) {
 
   ConfirmationDialog.show(
     context,
-    "هل أنت متأكد من أنك تريد حذف هذه ال$storyType؟",
+    "هل أنت متأكد من حذف هذه ال$storyType؟",
     () async {
       Navigator.of(context).pop();
 
