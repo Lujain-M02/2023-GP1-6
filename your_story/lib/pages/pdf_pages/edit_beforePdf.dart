@@ -57,7 +57,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
 
           ConfirmationDialog.show(context, confirmationMessage, () {
             processBulkActions(choice);
-            //Navigator.of(context).pop();
           });
         }
         break;
@@ -106,9 +105,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
       // Wait for all regeneration tasks to complete
       await Future.wait(tasks);
 
-      // showSnackBar(choice == 'Delete'
-      //     ? 'تم حذف الصور المختارة بنجاح'
-      //     : 'تم إعادة إنشاء الصور المختارة بنجاح');
       if (choice == 'Delete') showSnackBar('تم حذف جميع الصور المختارة بنجاح');
     } catch (e) {
       showSnackBar('حدث خطأ أثناء العملية');
@@ -151,20 +147,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     }
   }
 
-  // void performDeletion(int sentenceIndex, int imageIndex) {
-  //   setState(() {
-  //     if (sentenceImagePairs[sentenceIndex].clauses.length > imageIndex) {
-  //       var clauseText =
-  //           sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = null;
-  //       globaltopClausesToIllustrate.remove(clauseText);
-  //       showSnackBar('تم حذف الصورة بنجاح');
-  //     } else {
-  //       showSnackBar('حدث خطأ أثناء حذف الصورة');
-  //     }
-  //   });
-  // }
-
   Future<void> _regenerateImage(int index, int clauseIndex,
       {bool bulkAction = false}) async {
     Future<void> regenerate() async {
@@ -196,17 +178,8 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         setState(() {
           sentenceImagePairs[index].clauses[clauseIndex].image = newImage;
         });
-
-        // if (!bulkAction) {
-        //   showSnackBar("تم إعادة إنشاء الصورة بنجاح");
-        //   //Navigator.of(context).pop();
-        // }
         Navigator.of(context).pop();
       } catch (e) {
-        // Navigator.of(context).pop(); // Ensure loading screen is closed on error
-        // ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(
-        //     content: 'حدث خطأ أثناء إعادة إنشاء الصورة',
-        //     icon: Icons.error_outline));
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const ErrorPage(
                 errorMessage:
@@ -224,25 +197,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
       regenerate();
     }
   }
-
-  // void performRegeneration(int sentenceIndex, int imageIndex) {
-  //   String sentence = sentenceImagePairs[sentenceIndex].sentence;
-  //   String prompt = sentenceImagePairs[sentenceIndex].clauses[imageIndex].text;
-  //   IllustrationState illustrationState = IllustrationState();
-  //   int seed = illustrationState.seed;
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   IllustrationState.generateImage(sentence, prompt, seed, true)
-  //       .then((newImage) {
-  //     setState(() {
-  //       sentenceImagePairs[sentenceIndex].clauses[imageIndex].image = newImage;
-  //       isLoading = false;
-  //     });
-  //   }).catchError((error) {
-  //     print("Error regenerating image: $error");
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -306,39 +260,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     );
   }
 
-  // Widget buildBottomAppBar() {
-  //   bool anySelected = selectedIndices.isNotEmpty;
-
-  //   return BottomAppBar(
-  //     color: YourStoryStyle.primarycolor,
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //       children: [
-  //         IconButton(
-  //           icon: Icon(anySelected ? Icons.deselect : Icons.select_all,
-  //               color: Colors.white),
-  //           onPressed: () =>
-  //               executeAction(anySelected ? 'Deselect All' : 'Select All'),
-  //         ),
-  //         IconButton(
-  //           icon: Icon(Icons.delete, color: Colors.white),
-  //           onPressed: () => executeAction('Delete'),
-  //         ),
-  //         IconButton(
-  //           icon: Icon(Icons.refresh, color: Colors.white),
-  //           onPressed: () => executeAction('Regenerate'),
-  //         ),
-  //         IconButton(
-  //             icon: Icon(Icons.add_photo_alternate, color: Colors.white),
-  //             onPressed: () => Navigator.push(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                     builder: (context) => Filtering(shouldPopulate: true)))),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget buildBottomAppBar() {
     bool anySelected = selectedIndices.isNotEmpty;
 
@@ -386,25 +307,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
     );
   }
 
-  // Widget buildContinueButton() {
-  //   return isLoading
-  //       ? SizedBox.shrink()
-  //       : Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: ElevatedButton(
-  //             style: ButtonStyle(
-  //               backgroundColor:
-  //                   MaterialStateProperty.all(YourStoryStyle.primarycolor),
-  //               shape: MaterialStateProperty.all(RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(50))),
-  //             ),
-  //             onPressed: confirmAndContinue,
-  //             child: Text("الاستمرار لإنشاء ملف القصة",
-  //                 style: TextStyle(color: Colors.white)),
-  //           ),
-  //         );
-  // }
-
   void confirmAndContinue() {
     ConfirmationDialog.show(context,
         "هل أنت متأكد من أنك تريد إنشاء ملف القصة، لن يمكنك التعديل بعد ذلك",
@@ -438,24 +340,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
         Expanded(
           child: imageFile != null ? Image.file(imageFile) : Container(),
         ),
-        //if (isSelectionMode)
-        // Checkbox(
-        //   value: selectedIndices.contains(key),
-        //   onChanged: (bool? value) {
-        //     toggleSelection(key);
-        //   },
-        // ),
-        //if (!isSelectionMode)
-        //Column(
-        //children: [
-        // IconButton(
-        //   icon: Icon(Icons.delete, color: Color.fromARGB(255, 179, 36, 25)),
-        //   onPressed: () => _removeImage(index, clauseIndex),
-        // ),
-        // IconButton(
-        //   icon: Icon(Icons.refresh, color: YourStoryStyle.primarycolor),
-        //   onPressed: () => _regenerateImage(index, clauseIndex),
-        // ),
         Checkbox(
           value: selectedIndices.contains(key),
           onChanged: (bool? value) {
