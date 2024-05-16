@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import 'package:your_story/pages/create_story_pages/custom_text_form.dart';
-//import 'package:your_story/pages/create_story_pages/processing_illustarting/global_story.dart';
 import 'error_message_holder.dart';
 import 'dart:async';
 
@@ -212,12 +211,6 @@ Future<String?> validateTitle(String? value) async {
                   style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                   onChanged: (_) => _validateTitle(),
                 ),
-                //Display the error message if available
-                // if (widget.errorMessageHolder.titleErrorMessage != null)
-                //   Text(
-                //     widget.errorMessageHolder.titleErrorMessage!,
-                //     style: TextStyle(color: Colors.red),
-                //   ),
               ],
             ),
           ),
