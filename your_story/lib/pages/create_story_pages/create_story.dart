@@ -181,19 +181,9 @@ class _CreateStory extends State<CreateStory> {
                 //if it's not in the last step
                 if (_activeStepIndex != stepList().length - 1)
                   OutlinedButton(
-                    //iconSize: 40,
-                    //color: YourStoryStyle.primarycolor,
-                    //icon: const Icon(Icons.arrow_back),
                     style: OutlinedButton.styleFrom(
-                  //backgroundColor: YourStoryStyle.primarycolor,
-                  foregroundColor: YourStoryStyle.primarycolor,
-                  side: BorderSide(
-                    color: YourStoryStyle.primarycolor,
-                    width: 2,
-                  ),
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
-                    ),
+                        foregroundColor: YourStoryStyle.primarycolor,
+                        side: BorderSide.none),
                     onPressed: _activeStepIndex > 0
                         ? () {
                             //this line to disable the button in the first step and if not return back
@@ -202,84 +192,17 @@ class _CreateStory extends State<CreateStory> {
                             });
                           }
                         : null,
-                    //iconSize: 40,
-                    //color: YourStoryStyle.primarycolor,
-                    //icon: const Icon(Icons.arrow_back),
-                    child: const Text("السابق"),
+                    child: const Text("السابق", style: TextStyle(fontSize: 16)),
                   ),
                 //if it's the last step a new button will apear instead of the arrow
                 if (_activeStepIndex == stepList().length - 1)
-                  // Container(
-                  //   margin: const EdgeInsets.all(3),
-                  //   child: OutlinedButton(
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => ProcessStory(
-                  //             title: storyTitel.text.trim(),
-                  //             content: storyContent.text.trim(),
-                  //           ),
-                  //         ),
-                  //       );
-                  //     },
-                  //     style: OutlinedButton.styleFrom(
-                  //       backgroundColor: YourStoryStyle.primarycolor,
-                  //       foregroundColor: Colors.white,
-                  //       side: BorderSide(
-                  //         color: YourStoryStyle.primarycolor,
-                  //         width: 2,
-                  //       ),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(30.0),
-                  //       ),
-                  //     ),
-                  //     child: const Text("الاستمرار لمعالجة القصة"),
-                  //   ),
-                  // )
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // OutlinedButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => DraftStoryPage(
-                      //           title: storyTitel.text.trim(),
-                      //           content: storyContent.text.trim(),
-                      //           draftID: widget.draftID,
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      //   style: OutlinedButton.styleFrom(
-                      //     backgroundColor: YourStoryStyle.primarycolor,
-                      //     foregroundColor: Colors.white,
-                      //     side: BorderSide(
-                      //       color: YourStoryStyle.primarycolor,
-                      //       width: 2,
-                      //     ),
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(30.0),
-                      //     ),
-                      //   ),
-                      //   child: const Text("حفظ كمسودة"),
-                      // ),
                       OutlinedButton(
-                        //iconSize: 40,
-                        //color: YourStoryStyle.primarycolor,
-                        //icon: const Icon(Icons.arrow_back),
                         style: OutlinedButton.styleFrom(
-                  //backgroundColor: YourStoryStyle.primarycolor,
-                  foregroundColor: YourStoryStyle.primarycolor,
-                  side: BorderSide(
-                    color: YourStoryStyle.primarycolor,
-                    width: 2,
-                  ),
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
-                    ),
+                            foregroundColor: YourStoryStyle.primarycolor,
+                            side: BorderSide.none),
                         onPressed: _activeStepIndex > 0
                             ? () {
                                 //this line to disable the button in the first step and if not return back
@@ -288,10 +211,10 @@ class _CreateStory extends State<CreateStory> {
                                 });
                               }
                             : null,
-                        //iconSize: 40,
-                        //color: YourStoryStyle.primarycolor,
-                        //icon: const Icon(Icons.arrow_back),
-                        child: const Text("السابق"),
+                        child: const Text(
+                          "السابق",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                       OutlinedButton(
                         onPressed: () {
@@ -346,24 +269,15 @@ class _CreateStory extends State<CreateStory> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        child: const Text("استمرار لمعالجة القصة"),
+                        child: const Text("معالجة القصة"),
                       ),
                     ],
                   )
                 else
                   OutlinedButton(
-                    //iconSize: 40,
-                    //color: YourStoryStyle.primarycolor,
-                    //icon: const Icon(Icons.arrow_forward),
                     style: OutlinedButton.styleFrom(
-                  //backgroundColor: YourStoryStyle.primarycolor,
-                  foregroundColor: YourStoryStyle.primarycolor,
-                  side: BorderSide(
-                    color: YourStoryStyle.primarycolor,
-                    width: 2,
-                  ),
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
+                      foregroundColor: YourStoryStyle.primarycolor,
+                      side: BorderSide.none, // Removes the border
                     ),
                     onPressed: _activeStepIndex != 2
                         ? () {
@@ -428,7 +342,7 @@ class _CreateStory extends State<CreateStory> {
                             );
                           }
                         : null,
-                    child: const Text("التالي",),
+                    child: const Text("التالي", style: TextStyle(fontSize: 16)),
                   ),
               ],
             )),
