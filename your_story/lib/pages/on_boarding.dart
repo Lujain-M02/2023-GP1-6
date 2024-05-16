@@ -17,16 +17,7 @@ class OnBoarding extends StatelessWidget {
         imagePadding: EdgeInsets.all(0.1),
         pageColor: const Color.fromARGB(255, 238, 245, 255),
         imageFlex: 120,
-        // titleTextStyle: TextStyle(
-        //   fontSize: 27.0,
-        //   fontWeight: FontWeight.bold,
-        //   color: YourStoryStyle.titleColor,
         ),
-        // bodyTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        //   color: Colors.black,
-        // ),
-      // ),
     ),
     PageViewModel(
       title: "",
@@ -36,15 +27,6 @@ class OnBoarding extends StatelessWidget {
         imagePadding: EdgeInsets.all(0.1),
         pageColor: const Color.fromARGB(255, 238, 245, 255),
         imageFlex: 120,
-        // titleTextStyle: TextStyle(
-        //   fontSize: 27.0,
-        //   fontWeight: FontWeight.bold,
-        //   color: YourStoryStyle.titleColor,
-        // ),
-        // bodyTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        //   color: Colors.black,
-        // ),
       ),
     ),
   ];
