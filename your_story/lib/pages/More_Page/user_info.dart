@@ -15,8 +15,7 @@ class ProfileScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-       
-       body: ProfileInformation(),
+        body: ProfileInformation(),
       ),
     );
   }
@@ -49,23 +48,19 @@ class _ProfileInformationState extends State<ProfileInformation> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-         CustomSnackBar(
-          content: "المعذرة، حصل خطأ",icon: Icons.warning),
+        CustomSnackBar(content: "المعذرة، حصل خطأ", icon: Icons.warning),
       );
     }
   }
 
-  
-
-
-   
- @override
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
+      child: Scaffold(
+        backgroundColor: YourStoryStyle.s2Color,
         appBar: AppBar(
-          leading: const BackButton(color: Colors.white), 
-          backgroundColor:YourStoryStyle.s2Color,
+          leading: const BackButton(color: Colors.white),
+          backgroundColor: YourStoryStyle.s2Color,
           elevation: 0,
           title: const Text(
             'معلومات الحساب',
@@ -74,7 +69,9 @@ class _ProfileInformationState extends State<ProfileInformation> {
           centerTitle: true,
         ),
         body: userInfo == null
-            ? Center( child: Lottie.asset('assets/loading_white.json',width: 200,height: 200))
+            ? Center(
+                child: Lottie.asset('assets/loading_white.json',
+                    width: 200, height: 200))
             : Directionality(
                 textDirection: TextDirection.rtl,
                 child: SingleChildScrollView(
@@ -100,7 +97,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
                         // ignore: sized_box_for_whitespace
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height*0.9,
+                          height: MediaQuery.of(context).size.height * 0.9,
                           child: Card(
                             elevation: 5,
                             shadowColor: const Color.fromARGB(255, 6, 14, 21),
@@ -115,14 +112,17 @@ class _ProfileInformationState extends State<ProfileInformation> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   const CircleAvatar(
-                                    backgroundImage: AssetImage('assets/profile.png'),
+                                    backgroundImage:
+                                        AssetImage('assets/profile.png'),
                                     radius: 50,
-                                    backgroundColor: Color.fromARGB(255, 255, 255, 255), 
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 255, 255),
                                   ),
                                   const SizedBox(height: 10),
                                   Expanded(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           'الاسم: ${userInfo?['name'] ?? 'N/A'}',
@@ -133,12 +133,14 @@ class _ProfileInformationState extends State<ProfileInformation> {
                                           ),
                                         ),
                                         IconButton(
-                                          icon: const Icon(Icons.edit, color: Colors.white),
+                                          icon: const Icon(Icons.edit,
+                                              color: Colors.white),
                                           onPressed: () async {
                                             final result = await Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => EditUsernamePage()),
+                                                  builder: (context) =>
+                                                      EditUsernamePage()),
                                             );
                                             if (result == true) {
                                               fetchUserInfo();
@@ -170,6 +172,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
     );
   }
 }
+
 class EditUsernamePage extends StatefulWidget {
   @override
   _EditUsernamePageState createState() => _EditUsernamePageState();
@@ -201,7 +204,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start, 
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextFormField(
                   controller: _nameController,
@@ -217,9 +220,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
                       return "الحقل مطلوب";
                     } else if (value.trim().length == 1) {
                       return " يجب أن يحتوي الاسم أكثر من حرف على الأقل";
-                    } else if (!RegExp(
-                            r"^[ء-يa-zA-Z]+(?:\s[ء-يa-zA-Z]+)?$"
-                            )
+                    } else if (!RegExp(r"^[ء-يa-zA-Z]+(?:\s[ء-يa-zA-Z]+)?$")
                         .hasMatch(value.trim())) {
                       return 'أدخل اسم يحتوي على أحرف فقط';
                     }
@@ -268,12 +269,10 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
         'name': newUsername,
       });
 
-
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: 'تم تحديث الاسم بنجاح',icon: Icons.check_circle
-        ),
+            content: 'تم تحديث الاسم بنجاح', icon: Icons.check_circle),
       );
 
       // Navigate back to the profile page
@@ -282,8 +281,7 @@ class _EditUsernamePageState extends State<EditUsernamePage> {
       // show an error message
       ScaffoldMessenger.of(context).showSnackBar(
         CustomSnackBar(
-          content: 'حدث خطأ أثناء تحديث الاسم',icon: Icons.warning
-        ),
+            content: 'حدث خطأ أثناء تحديث الاسم', icon: Icons.warning),
       );
     }
   }

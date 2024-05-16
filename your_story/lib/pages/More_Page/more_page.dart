@@ -15,17 +15,6 @@ class MorePage extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(backgroundColor: YourStoryStyle.s2Color,
-        // appBar: AppBar(
-        //   backgroundColor: Colors.white,
-        //   title: const Text(
-        //     'المزيد',
-        //   ),
-        //   centerTitle: true,
-        //   titleTextStyle: const TextStyle(
-        //     color: Colors.black,
-        //     fontSize: 24,
-        //   ),
-        // ),
         body:  Stack(
           children: [
             Column( 
