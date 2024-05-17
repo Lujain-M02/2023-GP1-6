@@ -2,23 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:dart_openai/dart_openai.dart';
-// import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-//import 'package:lottie/lottie.dart';
 import 'package:your_story/alerts.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/error.dart';
 import '../../pdf_pages/edit_beforePdf.dart';
 import 'global_story.dart';
 
 class Illustration extends StatefulWidget {
-  //final List<dynamic> clausesToIllujstrate;
-
   Illustration({
     Key? key,
-    //required this.clausesToIllujstrate
   }) : super(key: key);
 
   @override
@@ -28,20 +22,17 @@ class Illustration extends StatefulWidget {
 class IllustrationState extends State<Illustration> {
   List<String> imageUrls = [];
   bool isLoading = false;
-  //String translatedStory = "";
   int generatedImagesCount = 0;
-  int numberOfImages = 0; //globaltopClausesToIllustrate.length;
+  int numberOfImages = 0;
   int seed = Random().nextInt(100000);
   bool isRegenerated = false;
 
   @override
   void initState() {
     super.initState();
-    //translateStory();
     calculateUnillustratedClauses();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //selectedImageStyle = await ImageStylePickerDialog.show(context);
       List<ImageStyle> imageStyles = [
         ImageStyle(
             title: "واقعية",
@@ -84,36 +75,6 @@ class IllustrationState extends State<Illustration> {
     });
   }
 
-  // Future<File> generateImage(String sentence, String prompt) async {
-  //   String apiKey = dotenv.env['API_KEY']!;
-  //   String url = 'https://api.stability.ai/v2beta/stable-image/generate/sd3';
-  //   String Tsentence = translateClause(sentence) as String;
-  //   String Tprompt = translateClause(prompt) as String;
-  //   try {
-  //     var request = http.MultipartRequest('POST', Uri.parse(url))
-  //       ..fields['prompt'] =
-  //           "Draw this clause: '$Tprompt' based on this context: '$Tsentence' in anime style"
-  //       ..fields['output_format'] = 'jpeg'
-  //       ..fields['seed'] = '12345'
-  //       ..headers['Authorization'] = 'Bearer $apiKey';
-
-  //     var streamedResponse = await request.send();
-  //     var response = await http.Response.fromStream(streamedResponse);
-
-  //     if (response.statusCode == 200) {
-  //       Directory appDocDir = await getApplicationDocumentsDirectory();
-  //       String appDocPath = appDocDir.path;
-  //       File imageFile = File('$appDocPath/generated_image.jpeg');
-  //       await imageFile.writeAsBytes(response.bodyBytes);
-  //       return imageFile; // Return the image file
-  //     } else {
-  //       throw Exception('Failed to load image: ${response.body}');
-  //     }
-  //   } catch (e) {
-  //     print("Failed to generate image: $e");
-  //     rethrow;
-  //   }
-  // }
   static Future<File> generateImage(String sentence, String clause,
       int seedNumber, bool isRegenerated) async {
     String apiKey = dotenv.env['API_KEY']!;
@@ -153,104 +114,6 @@ class IllustrationState extends State<Illustration> {
       throw Exception('Failed to load image: ${response.body}');
     }
   }
-
-  /*void translateStory() async {
-    translatedStory = await translateClause(globalContent);
-  }*/
-
-  /*void generateAllImages() async {
-    setState(() {
-      isLoading = true;
-    });
-    //List<String> urls = [];
-    for (var clause in globaltopClausesToIllustrate) {
-      // Translate the clause first
-      //String translatedClause = await translateClause(clause);
-      String sentence = findSentenceContainingClause(clause);
-
-      String translatedClause = await translateClause(clause);
-      String translatedSentence = await translateClause(sentence);
-      //String translatedStory = await translateClause(globalContent);
-      // Then generate image for the translated clause
-      /*String imageUrl =
-          await generateImage(translatedSentence, translatedClause);
-      globalImagesUrls.add(imageUrl);*/
-      //urls.add(imageUrl);
-      await generateImage(translatedSentence, translatedClause)
-          .then((imageUrl) {
-        setState(() {
-          generatedImagesCount++;
-          globalImagesUrls.add(imageUrl);
-        });
-      }).catchError((error) {
-        print("Error generating image: $error");
-      });
-    }
-    // Navigate to the PdfGenerationPage (which should be your waiting screen)
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => PdfGenerationPage(),
-      ),
-    );*/
-
-  /*setState(() {
-      //imageUrls = urls;
-      isLoading = false;
-    });
-  }*/
-  // Future<void> generateAllImages() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-
-  //   List<Map<String, dynamic>> tempSentenceImagePairs = [];
-  //   List<String> clauses = [];
-
-  //   if (selectedImageStyle != null) {
-  //     for (var sentenceMap in globaltopsisScoresList) {
-  //       String sentence = sentenceMap['sentence'];
-  //       //print("sentence: $sentence");
-  //       List<File> imagesForSentence = [];
-  //       print("sentence: $sentence");
-  //       for (var clause in globaltopClausesToIllustrate) {
-  //         if (sentence.contains(clause)) {
-  //           clauses.add(clause);
-  //           try {
-  //             // Generate an image for the sentence containing the clause
-  //             File imageFile = await generateImage(sentence, clause, seed, isRegenerated);
-  //             imagesForSentence.add(imageFile);
-  //             setState(() {
-  //               generatedImagesCount++;
-  //             });
-  //           } catch (error) {
-  //             print("Error generating image for sentence '$sentence': $error");
-  //           }
-  //         }
-  //       }
-
-  //       // Add the sentence to tempSentenceImagePairs regardless of whether images were generated
-  //       tempSentenceImagePairs.add({
-  //         "sentence": sentence.trim(),
-  //         "images":
-  //             imagesForSentence, // This could be an empty list if no images were generated
-  //       });
-  //       print("tempSentenceImagePairs: $tempSentenceImagePairs");
-  //       print("clauses: $clauses");
-  //     }
-  //   }
-  //   // Update the global sentenceImagePairs with the generated data
-  //   setState(() {
-  //     sentenceImagePairs = tempSentenceImagePairs;
-  //     //print(sentenceImagePairs);
-  //     isLoading = false;
-  //   });
-
-  //   // You might want to navigate or update UI here to reflect that the process is complete
-  //   print("Completed image generation for sentences.");
-  //   Navigator.of(context).pushAndRemoveUntil(
-  //       MaterialPageRoute(builder: (context) => const EditBeforePdf()),
-  //       (Route<dynamic> route) => false);
-  // }
 
   Future<void> generateAllImages() async {
     setState(() {
@@ -325,7 +188,6 @@ class IllustrationState extends State<Illustration> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset("assets/loadingLogo.gif"),
-              // Lottie.asset('assets/loading.json', width: 200, height: 200),
               const SizedBox(height: 20),
               Text(
                 'تم إنشاء $generatedImagesCount / $numberOfImages صورة حتى الآن',
@@ -349,37 +211,6 @@ class IllustrationState extends State<Illustration> {
         ),
       ),
     );
-  }
-}
-
-Future<String> OLDgenerateImage(String sentence, String prompt) async {
-  OpenAI.apiKey = dotenv.env['OPENAI_KEY']!;
-  //OpenAI.apiKey =FlutterConfig.get('OPENAI_KEY'); // Accessing the OpenAI API Key
-  // String imageStylePrompt =
-  //     selectedImageStyle != null ? " in style $selectedImageStyle" : "";
-
-  try {
-    final OpenAIImageModel image = await OpenAI.instance.image.create(
-      //prompt: "from this sentence:'$sentence' generate:'$prompt'",
-      prompt:
-          "أنشئ صورة  $selectedImageStyle لهذه العبارة: '$prompt' من هذة الجملة: '$sentence'",
-
-      //"Generate a $selectedImageStyle image for '$prompt' from this story:'$sentence'",
-      model: "dall-e-3", // Explicitly specifying the model
-      n: 1,
-      size: OpenAIImageSize.size1024,
-      responseFormat: OpenAIImageResponseFormat.url,
-    );
-
-    if (image.data.isNotEmpty) {
-      return image.data.first.url ??
-          ''; // Return an empty string if the url is null
-    } else {
-      throw Exception('No image data received');
-    }
-  } catch (e) {
-    print("Failed to generate image: $e");
-    rethrow; // Rethrow the exception for the calling widget to handle
   }
 }
 

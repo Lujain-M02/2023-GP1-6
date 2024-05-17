@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
-import '../../../style.dart'; // Assuming style.dart contains styling information
+import '../../../style.dart';
 
 class ErrorPage extends StatelessWidget {
   final String errorMessage;

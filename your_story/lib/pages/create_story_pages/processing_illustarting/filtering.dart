@@ -28,34 +28,10 @@ class _Filtering extends State<Filtering> {
     super.initState();
     maxScore = getMaxScore();
     minScore = getMinScore();
-    //   if (widget.shouldPopulate) {
-    //     // Populate initial selections
-    //     for (var sentenceMap in globaltopsisScoresList) {
-    //       for (var clauseMap in sentenceMap['clauses']) {
-    //         String clause = clauseMap['clause'];
-    //         // Check if the clause is one of the illustrated ones
-    //         selections[clause] = globaltopClausesToIllustrate.contains(clause);
-    //       }
-    //     }
-    //   } else {
-    //     // Initialize all selections to false based on the clauses in globaltopsisScoresList
-    //     for (var sentenceMap in globaltopsisScoresList) {
-    //       for (var clauseMap in sentenceMap['clauses']) {
-    //         String clause = clauseMap['clause'];
-    //         selections[clause] = false;
-    //       }
-    //     }
-    //   }
-    // }
 
     for (var sentenceMap in globaltopsisScoresList) {
       for (var clauseMap in sentenceMap['clauses']) {
         String clause = clauseMap['clause'];
-        // if (widget.shouldPopulate) {
-        //   selections[clause] = globaltopClausesToIllustrate.contains(clause);
-        // } else {
-        //   selections[clause] = false;
-        // }
         bool isIllustrated = globaltopClausesToIllustrate.contains(clause);
         selections[clause] = widget.shouldPopulate && isIllustrated;
 
@@ -67,30 +43,12 @@ class _Filtering extends State<Filtering> {
     }
   }
 
-  // int get totalSelected =>
-  //     selections.values.where((selected) => selected).length;
-
   void toggleSelection(String clause) {
     setState(() {
       selections[clause] = !selections[clause]!;
       totalSelected += selections[clause]! ? 1 : -1;
     });
   }
-
-  // // Function to categorize scores into high, medium, or low dynamically based on the range
-  // String getCategoryFromScore(double score) {
-  //   // Calculate thresholds based on the maximum score
-  //   double highThreshold = maxScore * 0.75;
-  //   double mediumThreshold = maxScore * 0.5;
-  //   // Categorize the score
-  //   if (score >= highThreshold) {
-  //     return 'عالية الأهمية';
-  //   } else if (score >= mediumThreshold) {
-  //     return 'متوسطة الأهمية';
-  //   } else {
-  //     return 'منخفضة الأهمية';
-  //   }
-  // }
 
   String getCategoryFromScore(double score) {
     // Calculate the range and divide it into thirds
@@ -174,11 +132,8 @@ class _Filtering extends State<Filtering> {
           bool isPreChecked = globaltopClausesToIllustrate.contains(clause);
           return CheckboxListTile(
             title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
-            // subtitle: Text(
-            //     'الدرجة: ${score.toStringAsFixed(2)}'), // only the score as a subtitle
             subtitle: Text(
               'التصنيف: $scoreCategory', // without score
-              //'التصنيف: $scoreCategory - الدرجة: ${score.toStringAsFixed(2)}',
               style: TextStyle(
                 color: getColorForCategory(scoreCategory),
               ),
@@ -330,37 +285,3 @@ class _Filtering extends State<Filtering> {
     );
   }
 }
-
-//without score
-
-// List<Widget> buildSentenceWidgets() {
-//   List<Widget> sentenceWidgets = [];
-//   for (var sentenceMap in globaltopsisScoresList) {
-//     String sentence = sentenceMap['sentence'];
-//     List<Widget> clauseWidgets = (sentenceMap['clauses'] as List<dynamic>).map((clauseMap) {
-//       String clause = clauseMap['clause'];
-//       return CheckboxListTile(
-//         title: Text(clause.replaceAll(RegExp(r'[،ـ:\.\s]+$'), '')),
-//         value: selections[clause],
-//         onChanged: (bool? value) {
-//           toggleSelection(clause);
-//         },
-//       );
-//     }).toList();
-
-//     sentenceWidgets.add(Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: ExpansionTile(
-//         title: Text(sentence),
-//         backgroundColor: Color.fromARGB(255, 187, 222, 251),
-//         collapsedBackgroundColor: Color.fromARGB(160, 187, 222, 251),
-//                         shape: const RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.all(Radius.circular(20))),
-//             collapsedShape: const RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.all(Radius.circular(50))),
-//         children: clauseWidgets,
-//       ),
-//     ));
-//   }
-//   return sentenceWidgets;
-// }

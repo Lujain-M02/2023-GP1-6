@@ -7,7 +7,6 @@ int globalTotalNumberOfClauses = 0;
 List<Map<String, dynamic>> globaltopsisScoresList = [];
 List<String> globaltopClausesToIllustrate = [];
 List<String> globalImagesUrls = [];
-//List<Map<String, dynamic>> sentenceImagePairs = [];
 String? globalDraftID = null;
 List<SentencePair> sentenceImagePairs = [];
 String searchQuery1 = '';

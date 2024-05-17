@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-//import 'package:your_story/pages/create_story_pages/processing_illustarting/system_recom.dart';
 import 'package:your_story/pages/create_story_pages/processing_illustarting/recommendation.dart';
 import '../../../style.dart';
 import 'global_story.dart';
@@ -38,6 +37,7 @@ class _ProcessStoryState extends State<ProcessStory> {
 
     final response = await http.post(
       Uri.parse("http://192.168.100.244:5000/calculate_topsis"),
+      //Uri.parse("https://flaskapp-422716.ey.r.appspot.com/calculate_topsis"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -63,9 +63,6 @@ class _ProcessStoryState extends State<ProcessStory> {
         setState(() {
           topsisScoresList = List<Map<String, dynamic>>.from(responseData);
           responseMessage = ''; // Clear the response message
-          //_showNumberPickerDialog(context);
-
-          //update the global variables
           globalTitle = widget.title;
           globalContent = widget.content;
           globaltopsisScoresList = topsisScoresList;
@@ -100,17 +97,18 @@ class _ProcessStoryState extends State<ProcessStory> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-           leading:isLoading? Container() :IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: 
-          const Text(
+          leading: isLoading
+              ? Container()
+              : IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+          title: const Text(
             'تحليل القصة',
             style: TextStyle(color: Colors.black),
           ),
@@ -121,8 +119,6 @@ class _ProcessStoryState extends State<ProcessStory> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset("assets/loadingLogo.gif"),
-                    // Lottie.asset('assets/loadingLogo.gif',
-                    //     width: 200, height: 200),
                     const SizedBox(height: 20),
                     const Text(
                       'من فضلك انتظر قليلا ريثما يقرأ النظام قصتك ',
@@ -141,24 +137,6 @@ class _ProcessStoryState extends State<ProcessStory> {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        // const Card(
-                        //   color: Colors.transparent,
-                        //   elevation: 0,
-                        //   child: ListTile(
-                        //     horizontalTitleGap: -5,
-                        //     contentPadding:
-                        //         EdgeInsets.symmetric(horizontal: 0.0),
-                        //     leading: Icon(
-                        //       Icons.lightbulb,
-                        //       color: Colors.amber,
-                        //       size: 20,
-                        //     ),
-                        //     title: Text(
-                        //       "تبدو قصتك رائعة !",
-                        //       style: TextStyle(fontSize: 14),
-                        //     ),
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text('نتائج التحليل لقصة ${globalTitle}:',
