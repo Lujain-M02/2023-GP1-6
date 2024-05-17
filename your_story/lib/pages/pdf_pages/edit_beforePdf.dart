@@ -18,7 +18,6 @@ class EditBeforePdf extends StatefulWidget {
 
 class _EditBeforePdfState extends State<EditBeforePdf> {
   bool isLoading = false;
-  //bool isSelectionMode = false;
   Set<String> selectedIndices = {};
 
   void toggleSelection(String key) {
@@ -346,8 +345,6 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
             toggleSelection(key);
           },
         ),
-        //],
-        //),
       ],
     );
   }
