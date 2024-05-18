@@ -307,6 +307,28 @@ class _EditBeforePdfState extends State<EditBeforePdf> {
   }
 
   void confirmAndContinue() {
+    bool hasImage = false;
+
+    // Check for any image
+    for (var sentencePair in sentenceImagePairs) {
+      for (var clause in sentencePair.clauses) {
+        if (clause.image != null) {
+          hasImage = true;
+          break;
+        }
+      }
+      if (hasImage) {
+        break;
+      }
+    }
+
+    // No image is found
+    if (!hasImage) {
+      showSnackBar('يجب أن تحتوي قصتك على صورة واحدة على الأقل');
+      return;
+    }
+
+    // Continue if there is at least one image
     ConfirmationDialog.show(context,
         "هل أنت متأكد من أنك تريد إنشاء ملف القصة، لن يمكنك التعديل بعد ذلك",
         () async {

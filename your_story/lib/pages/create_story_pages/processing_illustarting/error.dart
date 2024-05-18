@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_story/pages/MainPage.dart';
 import '../../../style.dart';
+import 'global_story.dart';
 
 class ErrorPage extends StatelessWidget {
   final String errorMessage;
@@ -15,21 +16,40 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: YourStoryStyle.primarycolor),
+        leading: IconButton(
+          color: Colors.black,
+          iconSize: 27,
+          icon: const Icon(Icons.home),
+          onPressed: () {
+            globalTitle = "";
+            globalContent = "";
+            globalTotalNumberOfClauses = 0;
+            globaltopsisScoresList = [];
+            globaltopClausesToIllustrate = [];
+            globalImagesUrls = [];
+            sentenceImagePairs = [];
+            globalDraftID = null;
+            selectedImageStyle = null;
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => MainPage()),
+              (Route<dynamic> route) =>
+                  false, // this removes all routes below MainPage
+            );
+          },
+        ),
+        title: const Text(
+          "حدث خطأ",
+          style: TextStyle(fontSize: 24, color: Colors.black),
+        ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.home, color: YourStoryStyle.primarycolor),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => MainPage()),
-                (Route<dynamic> route) => false,
-              );
-            },
-          ),
+        actions: const <Widget>[
+          SizedBox(
+            width: 40,
+          )
         ],
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
