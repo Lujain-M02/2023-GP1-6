@@ -14,15 +14,15 @@ It is an Arabic application that allows users to write stories in Arabic and gen
 ![My Skills](https://skillicons.dev/icons?i=dart,flutter,gcp,firebase,flask,py)
 
 # Launching Instructions
-- Open 2023-GP1-6 repository on GitHub
-- Click on the code button
-- Download .zip file
-- Unzip the file
-- Open Android Studio or Visual Studio Code
-- Click on File > Open > Location of the saved unzipped file then click on Ok
-- Add a .env file in the assets folder and include the API keys for both Google and stability.ai, or contact the developer 
-- Turn on an Android Emulator or connect an android mobile to your computer using USB
-- Run Techقصـ application
+- Open 2023-GP1-6 repository on GitHub.
+- Click on the code button.
+- Download .zip file.
+- Unzip the file.
+- Open Android Studio or Visual Studio Code.
+- Click on File > Open > Location of the saved unzipped file then click on Ok.
+- Add a .env file in the assets folder and include the API keys for both Google and stability.ai, or contact the developer.
+- Turn on an Android Emulator or connect an android mobile to your computer using USB.
+- Run Techقصـ application.
 
 # Repository Link
 https://github.com/Lujain-M02/2023-GP1-6
