@@ -20,6 +20,7 @@ It is an Arabic application that allows users to write stories in Arabic and gen
 - Unzip the file
 - Open Android Studio or Visual Studio Code
 - Click on File > Open > Location of the saved unzipped file then click on Ok
+- Add a .env file in the assets folder and include the API keys for both Google and stability.ai, or contact the developer 
 - Turn on an Android Emulator or connect an android mobile to your computer using USB
 - Run Techقصـ application
 
