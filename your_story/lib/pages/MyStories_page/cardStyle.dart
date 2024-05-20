@@ -252,12 +252,7 @@ class pdfCard_myStories extends StatelessWidget {
                           top: 80,
                           left: 140,
                           child: storyType == "drafted"
-                              ? Image.asset(
-                                  "assets/draft_upper.png",
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                )
+                              ?  Container()
                               : Image.asset(
                                   "assets/pdfupper.png",
                                   width: 60,
@@ -319,7 +314,7 @@ class pdfCard_myStories extends StatelessWidget {
                                 )
                               else
                                 Text(
-                                  "الخيارات",
+                                  "مسودة",
                                   style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               IconButton(
